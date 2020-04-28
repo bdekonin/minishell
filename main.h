@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <dirent.h>
 
-# define d_prefix "bdekonin@Bob's Macbook Pro %s %% "
+# define d_prefix "codam@codam %s %% "
 # define cmd_notfound "zsh: command not found: "
 # define path_max 1024
 # define bultins 8
