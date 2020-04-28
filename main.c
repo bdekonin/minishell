@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/28 13:57:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/04/28 20:58:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-void removespace(char **argv);
-
-char *prefix;
-char *current_path;
-int comma = -1;
-int arg_i = 0;
+void removespace(t_vars *v, char **argv);
+void	readline(t_vars *v);
 
 char		*cmd_str(int i)
 {
@@ -47,81 +43,92 @@ char **getcmd(char *line)
 	char **argv;
 
 	argv = ft_split(line, ' ');
-	if (!argv)
-		return (NULL);
 	return (argv);
 }
 
 	char *ptr;
-	char *newline;
+
+void test()
+{
+	// exit(EXIT_FAILURE);
+}
 int main(void)
 {
 	ft_printf("--- Starting ----\n\n");
-
-	char *line;
-	int ret;
-	char **argv;
+	t_vars v;
 
 /*
 ** Initializing prompt
 */
-	prefix = ft_strdup(d_prefix);
-	if (!prefix)
+	v.prefix = ft_strdup(d_prefix);
+	if (!v.prefix)
 		return (0);
-	current_path = ft_calloc(path_max, sizeof(char));
-	if (!current_path)
+	v.current_path = ft_calloc(path_max, sizeof(char));
+	if (!v.current_path)
 		return (0);
-	current_path = getcwd(current_path, path_max);
+	v.current_path = getcwd(v.current_path, path_max);
+
 /*
 ** End initializing prompt
 */
+	int stat;
+		signal(SIGINT, test);
 
 	while (1)
 	{
-		ft_printf(prefix, ft_strrchr(current_path, '/') + 1);
-		ret = get_next_line(STDIN_FILENO, &line);
-		if (ret < 0)
-			return (-1);
-		argv = getcmd(line);
-		if (!argv)
-			return (-1);
-		if (!ft_strncmp(argv[0], "exit", 5))
-			exit(1);
-		for (int i = 0; i < bultins; i++)
+		readline(&v);
+		if (v.forky > 0)
 		{
-			if (!ft_strncmp(cmd_str(i), argv[0], 8))
-				printf("string %s, num %d\n", cmd_str(i), i);
+			wait(&stat);
+			printf("Im the parent now and im closing\n");
 		}
-		if (ft_wordcount(line) > 1 && argv[1][ft_strlen(argv[1]) - 1] == 92)
+		if (WEXITSTATUS(stat) == EXIT_SUCCESS)
 		{
-			removespace(argv + 1);
-			ft_printf("%s\n", ptr);
+			printf("[%d] - Child Success - %d\n", v.forky, WEXITSTATUS(stat));
+			exit(EXIT_SUCCESS);
 		}
-		for(int k = 0; k < ft_wordcount(line); k++)
-			ft_printf("[%s]\n", argv[k]);
-		free(line);
-		// system("leaks a.out");
+		if (WEXITSTATUS(stat) == EXIT_FAILURE) // Probably delete this. Use this to simulate segfault
+			exit(EXIT_SUCCESS);
+		if (WTERMSIG(stat) > 0)
+		{
+			printf("[%d] - Child Failed - %d\n", v.forky, WEXITSTATUS(stat));
+			readline(&v);
+		}
 	}
 }
 
-void removespace(char **argv)
+
+void	readline(t_vars *v)
 {
-	ptr = argv[0];
-	while (argv[1] != NULL && (argv[1][ft_strlen(argv[1]) - 1] == 92 ||
-	argv[1][ft_strlen(argv[1]) - 1] == 47) && argv[1][0] != ';')
+	v->forky = fork();
+	// ft_printf("Current\t[%d]\nParent\t[%d]\n", getpid(), getppid());
+	while (!v->forky)
 	{
-		ptr = ft_strjoin(ptr, " ", argv[1]);
-		if (argv[1][ft_strlen(argv[1]) - 1] == 47)
+		ft_printf(v->prefix, ft_strrchr(v->current_path, '/') + 1);
+		v->ret = get_next_line(STDIN_FILENO, &v->line);
+		if (v->ret < 0)
+			exit(1);
+		if (*v->line != 0)
 		{
-			ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
-			break ;
+			v->argv = getcmd(v->line);
+			if (!v->argv)
+				exit(1);
+			if (!ft_strncmp(v->argv[0], "exit", 5))
+				exit(0);
+			else if (!ft_strncmp(v->argv[0], "segfault", 20))
+				ft_memset(NULL, 1, 1);
+			else if (!ft_strncmp(v->argv[0], "parent", 20))
+				ft_printf("[%d]\n", getppid());
+			else if (!ft_strncmp(v->argv[0], "current", 4))
+				ft_printf("[%d]\n", getpid());
+			else if (ft_wordcount(v->line) > 1 && v->argv[1][ft_strlen(v->argv[1]) - 1] == 92)
+				removespace(v, v->argv + 1);
 		}
-		// Sets characters to NULL. So the program knows it has been read and copied.
-		ft_memset(argv[0], strjoin_filler, ft_strlen(argv[0]));
-		ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
-		argv++;
+		free(v->line);
 	}
+	// exit(EXIT_FAILURE);
 }
+
 //    ptr
 // cd one\ two\ three\ four/
 //     0 .  1 .  2 .  3 .    4
