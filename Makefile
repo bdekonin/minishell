@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/04/27 07:43:32 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/04/28 11:51:09 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OFILES = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OFILES)
+$(NAME):
 	gcc -Wall -Werror -Wextra $(SRCS) ft_printf/libftprintf.a
 
 fclean:

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/27 07:51:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/04/28 13:57:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char **getcmd(char *line)
 	return (argv);
 }
 
+	char *ptr;
 	char *newline;
 int main(void)
 {
@@ -84,33 +85,43 @@ int main(void)
 		argv = getcmd(line);
 		if (!argv)
 			return (-1);
-		// for (int i = 0; i < bultins; i++)
-		// {
-		// 	if (!ft_strncmp(cmd_str(i), argv[0], 8))
-		// 		printf("string %s, num %d\n", cmd_str(i), i);
-		// }
+		if (!ft_strncmp(argv[0], "exit", 5))
+			exit(1);
+		for (int i = 0; i < bultins; i++)
+		{
+			if (!ft_strncmp(cmd_str(i), argv[0], 8))
+				printf("string %s, num %d\n", cmd_str(i), i);
+		}
 		if (ft_wordcount(line) > 1 && argv[1][ft_strlen(argv[1]) - 1] == 92)
 		{
-			removespace(argv);
-			ft_printf("%s\n", newline);
+			removespace(argv + 1);
+			ft_printf("%s\n", ptr);
 		}
+		for(int k = 0; k < ft_wordcount(line); k++)
+			ft_printf("[%s]\n", argv[k]);
 		free(line);
-		free(argv);
-	}
-}
-	static int i = 0;
-void removespace(char **argv)
-{
-	newline = ft_strdup("");
-	while (argv[1] != NULL && argv[1][0] != ';')
-	{
-		i++;
-		newline = ft_strjoin(newline, argv[1]);
-		argv[1] = ft_strjoin(argv[1], argv[2]);
-		// printf("Argument 0 [%s]\t1 [%s]\t2 [%s]\n", argv[0], argv[1], argv[2]);
-		argv++;
+		// system("leaks a.out");
 	}
 }
 
+void removespace(char **argv)
+{
+	ptr = argv[0];
+	while (argv[1] != NULL && (argv[1][ft_strlen(argv[1]) - 1] == 92 ||
+	argv[1][ft_strlen(argv[1]) - 1] == 47) && argv[1][0] != ';')
+	{
+		ptr = ft_strjoin(ptr, " ", argv[1]);
+		if (argv[1][ft_strlen(argv[1]) - 1] == 47)
+		{
+			ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
+			break ;
+		}
+		// Sets characters to NULL. So the program knows it has been read and copied.
+		ft_memset(argv[0], strjoin_filler, ft_strlen(argv[0]));
+		ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
+		argv++;
+	}
+}
+//    ptr
 // cd one\ two\ three\ four/
-//      0 .  1 .  2 .  3 .    4
+//     0 .  1 .  2 .  3 .    4
