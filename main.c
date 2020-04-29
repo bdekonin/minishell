@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/28 20:58:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/04/28 23:06:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-void removespace(t_vars *v, char **argv);
-void	readline(t_vars *v);
 
 char		*cmd_str(int i)
 {
@@ -96,7 +94,7 @@ int main(void)
 		}
 	}
 }
-
+void cd(t_vars *v);
 
 void	readline(t_vars *v)
 {
@@ -119,10 +117,12 @@ void	readline(t_vars *v)
 				ft_memset(NULL, 1, 1);
 			else if (!ft_strncmp(v->argv[0], "parent", 20))
 				ft_printf("[%d]\n", getppid());
-			else if (!ft_strncmp(v->argv[0], "current", 4))
+			else if (!ft_strncmp(v->argv[0], "pid", 4))
 				ft_printf("[%d]\n", getpid());
-			else if (ft_wordcount(v->line) > 1 && v->argv[1][ft_strlen(v->argv[1]) - 1] == 92)
-				removespace(v, v->argv + 1);
+			else if (!ft_strncmp(v->argv[0], "cd", 4))
+				cd(v);
+			// else if (ft_wordcount(v->line) > 1 && v->argv[1][ft_strlen(v->argv[1]) - 1] == 92)
+			// 	removespace(v, v->argv + 1);
 		}
 		free(v->line);
 	}

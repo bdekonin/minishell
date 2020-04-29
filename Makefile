@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/04/28 16:42:51 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/04/28 23:01:56 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,9 @@ all: $(NAME)
 
 $(NAME):
 	gcc -Wall -Werror -Wextra $(SRCS) ft_printf/libftprintf.a
+
+compile: $(NAME)
+	rm a.out && make && ./a.out
 
 fclean:
 	/bin/rm -f $(OFILES)

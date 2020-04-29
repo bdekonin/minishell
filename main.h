@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/28 17:15:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/04/28 23:06:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,8 @@ typedef struct		s_vars
 }					t_vars;
 
 int					ft_printf(const char *format, ...);
+
+void removespace(t_vars *v, char **argv);
+void	readline(t_vars *v);
 
 #endif
