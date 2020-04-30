@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/30 15:40:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/04/30 20:34:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void cmd(t_vars *v, char **params)
 	p[5] = env;
 	p[6] = exitt;
 	p[7] = help;
-	printf("param[0] = %s\n", params[0]);
 	for (int i = 0; i < bultins; i++)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
