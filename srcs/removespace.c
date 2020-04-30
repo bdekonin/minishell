@@ -6,11 +6,27 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/28 16:43:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/04/30 18:52:18 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
+
+static char		*movestring(char *line)
+{
+	char	*temp;
+	int		i;
+
+	i = 0;
+	temp = ft_strrchr(line, 92);
+	while (temp[i + 1] != '\0')
+	{
+		temp[i] = temp[i + 1];
+		i++;
+	}
+	temp[i] = '\0';
+	return (line);
+}
 
 void removespace(t_vars *v, char **argv)
 {
@@ -29,4 +45,7 @@ void removespace(t_vars *v, char **argv)
 		ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
 		argv++;
 	}
+	free(argv[1]);
+	v->argv[1] = v->ptr;
+	v->argv[1] = movestring(v->argv[1]);
 }
