@@ -6,12 +6,17 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2020/04/30 18:52:18 by bdekonin      ########   odam.nl         */
+=======
+/*   Updated: 2020/04/28 16:43:34 by bdekonin      ########   odam.nl         */
+>>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
 
+<<<<<<< HEAD
 static char		*movestring(char *line)
 {
 	char	*temp;
@@ -28,6 +33,8 @@ static char		*movestring(char *line)
 	return (line);
 }
 
+=======
+>>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
 void removespace(t_vars *v, char **argv)
 {
 	v->ptr = argv[0];
@@ -45,7 +52,10 @@ void removespace(t_vars *v, char **argv)
 		ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
 		argv++;
 	}
+<<<<<<< HEAD
 	free(argv[1]);
 	v->argv[1] = v->ptr;
 	v->argv[1] = movestring(v->argv[1]);
+=======
+>>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
 }

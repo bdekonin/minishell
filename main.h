@@ -6,7 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2020/04/30 18:23:33 by bdekonin      ########   odam.nl         */
+=======
+/*   Updated: 2020/04/28 17:15:13 by bdekonin      ########   odam.nl         */
+>>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +37,12 @@ typedef struct		s_vars
 	int				ret;
 	char			**argv;
 	pid_t			forky;
+<<<<<<< HEAD
 	int				seperator;
 	
 	char *test;
+=======
+>>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
 }					t_vars;
 
 int					ft_printf(const char *format, ...);

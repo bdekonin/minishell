@@ -6,7 +6,11 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
+<<<<<<< HEAD
 #    Updated: 2020/04/28 23:01:56 by bdekonin      ########   odam.nl          #
+=======
+#    Updated: 2020/04/28 16:42:51 by bdekonin      ########   odam.nl          #
+>>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
 #                                                                              #
 # **************************************************************************** #
 
