@@ -37,12 +37,6 @@ typedef struct		s_vars
 	int				ret;
 	char			**argv;
 	pid_t			forky;
-<<<<<<< HEAD
-	int				seperator;
-	
-	char *test;
-=======
->>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
 }					t_vars;
 
 int					ft_printf(const char *format, ...);
