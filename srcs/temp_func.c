@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/30 18:53:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/01 21:59:05 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,21 @@ int echo(t_vars *v, char **params)
 // cd
 int pwd(t_vars *v, char **params)
 {
-	printf("%s\n", v->current_path);
-	params++;
+	int k = amountofsplits(v, params);
+	ft_printf("k = %d\n", k);
+	if (k >= 1 && ft_strncmp(params[1], ";", 3))
+	{
+		errno = 7;
+		perror(error);
+		exit(EXIT_FAILURE);
+	}
+	ft_printf("%s\n", v->current_path);
+	for (int i = 0; i < k; i++)
+	{
+		ft_printf("arg[%d] - [%s]", i, params[i]);
+	}
+	if (k >= 1 && !ft_strncmp(params[1], ";", 3))
+		cmd(v, params + 2);
 	return (1);
 }
 int export(t_vars *v, char **params)

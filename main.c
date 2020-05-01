@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/30 20:50:10 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/01 20:57:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void ctrl_c()
 {
 	return ;
 }
-
+int segfault = 0;
 int main(void)
 {
 	ft_printf("--- Starting ----\n\n");
@@ -76,18 +76,24 @@ int main(void)
 		if (v.forky > 0)
 		{
 			wait(&stat);
-			printf("Im the parent now and im closing\n");
-			printf("%d - %d - %d\n", WTERMSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
+			// printf("Im the parent now and im closing\n");
+			// printf("%d - %d - %d\n", WTERMSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
 		}
+		// if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_FAILURE)
+		// {
+		// // 	readline(&v);
+		// }
 		if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_SUCCESS)
 		{
-			printf("[%d] - Child Success - %d\n", v.forky, WEXITSTATUS(stat));
+			// printf("[%d] - Child Success - %d\n", v.forky, WEXITSTATUS(stat));
 			exit(EXIT_SUCCESS);
 		}
 		if (WTERMSIG(stat) == SIGSEGV)
 		{
-			printf("[%d] - Child SEGFAULTED - %d\n", v.forky, WEXITSTATUS(stat));
-			readline(&v);
+		// 	// printf("[%d] - Child SEGFAULTED - %d\n", v.forky, WEXITSTATUS(stat));
+			ft_printf("\nSomething went wrong!\nRestarting\n\n");
+		// 	// // // // segfault = 1; // DIT
+		// 	readline(&v);
 		}
 	}
 }
@@ -107,7 +113,7 @@ void cmd(t_vars *v, char **params)
 	for (int i = 0; i < bultins; i++)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
-			(*p[i]) (v, params);
+			(*p[i])(v, params);
 	}
 }
 
@@ -116,10 +122,18 @@ void	readline(t_vars *v)
 	v->forky = fork();
 	while (!v->forky)
 	{
+		v->ptr = NULL; // TEMP
+		// if (segfault == 1)
+		// {
+		// 	ft_printf("\n");
+		// 	segfault = 0;
+		// }
 		ft_printf(v->prefix, ft_strrchr(v->current_path, '/') + 1);
 		v->ret = get_next_line(STDIN_FILENO, &v->line);
 		if (v->ret < 0)
 			exit(1);
+		// while (*v->line == 32 || *v->line == 9)
+		// 	*v->line++; // THIS CAUSES A LEAK BECAUSE IT CANNOT FIND THE MALLOCED POINTER
 		if (*v->line != 0)
 		{
 			v->argv = getcmd(v->line);
@@ -133,14 +147,9 @@ void	readline(t_vars *v)
 				ft_printf("[%d]\n", getppid());
 			else if (!ft_strncmp(v->argv[0], "pid", 4))
 				ft_printf("[%d]\n", getpid());
-			else if (!ft_strncmp(v->argv[0], "exit", 5))
-				exit(EXIT_SUCCESS);
 			else
-			{
 				cmd(v, v->argv);
-			}
 		}
 		free(v->line);
 	}
-	// exit(EXIT_FAILURE);
 }

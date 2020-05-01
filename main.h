@@ -6,11 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/04/30 18:23:33 by bdekonin      ########   odam.nl         */
-=======
-/*   Updated: 2020/04/28 17:15:13 by bdekonin      ########   odam.nl         */
->>>>>>> 0ee2dea2c56e38d1e663ec688b34dc1f97df40e1
+/*   Updated: 2020/05/01 21:50:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +17,15 @@
 #include "ft_printf/libft/libft.h"
 #include <stdio.h>
 #include <dirent.h>
+#include <string.h>
+#include <errno.h>
 
 # define d_prefix "custom@codam %s > "
-# define cmd_notfound "zsh: command not found: "
+# define cmd_notfound "zsh: command not found: %s"
 # define path_max 1024
 # define bultins 8
 # define strjoin_filler 94
+# define error "ERROR"
 
 typedef struct		s_vars
 {
@@ -46,6 +45,9 @@ void	readline(t_vars *v);
 
 int				cd(t_vars *v, char **params);
 
+int amountofsplits(t_vars *v, char **params);
+
+void cmd(t_vars *v, char **params);
 
 // TEMP FUNCTIONS
 int echo(t_vars *v, char **params);
@@ -56,7 +58,6 @@ int env(t_vars *v, char **params);
 int exitt(t_vars *v, char **params);
 int help(t_vars *v, char **params);
 
-void cmd(t_vars *v, char **params);
 
 
 #endif
