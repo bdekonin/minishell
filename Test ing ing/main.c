@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   amountofsplits.c                                   :+:    :+:            */
+/*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/05/01 20:57:44 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/01 20:58:12 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/05/01 22:36:56 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/01 22:46:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main.h"
+#include "../ft_printf/libft/libft.h"
 
-int amountofsplits(t_vars *v, char **params)
+int main(void)
 {
-	int count;
-	int i;
+	char *line = ft_strdup("Hallo wie ben jij nou weer");
+	char **argv = ft_split(line, ' ');
 
-	count = 0;
-	i = 0;
-	while (ft_strncmp(params[i], v->argv[ft_wordcount(v->line) - 1], ft_strlen(v->line)))
+	for(int i = 0; i < ft_wordcount(line) + 5; i++)
 	{
-		if (!ft_strncmp(params[i], ";", 3))
-			return (i);
-		i++;
+		printf("%d - [%s]\n", i, argv[i]);
 	}
-	return (i);
 }

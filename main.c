@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/01 20:57:00 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/06 16:16:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int main(void)
 	/*
 	** End initializing prompt
 	*/
+	v.argc = 0;
 	int stat;
 	signal(SIGINT, ctrl_c);
 	while (1)
@@ -77,7 +78,7 @@ int main(void)
 		{
 			wait(&stat);
 			// printf("Im the parent now and im closing\n");
-			// printf("%d - %d - %d\n", WTERMSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
+			printf("%d - %d - %d\n", WTERMSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
 		}
 		// if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_FAILURE)
 		// {
@@ -110,6 +111,7 @@ void cmd(t_vars *v, char **params)
 	p[5] = env;
 	p[6] = exitt;
 	p[7] = help;
+
 	for (int i = 0; i < bultins; i++)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
@@ -134,6 +136,7 @@ void	readline(t_vars *v)
 			exit(1);
 		// while (*v->line == 32 || *v->line == 9)
 		// 	*v->line++; // THIS CAUSES A LEAK BECAUSE IT CANNOT FIND THE MALLOCED POINTER
+		// ft_printf("Wordcount = %d\n", ft_wordcount(v->line));
 		if (*v->line != 0)
 		{
 			v->argv = getcmd(v->line);

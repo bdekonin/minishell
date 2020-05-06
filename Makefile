@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/04/30 23:29:15 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/05/02 12:07:07 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OFILES = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra $(SRCS) ft_printf/libftprintf.a
+	gcc -Wall -Wextra -g $(SRCS) ft_printf/libftprintf.a
 
 c: $(NAME)
 	rm a.out && make && ./a.out

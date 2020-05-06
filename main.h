@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/01 21:50:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/02 17:05:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct		s_vars
 	int				ret;
 	char			**argv;
 	pid_t			forky;
+	int				argc;
 }					t_vars;
 
 int					ft_printf(const char *format, ...);

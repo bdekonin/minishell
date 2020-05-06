@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/30 20:50:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/02 17:59:29 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,25 @@ static char		*movestring(char *line)
 {
 	char	*temp;
 	int		i;
+	int		j;
+	int		wc;
 
 	i = 0;
-	temp = ft_strrchr(line, 92);
-	while (temp[i + 1] != '\0')
+	j = 0;
+	wc = ft_wordcount(line);
+	while (j < wc - 1)
 	{
-		temp[i] = temp[i + 1];
-		i++;
+		temp = ft_strchr(line, 92);
+		while (temp[i + 1] != '\0')
+		{
+			temp[i] = temp[i + 1];
+			i++;
+		}
+		i = 0;
+		j++;
 	}
-	temp[i] = '\0';
+	temp = ft_strchr(line, '/');
+	*temp = '\0';
 	return (line);
 }
 
@@ -40,7 +50,6 @@ void removespace(t_vars *v, char **argv)
 			ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
 			break ;
 		}
-		// Sets characters to value. So the program knows it has been read and copied.
 		ft_memset(argv[0], strjoin_filler, ft_strlen(argv[0]));
 		ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
 		argv++;

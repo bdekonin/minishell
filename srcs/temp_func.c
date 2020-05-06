@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/01 21:59:05 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/02 12:05:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@ int echo(t_vars *v, char **params)
 // cd
 int pwd(t_vars *v, char **params)
 {
-	int k = amountofsplits(v, params);
-	ft_printf("k = %d\n", k);
-	if (k >= 1 && ft_strncmp(params[1], ";", 3))
+	char *teeest = malloc(sizeof(char) * 1024);
+	if (params[1] && ft_strncmp(params[1], ";", 3))
 	{
 		errno = 7;
 		perror(error);
 		exit(EXIT_FAILURE);
 	}
-	ft_printf("%s\n", v->current_path);
-	for (int i = 0; i < k; i++)
-	{
-		ft_printf("arg[%d] - [%s]", i, params[i]);
-	}
-	if (k >= 1 && !ft_strncmp(params[1], ";", 3))
+	teeest = getcwd(teeest, path_max);
+	ft_printf("%s\n", teeest);
+	// for (int i = 0; params[i + 1]; i++)
+	// {
+	// 	ft_printf("argv[%d] - [%s]\n", i, params[i]);
+	// }
+	if (params[1] && params[2] && !ft_strncmp(params[1], ";", 3))
 		cmd(v, params + 2);
 	return (1);
 }
