@@ -6,13 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/11 16:48:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/11 17:15:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
 
-int pwd(t_vars *v, char **params)
+int		pwd(t_vars *v, char **params)
 {
 	char *str;
 
