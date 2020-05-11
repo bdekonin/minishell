@@ -48,7 +48,9 @@ void ctrl_c()
 {
 	return ;
 }
+
 int segfault = 0;
+
 int main(void)
 {
 	ft_printf("--- Starting ----\n\n");
@@ -99,6 +101,18 @@ int main(void)
 	}
 }
 
+void	param_to_lower_case(char *str)
+{
+	size_t i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		str[i] = ft_tolower(str[i]);		
+		i++;
+	}
+}
+
 void cmd(t_vars *v, char **params)
 {
 	int (*p[8]) (t_vars *v, char **params);
@@ -111,6 +125,8 @@ void cmd(t_vars *v, char **params)
 	p[5] = env;
 	p[6] = exitt;
 	p[7] = help;
+
+	param_to_lower_case(params[0]);
 
 	for (int i = 0; i < bultins; i++)
 	{
