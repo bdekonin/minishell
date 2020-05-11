@@ -27,6 +27,13 @@
 # define strjoin_filler 94
 # define error "ERROR"
 
+typedef	struct		s_export
+{
+	char			*var_name;
+	char			*var_content;
+}					t_export;
+
+
 typedef struct		s_vars
 {
 	char			*ptr;
@@ -37,18 +44,19 @@ typedef struct		s_vars
 	char			**argv;
 	pid_t			forky;
 	int				argc;
+	char			*export_str;
 }					t_vars;
 
-int					ft_printf(const char *format, ...);
+int		ft_printf(const char *format, ...);
 
-void removespace(t_vars *v, char **argv);
+void	removespace(t_vars *v, char **argv);
 void	readline(t_vars *v);
 
-int				cd(t_vars *v, char **params);
+int		cd(t_vars *v, char **params);
 
-int amountofsplits(t_vars *v, char **params);
+int		amountofsplits(t_vars *v, char **params);
 
-void cmd(t_vars *v, char **params);
+void	cmd(t_vars *v, char **params);
 
 // TEMP FUNCTIONS
 int echo(t_vars *v, char **params);
