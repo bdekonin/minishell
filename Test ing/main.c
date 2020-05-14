@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/02 12:05:01 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/05/01 22:36:56 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/01 22:46:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main.h"
+#include "../ft_printf/libft/libft.h"
 
-int pwd(t_vars *v, char **params)
+int main(void)
 {
-	char *str;
+	char *line = ft_strdup("Hallo wie ben jij nou weer");
+	char **argv = ft_split(line, ' ');
 
-	if (params[1] && ft_strncmp(params[1], ";", 3))
+	for(int i = 0; i < ft_wordcount(line) + 5; i++)
 	{
-		errno = 7;
-		perror(error);
-		exit(EXIT_FAILURE);
+		printf("%d - [%s]\n", i, argv[i]);
 	}
-	str = NULL;
-	str = getcwd(str, 0);
-	if (!str)
-	{
-		perror(error);
-		exit(EXIT_FAILURE);
-	}
-	ft_printf("%s\n", str);
-	free(str);
-	if (params[1] && params[2] && !ft_strncmp(params[1], ";", 3))
-		cmd(v, params + 2);
-	return (1);
 }

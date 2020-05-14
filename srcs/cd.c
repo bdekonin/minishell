@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/04/28 22:58:42 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/03 18:25:08 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/05/12 15:37:50 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/12 15:37:53 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,3 +46,8 @@ int					cd(t_vars *v, char **params)
 	}
 	return (1);
 }
+
+// [Cd] [hallo] [kees] [;] [export]
+//  ˆ
+// [Cd] [hallo] [kees] [;] [export]
+//         ˆ                           
