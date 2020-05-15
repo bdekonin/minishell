@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   temp_func.c                                        :+:    :+:            */
+/*   export.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/02 12:05:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/15 20:36:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static size_t	count_vars(char **params)
 static int		trim_strings(char **s1, char **s2, char **vars)
 {
 	char set[3];
-
 	set[0] = 34;
 	set[1] = 39;
 	set[2] = 0;
@@ -62,6 +61,8 @@ int 			export(t_vars *v, char **params)
 	char	**vars;
 	size_t	i;
 
+	for(int i = 0; v->envp[i]; i++)
+		printf("%d - %s\n", i, v->envp[i]);
 	e = v->exp_vars;
 	e.size = count_vars(&params[1]);
 	e.var_name = ft_calloc(e.size + 1, sizeof(char *));

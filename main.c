@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/06 16:16:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/15 20:32:40 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,16 @@ void ctrl_c()
 
 int segfault = 0;
 
-int main(void)
+int main(int argc, char **argv, char** envp)
 {
 	ft_printf("--- Starting ----\n\n");
 	t_vars v;
 	
+	/*
+	** Initializing env vars
+	*/	
+	v.envp = envp;
+
 	/*
 	** Initializing prompt
 	*/
