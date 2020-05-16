@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/02 17:59:29 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/15 22:49:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void removespace(t_vars *v, char **argv)
 	while (argv[1] != NULL && (argv[1][ft_strlen(argv[1]) - 1] == 92 ||
 	argv[1][ft_strlen(argv[1]) - 1] == 47) && argv[1][0] != ';')
 	{
-		v->ptr = ft_strjoin(v->ptr, " ", argv[1]);
+		v->ptr = ft_strjoin_trip(v->ptr, " ", argv[1]);
 		if (argv[1][ft_strlen(argv[1]) - 1] == 47)
 		{
 			ft_memset(argv[1], strjoin_filler, ft_strlen(argv[1]));
