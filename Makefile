@@ -6,13 +6,14 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/05/02 12:07:07 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/05/16 17:59:01 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = a.out
 
-SRCS = *.c get_next_line/get_next_line.c srcs/*.c
+SRCS = *.c get_next_line/get_next_line.c srcs/builtins/*.c \
+	srcs/utils/*.c srcs/utils/env_list/*.c
 
 OFILES = $(SRCS:.c=.o)
 

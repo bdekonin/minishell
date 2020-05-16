@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 17:53:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 19:13:53 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,15 @@ int unset(t_vars *v, char **params)
 }
 int env(t_vars *v, char **params)
 {
+	t_env *env;
 	printf("%s - %s\n", v->argv[0], params[0]);
+	
+	env = v->env__home_ptr;
+	while (env)
+	{
+		ft_printf("%s=%s\n", env->name, env->content);
+		env = env->next;
+	}
 	return (1);
 }
 int exitt(t_vars *v, char **params)

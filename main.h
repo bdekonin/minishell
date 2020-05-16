@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 18:04:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 19:16:50 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct		s_vars
 	int				argc;
 	t_exp			exp_vars;
 
+	t_env			*env__home_ptr; // DO NOT CHANGE THE VALUE!
 }					t_vars;
 
 int		ft_printf(const char *format, ...);

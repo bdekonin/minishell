@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/06 16:16:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 19:15:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,62 @@ void ctrl_c()
 
 int segfault = 0;
 
-int main(void)
+int ft_strchr_int(const char *s, int c)
+{
+	int		i;
+	char	*str;
+	int		x;
+
+	i = 0;
+	str = (char*)s;
+	x = ft_strlen(s);
+	while (i < x + 1)
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+
+void env__makelist(t_vars *v, char **envp)
+{
+	t_env	*env;
+	char	*name;
+	char	*content;
+	int		loc;
+	int		i;
+
+	i = 1;
+	loc = ft_strchr_int(envp[0], '='); // make better function; univursal one
+	name = ft_substr(envp[0], 0, loc);
+		// name protect
+	content = ft_substr(envp[0], loc + 1, ft_strlen(envp[0] + loc));
+		//content protect
+	env = env__ft_lstnew(name, content);
+	while (envp[i])
+	{
+		loc = ft_strchr_int(envp[i], '='); // make better function; univursal one
+		name = ft_substr(envp[i], 0, loc);
+			// name protect
+		content = ft_substr(envp[i], loc + 1, ft_strlen(envp[i] + loc));
+			//content protect
+		env__ft_lstadd_back(&env, env__ft_lstnew(name, content));
+		i++;
+	}
+	v->env__home_ptr = env;
+}
+
+int main(int argc, char **argv, char **envp)
 {
 	ft_printf("--- Starting ----\n\n");
 	t_vars v;
-	
+	argc++; //  TIJDELIJK VOOR DE WARNING
+	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
+
+
+	env__makelist(&v, envp);
 	/*
 	** Initializing prompt
 	*/
