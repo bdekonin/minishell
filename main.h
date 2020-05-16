@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 17:30:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 18:04:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct		s_vars
 	pid_t			forky;
 	int				argc;
 	t_exp			exp_vars;
+
 }					t_vars;
 
 int		ft_printf(const char *format, ...);
@@ -77,6 +78,17 @@ int help(t_vars *v, char **params);
 
 // WILL CHANGE
 char	*ft_strjoin_trip(char const *s1, char const *s2, char const *s3);
+
+
+// env list functions
+void	env__ft_lstadd_back(t_env **alst, t_env *new);
+void	env__ft_lstadd_front(t_env **alst, t_env *new);
+void	env__ft_lstclear(t_env **lst, void (*del)(void*));
+void	env__ft_lstdelone(t_env *lst, void (*del)(void*));
+t_env	*env__ft_lstlast(t_env *lst);
+int		env__ft_lstsize(t_env *lst);
+t_env	*env__ft_lstnew(void *name, void *content);
+
 
 
 

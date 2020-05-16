@@ -6,11 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/12 15:37:50 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/12 15:37:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 17:53:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main.h"
+#include "../../main.h"
 
 int					cd(t_vars *v, char **params)
 {

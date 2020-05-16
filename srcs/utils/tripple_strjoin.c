@@ -6,11 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/15 22:47:53 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/15 22:48:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 17:53:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main.h"
+#include "../../main.h"
 
 char	*ft_strjoin_trip(char const *s1, char const *s2, char const *s3)
 {

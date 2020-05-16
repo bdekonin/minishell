@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_split.c                                         :+:    :+:            */
+/*   ft_split_lars.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/04 08:22:37 by lverdoes      #+#    #+#                 */
-/*   Updated: 2019/11/22 17:54:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/05/16 17:53:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main.h"
+#include "../../main.h"
 
 static size_t	get_start(char const *str, char c, size_t start, size_t len)
 {

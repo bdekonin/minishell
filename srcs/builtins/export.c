@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   temp_func.c                                        :+:    :+:            */
+/*   export.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/02 12:05:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 18:01:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../main.h"
+#include "../../main.h"
 
-static void		print_array(char **arr, size_t max)
-{
-	// function for debugging
-	size_t i;
+// static void		print_array(char **arr, size_t max)
+// {
+// 	// function for debugging
+// 	size_t i;
 	
-	i = 0;
-	while (i < max)
-	{
-		printf("nr.%lu = [%s]\t\t", i, arr[i]);
-		i++;
-	}
-	printf("\n");
-}
+// 	i = 0;
+// 	while (i < max)
+// 	{
+// 		printf("nr.%lu = [%s]\t\t", i, arr[i]);
+// 		i++;
+// 	}
+// 	printf("\n");
+// }
 
 static size_t	count_vars(char **params)
 {
