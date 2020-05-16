@@ -6,25 +6,28 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 18:01:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 21:46:56 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-// static void		print_array(char **arr, size_t max)
-// {
-// 	// function for debugging
-// 	size_t i;
-	
-// 	i = 0;
-// 	while (i < max)
-// 	{
-// 		printf("nr.%lu = [%s]\t\t", i, arr[i]);
-// 		i++;
-// 	}
-// 	printf("\n");
-// }
+static int	free_array_three(char ***array)
+{
+	free(array);
+	return (0);
+}
+
+static int	free_array(char **array, size_t i)
+{
+	while (i > 0)
+	{
+		i--;
+		free(array[i]);
+	}
+	free(array);
+	return (0);
+}
 
 static size_t	count_vars(char **params)
 {
@@ -38,7 +41,7 @@ static size_t	count_vars(char **params)
 	return (i);
 }
 
-static int		trim_strings(char **s1, char **s2, char **vars)
+static int	trim_strings(char **s1, char **s2, char **src)
 {
 	char set[3];
 
@@ -46,45 +49,41 @@ static int		trim_strings(char **s1, char **s2, char **vars)
 	set[1] = 39;
 	set[2] = 0;
 	
-	*s1 = ft_strtrim(vars[0], set);
-	*s2 = ft_strtrim(vars[1], set);
-	free(vars[0]);
-	free(vars[1]);
-	free(vars);
-	if (!*s1 || !*s2)
-		return (0);
+	*s1 = ft_strtrim(src[0], set);
+	if (!*s1)
+		return (free_array(src, 2));
+	*s2 = ft_strtrim(src[1], set);
+	if (!*s2)
+	{
+		free(*s1);
+		return (free_array(src, 2));
+	}
+	free_array(src, 2);
 	return (1);
 }
 
 int 			export(t_vars *v, char **params)
 {
-	t_exp	e;
-	char	**vars;
+	char	***sen;
+	size_t	size;
 	size_t	i;
+	char	*dst_name;
+	char	*dst_content;
 
-	e = v->exp_vars;
-	e.size = count_vars(&params[1]);
-	e.var_name = ft_calloc(e.size + 1, sizeof(char *));
-	e.var_content = ft_calloc(e.size + 1, sizeof(char *));
-	if (!e.var_name || !e.var_content)
+	size = count_vars(&params[1]);
+	sen = ft_calloc(size + 1, sizeof(char **));
+	if (!sen)
 		return (0); //malloc
 	i = 0;
-	while (i < e.size)
+	while (i < size)
 	{
-		vars = ft_split_lars(params[i + 1], '='); //rename to ft_split
-		if (!vars)
-		{
-			free(e.var_name);
-			free(e.var_content);
-			return (0); //malloc
-		}
-		if (!trim_strings(&e.var_name[i], &e.var_content[i], vars))
-			return (0); //malloc
+		sen[i] = ft_split_lars(params[i + 1], '='); //rename to ft_split
+		if (!sen[i])
+			return (free_array_three(sen)); //malloc
+		if (!trim_strings(&dst_name, &dst_content, sen[i]))
+			return (free_array_three(sen)); //malloc
+		env__ft_lstadd_back(&v->env_head, env__ft_lstnew(dst_name, dst_content));
 		i++;
 	}
-	//functions for debugging export:
-	//print_array(e.var_name, e.size);
-	//print_array(e.var_content, e.size);
 	return (1);
 }
-
