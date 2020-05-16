@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 20:02:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 23:48:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,6 @@ void ctrl_c()
 
 int segfault = 0;
 
-int ft_strchr_int(const char *s, int c)
-{
-	int		i;
-	char	*str;
-	int		x;
-
-	i = 0;
-	str = (char*)s;
-	x = ft_strlen(s);
-	while (i < x + 1)
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (0);
-}
-
-
 void env__makelist(t_vars *v, char **envp)
 {
 	t_env	*env;
@@ -79,7 +60,7 @@ void env__makelist(t_vars *v, char **envp)
 	int		i;
 
 	i = 1;
-	loc = ft_strchr_int(envp[0], '='); // make better function; universal one
+	loc = ft_charsearch(envp[0], '='); // make better function; universal one
 	name = ft_substr(envp[0], 0, loc);
 		// name protect
 	content = ft_substr(envp[0], loc + 1, ft_strlen(envp[0] + loc));
@@ -87,7 +68,7 @@ void env__makelist(t_vars *v, char **envp)
 	env = env__ft_lstnew(name, content);
 	while (envp[i])
 	{
-		loc = ft_strchr_int(envp[i], '='); // make better function; universal one
+		loc = ft_charsearch(envp[i], '='); // make better function; universal one
 		name = ft_substr(envp[i], 0, loc);
 			// name protect
 		content = ft_substr(envp[i], loc + 1, ft_strlen(envp[i] + loc));
@@ -159,7 +140,7 @@ void	param_to_lower_case(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		str[i] = ft_tolower(str[i]);		
+		str[i] = ft_tolower(str[i]);
 		i++;
 	}
 }
@@ -195,12 +176,7 @@ void	readline(t_vars *v)
 	v->forky = fork();
 	while (!v->forky)
 	{
-		v->ptr = NULL; // TEMP
-		// if (segfault == 1)
-		// {
-		// 	ft_printf("\n");
-		// 	segfault = 0;
-		// }
+		v->ptr = NULL; // for cd but probably change.
 		ft_printf(v->prefix, ft_strrchr(v->current_path, '/') + 1);
 		v->ret = get_next_line(STDIN_FILENO, &v->line);
 		if (v->ret < 0)
@@ -222,6 +198,6 @@ void	readline(t_vars *v)
 				cmd(v, v->argv);
 		}
 		free(v->line);
-		// FREE THE ARGV HERE
+		ft_free_array((void*)v->argv, ft_wordcount(v->line));
 	}
 }
