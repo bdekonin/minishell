@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 20:02:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 23:17:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,13 @@ int echo(t_vars *v, char **params)
 // }
 int unset(t_vars *v, char **params)
 {
-	printf("%s - %s\n", v->argv[0], params[0]);
+	env__ft_lstremove_middle(params[1], v->env_head);
 	return (1);
 }
 int env(t_vars *v, char **params)
 {
 	t_env *env;
 	printf("%s - %s\n", v->argv[0], params[0]);
-
 	env = v->env_head;
 	while (env)
 	{
