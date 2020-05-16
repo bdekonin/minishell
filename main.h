@@ -6,7 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2020/05/16 23:59:50 by bdekonin      ########   odam.nl         */
+=======
+/*   Updated: 2020/05/16 21:18:26 by lverdoes      ########   odam.nl         */
+>>>>>>> 63be2c0fbc883c7abeeb668149142bf53f3ab9cb
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +38,6 @@ typedef	struct		s_env
 	struct s_env	*next;
 }					t_env;
 
-typedef	struct		s_exp
-{
-	size_t			size;
-	char			**var_name;
-	char			**var_content;
-}					t_exp;
-
 typedef struct		s_vars
 {
 	char			*ptr;
@@ -51,9 +48,7 @@ typedef struct		s_vars
 	char			**argv;
 	pid_t			forky;
 	int				argc;
-	t_exp			exp_vars;
-
-	t_env			*env_head; // NOOIT VERANDEREN
+	t_env			*env_head; // DO NOT CHANGE THE VALUE!
 }					t_vars;
 
 int		ft_printf(const char *format, ...);
