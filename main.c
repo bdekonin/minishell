@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 19:15:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 20:02:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void env__makelist(t_vars *v, char **envp)
 	int		i;
 
 	i = 1;
-	loc = ft_strchr_int(envp[0], '='); // make better function; univursal one
+	loc = ft_strchr_int(envp[0], '='); // make better function; universal one
 	name = ft_substr(envp[0], 0, loc);
 		// name protect
 	content = ft_substr(envp[0], loc + 1, ft_strlen(envp[0] + loc));
@@ -87,7 +87,7 @@ void env__makelist(t_vars *v, char **envp)
 	env = env__ft_lstnew(name, content);
 	while (envp[i])
 	{
-		loc = ft_strchr_int(envp[i], '='); // make better function; univursal one
+		loc = ft_strchr_int(envp[i], '='); // make better function; universal one
 		name = ft_substr(envp[i], 0, loc);
 			// name protect
 		content = ft_substr(envp[i], loc + 1, ft_strlen(envp[i] + loc));
@@ -95,7 +95,7 @@ void env__makelist(t_vars *v, char **envp)
 		env__ft_lstadd_back(&env, env__ft_lstnew(name, content));
 		i++;
 	}
-	v->env__home_ptr = env;
+	v->env_head = env;
 }
 
 int main(int argc, char **argv, char **envp)
@@ -104,7 +104,6 @@ int main(int argc, char **argv, char **envp)
 	t_vars v;
 	argc++; //  TIJDELIJK VOOR DE WARNING
 	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
-
 
 	env__makelist(&v, envp);
 	/*
@@ -121,6 +120,7 @@ int main(int argc, char **argv, char **envp)
 	/*
 	** End initializing prompt
 	*/
+
 	v.argc = 0;
 	int stat;
 	signal(SIGINT, ctrl_c);
@@ -166,6 +166,10 @@ void	param_to_lower_case(char *str)
 
 void cmd(t_vars *v, char **params)
 {
+	if (!ft_strncmp("getpid", params[0], 10))
+		ft_printf("%d\n", getpid());
+	if (!ft_strncmp("getppid", params[0], 10))
+		ft_printf("%d\n", getppid());
 	int (*p[8]) (t_vars *v, char **params);
 
 	p[0] = echo;
@@ -201,14 +205,11 @@ void	readline(t_vars *v)
 		v->ret = get_next_line(STDIN_FILENO, &v->line);
 		if (v->ret < 0)
 			exit(1);
-		// while (*v->line == 32 || *v->line == 9)
-		// 	*v->line++; // THIS CAUSES A LEAK BECAUSE IT CANNOT FIND THE MALLOCED POINTER
-		// ft_printf("Wordcount = %d\n", ft_wordcount(v->line));
 		if (*v->line != 0)
 		{
 			v->argv = getcmd(v->line);
 			if (!v->argv)
-				exit(1);
+				exit(EXIT_FAILURE);
 			if (!ft_strncmp(v->argv[0], "segfault", 20))
 			{
 				ft_memset(NULL, 1, 1);
@@ -221,5 +222,6 @@ void	readline(t_vars *v)
 				cmd(v, v->argv);
 		}
 		free(v->line);
+		// FREE THE ARGV HERE
 	}
 }

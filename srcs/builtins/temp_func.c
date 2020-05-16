@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 19:13:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 20:02:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int env(t_vars *v, char **params)
 {
 	t_env *env;
 	printf("%s - %s\n", v->argv[0], params[0]);
-	
-	env = v->env__home_ptr;
+
+	env = v->env_head;
 	while (env)
 	{
 		ft_printf("%s=%s\n", env->name, env->content);
