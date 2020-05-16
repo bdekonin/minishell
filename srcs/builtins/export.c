@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 21:46:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/05/16 23:53:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,6 @@
 
 static int	free_array_three(char ***array)
 {
-	free(array);
-	return (0);
-}
-
-static int	free_array(char **array, size_t i)
-{
-	while (i > 0)
-	{
-		i--;
-		free(array[i]);
-	}
 	free(array);
 	return (0);
 }
@@ -48,20 +37,22 @@ static int	trim_strings(char **s1, char **s2, char **src)
 	set[0] = 34;
 	set[1] = 39;
 	set[2] = 0;
-	
 	*s1 = ft_strtrim(src[0], set);
 	if (!*s1)
-		return (free_array(src, 2));
+	{
+		ft_free_array((void*)src, 2);
+		return (0);
+	}
 	*s2 = ft_strtrim(src[1], set);
 	if (!*s2)
 	{
 		free(*s1);
-		return (free_array(src, 2));
+		ft_free_array((void*)src, 2);
+		return (0);
 	}
-	free_array(src, 2);
+	ft_free_array((void*)src, 2);
 	return (1);
 }
-
 int 			export(t_vars *v, char **params)
 {
 	char	***sen;
@@ -83,7 +74,9 @@ int 			export(t_vars *v, char **params)
 		if (!trim_strings(&dst_name, &dst_content, sen[i]))
 			return (free_array_three(sen)); //malloc
 		env__ft_lstadd_back(&v->env_head, env__ft_lstnew(dst_name, dst_content));
+		env__ft_lstmove_back("_", v->env_head);
 		i++;
 	}
+	free(sen);
 	return (1);
 }
