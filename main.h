@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/02 17:05:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/16 17:30:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@
 # define bultins 8
 # define strjoin_filler 94
 # define error "ERROR"
+
+typedef	struct		s_env
+{
+	char			*name;
+	char			*content;
+	struct s_env	*next;
+}					t_env;
 
 typedef	struct		s_exp
 {
@@ -67,6 +74,9 @@ int unset(t_vars *v, char **params);
 int env(t_vars *v, char **params);
 int exitt(t_vars *v, char **params);
 int help(t_vars *v, char **params);
+
+// WILL CHANGE
+char	*ft_strjoin_trip(char const *s1, char const *s2, char const *s3);
 
 
 
