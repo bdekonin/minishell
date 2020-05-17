@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 10:49:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 11:24:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void ctrl_c()
 
 int segfault = 0;
 
-void env__makelist(t_vars *v, char **envp)
+int env__makelist(t_vars *v, char **envp)
 {
 	t_env	*env;
 	char	*name;
@@ -62,17 +62,17 @@ void env__makelist(t_vars *v, char **envp)
 	i = 1;
 	loc = ft_charsearch(envp[0], '='); // make better function; universal one
 	name = ft_substr(envp[0], 0, loc);
-		// name protect
 	content = ft_substr(envp[0], loc + 1, ft_strlen(envp[0] + loc));
-		//content protect
+	if (!name || !content)
+		return (0);
 	env = env__ft_lstnew(name, content);
 	while (envp[i])
 	{
 		loc = ft_charsearch(envp[i], '='); // make better function; universal one
 		name = ft_substr(envp[i], 0, loc);
-			// name protect
 		content = ft_substr(envp[i], loc + 1, ft_strlen(envp[i] + loc));
-			//content protect
+		if (!name || !content)
+			return (0);
 		env__ft_lstadd_back(&env, env__ft_lstnew(name, content));
 		i++;
 	}
@@ -90,6 +90,7 @@ void env__makelist(t_vars *v, char **envp)
 	}
 	env = env__ft_lstlast(v->env_head);
 	v->__executable = env->content;
+	return (1);
 }
 
 int main(int argc, char **argv, char **envp)
