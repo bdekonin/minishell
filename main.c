@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 09:23:19 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 09:29:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,22 +164,17 @@ void cmd(t_vars *v, char **params)
 	p[5] = env;
 	p[6] = exitt;
 	p[7] = help;
-
 	param_to_lower_case(params[0]);
-	while (i <= bultins)
+	while (i < bultins)
 	{
-		if (i == bultins)
-		{
-			ft_printf(cmd_notfound, params[0]);
-			break;
-		}
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
 		{
 			(*p[i])(v, params);
-			break;
+			return ;
 		}
 		i++;
 	}
+	ft_printf(cmd_notfound, params[0]);
 }
 
 void	readline(t_vars *v)
