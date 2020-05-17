@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 14:29:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/05/17 20:40:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <errno.h>
+#include <fcntl.h>
 
 # define d_prefix "%s@codam %s > "
 # define cmd_notfound "%s: command not found: %s\n"
@@ -46,12 +47,16 @@ typedef struct		s_vars
 	int				argc;
 	t_env			*env_head; // DO NOT CHANGE THE VALUE!
 
+	char			**envp;
+
 	char			*__executable;	// another struct maybe?
 	char			*__logname;		// This too?
 	char			*__homedir;		//this aswell lars.
 }					t_vars;
 
-int		ft_printf(const char *format, ...);
+int				ft_printf(const char *fmt, ...);
+int				ft_dprintf(int fd, const char *fmt, ...);
+int				ft_vdprintf(int fd, const char *fmt, va_list argp);
 
 void	removespace(t_vars *v, char **argv); // Deze zou weg kunnen als cd is verbetert.
 void	readline(t_vars *v);
