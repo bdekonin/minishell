@@ -18,7 +18,7 @@
 # define MAIN_H
 
 #include "get_next_line/get_next_line.h"
-#include "ft_printf/libft/libft.h"
+#include "ft_printf/printf.h
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>
