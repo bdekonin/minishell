@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 09:29:42 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 10:40:51 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,20 @@ void env__makelist(t_vars *v, char **envp)
 		i++;
 	}
 	v->env_head = env;
+
+	// Verzamel gegevens. gebruik andere functie.
+	// env = v->env_head;
+	while (env)
+	{
+		if (!ft_strncmp("LOGNAME", env->name, ft_strlen(env->name)))
+		{
+			v->__logname = env->content;
+			break ;
+		}
+		env = env->next;
+	}
+	env = env__ft_lstlast(v->env_head);
+	v->__executable = env->content;
 }
 
 int main(int argc, char **argv, char **envp)
@@ -108,28 +122,20 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		readline(&v);
+		if (v.forky < 0)
+		{
+			ft_printf("Fork has failed\n"); // Better error message
+			exit(EXIT_FAILURE);
+		}
 		if (v.forky > 0)
 		{
 			wait(&stat);
-			// printf("Im the parent now and im closing\n");
 			printf("%d - %d - %d\n", WTERMSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
 		}
-		// if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_FAILURE)
-		// {
-		// // 	readline(&v);
-		// }
 		if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_SUCCESS)
-		{
-			// printf("[%d] - Child Success - %d\n", v.forky, WEXITSTATUS(stat));
 			exit(EXIT_SUCCESS);
-		}
 		if (WTERMSIG(stat) == SIGSEGV)
-		{
-		// 	// printf("[%d] - Child SEGFAULTED - %d\n", v.forky, WEXITSTATUS(stat));
 			ft_printf("\nSomething went wrong!\nRestarting\n\n");
-		// 	// // // // segfault = 1; // DIT
-		// 	readline(&v);
-		}
 	}
 }
 
@@ -174,7 +180,7 @@ void cmd(t_vars *v, char **params)
 		}
 		i++;
 	}
-	ft_printf(cmd_notfound, params[0]);
+	ft_printf(cmd_notfound, v->__executable + 2, params[0]);
 }
 
 void	readline(t_vars *v)
@@ -183,7 +189,7 @@ void	readline(t_vars *v)
 	while (!v->forky)
 	{
 		v->ptr = NULL; // for cd but probably change.
-		ft_printf(v->prefix, ft_strrchr(v->current_path, '/') + 1);
+		ft_printf(v->prefix, v->__logname, ft_strrchr(v->current_path, '/') + 1);
 		v->ret = get_next_line(STDIN_FILENO, &v->line);
 		if (v->ret < 0)
 			exit(1);
