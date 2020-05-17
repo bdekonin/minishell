@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/05/17 14:54:59 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/05/17 15:02:28 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ OFILES = $(SRCS:.c=.o)
 LIBFT = libft/libft.a
 
 FT_PRINTF = ft_printf/libftprintf.a
+
+CC = gcc -Wall -Wextra -Werror
 
 all: $(NAME)
 

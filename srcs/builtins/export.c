@@ -6,17 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 23:53:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 16:00:48 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
-
-static int	free_array_three(char ***array)
-{
-	free(array);
-	return (0);
-}
 
 static size_t	count_vars(char **params)
 {
@@ -53,30 +47,49 @@ static int	trim_strings(char **s1, char **s2, char **src)
 	ft_free_array((void*)src, 2);
 	return (1);
 }
+
+static int	find_env_var_name(t_env **head, char **name, char **content)
+{
+	t_env	*tmp;
+	
+	tmp = *head;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->name, *name, ft_strlen(*name)))
+		{
+			free(*name);
+			free(tmp->content);
+			tmp->content = *content;
+			return (1); //existing name found in env list
+		}
+		tmp = tmp->next;
+	}
+	return (0); //new name found in env list
+}
+
 int 			export(t_vars *v, char **params)
 {
-	char	***sen;
+	char	**array;
 	size_t	size;
 	size_t	i;
 	char	*dst_name;
 	char	*dst_content;
 
 	size = count_vars(&params[1]);
-	sen = ft_calloc(size + 1, sizeof(char **));
-	if (!sen)
-		return (0); //malloc
 	i = 0;
 	while (i < size)
 	{
-		sen[i] = ft_split_lars(params[i + 1], '='); //rename to ft_split
-		if (!sen[i])
-			return (free_array_three(sen)); //malloc
-		if (!trim_strings(&dst_name, &dst_content, sen[i]))
-			return (free_array_three(sen)); //malloc
-		env__ft_lstadd_back(&v->env_head, env__ft_lstnew(dst_name, dst_content));
-		env__ft_lstmove_back("_", v->env_head);
+		array = ft_split_lars(params[i + 1], '='); //rename to ft_split
+		if (!array)
+			return (0); //malloc
+		if (!trim_strings(&dst_name, &dst_content, array))
+			return (0); //malloc
+		if (!find_env_var_name(&v->env_head, &dst_name, &dst_content))
+		{
+			env__ft_lstadd_back(&v->env_head, env__ft_lstnew(dst_name, dst_content));
+			env__ft_lstmove_back("_", v->env_head);	
+		}
 		i++;
 	}
-	free(sen);
 	return (1);
 }
