@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 23:48:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 09:23:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,11 @@ void	param_to_lower_case(char *str)
 
 void cmd(t_vars *v, char **params)
 {
-	if (!ft_strncmp("getpid", params[0], 10))
-		ft_printf("%d\n", getpid());
+	int i;
+
+	i = 0;
+	if (!ft_strncmp("getpid", params[0], 10))	// Used for checking which parent and pid it is.
+		ft_printf("%d\n", getpid());			// If you do leaks (filename) and then select the child id (most likely option b)
 	if (!ft_strncmp("getppid", params[0], 10))
 		ft_printf("%d\n", getppid());
 	int (*p[8]) (t_vars *v, char **params);
@@ -163,11 +166,19 @@ void cmd(t_vars *v, char **params)
 	p[7] = help;
 
 	param_to_lower_case(params[0]);
-
-	for (int i = 0; i < bultins; i++)
+	while (i <= bultins)
 	{
+		if (i == bultins)
+		{
+			ft_printf(cmd_notfound, params[0]);
+			break;
+		}
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
+		{
 			(*p[i])(v, params);
+			break;
+		}
+		i++;
 	}
 }
 
@@ -190,10 +201,6 @@ void	readline(t_vars *v)
 			{
 				ft_memset(NULL, 1, 1);
 			}
-			else if (!ft_strncmp(v->argv[0], "parent", 20))
-				ft_printf("[%d]\n", getppid());
-			else if (!ft_strncmp(v->argv[0], "pid", 4))
-				ft_printf("[%d]\n", getpid());
 			else
 				cmd(v, v->argv);
 		}
