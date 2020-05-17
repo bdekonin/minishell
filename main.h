@@ -6,11 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/05/16 23:59:50 by bdekonin      ########   odam.nl         */
-=======
-/*   Updated: 2020/05/16 21:18:26 by lverdoes      ########   odam.nl         */
->>>>>>> 63be2c0fbc883c7abeeb668149142bf53f3ab9cb
+/*   Updated: 2020/05/17 10:42:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +20,8 @@
 #include <string.h>
 #include <errno.h>
 
-# define d_prefix "custom@codam %s > "
-# define cmd_notfound "zsh: command not found: %s"
+# define d_prefix "%s@codam %s > "
+# define cmd_notfound "%s: command not found: %s\n"
 # define path_max 1024
 # define bultins 8
 # define strjoin_filler 94
@@ -49,6 +45,9 @@ typedef struct		s_vars
 	pid_t			forky;
 	int				argc;
 	t_env			*env_head; // DO NOT CHANGE THE VALUE!
+
+	char			*__executable;	// another struct maybe?
+	char			*__logname;		// This too?
 }					t_vars;
 
 int		ft_printf(const char *format, ...);
@@ -71,7 +70,6 @@ int help(t_vars *v, char **params);
 
 // moeten we aanpassen, desnoods met de functie asprintf
 char	*ft_strjoin_trip(char const *s1, char const *s2, char const *s3);
-
 
 // env list functions
 void	env__ft_lstadd_back(t_env **alst, t_env *new);
