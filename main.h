@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 10:50:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 14:29:00 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MAIN_H
 
 #include "get_next_line/get_next_line.h"
-#include "ft_printf/printf.h
+#include "./libft/libft.h"
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>

@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/05/17 10:44:16 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/05/17 14:54:59 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,14 @@ SRCS = *.c get_next_line/get_next_line.c srcs/builtins/*.c \
 
 OFILES = $(SRCS:.c=.o)
 
+LIBFT = libft/libft.a
+
+FT_PRINTF = ft_printf/libftprintf.a
+
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra $(SRCS) ft_printf/ftprintf.a
+	gcc -Wall -Wextra $(SRCS) $(LIBFT) $(FT_PRINTF)
 
 c: $(NAME)
 	rm a.out && make && ./a.out
