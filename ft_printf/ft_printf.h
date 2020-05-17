@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 11:26:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/17 19:33:42 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 19:36:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct	s_list
 	int			len_bstr;
 	char		*fstr;
 	int			len_fstr;
+	int			fd;
 }				t_list;
 
 int				ft_printf(const char *fmt, ...);

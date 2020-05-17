@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/22 13:09:12 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/01/23 19:32:46 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/05/17 19:37:56 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	pad_min_width(t_list *flags)
 {
 	while (flags->padding > 0)
 	{
-		if (write(1, &flags->pad_type, 1) != 1)
+		if (write(flags->fd, &flags->pad_type, 1) != 1)
 			return (0);
 		flags->padding--;
 	}
@@ -37,7 +37,7 @@ int			format_char(t_list *flags, char c)
 		if (!pad_min_width(flags))
 			return (0);
 	}
-	if (write(1, &c, 1) != 1)
+	if (write(flags->fd, &c, 1) != 1)
 		return (0);
 	if (flags->just == 1 && flags->padding > 0)
 	{

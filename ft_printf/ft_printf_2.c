@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/05 14:53:01 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/17 19:33:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 19:38:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	read_fmt(const char *fmt, va_list argp, t_list *flags)
 			ret += flags->len_fstr - 1;
 			free(flags);
 		}
-		else if (write(1, fmt + i, 1) != 1)
+		else if (write(flags->fd, fmt + i, 1) != 1)
 			return (-1);
 		ret++;
 		i++;

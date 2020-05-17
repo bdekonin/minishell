@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 17:57:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/17 14:58:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/05/17 19:38:05 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		ft_printf_strlen(const char *str)
 
 int		ft_putstr(t_list *flags)
 {
-	if (write(1, flags->fstr, flags->len_fstr) != flags->len_fstr)
+	if (write(flags->fd, flags->fstr, flags->len_fstr) != flags->len_fstr)
 	{
 		free(flags->fstr);
 		return (0);
