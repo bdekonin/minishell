@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 10:40:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 10:49:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,9 @@ void env__makelist(t_vars *v, char **envp)
 	while (env)
 	{
 		if (!ft_strncmp("LOGNAME", env->name, ft_strlen(env->name)))
-		{
 			v->__logname = env->content;
-			break ;
-		}
+		if (!ft_strncmp("HOME", env->name, ft_strlen(env->name)))
+			v->__homedir = env->content;
 		env = env->next;
 	}
 	env = env__ft_lstlast(v->env_head);
@@ -205,7 +204,8 @@ void	readline(t_vars *v)
 			else
 				cmd(v, v->argv);
 		}
+		if (*v->line)
+			ft_free_array((void*)v->argv, ft_wordcount(v->line));
 		free(v->line);
-		ft_free_array((void*)v->argv, ft_wordcount(v->line));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 10:42:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 10:50:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct		s_vars
 
 	char			*__executable;	// another struct maybe?
 	char			*__logname;		// This too?
+	char			*__homedir;		//this aswell lars.
 }					t_vars;
 
 int		ft_printf(const char *format, ...);

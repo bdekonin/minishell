@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/12 15:37:50 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 17:53:00 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 10:48:10 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int					cd(t_vars *v, char **params)
 	}
 	else if (ret_abs == 1)
 	{
-		if (chdir("/Users/bdekonin") < 0)
+		if (chdir(v->__homedir) < 0)
 			perror(error);
 	}
 	else if (chdir(params[1]) == -1)
