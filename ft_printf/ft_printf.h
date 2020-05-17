@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 11:26:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/17 14:58:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/05/17 19:33:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ typedef struct	s_list
 }				t_list;
 
 int				ft_printf(const char *fmt, ...);
+int				ft_dprintf(int fd, const char *fmt, ...);
+int				ft_vdprintf(int fd, const char *fmt, va_list argp);
+
+/*
+** ft_printf_2
+*/
+int	read_fmt(const char *fmt, va_list argp, t_list *flags);
+int	convert_arg(const char *fmt, t_list *flags, int i, va_list argp);
+int	alloc_conversion(const char *fmt, t_list *flags, int i, va_list argp);
+
 int				format_char(t_list *flags, char c);
 int				format_str(t_list *flags);
 int				format_int(t_list *flags);
