@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 11:24:15 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 22:29:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,12 @@ int env__makelist(t_vars *v, char **envp)
 			v->__logname = env->content;
 		if (!ft_strncmp("HOME", env->name, ft_strlen(env->name)))
 			v->__homedir = env->content;
+		if (!ft_strncmp("PWD", env->name, ft_strlen(env->name))) // change this maybe ? 
+		{	// the pwd env name is used for tracking the current working dir.
+			free(env->content);
+			env->content = v->current_path;
+		}
+			
 		env = env->next;
 	}
 	env = env__ft_lstlast(v->env_head);
@@ -99,8 +105,7 @@ int main(int argc, char **argv, char **envp)
 	t_vars v;
 	argc++; //  TIJDELIJK VOOR DE WARNING
 	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
-
-	env__makelist(&v, envp);
+	v.envp = envp;
 	/*
 	** Initializing prompt
 	*/
@@ -111,6 +116,7 @@ int main(int argc, char **argv, char **envp)
 	if (!v.current_path)
 		return (0);
 	v.current_path = getcwd(v.current_path, path_max);
+	env__makelist(&v, envp);
 
 	/*
 	** End initializing prompt
@@ -199,11 +205,8 @@ void	readline(t_vars *v)
 			if (!v->argv)
 				exit(EXIT_FAILURE);
 			if (!ft_strncmp(v->argv[0], "segfault", 20))
-			{
 				ft_memset(NULL, 1, 1);
-			}
-			else
-				cmd(v, v->argv);
+			cmd(v, v->argv);
 		}
 		if (*v->line)
 			ft_free_array((void*)v->argv, ft_wordcount(v->line));

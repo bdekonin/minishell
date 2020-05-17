@@ -6,17 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 23:17:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 22:20:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
-
-int echo(t_vars *v, char **params)
-{
-	printf("%s - %s\n", v->argv[0], params[0]);
-	return (1);
-}
 
 // cd
 
