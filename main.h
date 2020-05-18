@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 20:40:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/18 21:24:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ typedef struct		s_vars
 	char			*__executable;	// another struct maybe?
 	char			*__logname;		// This too?
 	char			*__homedir;		//this aswell lars.
+
+
+	int				has_env_changed; // is 1 when the the env has been changed. and 0 if not.
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
@@ -87,5 +90,9 @@ int		env__ft_lstsize(t_env *lst);
 t_env	*env__ft_lstnew(void *name, void *content);
 void	env__ft_lstmove_back(char *name, t_env *new);
 void	env__ft_lstremove_middle(char *name, t_env *new);
+
+
+
+int ft_execve(t_vars *v, char *file, char **params);
 
 #endif
