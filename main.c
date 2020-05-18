@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 22:29:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/18 21:22:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int env__makelist(t_vars *v, char **envp)
 	env = env__ft_lstnew(name, content);
 	while (envp[i])
 	{
-		loc = ft_charsearch(envp[i], '='); // make better function; universal one
+		loc = ft_charsearch(envp[i], '=');
 		name = ft_substr(envp[i], 0, loc);
 		content = ft_substr(envp[i], loc + 1, ft_strlen(envp[i] + loc));
 		if (!name || !content)
@@ -77,9 +77,6 @@ int env__makelist(t_vars *v, char **envp)
 		i++;
 	}
 	v->env_head = env;
-
-	// Verzamel gegevens. gebruik andere functie.
-	// env = v->env_head;
 	while (env)
 	{
 		if (!ft_strncmp("LOGNAME", env->name, ft_strlen(env->name)))
@@ -91,7 +88,6 @@ int env__makelist(t_vars *v, char **envp)
 			free(env->content);
 			env->content = v->current_path;
 		}
-			
 		env = env->next;
 	}
 	env = env__ft_lstlast(v->env_head);
@@ -105,7 +101,7 @@ int main(int argc, char **argv, char **envp)
 	t_vars v;
 	argc++; //  TIJDELIJK VOOR DE WARNING
 	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
-	v.envp = envp;
+	v.has_env_changed = 0;
 	/*
 	** Initializing prompt
 	*/
@@ -136,7 +132,7 @@ int main(int argc, char **argv, char **envp)
 		if (v.forky > 0)
 		{
 			wait(&stat);
-			printf("%d - %d - %d\n", WTERMSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
+			printf("%d - %d - %d\n", WSTOPSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
 		}
 		if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_SUCCESS)
 			exit(EXIT_SUCCESS);

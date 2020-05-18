@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/17 22:20:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/18 21:21:56 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 // }
 int unset(t_vars *v, char **params)
 {
+	v->has_env_changed = 1;
 	env__ft_lstremove_middle(params[1], v->env_head);
 	return (1);
 }
