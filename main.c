@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/18 21:22:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/18 21:46:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,8 @@ void cmd(t_vars *v, char **params)
 		}
 		i++;
 	}
-	ft_printf(cmd_notfound, v->__executable + 2, params[0]);
+	if (!ft_execve(v, ft_strjoin("/bin/", params[0]), params) && !ft_execve(v, ft_strjoin("/usr/bin/", params[0]), params) && !ft_execve(v, params[0], params))
+		ft_printf(cmd_notfound, v->__executable + 2, params[0]);
 }
 
 void	readline(t_vars *v)

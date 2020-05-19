@@ -57,14 +57,21 @@ int ft_execve(t_vars *v, char *file, char **params)
 {
 	int stat;
 	static int list_size;
+
 	if (v->has_env_changed == 1 || list_size == 0)
 		v->envp = __linkedlist_to_array(v, &list_size);
 	pid_t spoon = fork();
 
 	if (!spoon)
 	{
-		execve(file, &params[0], v->envp);
+		if (execve(file, &params[0], v->envp) < 0)
+		{
+			ft_printf("INvalid thingy [%s]\n", params[0]);
+			exit(EXIT_FAILURE);
+		}
 	}
 	wait(&stat);
+	if (WEXITSTATUS(stat) == EXIT_FAILURE)
+		return (0);
 	return (1);
 }
