@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/01 22:14:05 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/03 21:02:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,13 +142,15 @@ char *removespace(t_vars *v, char *line)
 	{
 		while (line[i])
 		{
-			if (line[i] == '$')
+			if (line[i] == '$' || line[i] == '~')
 			{
-				dir = find_environment_variable(v, line + i + 1);
+				if (line[i] == '~')
+					dir = v->__homedir;
+				else
+					dir = find_environment_variable(v, line + i + 1);
 				if (!dir)
 				{
 					free(temp);
-					// errno = 12;
 					return (NULL);
 				}
 				while (line[i] && line[i] != ' ' &&

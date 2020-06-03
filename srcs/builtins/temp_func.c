@@ -6,13 +6,16 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/03 12:04:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/03 20:55:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
 /*
+** Sources
+** https://www.computerhope.com/unix/ucd.htm
+**
 ** $HOME =	[/Users/bdekonin]
 ** $p = 	[minishell]
 ** $s = 	[srcs]
@@ -38,13 +41,17 @@ int cd(t_vars *v, char **params)
 	char		*dir;
 	int			i;
 	int			ret;
+	char 		oldpwd_backup[PATH_MAX];
 
 	i = 0;
-	dir = NULL;
-	ft_memset(v->__oldpwd, 0, ft_strlen(v->current_path));
-	ft_memcpy(v->__oldpwd, v->current_path, ft_strlen(v->current_path));
+	// dir = NULL;
+	ft_strlcpy(oldpwd_backup, v->current_path, ft_strlen(v->current_path) + 1);
 	if (!params[i])
 		ret = chdir(v->__homedir);
+	else if (!ft_strncmp(params[i], "--", 3) || !ft_strncmp(params[i], "~", 2))
+		ret = chdir(v->__homedir);
+	else if (!ft_strncmp(params[i], "-", 3))
+		ret = chdir(v->__oldpwd);
 	else
 	{
 		dir = removespace(v, ft_strnstr(v->argv[v->i], "cd", ft_strlen(v->argv[v->i])) + 2);
@@ -58,14 +65,17 @@ int cd(t_vars *v, char **params)
 	if (ret == -1)
 		v->argument_ret = ft_strdup("1");
 	else
+	{
 		v->argument_ret = ft_strdup("0");
-	v->current_path = getcwd(v->current_path, path_max);
+		ft_strlcpy(v->__oldpwd, oldpwd_backup, PATH_MAX);
+	}
+	v->current_path = getcwd(v->current_path, PATH_MAX);
 	return (1);
 }
 
 int pwd(t_vars *v, char **params)
 {
-	v->current_path = getcwd(v->current_path, path_max);
+	v->current_path = getcwd(v->current_path, PATH_MAX);
 	if (!v->current_path)
 		ft_printf("ERROR\n");
 	else
