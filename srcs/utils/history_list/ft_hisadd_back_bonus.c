@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   echo.c                                             :+:    :+:            */
+/*   ft_hisadd_back_bonus.c                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/05/17 20:38:50 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/18 18:40:33 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/18 14:43:24 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/23 16:39:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../main.h"
+#include "../../../main.h"
 
-/*
-** https://stackoverflow.com/questions/7656549/understanding-requirements-for-execve-and-setting-environment-vars
-*/
-
-int echo(t_vars *v, char **params)
+void	his__ft_lstadd_back(t_history **alst, t_history *new)
 {
-	ft_execve(v, "/bin/echo", params);
-	return (1);
+	t_history *last;
+
+	if (!new)
+		return ;
+	if (*alst)
+	{
+		last = his__ft_lstlast(*alst);
+		last->next = new;
+	}
+	else
+		his__ft_lstadd_front(alst, new);
 }

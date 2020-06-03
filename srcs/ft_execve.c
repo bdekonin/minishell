@@ -66,7 +66,7 @@ int ft_execve(t_vars *v, char *file, char **params)
 	{
 		if (execve(file, &params[0], v->envp) < 0)
 		{
-			ft_printf("INvalid thingy [%s]\n", params[0]);
+			// ft_printf("INvalid thingy [%s]\n", params[0]);
 			exit(EXIT_FAILURE);
 		}
 	}

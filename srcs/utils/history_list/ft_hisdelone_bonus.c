@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_envadd_back_bonus.c                             :+:    :+:            */
+/*   ft_hisdelone_bonus.c                               :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/18 14:43:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/23 16:25:54 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/26 12:51:19 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/25 20:49:10 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../main.h"
 
-void	env__ft_lstadd_back(t_env **alst, t_env *new)
+void	his__ft_lstdelone(t_history *lst, void (*del)(void*))
 {
-	t_env *last;
-
-	if (!new)
+	if (!lst)
 		return ;
-	if (*alst)
+	if (del)
 	{
-		last = env__ft_lstlast(*alst);
-		last->next = new;
+		del(lst->command);
+		del(lst->output);
+		del(lst->line);
 	}
-	else
-		env__ft_lstadd_front(alst, new);
+	free(lst);
 }

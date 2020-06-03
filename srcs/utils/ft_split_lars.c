@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/04 08:22:37 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/16 17:53:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/19 23:29:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static char		**init_array(char const *s, char c, size_t count, char **array)
 	return (array);
 }
 
-char			**ft_split_lars(char const *s, char c)
+char			**ft_split_lars(char const *s, char c, int *lst_size)
 {
 	char	**array;
 	size_t	count;
@@ -97,6 +97,7 @@ char			**ft_split_lars(char const *s, char c)
 	if (!s)
 		return (0);
 	count = count_str(s, c);
+	*lst_size = count;
 	array = (char**)malloc((count + 1) * sizeof(char*));
 	if (!array)
 		return (0);

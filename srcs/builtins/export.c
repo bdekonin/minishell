@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/18 21:21:56 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/21 16:34:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,14 @@ int 			export(t_vars *v, char **params)
 	size_t	i;
 	char	*dst_name;
 	char	*dst_content;
+	int test;
+	// printf("params [1]%s", params[0]);
 
-	size = count_vars(&params[1]);
+	size = count_vars(&params[0]);
 	i = 0;
 	while (i < size)
 	{
-		array = ft_split_lars(params[i + 1], '='); //rename to ft_split
+		array = ft_split_lars(params[i], '=', &test); //rename to ft_split
 		if (!array)
 			return (0); //malloc
 		if (!trim_strings(&dst_name, &dst_content, array))
@@ -91,6 +93,7 @@ int 			export(t_vars *v, char **params)
 		}
 		i++;
 	}
+	ft_printf("Export check1\n");
 	v->has_env_changed = 1;
 	return (1);
 }

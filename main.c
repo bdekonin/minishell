@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/18 21:46:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/03 12:02:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,6 @@ char		*cmd_str(int i)
 	cmd_str[7] = "help";
 	cmd_str[8] = NULL;
 	return (cmd_str[i]);
-}
-
-char **getcmd(char *line)
-{
-	char **argv;
-
-	argv = ft_split(line, ' ');
-	return (argv);
 }
 
 void ctrl_c()
@@ -83,15 +75,26 @@ int env__makelist(t_vars *v, char **envp)
 			v->__logname = env->content;
 		if (!ft_strncmp("HOME", env->name, ft_strlen(env->name)))
 			v->__homedir = env->content;
-		if (!ft_strncmp("PWD", env->name, ft_strlen(env->name))) // change this maybe ? 
-		{	// the pwd env name is used for tracking the current working dir.
+		if (!ft_strncmp("PWD", env->name, ft_strlen(env->name)))
+		{
 			free(env->content);
 			env->content = v->current_path;
 		}
+		if (!ft_strncmp("OLDPWD", env->name, ft_strlen(env->name)))
+		{
+			ft_printf("oldpwd = %s\n", env->content);
+			v->__oldpwd = env->content;
+		}
 		env = env->next;
 	}
+	if (!v->__oldpwd)
+	{
+		v->__oldpwd = ft_calloc(PATH_MAX, sizeof(char));
+		ft_memcpy(v->__oldpwd, v->current_path, ft_strlen(v->current_path));
+		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("OLDPWD"), v->__oldpwd));
+	}
 	env = env__ft_lstlast(v->env_head);
-	v->__executable = env->content;
+	v->__executable = ft_strrchr(env->content, '.');
 	return (1);
 }
 
@@ -102,6 +105,7 @@ int main(int argc, char **argv, char **envp)
 	argc++; //  TIJDELIJK VOOR DE WARNING
 	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
 	v.has_env_changed = 0;
+	v.__oldpwd = NULL;
 	/*
 	** Initializing prompt
 	*/
@@ -123,7 +127,7 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, ctrl_c);
 	while (1)
 	{
-		readline(&v);
+		read_user_input(&v);
 		if (v.forky < 0)
 		{
 			ft_printf("Fork has failed\n"); // Better error message
@@ -134,6 +138,8 @@ int main(int argc, char **argv, char **envp)
 			wait(&stat);
 			printf("%d - %d - %d\n", WSTOPSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
 		}
+		if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_FAILURE)
+			exit(EXIT_FAILURE);
 		if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_SUCCESS)
 			exit(EXIT_SUCCESS);
 		if (WTERMSIG(stat) == SIGSEGV)
@@ -153,17 +159,12 @@ void	param_to_lower_case(char *str)
 	}
 }
 
-void cmd(t_vars *v, char **params)
+int run_command(t_vars *v, char **params)
 {
-	int i;
+	int i = 0;
+	v->flag_i = 0;
 
-	i = 0;
-	if (!ft_strncmp("getpid", params[0], 10))	// Used for checking which parent and pid it is.
-		ft_printf("%d\n", getpid());			// If you do leaks (filename) and then select the child id (most likely option b)
-	if (!ft_strncmp("getppid", params[0], 10))
-		ft_printf("%d\n", getppid());
 	int (*p[8]) (t_vars *v, char **params);
-
 	p[0] = echo;
 	p[1] = cd;
 	p[2] = pwd;
@@ -176,37 +177,12 @@ void cmd(t_vars *v, char **params)
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
-		{
-			(*p[i])(v, params);
-			return ;
-		}
+			return ((*p[i])(v, params + 1));
 		i++;
 	}
-	if (!ft_execve(v, ft_strjoin("/bin/", params[0]), params) && !ft_execve(v, ft_strjoin("/usr/bin/", params[0]), params) && !ft_execve(v, params[0], params))
-		ft_printf(cmd_notfound, v->__executable + 2, params[0]);
-}
-
-void	readline(t_vars *v)
-{
-	v->forky = fork();
-	while (!v->forky)
-	{
-		v->ptr = NULL; // for cd but probably change.
-		ft_printf(v->prefix, v->__logname, ft_strrchr(v->current_path, '/') + 1);
-		v->ret = get_next_line(STDIN_FILENO, &v->line);
-		if (v->ret < 0)
-			exit(1);
-		if (*v->line != 0)
-		{
-			v->argv = getcmd(v->line);
-			if (!v->argv)
-				exit(EXIT_FAILURE);
-			if (!ft_strncmp(v->argv[0], "segfault", 20))
-				ft_memset(NULL, 1, 1);
-			cmd(v, v->argv);
-		}
-		if (*v->line)
-			ft_free_array((void*)v->argv, ft_wordcount(v->line));
-		free(v->line);
-	}
+	ft_printf(cmd_notfound, v->__executable + 2, params[0]);
+	v->argument_ret = ft_strdup("0"); // maybe 1?
+	if (!v->argument_ret)
+		return (0);
+	return (1);
 }

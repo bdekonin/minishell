@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_envadd_back_bonus.c                             :+:    :+:            */
+/*   ft_strcat.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/18 14:43:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/23 16:25:54 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/05/31 17:17:29 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/31 17:21:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../main.h"
+#include "libft.h"
 
-void	env__ft_lstadd_back(t_env **alst, t_env *new)
+char	*ft_strcat(char *dst, const char *src)
 {
-	t_env *last;
+	size_t i;
+	size_t j;
 
-	if (!new)
-		return ;
-	if (*alst)
+	i = ft_strlen(dst);
+	j = 0;
+	while (src[j])
 	{
-		last = env__ft_lstlast(*alst);
-		last->next = new;
+		dst[i] = src[j];
+		i++;
+		j++;
 	}
-	else
-		env__ft_lstadd_front(alst, new);
+	dst[i] = '\0';
+	return (dst);
 }

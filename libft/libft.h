@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 08:07:31 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 23:39:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/31 17:20:36 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int					ft_intlen(long long n, int base);
 int					ft_wordcount(char *str);
 int					ft_abs(int x);
 void				ft_free_array(void **ptr, int size);
+char				*ft_strcat(char *dst, const char *src);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/05/16 23:45:14 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/05/31 17:22:31 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ NAME = libft.a
 
 EXTRA_SRC = ft_swap_bonus.c ft_strsearch_bonus.c \
 ft_wordcount_bonus.c ft_counter_bonus.c ft_intlen_bonus.c ft_abs_bonus.c \
-ft_free_array_bonus.c ft_charsearch_bonus.c
+ft_free_array_bonus.c ft_charsearch_bonus.c ft_strcat_bonus.c
 
 
 SRCS = $(EXTRA_SRC) ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \

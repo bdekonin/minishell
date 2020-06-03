@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/18 21:24:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/03 11:49:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@
 #include <errno.h>
 #include <fcntl.h>
 
+#include "srcs/utils/history_list/history.h"
+
 # define d_prefix "%s@codam %s > "
 # define cmd_notfound "%s: command not found: %s\n"
 # define path_max 1024
 # define bultins 8
 # define strjoin_filler 94
 # define error "ERROR"
+
+# define PIPELINE_FLAG = 124
 
 typedef	struct		s_env
 {
@@ -46,26 +50,36 @@ typedef struct		s_vars
 	pid_t			forky;
 	int				argc;
 	t_env			*env_head; // DO NOT CHANGE THE VALUE!
+	t_history		*history_head; // DO NOT CHANGE THE VALUE!
 
 	char			**envp;
 
 	char			*__executable;	// another struct maybe?
 	char			*__logname;		// This too?
 	char			*__homedir;		//this aswell lars.
+	char			*__oldpwd; // location of old pwd
 
 
 	int				has_env_changed; // is 1 when the the env has been changed. and 0 if not.
+
+	int				i;
+	int				max_i;
+
+	int				flag;
+
+	int				flag_i;
+	void			*argument_ret;
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
 int				ft_dprintf(int fd, const char *fmt, ...);
 int				ft_vdprintf(int fd, const char *fmt, va_list argp);
 
-void	removespace(t_vars *v, char **argv); // Deze zou weg kunnen als cd is verbetert.
-void	readline(t_vars *v);
-char	**ft_split_lars(char const *s, char c);
+char *removespace(t_vars *v, char *line);
+void	read_user_input(t_vars *v);
+char	**ft_split_lars(char const *s, char c, int *lst_size);
 
-void	cmd(t_vars *v, char **params);
+int	run_command(t_vars *v, char **params);
 
 // tijdelijke gevulde functies
 int echo(t_vars *v, char **params);
@@ -94,5 +108,11 @@ void	env__ft_lstremove_middle(char *name, t_env *new);
 
 
 int ft_execve(t_vars *v, char *file, char **params);
+
+
+
+
+
+char		**ft_strtok(char *s, char *sep);
 
 #endif

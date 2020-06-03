@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_envadd_back_bonus.c                             :+:    :+:            */
+/*   ft_envsize_bonus.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/18 14:43:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/23 16:25:54 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/18 14:32:07 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/23 16:28:40 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../main.h"
 
-void	env__ft_lstadd_back(t_env **alst, t_env *new)
+int	his__ft_lstsize(t_history *lst)
 {
-	t_env *last;
+	int i;
 
-	if (!new)
-		return ;
-	if (*alst)
+	i = 0;
+	while (lst)
 	{
-		last = env__ft_lstlast(*alst);
-		last->next = new;
+		lst = lst->next;
+		i++;
 	}
-	else
-		env__ft_lstadd_front(alst, new);
+	return (i);
 }

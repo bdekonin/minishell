@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd.c                                              :+:    :+:            */
+/*   ft_hisnew_bonus.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/05/16 17:53:05 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/18 11:34:38 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/05/23 19:56:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../main.h"
+#include "../../../main.h"
 
-int pwd(t_vars *v, char **params)
+t_history	*his__ft_lstnew(void *command, void *output, void *line)
 {
-	char *str;
+	t_history *tmp;
 
-	if (params[1] && ft_strncmp(params[1], ";", 3))
-	{
-		errno = 7;
-		perror(error);
-		exit(EXIT_FAILURE);
-	}
-	str = NULL;
-	str = getcwd(str, 0);
-	if (!str)
-	{
-		perror(error);
-		exit(EXIT_FAILURE);
-	}
-	ft_printf("%s\n", str);
-	free(str);
-	if (params[1] && params[2] && !ft_strncmp(params[1], ";", 3))
-		cmd(v, params + 2);
-	return (1);
+	tmp = malloc(sizeof(t_history));
+	if (!tmp)
+		return (0);
+	tmp->command = command;
+	tmp->output = output;
+	tmp->line = line;
+	tmp->next = NULL;
+	return (tmp);
 }

@@ -6,14 +6,15 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/05/18 21:25:07 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/05/26 17:21:03 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = a.out
+NAME = minishell
 
 SRCS = *.c get_next_line/get_next_line.c srcs/builtins/*.c \
-	srcs/*.c srcs/utils/*.c srcs/utils/env_list/*.c
+	srcs/*.c srcs/utils/*.c srcs/utils/env_list/*.c \
+	srcs/utils/history_list/*.c
 
 OFILES = $(SRCS:.c=.o)
 
@@ -21,19 +22,19 @@ LIBFT = libft/libft.a
 
 FT_PRINTF = ft_printf/libftprintf.a
 
-CC = gcc -Wall -Wextra -Werror
+CC = gcc -Wall -Wextra -Werror 
 
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra $(SRCS) $(LIBFT) $(FT_PRINTF)
+	gcc -Wall -Wextra $(SRCS) $(LIBFT) $(FT_PRINTF) -o  minishell
 
 c: $(NAME)
-	rm a.out && make && ./a.out
+	rm minishell && make && ./minishell
 
 fclean:
 	/bin/rm -f $(OFILES)
 	/bin/rm -f $(NAME)
-	/bin/rm -f a.out
+	/bin/rm -f minishell
 
 re: fclean all
