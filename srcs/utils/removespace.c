@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/03 21:02:02 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/03 23:00:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static char *quote_complete(t_vars *v, int i, char *temp, char *line)
 			if (!dir)
 			{
 				free(temp);
-				// errno = 12;
 				return (NULL);
 			}
 			while (line[i] && line[i] != ' ' &&
@@ -173,7 +172,5 @@ char *removespace(t_vars *v, char *line)
 		}
 		return (temp);
 	}
-	// if (temp[ft_strlen(temp)] != '"')
-	// 	return (dquote_incomplete(temp));
 	return (temp);
 }
