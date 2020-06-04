@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 13:48:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/04 14:41:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,28 @@ int run_cmd(t_vars *v, char **argv)
 	char	**args;
 	int		size;
 	t_history *history;
+	int k;
 
+	k = 0;
 	history = __init_set_history(v);
 	v->i = 0;
+	v->flag_i = 0;
 	while (argv[v->i])
 	{
 		args = ft_split_lars(argv[v->i], ' ', &size);
 		if (!run_command(v, args))
 			return (0);
 		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(argv[v->i]), ft_strdup(v->argument_ret), v->line));
-		v->flag_i = ft_charsearch(v->argv[v->i], '|'); // only | add others aswell
+		v->flag_i = ft_charsearch(v->argv[v->i] + k, '|'); // only | add others aswell
 		if (v->flag_i)
+		{
 			ft_printf("FLAG FOUND HERE [%s]\n", argv[v->i] + v->flag_i);
+			// char **test;
+			// test = malloc(sizeof(char*) * 2);
+			// test[0] = ft_strdup(argv[v->i] + v->flag_i + 1);
+			// test[1] = NULL;
+			// run_cmd(v, test);
+		}
 		ft_free_array((void*)args, size);
 		free(v->argument_ret);
 		v->i++;
