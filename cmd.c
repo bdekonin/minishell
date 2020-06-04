@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 14:41:42 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/04 14:46:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int run_cmd(t_vars *v, char **argv)
 		if (!run_command(v, args))
 			return (0);
 		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(argv[v->i]), ft_strdup(v->argument_ret), v->line));
-		v->flag_i = ft_charsearch(v->argv[v->i] + k, '|'); // only | add others aswell
+		v->flag_i = ft_charsearch(v->argv[v->i], '|'); // only | add others aswell
 		if (v->flag_i)
 		{
 			ft_printf("FLAG FOUND HERE [%s]\n", argv[v->i] + v->flag_i);
