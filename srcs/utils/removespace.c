@@ -6,52 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/03 23:00:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/04 13:40:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-/*
-** Returns the read environment variable
-**
-** @param  t_vars *v	vars struct
-** @param  char *line	Current command line
-**
-** @return char*		Returns pointer of the valid variable
-*/
-
-static char *find_environment_variable(t_vars *v, char *line)
-{
-	t_env		*lst;
-	int			j;
-	char		*name;
-
-	if (*line == '?')
-		return (v->history_head->output);
-	name = ft_strdup(line);
-	if (!name)
-		return (NULL);
-	j = 0;
-	lst = v->env_head;
-	while (name[j] && name[j] != ' ' && name[j] != '/' && name[j] != '|' \
-	&& name[j] != '>')
-		j++;
-	name[j] = '\0';
-	while (lst)
-	{
-		if (!ft_strncmp(lst->name, name, ft_strlen(name)))
-		{
-			free(name);
-			return (lst->content);
-		}
-		lst = lst->next;
-	}
-	free(name);
-	return (v->__homedir);
-}
-
-static char *dquote_incomplete(char *temp)
+static char *dquote_incomplete(char *temp) // check this
 {
 	char *line;
 	int ret;
@@ -65,7 +26,6 @@ static char *dquote_incomplete(char *temp)
 		if (ret < 0)
 		{
 			free(temp);
-			//erno 12
 			return (NULL);
 		}
 		ft_strcat(temp, line);
@@ -80,97 +40,90 @@ static char *dquote_incomplete(char *temp)
 	return (temp);
 }
 
-static char *quote_complete(t_vars *v, int i, char *temp, char *line)
+static char *quote_complete(t_vars *v, char *temp, char *line)
 {
 	int j;
 	char *dir;
 
 	j = 0;
-	while (line[i])
+	while (*line)
 	{
-		if (line[i] == '"')
+		if (*line == '"')
 			return (temp);
-		if (line[i] == '$')
+		if (*line == '$')
 		{
-			dir = find_environment_variable(v, line + i + 1);
+			dir = find_environment_variable(v, line + 1);
 			if (!dir)
 			{
 				free(temp);
 				return (NULL);
 			}
-			while (line[i] && line[i] != ' ' &&
-				line[i] != '/' &&
-				line[i] != '|' && line[i] != '>' && line[i] != '"')
-				i++;
+			while (*line && !ft_charsearch(" /|><", *line) && *line != '"')
+				line++;
 			ft_strcat(temp, dir);
 			j = ft_strlen(temp);
 			continue;
 		}
-		temp[j] = line[i];
-		i++;
+		temp[j] = *line;
+		line++;
 		j++;
 	}
 	return (dquote_incomplete(temp));
 }
 
-char *removespace(t_vars *v, char *line)
+static char *standard_parse(t_vars *v, char *temp, char *line, int j)
 {
 	char *dir;
+
+	while (*line)
+	{
+		if (*line == '$' || *line == '~')
+		{
+			if (*line == '~')
+				dir = v->__homedir;
+			else
+				dir = find_environment_variable(v, line + 1);
+			if (!dir)
+			{
+				free(temp);
+				return (NULL);
+			}
+			while (*line &&	!ft_charsearch(" /|><", *line))
+				line++;
+			ft_strcat(temp, dir);
+			j = ft_strlen(temp);
+			continue;
+		}
+		if (*line + 1 == '|' || *line + 1 == '>')
+			return (temp);
+		if (*line == 32 && *line + 1 != '|')
+			return (temp);
+		else if (*line == 92 && *line + 1 == 32)
+			line++;
+		temp[j] = *line;
+		line++;
+		j++;
+	}
+	return (temp);
+}
+
+char *removespace(t_vars *v, char *line)
+{
 	char *temp;
 	int i;
-	int j;
 
 	i = ft_strlen(line) - 1;
-	j = 0;
 	if (i < PATH_MAX)
 		temp = ft_calloc(PATH_MAX, sizeof(char));
 	else
 		temp = ft_calloc(PATH_MAX * 4, sizeof(char));
 	if (!temp)
-	{
-		// errno = 12;
 		return (NULL);
-	}
 	i = 0;
-	dir = NULL;
 	while (line[i] == 32) // change to all whitespaces
 		i++;
 	if (line[i] == 34) // finish this
-		temp = quote_complete(v, i + 1, temp, line);
-	else if (!dir) // Standerd parsing
-	{
-		while (line[i])
-		{
-			if (line[i] == '$' || line[i] == '~')
-			{
-				if (line[i] == '~')
-					dir = v->__homedir;
-				else
-					dir = find_environment_variable(v, line + i + 1);
-				if (!dir)
-				{
-					free(temp);
-					return (NULL);
-				}
-				while (line[i] && line[i] != ' ' &&
-					line[i] != '/' &&
-					line[i] != '|' && line[i] != '>')
-					i++;
-				ft_strcat(temp, dir);
-				j = ft_strlen(temp);
-				continue;
-			}
-			if (line[i + 1] == '|' || line[i + 1] == '>')
-				return (temp);
-			if (line[i] == 32 && line[i + 1] != '|')
-				return (temp);
-			else if (line[i] == 92 && line[i + 1] == 32)
-				i++;
-			temp[j] = line[i];
-			i++;
-			j++;
-		}
-		return (temp);
-	}
-	return (temp);
+		return (quote_complete(v, temp, line + i + 1));
+	else
+		return (standard_parse(v, temp, line + i, 0));
 }

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/03 22:55:40 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/04 12:31:03 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,15 @@ int cd(t_vars *v, char **params)
 	** cd ; cd Documents/Project/minishell
 	*/
 	char		*dir;
-	int			i;
 	int			ret;
 	char 		oldpwd_backup[PATH_MAX];
 
-	i = 0;
-	// dir = NULL;
 	ft_strlcpy(oldpwd_backup, v->current_path, ft_strlen(v->current_path) + 1);
-	if (!params[i])
+	if (!params[0])
 		ret = chdir(v->__homedir);
-	else if (!ft_strncmp(params[i], "--", 3) || !ft_strncmp(params[i], "~", 2))
+	else if (!ft_strncmp(params[0], "--", 3) || !ft_strncmp(params[0], "~", 2))
 		ret = chdir(v->__homedir);
-	else if (!ft_strncmp(params[i], "-", 3))
+	else if (!ft_strncmp(params[0], "-", 3))
 		ret = chdir(v->__oldpwd);
 	else
 	{

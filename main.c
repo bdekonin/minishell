@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/03 12:02:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/04 13:12:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-
-char		*cmd_str(int i)
-{
-	char	*cmd_str[bultins + 1];
-
-	cmd_str[0] = "echo";
-	cmd_str[1] = "cd";
-	cmd_str[2] = "pwd";
-	cmd_str[3] = "export";
-	cmd_str[4] = "unset";
-	cmd_str[5] = "env";
-	cmd_str[6] = "exit";
-	cmd_str[7] = "help";
-	cmd_str[8] = NULL;
-	return (cmd_str[i]);
-}
 
 void ctrl_c()
 {
@@ -112,10 +96,10 @@ int main(int argc, char **argv, char **envp)
 	v.prefix = ft_strdup(d_prefix);
 	if (!v.prefix)
 		return (0);
-	v.current_path = ft_calloc(path_max, sizeof(char));
+	v.current_path = ft_calloc(PATH_MAX, sizeof(char));
 	if (!v.current_path)
 		return (0);
-	v.current_path = getcwd(v.current_path, path_max);
+	v.current_path = getcwd(v.current_path, PATH_MAX);
 	env__makelist(&v, envp);
 
 	/*
@@ -159,30 +143,3 @@ void	param_to_lower_case(char *str)
 	}
 }
 
-int run_command(t_vars *v, char **params)
-{
-	int i = 0;
-	v->flag_i = 0;
-
-	int (*p[8]) (t_vars *v, char **params);
-	p[0] = echo;
-	p[1] = cd;
-	p[2] = pwd;
-	p[3] = export;
-	p[4] = unset;
-	p[5] = env;
-	p[6] = exitt;
-	p[7] = help;
-	param_to_lower_case(params[0]);
-	while (i < bultins)
-	{
-		if (!ft_strncmp(cmd_str(i), params[0], 15))
-			return ((*p[i])(v, params + 1));
-		i++;
-	}
-	ft_printf(cmd_notfound, v->__executable + 2, params[0]);
-	v->argument_ret = ft_strdup("0"); // maybe 1?
-	if (!v->argument_ret)
-		return (0);
-	return (1);
-}

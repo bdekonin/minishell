@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   history.h                                          :+:    :+:            */
+/*   env.h                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 13:47:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/04 13:47:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HISTORY_H
-# define HISTORY_H
+#ifndef ENV_H
+# define ENV_H
 
 # include "../../../main.h"
 
-typedef	struct			s_history
+typedef	struct		s_env
 {
-	char				*line;
-	char				*output;
-	char				*command;
-	struct s_history	*next;
-}						t_history;
+	char			*name;
+	char			*content;
+	struct s_env	*next;
+}					t_env;
 
-void					his__ft_lstadd_back(t_history **alst, t_history *new);
-void					his__ft_lstadd_front(t_history **alst, t_history *new);
-void					his__ft_lstclear(t_history **lst, void (*del)(void*));
-void					his__ft_lstdelone(t_history *lst, void (*del)(void*));
-int						his__ft_lstsize(t_history *lst);
-t_history				*his__ft_lstlast(t_history *lst);
-t_history				*his__ft_lstnew(void *command, void *output, \
-														void *line);
+void				env__ft_lstadd_back(t_env **alst, t_env *new);
+void				env__ft_lstadd_front(t_env **alst, t_env *new);
+void				env__ft_lstclear(t_env **lst, void (*del)(void*));
+void				env__ft_lstdelone(t_env *lst, void (*del)(void*));
+int					env__ft_lstsize(t_env *lst);
+void				env__ft_lstmove_back(char *name, t_env *new);
+void				env__ft_lstremove_middle(char *name, t_env *new);
+t_env				*env__ft_lstnew(void *name, void *content);
+t_env				*env__ft_lstlast(t_env *lst);
 
 #endif
