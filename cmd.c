@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 14:46:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/06 14:57:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int run_command(t_vars *v, char **params)
 	p[5] = env;
 	p[6] = exitt;
 	p[7] = help;
-	param_to_lower_case(params[0]);
+	ft_str_tolower(params[0]);
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
@@ -86,8 +86,8 @@ int run_cmd(t_vars *v, char **argv)
 		args = ft_split_lars(argv[v->i], ' ', &size);
 		if (!run_command(v, args))
 			return (0);
-		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(argv[v->i]), ft_strdup(v->argument_ret), v->line));
-		v->flag_i = ft_charsearch(v->argv[v->i], '|'); // only | add others aswell
+		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(argv[v->i]), ft_strdup(v->argument_ret), ft_strdup(v->line)));
+		v->flag_i = ft_charsearch(v->argv[v->i], '|'); // add other flags
 		if (v->flag_i)
 		{
 			ft_printf("FLAG FOUND HERE [%s]\n", argv[v->i] + v->flag_i);
@@ -124,5 +124,6 @@ void	read_user_input(t_vars *v)
 				exit(EXIT_FAILURE);
 			ft_free_array((void*)v->argv, size);
 		}
+		free(v->line);
 	}
 }

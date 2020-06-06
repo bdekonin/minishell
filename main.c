@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 13:12:54 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/06 14:56:48 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,16 +130,3 @@ int main(int argc, char **argv, char **envp)
 			ft_printf("\nSomething went wrong!\nRestarting\n\n");
 	}
 }
-
-void	param_to_lower_case(char *str)
-{
-	size_t i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		str[i] = ft_tolower(str[i]);
-		i++;
-	}
-}
-

@@ -6,22 +6,21 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 13:40:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/06 16:23:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-static char *dquote_incomplete(char *temp) // check this
+static char		*dquote_incomplete(char *temp)
 {
 	char *line;
 	int ret;
 
 	ret = 1;
-	temp[ft_strlen(temp) - 1] = '\0';
 	while (ret > 0)
 	{
-		ft_printf("dquote> ");
+		ft_printf(dquote);
 		ret = get_next_line(STDIN_FILENO, &line);
 		if (ret < 0)
 		{
@@ -40,7 +39,7 @@ static char *dquote_incomplete(char *temp) // check this
 	return (temp);
 }
 
-static char *quote_complete(t_vars *v, char *temp, char *line)
+static char		*quote_complete(t_vars *v, char *temp, char *line)
 {
 	int j;
 	char *dir;
@@ -94,11 +93,9 @@ static char *standard_parse(t_vars *v, char *temp, char *line, int j)
 			j = ft_strlen(temp);
 			continue;
 		}
-		if (*line + 1 == '|' || *line + 1 == '>')
+		if ((*line == 32 && line[1] != '|') || (line[1] == '|' || line[1] == '>'))
 			return (temp);
-		if (*line == 32 && *line + 1 != '|')
-			return (temp);
-		else if (*line == 92 && *line + 1 == 32)
+		else if (*line == 92 && line[1] == 32)
 			line++;
 		temp[j] = *line;
 		line++;
@@ -127,3 +124,20 @@ char *removespace(t_vars *v, char *line)
 	else
 		return (standard_parse(v, temp, line + i, 0));
 }
+
+
+// *line = [84]-[T]
+// *line = [101]-[e]
+// *line = [115]-[s]
+// *line = [116]-[t]
+// *line = [92]-[\]
+// *line = [32]-[ ]
+// *line = [105]-[i]
+// *line = [110]-[n]
+// *line = [103]-[g]
+// *line = [92]-[\]
+// *line = [32]-[ ]
+// *line = [105]-[i]
+// *line = [110]-[n]
+// *line = [103]-[g]
+// *line = [47]-[/]
