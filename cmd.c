@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/06 14:57:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/07 11:31:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char		*cmd_str(int i)
 	cmd_str[4] = "unset";
 	cmd_str[5] = "env";
 	cmd_str[6] = "exit";
-	cmd_str[7] = "help";
+	cmd_str[7] = "debug";
 	cmd_str[8] = NULL;
 	return (cmd_str[i]);
 }
@@ -41,7 +41,7 @@ int run_command(t_vars *v, char **params)
 	p[4] = unset;
 	p[5] = env;
 	p[6] = exitt;
-	p[7] = help;
+	p[7] = debug;
 	ft_str_tolower(params[0]);
 	while (i < bultins)
 	{

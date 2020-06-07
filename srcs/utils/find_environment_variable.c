@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/04 10:10:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 10:11:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/07 11:36:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 /*
 ** Returns the read environment variable
 **
-** @param  t_vars *v	vars
-** @param  char *line	Pointer to string after the $
+** @param  t_vars *v	vars							 ↓
+** @param  char *line	Points to character after $ (cd $PATH)
 **
 ** @return char*		Returns pointer of environment variable
 */

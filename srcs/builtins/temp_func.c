@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/03 22:54:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/07 11:31:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int exitt(t_vars *v, char **params)
 	exit(EXIT_SUCCESS);
 	return (1);
 }
-int help(t_vars *v, char **params)
+int debug(t_vars *v, char **params)
 {
 	t_history *kaas = v->history_head;
 	ft_printf("\n\nline\t\t\tcommand\t\toutput\n");

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 13:48:26 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/07 11:37:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ int exportt(t_vars *v, char **params);
 int unset(t_vars *v, char **params);
 int env(t_vars *v, char **params);
 int exitt(t_vars *v, char **params);
-int help(t_vars *v, char **params);
-
-// moeten we aanpassen, desnoods met de functie asprintf
-char	*ft_strjoin_trip(char const *s1, char const *s2, char const *s3);
+int debug(t_vars *v, char **params);
 
 int ft_execve(t_vars *v, char *file, char **params);
 

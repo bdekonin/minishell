@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/06 16:23:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/07 11:32:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,20 +124,3 @@ char *removespace(t_vars *v, char *line)
 	else
 		return (standard_parse(v, temp, line + i, 0));
 }
-
-
-// *line = [84]-[T]
-// *line = [101]-[e]
-// *line = [115]-[s]
-// *line = [116]-[t]
-// *line = [92]-[\]
-// *line = [32]-[ ]
-// *line = [105]-[i]
-// *line = [110]-[n]
-// *line = [103]-[g]
-// *line = [92]-[\]
-// *line = [32]-[ ]
-// *line = [105]-[i]
-// *line = [110]-[n]
-// *line = [103]-[g]
-// *line = [47]-[/]
