@@ -6,13 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/07 11:32:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/07 11:41:27 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-static char		*dquote_incomplete(char *temp)
+static char		*dquote_incomplete(char *temp, int c)
 {
 	char *line;
 	int ret;
@@ -28,7 +28,7 @@ static char		*dquote_incomplete(char *temp)
 			return (NULL);
 		}
 		ft_strcat(temp, line);
-		if (ft_counter(line, '"') == 1)
+		if (ft_counter(line, c) == 1)
 		{
 			free(line);
 			temp[ft_strlen(temp) - 1] = '\0';
@@ -39,7 +39,7 @@ static char		*dquote_incomplete(char *temp)
 	return (temp);
 }
 
-static char		*quote_complete(t_vars *v, char *temp, char *line)
+static char		*quote_complete(t_vars *v, char *temp, char *line, int c)
 {
 	int j;
 	char *dir;
@@ -47,7 +47,7 @@ static char		*quote_complete(t_vars *v, char *temp, char *line)
 	j = 0;
 	while (*line)
 	{
-		if (*line == '"')
+		if (*line == c)
 			return (temp);
 		if (*line == '$')
 		{
@@ -57,7 +57,7 @@ static char		*quote_complete(t_vars *v, char *temp, char *line)
 				free(temp);
 				return (NULL);
 			}
-			while (*line && !ft_charsearch(" /|><", *line) && *line != '"')
+			while (*line && !ft_charsearch(" /|><", *line) && *line != c)
 				line++;
 			ft_strcat(temp, dir);
 			j = ft_strlen(temp);
@@ -67,7 +67,7 @@ static char		*quote_complete(t_vars *v, char *temp, char *line)
 		line++;
 		j++;
 	}
-	return (dquote_incomplete(temp));
+	return (dquote_incomplete(temp, c));
 }
 
 static char *standard_parse(t_vars *v, char *temp, char *line, int j)
@@ -119,8 +119,8 @@ char *removespace(t_vars *v, char *line)
 	i = 0;
 	while (line[i] == 32) // change to all whitespaces
 		i++;
-	if (line[i] == 34) // finish this
-		return (quote_complete(v, temp, line + i + 1));
+	if (line[i] == 34 || line[i] == 39) // finish this
+		return (quote_complete(v, temp, line + i + 1, line[i]));
 	else
 		return (standard_parse(v, temp, line + i, 0));
 }

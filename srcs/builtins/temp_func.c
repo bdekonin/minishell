@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/07 11:31:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/08 20:35:12 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,5 @@ int exitt(t_vars *v, char **params)
 	env__ft_lstclear(&v->env_head, free);
 	his__ft_lstclear(&v->history_head, free); // DO THIS
 	exit(EXIT_SUCCESS);
-	return (1);
-}
-int debug(t_vars *v, char **params)
-{
-	t_history *kaas = v->history_head;
-	ft_printf("\n\nline\t\t\tcommand\t\toutput\n");
-	ft_printf("[%s]\t[%s]\t[%s]\n", v->line, v->argv[v->i], "???");
-	while (kaas)
-	{
-		ft_printf("[%s]\t[%s]\t[%s]\n", kaas->line, kaas->command, kaas->output);
-		kaas = kaas->next;
-	}
-	v->argument_ret = ft_strdup("1");
 	return (1);
 }
