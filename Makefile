@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/06/06 15:59:49 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/06/09 16:22:50 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ $(NAME):
 	gcc -Wall -Wextra $(SRCS) $(LIBFT) $(FT_PRINTF) -o  minishell
 
 c: $(NAME)
-	rm minishell && make && ./minishell
+	make re && ./minishell
 
 fclean:
 	/bin/rm -f $(OFILES)

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/06 14:56:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/09 16:55:52 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int env__makelist(t_vars *v, char **envp)
 	env = env__ft_lstnew(name, content);
 	while (envp[i])
 	{
-		loc = ft_charsearch(envp[i], '=');
+		loc = ft_charsearch(envp[i], '='); // make better function; universal one
 		name = ft_substr(envp[i], 0, loc);
 		content = ft_substr(envp[i], loc + 1, ft_strlen(envp[i] + loc));
 		if (!name || !content)
@@ -64,10 +64,14 @@ int env__makelist(t_vars *v, char **envp)
 			free(env->content);
 			env->content = v->current_path;
 		}
-		if (!ft_strncmp("OLDPWD", env->name, ft_strlen(env->name)))
+		if (!ft_strncmp("OLDPWD", env->name, ft_strlen(env->name))) // will go in here if you run in seperate
 		{
-			ft_printf("oldpwd = %s\n", env->content);
-			v->__oldpwd = env->content;
+			v->__oldpwd = ft_calloc(PATH_MAX, sizeof(char));
+			if (!v->__oldpwd)
+				return (0);
+			v->__oldpwd = ft_memcpy(v->__oldpwd, env->content, ft_strlen(env->content));
+			free(env->content);
+			env->content = v->__oldpwd;
 		}
 		env = env->next;
 	}
@@ -84,12 +88,13 @@ int env__makelist(t_vars *v, char **envp)
 
 int main(int argc, char **argv, char **envp)
 {
-	ft_printf("--- Starting ----\n\n");
+	ft_printf("---- Starting ----\n\n");
 	t_vars v;
 	argc++; //  TIJDELIJK VOOR DE WARNING
 	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
 	v.has_env_changed = 0;
 	v.__oldpwd = NULL;
+
 	/*
 	** Initializing prompt
 	*/
@@ -112,21 +117,21 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		read_user_input(&v);
-		if (v.forky < 0)
-		{
-			ft_printf("Fork has failed\n"); // Better error message
-			exit(EXIT_FAILURE);
-		}
-		if (v.forky > 0)
-		{
-			wait(&stat);
-			printf("%d - %d - %d\n", WSTOPSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
-		}
-		if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_FAILURE)
-			exit(EXIT_FAILURE);
-		if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_SUCCESS)
-			exit(EXIT_SUCCESS);
-		if (WTERMSIG(stat) == SIGSEGV)
-			ft_printf("\nSomething went wrong!\nRestarting\n\n");
+		// if (v.forky < 0)
+		// {
+		// 	ft_printf("Fork has failed\n"); // Better error message
+		// 	exit(EXIT_FAILURE);
+		// }
+		// if (v.forky > 0)
+		// {
+		// 	wait(&stat);
+		// 	printf("%d - %d - %d\n", WSTOPSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
+		// }
+		// if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_FAILURE)
+		// 	exit(EXIT_FAILURE);
+		// if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_SUCCESS)
+		// 	exit(EXIT_SUCCESS);
+		// if (WTERMSIG(stat) == SIGSEGV)
+		// 	ft_printf("\nSomething went wrong!\nRestarting\n\n");
 	}
 }

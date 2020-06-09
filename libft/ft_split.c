@@ -6,84 +6,102 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/14 16:18:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/04/23 11:49:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/09 15:21:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*freee(char **arr, int y)
+static size_t	get_start(char const *str, char c, size_t start, size_t len)
 {
-	while (y > 0)
-	{
-		y--;
-		free(arr[y]);
-	}
-	free(arr);
-	return (NULL);
+	size_t i;
+
+	i = start + len;
+	while (str[i] != '\0' && str[i] == c)
+		i++;
+	return (i);
 }
 
-/*
-** counts characters of the word
-*/
-
-static int	checkstring(char *s, char c, int i)
+static size_t	get_len(char const *str, char c, size_t start)
 {
-	int a;
+	size_t i;
+	size_t len;
 
-	a = 0;
-	while (s[i] != c && s[i] != '\0')
+	i = start;
+	len = 0;
+	while (str[i] != '\0' && str[i] != c)
 	{
 		i++;
-		a++;
+		len++;
 	}
-	return (a);
+	return (len);
 }
 
-/*
-** x = Length of the string where the index is now located.
-** y = array counter.
-*/
-
-static char	**splitting(char const *s, char c, int i, char **arr)
+static size_t	count_str(char const *str, char c)
 {
-	int x;
-	int y;
+	size_t i;
+	size_t count;
 
-	x = 0;
-	y = 0;
-	while (y != ft_wordcount((char*)s))
+	i = 0;
+	count = 0;
+	if (c == '\0' && str[i] != '\0')
+		return (1);
+	while (str[i] != '\0')
 	{
-		if (s[i] != c)
+		if (str[i] != c)
 		{
-			x = checkstring((char*)s, c, i);
-			arr[y] = ft_substr((char*)s, i, x);
-			if (!arr[y])
-				freee(arr, y);
-			i = i + x;
-			y++;
+			count++;
+			while (str[i] != c && str[i] != '\0')
+				i++;
+		}
+		while (str[i] == c)
+			i++;
+	}
+	return (count);
+}
+
+static char		**init_array(char const *s, char c, size_t count, char **array)
+{
+	size_t i;
+	size_t start;
+	size_t len;
+
+	i = 0;
+	start = 0;
+	len = 0;
+	while (i < count)
+	{
+		start = get_start(s, c, start, len);
+		len = get_len(s, c, start);
+		array[i] = ft_substr(s, start, len);
+		if (!array[i])
+		{
+			while (i > 0)
+			{
+				i--;
+				free(array[i]);
+			}
+			free(array);
+			return (0);
 		}
 		i++;
 	}
-	arr[y] = NULL;
-	return (arr);
+	return (array);
 }
 
-/*
-** i =  index. its the counter of the string.
-*/
-
-char		**ft_split(char const *s, char c)
+char			**ft_split_lars(char const *s, char c)
 {
-	int		i;
-	char	**arr;
+	char	**array;
+	size_t	count;
 
-	i = 0;
 	if (!s)
-		return (NULL);
-	arr = (char**)malloc(sizeof(char*) * (ft_wordcount((char*)s) + 1));
-	if (arr == NULL)
-		return (NULL);
-	arr = splitting((char*)s, c, i, arr);
-	return (arr);
+		return (0);
+	count = count_str(s, c);
+	array = (char**)malloc((count + 1) * sizeof(char*));
+	if (!array)
+		return (0);
+	array = init_array(s, c, count, array);
+	if (array)
+		array[count] = 0;
+	return (array);
 }

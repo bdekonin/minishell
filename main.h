@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/07 11:37:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/09 14:38:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef struct		s_vars
 
 	int				flag_i;
 	void			*argument_ret;
+
+	char *temp; // for if oldpwd exist and path can be bigger
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
