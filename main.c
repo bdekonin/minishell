@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/09 16:55:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/10 07:35:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int env__makelist(t_vars *v, char **envp)
 			free(env->content);
 			env->content = v->current_path;
 		}
-		if (!ft_strncmp("OLDPWD", env->name, ft_strlen(env->name))) // will go in here if you run in seperate
+		if (!ft_strncmp("OLDPWD", env->name, ft_strlen(env->name))) // will go in here if you run it seperate
 		{
 			v->__oldpwd = ft_calloc(PATH_MAX, sizeof(char));
 			if (!v->__oldpwd)

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/04 10:10:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/07 11:36:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/09 21:37:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ char *find_environment_variable(t_vars *v, char *line)
 		lst = lst->next;
 	}
 	free(name);
+	
 	return (v->__homedir);
 }

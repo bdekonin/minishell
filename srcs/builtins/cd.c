@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 12:31:03 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/09 21:42:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,14 @@ int cd(t_vars *v, char **params)
 	** $k =		N/A
 	** $q =		N/A
 	**
+	** invalid
+	** cd ; cd Documents/Project/minishell // error
+	** cd ; pwd ; cd $q/$k	//this will not work
+	**
+	** valid
 	** cd $HOME/Documents
 	** pwd ; cd $HOME ; pwd
 	** cd minishell/$s
-	** cd ; pwd ; cd $q/$k	ERROR
 	** cd ; pwd ; cd Documents/Projects/$p/$s
 	** cd ; pwd ; cd $p/$s/utils
 	** cd ; pwd ; cd Documents/Projects/$p
@@ -36,7 +40,6 @@ int cd(t_vars *v, char **params)
 	** cd Test\ ing\ ing/
 	** cd Test\ ing\ ing
 	** cd ; pwd ; cd Documents/Projects/$p/Test\ ing\ ing/
-	** cd ; cd Documents/Project/minishell
 	*/
 	char		*dir;
 	int			ret;
@@ -48,7 +51,10 @@ int cd(t_vars *v, char **params)
 	else if (!ft_strncmp(params[0], "--", 3) || !ft_strncmp(params[0], "~", 2))
 		ret = chdir(v->__homedir);
 	else if (!ft_strncmp(params[0], "-", 3))
+	{
+		ft_printf("%s\n", v->__oldpwd);
 		ret = chdir(v->__oldpwd);
+	}
 	else
 	{
 		dir = removespace(v, ft_strnstr(v->argv[v->i], "cd", ft_strlen(v->argv[v->i])) + 2);

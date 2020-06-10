@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/09 14:38:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/10 07:40:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include "srcs/utils/history_list/history.h"
 #include "srcs/utils/env_list/env.h"
 
-# define d_prefix "%s@codam %s > "
+# define d_prefix "%s@%s -> "
 # define cmd_notfound "%s: command not found: %s\n"
 # define bultins 8
 # define dquote "dquote> "
