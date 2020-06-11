@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/10 07:40:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/11 11:56:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ typedef struct		s_vars
 	int				argc;
 	t_env			*env_head; // DO NOT CHANGE THE VALUE!
 	t_history		*history_head; // DO NOT CHANGE THE VALUE!
-
-	char			**envp;
 
 	char			*__executable;	// another struct maybe?
 	char			*__logname;		// This too?

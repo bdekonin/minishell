@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/10 07:35:42 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/11 11:36:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 void ctrl_c()
 {
+	signal(SIGINT, ctrl_c);
+	signal(SIGTSTP, ctrl_c);
+	write(STDIN_FILENO, "\n", 1);
 	return ;
 }
 
@@ -114,6 +117,7 @@ int main(int argc, char **argv, char **envp)
 	v.argc = 0;
 	int stat;
 	signal(SIGINT, ctrl_c);
+	signal(SIGTSTP, ctrl_c);
 	while (1)
 	{
 		read_user_input(&v);

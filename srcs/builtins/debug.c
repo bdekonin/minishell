@@ -6,34 +6,38 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/08 22:00:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/11 11:52:53 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-static void				leaks(void)
-{
-	char *str;
-	char *str2;
+static char **__make_array(t_vars *v, int size, t_env *list);
+static char **__linkedlist_to_array(t_vars *v, int *list_size);
 
-	ft_printf("---- Leaks ----\n");
-	ft_printf("Parent\n");
-	str = ft_itoa(getppid());
-	str2 = ft_strjoin("leaks ", str);
-	free(str);
-	str = ft_strjoin(str2, " | tail -2");
-	system(str);
-	free(str2);
-	free(str);
-	ft_printf("Child\n");
-	str = ft_itoa(getpid());
-	str2 = ft_strjoin("leaks ", str);
-	free(str);
-	str = ft_strjoin(str2, " | tail -2");
-	system(str);
-	free(str2);
-	free(str);
+static char **make_param()
+{
+	char **arr;
+
+	arr = malloc(sizeof(char*) * 3);
+	if (!arr)
+		return (NULL);
+	arr[0] = ft_strdup("leaks");
+	arr[1] = ft_itoa(getpid());
+	if (!arr[0])
+		return (NULL);
+	arr[2] = NULL;
+	return (arr);
+}
+
+static void				leaks(t_vars *v)
+{
+	char **arr;
+	arr = make_param();
+
+	if (!arr)
+		return ;
+	ft_execve(v, "/usr/bin/leaks", arr);
 }
 
 static void				pid(void)
@@ -70,17 +74,17 @@ static void				his(t_vars *v)
 int						debug(t_vars *v, char **params)
 {
 	if ((params[0] && !ft_strncmp(params[0], "leaks", 7)) || !params[0])
-		leaks();
-	if ((params[0] && !ft_strncmp(params[0], "pid", 4)) || !params[0])
-		pid();
-	if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
-		his(v);
-	else
-	{
-		v->argument_ret = ft_strdup("1");
-		// malloc protect
-		return (0);
-	}
+		leaks(v);
+	// if ((params[0] && !ft_strncmp(params[0], "pid", 4)) || !params[0])
+	// 	pid();
+	// if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
+	// 	his(v);
+	// else
+	// {
+	// 	v->argument_ret = ft_strdup("1");
+	// 	// malloc protect
+	// 	return (0);
+	// }
 	v->argument_ret = ft_strdup("1");
 	return (1);
 }
