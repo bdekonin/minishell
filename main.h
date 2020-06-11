@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 11:56:38 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/11 21:50:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,24 @@
 
 typedef struct		s_vars
 {
-	char			*ptr;
+	t_env			*env_head; // DO NOT CHANGE THE VALUE!
+	t_history		*history_head; // DO NOT CHANGE THE VALUE!
+
 	char			*prefix;
 	char			*current_path;
 	char			*line;
 	int				ret;
 	char			**argv;
-	pid_t			forky;
-	int				argc;
-	t_env			*env_head; // DO NOT CHANGE THE VALUE!
-	t_history		*history_head; // DO NOT CHANGE THE VALUE!
 
 	char			*__executable;	// another struct maybe?
 	char			*__logname;		// This too?
 	char			*__homedir;		//this aswell lars.
 	char			*__oldpwd; // location of old pwd
 
-
-	int				has_env_changed; // is 1 when the the env has been changed. and 0 if not.
-
 	int				i;
 
 	int				flag_i;
 	void			*argument_ret;
-
-	char *temp; // for if oldpwd exist and path can be bigger
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);

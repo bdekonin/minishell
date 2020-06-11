@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 11:36:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/11 19:43:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int main(int argc, char **argv, char **envp)
 	t_vars v;
 	argc++; //  TIJDELIJK VOOR DE WARNING
 	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
-	v.has_env_changed = 0;
 	v.__oldpwd = NULL;
 
 	/*
@@ -114,28 +113,11 @@ int main(int argc, char **argv, char **envp)
 	** End initializing prompt
 	*/
 
-	v.argc = 0;
 	int stat;
 	signal(SIGINT, ctrl_c);
 	signal(SIGTSTP, ctrl_c);
 	while (1)
 	{
 		read_user_input(&v);
-		// if (v.forky < 0)
-		// {
-		// 	ft_printf("Fork has failed\n"); // Better error message
-		// 	exit(EXIT_FAILURE);
-		// }
-		// if (v.forky > 0)
-		// {
-		// 	wait(&stat);
-		// 	printf("%d - %d - %d\n", WSTOPSIG(stat), WEXITSTATUS(stat), WIFSIGNALED(stat));
-		// }
-		// if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_FAILURE)
-		// 	exit(EXIT_FAILURE);
-		// if (!WIFSIGNALED(stat) && WEXITSTATUS(stat) == EXIT_SUCCESS)
-		// 	exit(EXIT_SUCCESS);
-		// if (WTERMSIG(stat) == SIGSEGV)
-		// 	ft_printf("\nSomething went wrong!\nRestarting\n\n");
 	}
 }

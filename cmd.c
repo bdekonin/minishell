@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 16:18:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/11 19:41:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,6 @@ int run_cmd(t_vars *v, char **argv)
 void	read_user_input(t_vars *v)
 {
 	int size;
-	// // leaks();
-	// v->forky = fork();
-	// // leaks(); // https://stackoverflow.com/questions/49351224/leaks-after-fork-in-child-process-why
-	// while (!v->forky)
-	// {
 		ft_printf(v->prefix, v->__logname, ft_strrchr(v->current_path, '/') + 1);
 		v->ret = get_next_line(STDIN_FILENO, &v->line);
 		if (v->ret < 0)
@@ -126,5 +121,4 @@ void	read_user_input(t_vars *v)
 			ft_free_array((void*)v->argv, size);
 		}
 		free(v->line);
-	// }
 }

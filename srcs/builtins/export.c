@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 13:46:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/11 19:07:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ int 			exportt(t_vars *v, char **params)
 		}
 		i++;
 	}
-	ft_printf("Export check1\n");
-	v->has_env_changed = 1;
 	v->argument_ret = ft_strdup("0");
 	return (1);
 }
