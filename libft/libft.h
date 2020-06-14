@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 08:07:31 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/06 13:56:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/12 18:04:21 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,6 @@ char				*ft_strcat(char *dst, const char *src);
 void				ft_free_array(void **ptr, int size);
 void				ft_swap(double *xp, double *yp);
 void				ft_str_tolower(char *str);
+char				**ft_calloc_2d(size_t width, size_t height);
 
 #endif

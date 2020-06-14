@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 21:50:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/14 09:34:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@
 # define bultins 8
 # define dquote "dquote> "
 
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+#define KYEL  "\x1B[33m"
+#define KBLU  "\x1B[34m"
+#define KMAG  "\x1B[35m"
+#define KCYN  "\x1B[36m"
+#define KWHT  "\x1B[37m"
+
 typedef struct		s_vars
 {
 	t_env			*env_head; // DO NOT CHANGE THE VALUE!
@@ -44,6 +53,7 @@ typedef struct		s_vars
 	char			*__logname;		// This too?
 	char			*__homedir;		//this aswell lars.
 	char			*__oldpwd; // location of old pwd
+	char			*__ppid;
 
 	int				i;
 
@@ -59,23 +69,19 @@ char *removespace(t_vars *v, char *line);
 void	read_user_input(t_vars *v);
 char	**ft_split_lars(char const *s, char c, int *lst_size);
 
-int	run_command(t_vars *v, char **params);
+// int	run_command(t_vars *v, char **params);
 
 // tijdelijke gevulde functies
-int echo(t_vars *v, char **params);
-int	cd(t_vars *v, char **params);
-int pwd(t_vars *v, char **params);
-int exportt(t_vars *v, char **params);
-int unset(t_vars *v, char **params);
-int env(t_vars *v, char **params);
-int exitt(t_vars *v, char **params);
-int debug(t_vars *v, char **params);
+int echo(t_vars *v, char *line, char **params);
+int	cd(t_vars *v, char *line, char **params);
+int pwd(t_vars *v, char *line, char **params);
+int exportt(t_vars *v, char *line, char **params);
+int unset(t_vars *v, char *line, char **params);
+int env(t_vars *v, char *line, char **params);
+int exitt(t_vars *v, char *line, char **params);
+int debug(t_vars *v, char *line, char **params);
 
 int ft_execve(t_vars *v, char *file, char **params);
-
-
-
-
 
 char *find_environment_variable(t_vars *v, char *line);
 

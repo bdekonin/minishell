@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/09 21:39:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/14 09:45:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char *removespace(t_vars *v, char *line)
 	if (!temp)
 		return (NULL);
 	i = 0;
-	while (line[i] == 32) // change to all whitespaces
+	while (line[i] == 32 || line[i] == '\t')// change to all whitespaces
 		i++;
 	if (line[i] == 34 || line[i] == 39) // finish this
 		return (quote_complete(v, temp, line + i + 1, line[i]));

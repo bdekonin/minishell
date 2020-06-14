@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 15:54:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/14 10:21:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 **						{NULL}
 */
 
-static char				**make_param(void)
+static char				**make_param(char *ppid)
 {
 	char **arr;
 
@@ -35,7 +35,7 @@ static char				**make_param(void)
 		ft_free_array((void*)arr, 1);
 		return (NULL);
 	}
-	arr[1] = ft_itoa(getpid());
+	arr[1] = ft_strdup(ppid);
 	if (!arr[1])
 	{
 		ft_free_array((void*)arr, 2);
@@ -57,7 +57,7 @@ static int				leaks(t_vars *v)
 {
 	char **arr;
 
-	arr = make_param();
+	arr = make_param(v->__ppid);
 	if (!arr)
 		return (1);
 	ft_execve(v, "/usr/bin/leaks", arr);
@@ -101,7 +101,7 @@ static int				his(t_vars *v)
 **							-1 = malloc fail
 */
 
-int						debug(t_vars *v, char **params)
+int						debug(t_vars *v, char *line, char **params)
 {
 	int ret;
 
@@ -113,5 +113,6 @@ int						debug(t_vars *v, char **params)
 	v->argument_ret = (ret) ? ft_strdup("0") : ft_strdup("1");
 	if (!v->argument_ret)
 		return (0);
+	(void)line;
 	return (1);
 }

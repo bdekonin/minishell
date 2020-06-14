@@ -6,14 +6,14 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/09 21:42:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/12 16:08:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
 
-int cd(t_vars *v, char **params)
+int cd(t_vars *v, char *line, char **params)
 {
 	/*
 	** Sources
@@ -46,7 +46,7 @@ int cd(t_vars *v, char **params)
 	char 		oldpwd_backup[PATH_MAX];
 
 	ft_strlcpy(oldpwd_backup, v->current_path, ft_strlen(v->current_path) + 1);
-	if (!params[0])
+	if (!params[0] || !ft_strncmp("|", params[0], 3))
 		ret = chdir(v->__homedir);
 	else if (!ft_strncmp(params[0], "--", 3) || !ft_strncmp(params[0], "~", 2))
 		ret = chdir(v->__homedir);
@@ -57,7 +57,7 @@ int cd(t_vars *v, char **params)
 	}
 	else
 	{
-		dir = removespace(v, ft_strnstr(v->argv[v->i], "cd", ft_strlen(v->argv[v->i])) + 2);
+		dir = removespace(v, ft_strnstr(line, "cd", ft_strlen(line)) + 2);
 		if (!dir)
 			return (0);
 		ret = chdir(dir);

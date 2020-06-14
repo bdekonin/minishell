@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 19:43:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/14 10:13:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-
-void ctrl_c()
-{
-	signal(SIGINT, ctrl_c);
-	signal(SIGTSTP, ctrl_c);
-	write(STDIN_FILENO, "\n", 1);
-	return ;
-}
 
 int segfault = 0;
 
@@ -78,6 +70,13 @@ int env__makelist(t_vars *v, char **envp)
 		}
 		env = env->next;
 	}
+	if (!v->__ppid)
+	{
+		v->__ppid = ft_itoa(getpid());
+		if (!v->__ppid)
+			return (0);
+		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("PPID"), v->__ppid));
+	}
 	if (!v->__oldpwd)
 	{
 		v->__oldpwd = ft_calloc(PATH_MAX, sizeof(char));
@@ -96,6 +95,7 @@ int main(int argc, char **argv, char **envp)
 	argc++; //  TIJDELIJK VOOR DE WARNING
 	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
 	v.__oldpwd = NULL;
+	v.__ppid = NULL;
 
 	/*
 	** Initializing prompt
@@ -114,8 +114,9 @@ int main(int argc, char **argv, char **envp)
 	*/
 
 	int stat;
-	signal(SIGINT, ctrl_c);
-	signal(SIGTSTP, ctrl_c);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
+	// signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		read_user_input(&v);
