@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 16:18:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 17:23:36 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,10 @@ typedef struct		s_vars
 	char			*__logname;		// This too?
 	char			*__homedir;		//this aswell lars.
 	char			*__oldpwd; // location of old pwd
-	char			*__ppid;
+	char			*__ppid; // pid of main program
 
 	int				i;
 
-	int				flag_i;
 	void			*argument_ret;
 }					t_vars;
 

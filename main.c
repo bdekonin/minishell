@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 15:58:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 17:24:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGTSTP, SIG_IGN);
 	while (1)
 	{
-		v.nodehead = node__ft_lstnew(0, 0, ft_strdup("."));
+		v.nodehead = node__ft_lstnew(';', 0, ft_strdup("."));
 		read_user_input(&v);
 		node__ft_lstclear(&v.nodehead, free); // reset the list.
 	}

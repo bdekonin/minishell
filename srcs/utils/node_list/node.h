@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 16:19:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 17:17:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef	struct			s_node
 // pwd
 
 t_node		*node__ft_lstlast(t_node *lst);
-t_node		*node__ft_lstnew(unsigned char type, int size, void *line);
+t_node		*node__ft_lstnew(unsigned char type, int i, void *line);
 void		node__ft_lstdelone(t_node *lst, void (*del)(void*));
 void		node__ft_lstadd_back(t_node **alst, t_node *new);
 void		node__ft_lstadd_front(t_node **alst, t_node *new);

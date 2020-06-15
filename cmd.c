@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 16:25:03 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 17:26:21 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,24 +99,32 @@ t_history *__init_set_history(t_vars *v)
 	return (v->history_head);
 }
 
+// cd ..  | cd .. | cd ..
+
 int run_cmd(t_vars *v, t_node *node)
 {
+	t_node	*newnode = NULL;
 	char	**args;
 	int		size[2];
 
 	while (node)
 	{
-		v->flag_i = 0;
+		ft_printf("current type %c\n", node->type);
 		args = ft_split_lars(node->line, ' ', &size[0]);
 		if (!run_command(v, args, node))
 			return (0);
 		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(node->line), ft_strdup(v->argument_ret), ft_strdup(v->line))); // protect
 		if (node->line[node->i] == '|' || node->line[node->i] == '>')
 		{
-			// ft_printf("found a flag [%s]\n", node->line + node->i);
+			newnode = node__ft_lstnew(node->line[node->i], 0, node->line + (node->i + 1));
+			// if (!newnode)
+			// 	return (0);
+			ft_printf("			found a flag [%s]\n", newnode->line + newnode->i);
+			// ft_printf("ret = %dn\n", run_cmd(v, newnode));
+			run_cmd(v, newnode);
 		}
-		free(v->argument_ret);
-		ft_free_array((void*)args, size[0]);
+		// free(v->argument_ret);
+		// ft_free_array((void*)args, size[0]);
 		node = node->next;
 	}
 	return (1);
