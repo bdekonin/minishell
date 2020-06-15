@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/14 10:13:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 10:49:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ int main(int argc, char **argv, char **envp)
 	** End initializing prompt
 	*/
 
-	int stat;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	// signal(SIGQUIT, SIG_IGN);

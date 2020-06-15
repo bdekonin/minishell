@@ -6,14 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/14 09:34:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/14 19:38:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_H
 # define MAIN_H
 
-#include "get_next_line/get_next_line.h"
 #include "./libft/libft.h"
 #include <stdio.h>
 #include <dirent.h>
@@ -21,6 +20,7 @@
 #include <errno.h>
 #include <fcntl.h>
 
+#include "srcs/utils/node_list/node.h"
 #include "srcs/utils/history_list/history.h"
 #include "srcs/utils/env_list/env.h"
 

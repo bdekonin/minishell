@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/06/06 13:55:53 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/06/14 17:47:38 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ GREEN = \033[92m
 
 NAME = libft.a
 
-EXTRA_SRC = ft_swap_bonus.c ft_strsearch_bonus.c \
+EXTRA_SRC = get_next_line.c \
+ft_swap_bonus.c ft_strsearch_bonus.c \
 ft_wordcount_bonus.c ft_counter_bonus.c ft_intlen_bonus.c ft_abs_bonus.c \
 ft_free_array_bonus.c ft_charsearch_bonus.c ft_strcat_bonus.c \
 ft_str_tolower_bonus.c

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 21:55:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 10:49:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,14 @@ int env(t_vars *v, char *line, char **params)
 	}
 	v->argument_ret = ft_strdup("1");
 	(void)line;
+	(void)params;
 	return (1);
 }
 
 int exitt(t_vars *v, char *line, char **params)
 {
 	(void)line;
+	(void)(params);
 	env__ft_lstclear(&v->env_head, free);
 	his__ft_lstclear(&v->history_head, free); // DO THIS
 	exit(EXIT_SUCCESS);

@@ -6,38 +6,38 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/14 10:23:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 10:48:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-static int read_locations(char *str)
-{
-	int fd;
-	int ret;
-	char *line;
+// static int read_locations(char *str)
+// {
+// 	int fd;
+// 	int ret;
+// 	char *line;
 
-	ret = 1;
-	fd = open("srcs/utils/locations/bin.txt", O_RDONLY);
-	if (fd < 0)
-		return (-1);
-	while (ret > 0)
-	{
-		ret = get_next_line(fd, &line);
-		if (ret < 0)
-			return (-1);
-		if (!ft_strncmp(line, str, ft_strlen(str)))
-		{
-			ft_printf("Command found - [%s]\n", line);
-			return (1);
-		}
-		free(line);
-	}
-	close(fd);
-	ft_printf("Command not found\n");
-	return (0);
-}
+// 	ret = 1;
+// 	fd = open("srcs/utils/location_commands/bin.txt", O_RDONLY);
+// 	if (fd < 0)
+// 		return (-1);
+// 	while (ret > 0)
+// 	{
+// 		ret = get_next_line(fd, &line);
+// 		if (ret < 0)
+// 			return (-1);
+// 		if (!ft_strncmp(line, str, ft_strlen(str)))
+// 		{
+// 			ft_printf("Command found - [%s]\n", line);
+// 			return (1);
+// 		}
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	ft_printf("Command not found\n");
+// 	return (0);
+// }
 
 char		*cmd_str(int i)
 {
@@ -80,9 +80,9 @@ int run_command(t_vars *v, char **params, int pos_flag)
 			return ((*p[i])(v, v->argv[v->i] + pos_flag, params + 1));
 		i++;
 	}
-	if (read_locations(params[0]))
-		ft_execve(v, ft_strjoin("/bin/", params[0]), params);
-	else
+	// if (read_locations(params[0]))
+	// 	ft_execve(v, ft_strjoin("/bin/", params[0]), params);
+	// else
 		ft_printf(cmd_notfound, v->__executable + 2, params[0]);
 	v->argument_ret = ft_strdup("0"); // maybe 1?
 	if (!v->argument_ret)

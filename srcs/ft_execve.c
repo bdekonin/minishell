@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 17:18:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 10:48:49 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,10 @@ int					ft_execve(t_vars *v, char *path, char **params)
 	int stat;
 	pid_t spoon;
 
+	envp = NULL;
 	envp = __linkedlist_to_array(v, envp, v->env_head);
-	// if (!envp)
+	if (!envp)
+		return (0);
 	spoon = fork();
 	if (!spoon)
 	{
