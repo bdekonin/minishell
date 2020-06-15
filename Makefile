@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/06/14 19:37:45 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/06/15 13:43:43 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ CC = gcc -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra -g $(SRCS) $(LIBFT) $(FT_PRINTF) -o  minishell
+	gcc -Wall -Wextra $(SRCS) $(LIBFT) $(FT_PRINTF) -o  minishell
 
 c: $(NAME)
 	make re && ./minishell

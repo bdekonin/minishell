@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 10:48:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 16:25:03 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,11 @@ char		*cmd_str(int i)
 	return (cmd_str[i]);
 }
 
-int run_command(t_vars *v, char **params, int pos_flag)
+int run_command(t_vars *v, char **params, t_node *node)
 {
 	int i = 0;
-	if (!params[0])
-	{
-		// ft_printf("param[0] = %s\n", params[0]);
-		return (0);
-	}
 
-	int (*p[8]) (t_vars *v, char *str, char **params);
+	int (*p[8]) (t_vars *v, t_node *node, char **params);
 	p[0] = echo;
 	p[1] = cd;
 	p[2] = pwd;
@@ -77,7 +72,7 @@ int run_command(t_vars *v, char **params, int pos_flag)
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
-			return ((*p[i])(v, v->argv[v->i] + pos_flag, params + 1));
+			return ((*p[i])(v, node, params + 1));
 		i++;
 	}
 	// if (read_locations(params[0]))
@@ -104,39 +99,25 @@ t_history *__init_set_history(t_vars *v)
 	return (v->history_head);
 }
 
-int run_cmd(t_vars *v, char **argv, int index)
+int run_cmd(t_vars *v, t_node *node)
 {
 	char	**args;
 	int		size[2];
-	int		pos_flag = 0;
 
-	while (argv[index])
+	while (node)
 	{
 		v->flag_i = 0;
-		args = ft_split_lars(argv[index], ' ', &size[0]);
-		if (!run_command(v, args, 0))
+		args = ft_split_lars(node->line, ' ', &size[0]);
+		if (!run_command(v, args, node))
 			return (0);
-		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(argv[index]), ft_strdup(v->argument_ret), ft_strdup(v->line)));
-		static int count;
-		if (!count)
-			count = ft_counter(v->argv[index], '|') + ft_counter(v->argv[index], '>');
-			// count = ft_counter(v->argv[index], '|');
-		while (count > 0)
+		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(node->line), ft_strdup(v->argument_ret), ft_strdup(v->line))); // protect
+		if (node->line[node->i] == '|' || node->line[node->i] == '>')
 		{
-			free(v->argument_ret);
-			char **test;
-			// // v->flag_i += ft_charsearch(v->argv[index] + v->flag_i, '|') + ft_charsearch(v->argvk[index] + v->flag_i, '>') + 1; // add other flags
-			v->flag_i += ft_charsearch(v->argv[index] + v->flag_i, '|') + 1; // add other flags
-				test = ft_split_lars(argv[index] + v->flag_i + 1, ' ', &size[1]);
-			run_command(v, test, v->flag_i);
-			his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(argv[index] + v->flag_i), ft_strdup(v->argument_ret), ft_strdup(v->line)));
-			ft_free_array((void*)test, size[1]);
-			count--;
+			// ft_printf("found a flag [%s]\n", node->line + node->i);
 		}
 		free(v->argument_ret);
 		ft_free_array((void*)args, size[0]);
-		index++;
-		pos_flag = 0;
+		node = node->next;
 	}
 	return (1);
 }
@@ -144,22 +125,32 @@ int run_cmd(t_vars *v, char **argv, int index)
 void	read_user_input(t_vars *v)
 {
 	int size;
-	t_history *history;
+	char **argv_semicolen;
+	char	*trimline;
+	t_history	*history;
 
 	history = __init_set_history(v);
 	ft_printf(v->prefix, v->__logname, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
 	if (v->ret < 0)
 		exit(1);
-	if (*v->line != 0)
+	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
 	{
 		v->i = 0;
-		v->argv = ft_split_lars(v->line, ';', &size);
+		argv_semicolen = ft_split_lars(v->line, ';', &size);
+		for (int j = 0; j < size; j++)
+		{
+			trimline = ft_strtrim(argv_semicolen[j], " \t");
+			if (!trimline)
+				return ; // free llist
+			node__ft_lstadd_back(&v->nodehead, node__ft_lstnew(';', 0, trimline));
+		}
 		if (!v->argv)
 			exit(EXIT_FAILURE);
-		if (!run_cmd(v, v->argv, 0))
+		if (!run_cmd(v, v->nodehead->next))
 			exit(EXIT_FAILURE);
-		ft_free_array((void*)v->argv, size);
+		ft_free_array((void*)argv_semicolen, size);
 	}
 	free(v->line);
 }
+// cd ..  | echo | pwd ; env && env ; env

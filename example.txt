@@ -1,18 +1,19 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         ::::::::             #
-#    example.txt                                        :+:    :+:             #
-#                                                      +:+                     #
-#    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
-#                                                    +#+                       #
-#    Created: 2020/06/14 17:36:52 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/06/15 11:02:14 by bdekonin      ########   odam.nl          #
-#                                                                              #
-# **************************************************************************** #
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/06/14 17:36:52 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/06/15 13:54:42 by bdekonin      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
 // #include "main.h"
-#include "node_list/node.h"
+#include "srcs/utils/node_list/node.h"
 #include "libft/libft.h"
+#include "main.h"
 
 int		get_next_line(int fd, char **line);
 
@@ -40,28 +41,38 @@ static int findflag(char *str, char *flags)
 int main(void)
 {
 	t_node *lst;
+	t_node *lst2;
 	char	*line;
+	char	*line2;
 	int		ret;
 	int		type;
 	int		*tmp;
 	int		*tmp2;
+	int splitted_size;
 
 	int index = 0;
 	char **argv;
 	char **argv2;
 
 	ret = 1;
+	lst = node__ft_lstnew(0, 0, malloc(1));
+	printf("----Testing starting----\n");
 	while (ret > 0)
 	{
+		lst2 = lst;
 		index = 0;
 		ret = get_next_line(0, &line);
-
-		for (int count = 0; count < ft_counter(line, '|') + ft_counter(line, ';'); count++)
-			{
-				index += findflag(line + index, "|;");
-				
-			}
-		ft_substr(line, 0, index);
+		argv = ft_split_lars(line, ';', &splitted_size);
+		for (int i = 0; i < splitted_size; i++)
+		{
+			line2 = ft_strtrim(argv[i], " \t");
+			node__ft_lstadd_back(&lst, node__ft_lstnew(0, 0, line2));
+		}
+		while (lst2)
+		{
+			printf("lst2 = [%s]\n", lst2->argv);
+			lst2 = lst2->next;
+		}
 		free(line);
 	}
 	return (1);

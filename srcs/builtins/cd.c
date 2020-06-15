@@ -6,14 +6,14 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/12 16:08:00 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 16:23:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
 
-int cd(t_vars *v, char *line, char **params)
+int cd(t_vars *v, t_node *node, char **params)
 {
 	/*
 	** Sources
@@ -57,7 +57,7 @@ int cd(t_vars *v, char *line, char **params)
 	}
 	else
 	{
-		dir = removespace(v, ft_strnstr(line, "cd", ft_strlen(line)) + 2);
+		dir = removespace(v, ft_strnstr(node->line, "cd", ft_strlen(node->line)) + 2);
 		if (!dir)
 			return (0);
 		ret = chdir(dir);
@@ -73,5 +73,6 @@ int cd(t_vars *v, char *line, char **params)
 		ft_strlcpy(v->__oldpwd, oldpwd_backup, PATH_MAX);
 	}
 	v->current_path = getcwd(v->current_path, PATH_MAX);
+	node->i += findflag(node->line, "|><");
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/11 21:53:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 16:18:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	find_env_var_name(t_env **head, char **name, char **content)
 	return (0); //new name found in env list
 }
 
-int 			exportt(t_vars *v, char *line, char **params)
+int 			exportt(t_vars *v, t_node *node, char **params)
 {
 	char	**array;
 	size_t	size;

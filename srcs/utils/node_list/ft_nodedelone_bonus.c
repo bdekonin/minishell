@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_hisdelone_bonus.c                               :+:    :+:            */
+/*   ft_nodedelone_bonus.c                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/26 12:51:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/14 21:06:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 16:20:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	node__ft_lstdelone(t_node *lst, void (*del)(void*))
 		return ;
 	if (del)
 	{
-		del(lst->type);
-		del(lst->size);
-		del(lst->argv);
+		del(lst->line);
 	}
 	free(lst);
 }

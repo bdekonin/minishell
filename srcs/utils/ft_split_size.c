@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_split_lars.c                                    :+:    :+:            */
+/*   ft_split_size.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/04 08:22:37 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/19 23:29:15 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 13:59:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,17 @@ static char		**init_array(char const *s, char c, size_t count, char **array)
 	}
 	return (array);
 }
+
+/*
+** Returns the read environment variable
+**
+** @param  char const *s	The line
+** @param  char c			The seperator
+** @param  int *lst_size	the adress of a int,
+**							where the splitted size will be put.
+**
+** @return char**			splitted line
+*/
 
 char			**ft_split_lars(char const *s, char c, int *lst_size)
 {

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/14 10:21:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 16:20:49 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static char				**make_param(char *ppid)
 ** @return int				0 = correct
 */
 
-static int				leaks(t_vars *v)
+int				leaks(t_vars *v)
 {
 	char **arr;
 
@@ -90,6 +90,20 @@ static int				his(t_vars *v)
 	return (0);
 }
 
+int				nodes(t_vars *v)
+{
+	t_node *node;
+
+	node = v->nodehead;
+	ft_printf("---- Nodes list ----\nLines\t\t\t\tCommands\t\t\t\tOutput\n");
+	while (node)
+	{
+		ft_printf("[%s]\n", node->line);
+		node = node->next;
+	}
+	return (0);
+}
+
 /*
 ** Shows importent information such as, current pids & leaks & history
 **
@@ -101,7 +115,7 @@ static int				his(t_vars *v)
 **							-1 = malloc fail
 */
 
-int						debug(t_vars *v, char *line, char **params)
+int						debug(t_vars *v, t_node *node, char **params)
 {
 	int ret;
 
@@ -110,9 +124,10 @@ int						debug(t_vars *v, char *line, char **params)
 		ret += leaks(v);
 	if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
 		ret += his(v);
+	if ((params[0] && !ft_strncmp(params[0], "nodes", 9)) || !params[0])
+		ret += nodes(v);
 	v->argument_ret = (ret) ? ft_strdup("0") : ft_strdup("1");
 	if (!v->argument_ret)
 		return (0);
-	(void)line;
 	return (1);
 }

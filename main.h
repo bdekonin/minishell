@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/14 19:38:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 16:18:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct		s_vars
 {
 	t_env			*env_head; // DO NOT CHANGE THE VALUE!
 	t_history		*history_head; // DO NOT CHANGE THE VALUE!
+	t_node			*nodehead;
 
 	char			*prefix;
 	char			*current_path;
@@ -66,23 +67,27 @@ int				ft_dprintf(int fd, const char *fmt, ...);
 int				ft_vdprintf(int fd, const char *fmt, va_list argp);
 
 char *removespace(t_vars *v, char *line);
-void	read_user_input(t_vars *v);
+// void	read_user_input(t_vars *v);
 char	**ft_split_lars(char const *s, char c, int *lst_size);
 
 // int	run_command(t_vars *v, char **params);
 
 // tijdelijke gevulde functies
-int echo(t_vars *v, char *line, char **params);
-int	cd(t_vars *v, char *line, char **params);
-int pwd(t_vars *v, char *line, char **params);
-int exportt(t_vars *v, char *line, char **params);
-int unset(t_vars *v, char *line, char **params);
-int env(t_vars *v, char *line, char **params);
-int exitt(t_vars *v, char *line, char **params);
-int debug(t_vars *v, char *line, char **params);
+int echo(t_vars *v, t_node *node, char **params);
+int	cd(t_vars *v, t_node *node, char **params);
+int pwd(t_vars *v, t_node *node, char **params);
+int exportt(t_vars *v, t_node *node, char **params);
+int unset(t_vars *v, t_node *node, char **params);
+int env(t_vars *v, t_node *node, char **params);
+int exitt(t_vars *v, t_node *node, char **params);
+int debug(t_vars *v, t_node *node, char **params);
 
 int ft_execve(t_vars *v, char *file, char **params);
 
 char *find_environment_variable(t_vars *v, char *line);
+
+int				leaks(t_vars *v);
+
+int findflag(char *str, char *flags); // returns i of first flag found
 
 #endif

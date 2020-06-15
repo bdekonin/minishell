@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 10:49:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/15 15:58:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-
-int segfault = 0;
 
 int env__makelist(t_vars *v, char **envp)
 {
@@ -88,6 +86,8 @@ int env__makelist(t_vars *v, char **envp)
 	return (1);
 }
 
+void	read_user_input(t_vars *v);
+
 int main(int argc, char **argv, char **envp)
 {
 	ft_printf("---- Starting ----\n\n");
@@ -115,9 +115,10 @@ int main(int argc, char **argv, char **envp)
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
-	// signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		v.nodehead = node__ft_lstnew(0, 0, ft_strdup("."));
 		read_user_input(&v);
+		node__ft_lstclear(&v.nodehead, free); // reset the list.
 	}
 }
