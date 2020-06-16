@@ -6,38 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 11:44:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 19:59:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-// static int read_locations(char *str)
-// {
-// 	int fd;
-// 	int ret;
-// 	char *line;
-
-// 	ret = 1;
-// 	fd = open("srcs/utils/location_commands/bin.txt", O_RDONLY);
-// 	if (fd < 0)
-// 		return (-1);
-// 	while (ret > 0)
-// 	{
-// 		ret = get_next_line(fd, &line);
-// 		if (ret < 0)
-// 			return (-1);
-// 		if (!ft_strncmp(line, str, ft_strlen(str)))
-// 		{
-// 			ft_printf("Command found - [%s]\n", line);
-// 			return (1);
-// 		}
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	ft_printf("Command not found\n");
-// 	return (0);
-// }
 
 char		*cmd_str(int i)
 {
@@ -75,11 +48,8 @@ int run_command(t_vars *v, char **params, t_node *node, char **ret)
 			return ((*p[i])(v, node, params + 1, ret));
 		i++;
 	}
-	// ft_printf("ret = %s\n", *ret);
-	// if (read_locations(params[0]))
-	// 	ft_execve(v, ft_strjoin("/bin/", params[0]), params);
-	// else
-		ft_printf(cmd_notfound, v->__executable + 2, params[0]);
+	ft_execve(v, node, params);
+	ft_printf(cmd_notfound, v->__executable + 2, params[0]);
 	*ret = ft_strdup("0"); // maybe 1?
 	if (!*ret)
 		return (0);

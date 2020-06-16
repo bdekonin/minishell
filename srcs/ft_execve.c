@@ -6,11 +6,39 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 10:48:49 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 20:05:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
+
+static char *look_in_locations(t_vars *v, int i, char *command) // make sure it also checks it types of file
+{
+	DIR *d;
+	struct dirent *dir;
+	char **locs;
+
+	locs = ft_split(v->__path->content, ':');
+	if (!locs)
+		return (NULL);
+	while (locs[i])
+	{
+		d = opendir(locs[i]);
+		while ((dir = readdir(d)) != NULL)
+		{
+			// printf("%s\n", dir->d_name);
+			if (!ft_strncmp(command, dir->d_name, 1024))
+			{
+				closedir(d);
+				return (ft_strjoin(locs[i], ft_strjoin("/", command)));
+			}
+		}
+		closedir(d);
+		i++;
+	}
+	return (NULL);
+	// ft_printf("path = [%s]\n", v->__path->content);
+}
 
 /*
 ** Converts the linked list environ to a array of strings. Terminated by NULL.
@@ -64,8 +92,9 @@ static char			**__linkedlist_to_array(t_vars *v, char **envp, t_env *head)
 ** @return char **			envp (filled)
 */
 
-int					ft_execve(t_vars *v, char *path, char **params)
+int					ft_execve(t_vars *v, t_node *node, char **params)
 {
+	char *path;
 	char **envp;
 	int stat;
 	pid_t spoon;
@@ -74,7 +103,15 @@ int					ft_execve(t_vars *v, char *path, char **params)
 	envp = __linkedlist_to_array(v, envp, v->env_head);
 	if (!envp)
 		return (0);
+	path = look_in_locations(v, 0, params[0]); // leaks
+	if (!path)
+		return (0);
 	spoon = fork();
+	ft_printf("path = %s\n", path);
+
+	for (int i = 0; params[i]; i++)
+		ft_printf("params = [%s]\n", params[i]);
+	// fork protect
 	if (!spoon)
 	{
 		if (execve(path, &params[0], envp) < 0)
@@ -89,4 +126,5 @@ int					ft_execve(t_vars *v, char *path, char **params)
 	if (WEXITSTATUS(stat) == EXIT_FAILURE)
 		return (0);
 	return (1);
+	(void)(node);
 }
