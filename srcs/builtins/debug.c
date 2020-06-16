@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 16:20:49 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 09:13:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int				leaks(t_vars *v)
 {
 	char **arr;
 
-	arr = make_param(v->__ppid);
+	arr = make_param(v->__$ppid);
 	if (!arr)
 		return (1);
 	ft_execve(v, "/usr/bin/leaks", arr);
@@ -80,7 +80,7 @@ static int				his(t_vars *v)
 
 	his = v->history_head;
 	ft_printf("---- History list ----\nLines\t\t\t\tCommands\t\t\t\tOutput\n");
-	ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", v->line, v->argv[v->i], "1");
+	ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", v->line, v->nodehead->line, "1");
 	while (his)
 	{
 		ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", \
@@ -90,12 +90,33 @@ static int				his(t_vars *v)
 	return (0);
 }
 
+
+
+
+int				dir(t_vars *v) // will be used to check if PATH 
+{
+	DIR *d;
+	struct dirent *dir;
+
+	d = opendir(".");
+	if (d)
+	{
+		while ((dir = readdir(d)) != NULL)
+		{
+			printf("%s\n", dir->d_name);
+		}
+		closedir(d);
+	}
+	return(0);
+	(void)(v);
+}
+
 int				nodes(t_vars *v)
 {
 	t_node *node;
 
 	node = v->nodehead;
-	ft_printf("---- Nodes list ----\nLines\t\t\t\tCommands\t\t\t\tOutput\n");
+	ft_printf("---- Nodes list ----\n");
 	while (node)
 	{
 		ft_printf("[%s]\n", node->line);
@@ -115,19 +136,22 @@ int				nodes(t_vars *v)
 **							-1 = malloc fail
 */
 
-int						debug(t_vars *v, t_node *node, char **params)
+int						debug(t_vars *v, t_node *node, char **params, char **ret)
 {
-	int ret;
+	int error;
 
-	ret = 0;
+	error = 0;
 	if ((params[0] && !ft_strncmp(params[0], "leaks", 7)) || !params[0])
-		ret += leaks(v);
+		error += leaks(v);
 	if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
-		ret += his(v);
+		error += his(v);
 	if ((params[0] && !ft_strncmp(params[0], "nodes", 9)) || !params[0])
-		ret += nodes(v);
-	v->argument_ret = (ret) ? ft_strdup("0") : ft_strdup("1");
-	if (!v->argument_ret)
+		error += nodes(v);
+	if ((params[0] && !ft_strncmp(params[0], "dir", 9)) || !params[0])
+		error += dir(v);
+	*ret = (error) ? ft_strdup("0") : ft_strdup("1");
+	if (!*ret)
 		return (0);
+	(void)node;
 	return (1);
 }

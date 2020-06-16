@@ -6,11 +6,34 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 16:18:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 11:40:52 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
+
+
+/*
+** TODO lars
+**
+**
+**
+**
+**         \#      Replace with a `#' character.  This would be useful when
+**                 you need a `#' as the first character in one of the argu-
+**                 ments created by splitting apart the given string.
+**         \$      Replace with a `$' character.
+**         \_      If this is found inside of a double-quoted string, then
+**                 replace it with a single blank.  If this is found outside
+**                 of a quoted string, then treat this as the separator char-
+**                 acter between new arguments in the original string.
+**         \"      Replace with a <double quote> character.
+**         \'      Replace with a <single quote> character.
+**         \\      Replace with a backslash character.
+**
+*/
+
+
 
 static size_t	count_vars(char **params)
 {
@@ -67,21 +90,20 @@ static int	find_env_var_name(t_env **head, char **name, char **content)
 	return (0); //new name found in env list
 }
 
-int 			exportt(t_vars *v, t_node *node, char **params)
+int 			exportt(t_vars *v, t_node *node, char **params, char **ret)
 {
 	char	**array;
 	size_t	size;
 	size_t	i;
 	char	*dst_name;
 	char	*dst_content;
-	int test;
 	// printf("params [1]%s", params[0]);
 
 	size = count_vars(&params[0]);
 	i = 0;
 	while (i < size)
 	{
-		array = ft_split_lars(params[i], '=', &test); //rename to ft_split
+		array = ft_split(params[i], '='); //rename to ft_split
 		if (!array)
 			return (0); //malloc
 		if (!trim_strings(&dst_name, &dst_content, array))
@@ -93,6 +115,9 @@ int 			exportt(t_vars *v, t_node *node, char **params)
 		}
 		i++;
 	}
-	v->argument_ret = ft_strdup("0");
+	*ret= ft_strdup("0");
+	// if (!*ret)
+	//return
+	(void)(node);
 	return (1);
 }

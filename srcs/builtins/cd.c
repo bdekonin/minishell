@@ -6,14 +6,14 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 16:23:02 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 09:08:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
 
-int cd(t_vars *v, t_node *node, char **params)
+int cd(t_vars *v, t_node *node, char **params, char **ret)
 {
 	/*
 	** Sources
@@ -42,37 +42,36 @@ int cd(t_vars *v, t_node *node, char **params)
 	** cd ; pwd ; cd Documents/Projects/$p/Test\ ing\ ing/
 	*/
 	char		*dir;
-	int			ret;
+	int			ret_chdir;
 	char 		oldpwd_backup[PATH_MAX];
 
 	ft_strlcpy(oldpwd_backup, v->current_path, ft_strlen(v->current_path) + 1);
 	if (!params[0] || !ft_strncmp("|", params[0], 3))
-		ret = chdir(v->__homedir);
+		ret_chdir = chdir(v->__homedir);
 	else if (!ft_strncmp(params[0], "--", 3) || !ft_strncmp(params[0], "~", 2))
-		ret = chdir(v->__homedir);
+		ret_chdir = chdir(v->__homedir);
 	else if (!ft_strncmp(params[0], "-", 3))
 	{
 		ft_printf("%s\n", v->__oldpwd);
-		ret = chdir(v->__oldpwd);
+		ret_chdir = chdir(v->__oldpwd);
 	}
 	else
 	{
 		dir = removespace(v, ft_strnstr(node->line, "cd", ft_strlen(node->line)) + 2);
 		if (!dir)
 			return (0);
-		ret = chdir(dir);
-		if (ret == -1)
+		ret_chdir = chdir(dir);
+		if (ret_chdir == -1)
 			ft_printf("cd: no such file or directory: %s\n", dir);
 		free(dir);
 	}
-	if (ret == -1)
-		v->argument_ret = ft_strdup("1");
+	if (ret_chdir == -1)
+		*ret = ft_strdup("1");
 	else
 	{
-		v->argument_ret = ft_strdup("0");
+		*ret = ft_strdup("0");
 		ft_strlcpy(v->__oldpwd, oldpwd_backup, PATH_MAX);
 	}
 	v->current_path = getcwd(v->current_path, PATH_MAX);
-	node->i += findflag(node->line, "|><");
 	return (1);
 }

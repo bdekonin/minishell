@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 17:26:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 11:44:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ char		*cmd_str(int i)
 	return (cmd_str[i]);
 }
 
-int run_command(t_vars *v, char **params, t_node *node)
+int run_command(t_vars *v, char **params, t_node *node, char **ret)
 {
 	int i = 0;
 
-	int (*p[8]) (t_vars *v, t_node *node, char **params);
+	int (*p[8]) (t_vars *v, t_node *node, char **params, char **ret);
 	p[0] = echo;
 	p[1] = cd;
 	p[2] = pwd;
@@ -72,15 +72,16 @@ int run_command(t_vars *v, char **params, t_node *node)
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
-			return ((*p[i])(v, node, params + 1));
+			return ((*p[i])(v, node, params + 1, ret));
 		i++;
 	}
+	// ft_printf("ret = %s\n", *ret);
 	// if (read_locations(params[0]))
 	// 	ft_execve(v, ft_strjoin("/bin/", params[0]), params);
 	// else
 		ft_printf(cmd_notfound, v->__executable + 2, params[0]);
-	v->argument_ret = ft_strdup("0"); // maybe 1?
-	if (!v->argument_ret)
+	*ret = ft_strdup("0"); // maybe 1?
+	if (!*ret)
 		return (0);
 	return (-1);
 }
@@ -103,28 +104,28 @@ t_history *__init_set_history(t_vars *v)
 
 int run_cmd(t_vars *v, t_node *node)
 {
-	t_node	*newnode = NULL;
+	t_node	*newnode;
+	char	*ret = NULL;
 	char	**args;
-	int		size[2];
+	size_t	splitsize;
 
 	while (node)
 	{
-		ft_printf("current type %c\n", node->type);
-		args = ft_split_lars(node->line, ' ', &size[0]);
-		if (!run_command(v, args, node))
+		args = ft_split_sep(node->line, " \t", &splitsize);
+		if (!run_command(v, args, node, &ret))
 			return (0);
-		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(node->line), ft_strdup(v->argument_ret), ft_strdup(v->line))); // protect
-		if (node->line[node->i] == '|' || node->line[node->i] == '>')
+		node->i += findflag(node->line, "|><");
+		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(node->line), ft_strdup(ret), ft_strdup(v->line))); // protect
+		if (node->line[node->i] == '|' || node->line[node->i] == '>' || node->line[node->i] == '<')		
 		{
 			newnode = node__ft_lstnew(node->line[node->i], 0, node->line + (node->i + 1));
 			// if (!newnode)
 			// 	return (0);
 			ft_printf("			found a flag [%s]\n", newnode->line + newnode->i);
-			// ft_printf("ret = %dn\n", run_cmd(v, newnode));
 			run_cmd(v, newnode);
 		}
-		// free(v->argument_ret);
-		// ft_free_array((void*)args, size[0]);
+		free(ret);
+		ft_free_array((void*)args, (int)splitsize);
 		node = node->next;
 	}
 	return (1);
@@ -132,7 +133,7 @@ int run_cmd(t_vars *v, t_node *node)
 
 void	read_user_input(t_vars *v)
 {
-	int size;
+	size_t	splitsize;
 	char **argv_semicolen;
 	char	*trimline;
 	t_history	*history;
@@ -144,20 +145,17 @@ void	read_user_input(t_vars *v)
 		exit(1);
 	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
 	{
-		v->i = 0;
-		argv_semicolen = ft_split_lars(v->line, ';', &size);
-		for (int j = 0; j < size; j++)
+		argv_semicolen = ft_split_sep(v->line, ";", &splitsize);
+		for (int j = 0; j < (int)splitsize; j++)
 		{
 			trimline = ft_strtrim(argv_semicolen[j], " \t");
 			if (!trimline)
 				return ; // free llist
 			node__ft_lstadd_back(&v->nodehead, node__ft_lstnew(';', 0, trimline));
 		}
-		if (!v->argv)
-			exit(EXIT_FAILURE);
 		if (!run_cmd(v, v->nodehead->next))
 			exit(EXIT_FAILURE);
-		ft_free_array((void*)argv_semicolen, size);
+		// ft_free_array((void*)argv_semicolen, splitsize);
 	}
 	free(v->line);
 }
