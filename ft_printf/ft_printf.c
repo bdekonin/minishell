@@ -6,38 +6,87 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/05 14:53:01 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/29 10:47:27 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/05/17 14:58:54 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		ft_vdprintf(int fd, const char *fmt, va_list argp)
+int	alloc_conversion(const char *fmt, t_list *flags, int i, va_list argp)
 {
-	t_list		flags;
-
-	flags.fd = fd;
-	return (read_fmt(fmt, argp, &flags));
+	if (fmt[i] == '%')
+		return (format_char(flags, '%'));
+	if (fmt[i] == 'c')
+		return (format_char(flags, va_arg(argp, int)));
+	if (fmt[i] == 's')
+		flags->bstr = ft_printf_strdup(va_arg(argp, char *));
+	if (fmt[i] == 'p')
+		flags->bstr = ft_ptr(va_arg(argp, unsigned long long), flags);
+	if (fmt[i] == 'd' || fmt[i] == 'i')
+		flags->bstr = ft_itoa(va_arg(argp, int), flags);
+	if (fmt[i] == 'u')
+		flags->bstr = ft_uitoa(va_arg(argp, unsigned int), flags);
+	if (fmt[i] == 'x' || fmt[i] == 'X')
+		flags->bstr = ft_uitohex(va_arg(argp, unsigned int), flags);
+	if (!flags->bstr)
+		return (0);
+	return (1);
 }
 
-int		ft_printf(const char *fmt, ...)
+int	convert_arg(const char *fmt, t_list *flags, int i, va_list argp)
 {
-	va_list		argp;
-	int			ret;
+	if (!alloc_conversion(fmt, flags, i, argp))
+		return (free_struct(flags));
+	if (flags->conversion == 'c' || flags->conversion == '%')
+		return (1);
+	if (flags->conversion == 's' && !format_str(flags))
+		return (free_struct(flags));
+	if (ft_csearch(flags->conversion, "pdiuxX") > -1 && !format_int(flags))
+		return (free_struct(flags));
+	if (!ft_putstr(flags))
+		return (free_struct(flags));
+	free(flags->fstr);
+	return (1);
+}
 
-	va_start(argp, fmt);
-	ret = ft_vdprintf(1, fmt, argp);
-	va_end(argp);
+int	read_fmt(const char *fmt, va_list argp, t_list *flags)
+{
+	int i;
+	int ret;
+
+	i = 0;
+	ret = 0;
+	while (fmt[i])
+	{
+		if (fmt[i] == '%')
+		{
+			i++;
+			flags = init_flags(fmt + i, argp);
+			if (!flags)
+				return (-1);
+			i += flags->n_flags;
+			if (!convert_arg(fmt, flags, i, argp))
+				return (-1);
+			ret += flags->len_fstr - 1;
+			free(flags);
+		}
+		else if (write(1, fmt + i, 1) != 1)
+			return (-1);
+		ret++;
+		i++;
+	}
 	return (ret);
 }
 
-int		ft_dprintf(int fd, const char *fmt, ...)
+int	ft_printf(const char *fmt, ...)
 {
-	va_list		argp;
-	int			ret;
+	va_list	argp;
+	int		ret;
+	t_list	*flags;
 
+	flags = 0;
 	va_start(argp, fmt);
-	ret = ft_vdprintf(fd, fmt, argp);
+	ret = read_fmt(fmt, argp, flags);
 	va_end(argp);
 	return (ret);
 }

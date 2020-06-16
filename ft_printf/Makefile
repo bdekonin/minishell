@@ -1,4 +1,4 @@
-# **************************************************************************** #
+#******************************************************************************#
 #                                                                              #
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
@@ -6,15 +6,15 @@
 #    By: lverdoes <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/11 15:22:52 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/05/17 19:41:59 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/01/24 17:05:22 by lverdoes      ########   odam.nl          #
 #                                                                              #
-# **************************************************************************** #
+#******************************************************************************#
 
 NAME = libftprintf.a
 
-SRC =	ft_printf.c ft_printf_2.c printf_utils.c libft_utils.c \
-		init_flags.c format_int.c format_int_2.c format_str.c format_char.c \
-		ft_itoa.c ft_uitohex.c ft_uitoa.c ft_ptr.c
+SRC =	ft_printf.c printf_utils.c libft_utils.c init_flags.c format_int.c \
+		format_int_2.c format_str.c format_char.c ft_itoa.c ft_uitohex.c \
+		ft_uitoa.c ft_ptr.c
 
 OBJ =	$(SRC:.c=.o)
 
