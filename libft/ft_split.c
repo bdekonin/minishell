@@ -6,102 +6,19 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/14 16:18:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/09 15:21:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 10:54:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	get_start(char const *str, char c, size_t start, size_t len)
+char			**ft_split(char const *s, char c)
 {
-	size_t i;
+	size_t	temp_size;
+	char	sep[2];
 
-	i = start + len;
-	while (str[i] != '\0' && str[i] == c)
-		i++;
-	return (i);
+	sep[0] = c;
+	sep[1] = '\0';
+	return (ft_split_sep(s, sep, &temp_size));
 }
 
-static size_t	get_len(char const *str, char c, size_t start)
-{
-	size_t i;
-	size_t len;
-
-	i = start;
-	len = 0;
-	while (str[i] != '\0' && str[i] != c)
-	{
-		i++;
-		len++;
-	}
-	return (len);
-}
-
-static size_t	count_str(char const *str, char c)
-{
-	size_t i;
-	size_t count;
-
-	i = 0;
-	count = 0;
-	if (c == '\0' && str[i] != '\0')
-		return (1);
-	while (str[i] != '\0')
-	{
-		if (str[i] != c)
-		{
-			count++;
-			while (str[i] != c && str[i] != '\0')
-				i++;
-		}
-		while (str[i] == c)
-			i++;
-	}
-	return (count);
-}
-
-static char		**init_array(char const *s, char c, size_t count, char **array)
-{
-	size_t i;
-	size_t start;
-	size_t len;
-
-	i = 0;
-	start = 0;
-	len = 0;
-	while (i < count)
-	{
-		start = get_start(s, c, start, len);
-		len = get_len(s, c, start);
-		array[i] = ft_substr(s, start, len);
-		if (!array[i])
-		{
-			while (i > 0)
-			{
-				i--;
-				free(array[i]);
-			}
-			free(array);
-			return (0);
-		}
-		i++;
-	}
-	return (array);
-}
-
-char			**ft_split_lars(char const *s, char c)
-{
-	char	**array;
-	size_t	count;
-
-	if (!s)
-		return (0);
-	count = count_str(s, c);
-	array = (char**)malloc((count + 1) * sizeof(char*));
-	if (!array)
-		return (0);
-	array = init_array(s, c, count, array);
-	if (array)
-		array[count] = 0;
-	return (array);
-}
