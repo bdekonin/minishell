@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 17:23:36 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 11:43:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,13 @@ typedef struct		s_vars
 	char			*current_path;
 	char			*line;
 	int				ret;
-	char			**argv;
 
 	char			*__executable;	// another struct maybe?
 	char			*__logname;		// This too?
 	char			*__homedir;		//this aswell lars.
 	char			*__oldpwd; // location of old pwd
-	char			*__ppid; // pid of main program
-
-	int				i;
-
-	void			*argument_ret;
+	char			*__$ppid; // pid of main program
+	char			*__$path;
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
@@ -67,19 +63,18 @@ int				ft_vdprintf(int fd, const char *fmt, va_list argp);
 
 char *removespace(t_vars *v, char *line);
 // void	read_user_input(t_vars *v);
-char	**ft_split_lars(char const *s, char c, int *lst_size);
 
 // int	run_command(t_vars *v, char **params);
 
 // tijdelijke gevulde functies
-int echo(t_vars *v, t_node *node, char **params);
-int	cd(t_vars *v, t_node *node, char **params);
-int pwd(t_vars *v, t_node *node, char **params);
-int exportt(t_vars *v, t_node *node, char **params);
-int unset(t_vars *v, t_node *node, char **params);
-int env(t_vars *v, t_node *node, char **params);
-int exitt(t_vars *v, t_node *node, char **params);
-int debug(t_vars *v, t_node *node, char **params);
+int echo(t_vars *v, t_node *node, char **params, char **ret);
+int	cd(t_vars *v, t_node *node, char **params, char **ret);
+int pwd(t_vars *v, t_node *node, char **params, char **ret);
+int exportt(t_vars *v, t_node *node, char **params, char **ret);
+int unset(t_vars *v, t_node *node, char **params, char **ret);
+int env(t_vars *v, t_node *node, char **params, char **ret);
+int exitt(t_vars *v, t_node *node, char **params, char **ret);
+int debug(t_vars *v, t_node *node, char **params, char **ret);
 
 int ft_execve(t_vars *v, char *file, char **params);
 

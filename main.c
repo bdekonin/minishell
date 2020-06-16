@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 17:24:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/16 11:46:40 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,15 @@ int env__makelist(t_vars *v, char **envp)
 			free(env->content);
 			env->content = v->__oldpwd;
 		}
+			// ft_printf("%s=%s\n", env->name, env->content);
 		env = env->next;
 	}
-	if (!v->__ppid)
+	if (!v->__$ppid)
 	{
-		v->__ppid = ft_itoa(getpid());
-		if (!v->__ppid)
+		v->__$ppid = ft_itoa(getpid());
+		if (!v->__$ppid)
 			return (0);
-		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("PPID"), v->__ppid));
+		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("PPID"), v->__$ppid));
 	}
 	if (!v->__oldpwd)
 	{
@@ -92,10 +93,10 @@ int main(int argc, char **argv, char **envp)
 {
 	ft_printf("---- Starting ----\n\n");
 	t_vars v;
-	argc++; //  TIJDELIJK VOOR DE WARNING
-	argv[0] = NULL; // TIJDELIJK VOOR DE WARNING
+	(void)argc; // voor de warnign
+	(void)argv; // voor de warnign
 	v.__oldpwd = NULL;
-	v.__ppid = NULL;
+	v.__$ppid = NULL;
 
 	/*
 	** Initializing prompt
