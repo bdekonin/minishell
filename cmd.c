@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 19:59:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/18 15:25:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int run_cmd(t_vars *v, t_node *node)
 			newnode = node__ft_lstnew(node->line[node->i], 0, node->line + (node->i + 1));
 			// if (!newnode)
 			// 	return (0);
-			ft_printf("			found a flag [%s]\n", newnode->line + newnode->i);
+			// ft_printf("			found a flag [%s]\n", newnode->line + newnode->i);
 			run_cmd(v, newnode);
 		}
 		free(ret);
@@ -109,7 +109,7 @@ void	read_user_input(t_vars *v)
 	t_history	*history;
 
 	history = __init_set_history(v);
-	ft_printf(v->prefix, v->__logname, ft_strrchr(v->current_path, '/') + 1);
+	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
 	if (v->ret < 0)
 		exit(1);
@@ -125,7 +125,7 @@ void	read_user_input(t_vars *v)
 		}
 		if (!run_cmd(v, v->nodehead->next))
 			exit(EXIT_FAILURE);
-		// ft_free_array((void*)argv_semicolen, splitsize);
+		ft_free_array((void*)argv_semicolen, splitsize);
 	}
 	free(v->line);
 }

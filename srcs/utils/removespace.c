@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/14 09:45:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/18 11:57:51 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static char *standard_parse(t_vars *v, char *temp, char *line, int j)
 		if (*line == '$' || *line == '~')
 		{
 			if (*line == '~')
-				dir = v->__homedir;
+				dir = v->__homedir->content;
 			else
 				dir = find_environment_variable(v, line + 1);
 			if (!dir)

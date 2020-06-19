@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 19:49:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/18 14:13:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ typedef struct		s_vars
 	int				ret;
 
 	char			*__executable;	// another struct maybe?
-	char			*__logname;		// This too?
-	char			*__homedir;		//this aswell lars.
+	// char			*__homedir;		//this aswell lars.
 	char			*__oldpwd; // location of old pwd
 	char			*__$ppid; // pid of main program
 	// char			*__$path;
 
-	t_env			*__path;
+	t_env			*__path; // keeps the node * even if the pointer of the variable changes.
+	t_env			*__logname;
+	t_env			*__homedir;
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
@@ -81,8 +82,6 @@ int debug(t_vars *v, t_node *node, char **params, char **ret);
 int ft_execve(t_vars *v, t_node *node, char **params);
 
 char *find_environment_variable(t_vars *v, char *line);
-
-int				leaks(t_vars *v);
 
 int findflag(char *str, char *flags); // returns i of first flag found
 

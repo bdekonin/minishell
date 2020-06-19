@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 09:13:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/18 11:26:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ static char				**make_param(char *ppid)
 ** @return int				0 = correct
 */
 
-int				leaks(t_vars *v)
+int				leaks(t_vars *v, t_node *node)
 {
 	char **arr;
 
 	arr = make_param(v->__$ppid);
 	if (!arr)
 		return (1);
-	ft_execve(v, "/usr/bin/leaks", arr);
+	ft_execve(v, node, arr);
 	ft_free_array((void*)arr, 3);
 	ft_printf("\n");
 	return (0);
@@ -142,7 +142,7 @@ int						debug(t_vars *v, t_node *node, char **params, char **ret)
 
 	error = 0;
 	if ((params[0] && !ft_strncmp(params[0], "leaks", 7)) || !params[0])
-		error += leaks(v);
+		error += leaks(v, node);
 	if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
 		error += his(v);
 	if ((params[0] && !ft_strncmp(params[0], "nodes", 9)) || !params[0])
@@ -152,6 +152,5 @@ int						debug(t_vars *v, t_node *node, char **params, char **ret)
 	*ret = (error) ? ft_strdup("0") : ft_strdup("1");
 	if (!*ret)
 		return (0);
-	(void)node;
 	return (1);
 }

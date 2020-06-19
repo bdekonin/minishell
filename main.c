@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 19:38:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/18 14:13:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+
+// export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/bdekonin/Documents/Projects/minishell
 
 int env__makelist(t_vars *v, char **envp)
 {
@@ -49,9 +51,9 @@ int env__makelist(t_vars *v, char **envp)
 	while (env)
 	{
 		if (!ft_strncmp("LOGNAME", env->name, ft_strlen(env->name)))
-			v->__logname = env->content;
+			v->__logname = env;
 		if (!ft_strncmp("HOME", env->name, ft_strlen(env->name)))
-			v->__homedir = env->content;
+			v->__homedir = env;
 		if (!ft_strncmp("PWD", env->name, ft_strlen(env->name)))
 		{
 			free(env->content);
@@ -68,7 +70,8 @@ int env__makelist(t_vars *v, char **envp)
 		}
 		if (!ft_strncmp("PATH", env->name, ft_strlen(env->name))) // will go in here if you run it seperate
 			v->__path = env;
-			// ft_printf("%s=%s\n", env->name, env->content);
+		if (!ft_strncmp("PPID", env->name, ft_strlen(env->name))) // will go in here if you run it seperate
+			v->__$ppid = env->content;			
 		env = env->next;
 	}
 	if (!v->__$ppid)
@@ -97,8 +100,8 @@ int main(int argc, char **argv, char **envp)
 	t_vars v;
 	(void)argc; // voor de warnign
 	(void)argv; // voor de warnign
-	v.__oldpwd = NULL;
-	v.__$ppid = NULL;
+	v.__oldpwd = NULL; // can be overwritten.
+	v.__$ppid = NULL; // cant be overwritten.
 
 	/*
 	** Initializing prompt
@@ -115,9 +118,9 @@ int main(int argc, char **argv, char **envp)
 	/*
 	** End initializing prompt
 	*/
+	signal(SIGINT, SIG_IGN); // ctrl c
+	signal(SIGTSTP, SIG_IGN); // ctrl z
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
 	while (1)
 	{
 		v.nodehead = node__ft_lstnew(';', 0, ft_strdup("."));
@@ -125,3 +128,5 @@ int main(int argc, char **argv, char **envp)
 		node__ft_lstclear(&v.nodehead, free); // reset the list.
 	}
 }
+
+// /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/bdekonin/Documents/Projects/minishell
