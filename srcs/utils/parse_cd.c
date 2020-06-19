@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   removespace.c                                      :+:    :+:            */
+/*   parse_cd.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 11:57:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/19 15:35:56 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static char *standard_parse(t_vars *v, char *temp, char *line, int j)
 	return (temp);
 }
 
-char *removespace(t_vars *v, char *line)
+char *parse_cd(t_vars *v, char *line)
 {
 	char *temp;
 	int i;
@@ -117,9 +117,9 @@ char *removespace(t_vars *v, char *line)
 	if (!temp)
 		return (NULL);
 	i = 0;
-	while (line[i] == 32 || line[i] == '\t')// change to all whitespaces
+	while (line[i] == 32 || line[i] == '\t')
 		i++;
-	if (line[i] == 34 || line[i] == 39) // finish this
+	if (line[i] == 34 || line[i] == 39)
 		return (quote_complete(v, temp, line + i + 1, line[i]));
 	else
 		return (standard_parse(v, temp, line + i, 0));

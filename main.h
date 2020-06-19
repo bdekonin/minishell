@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 14:13:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/19 15:32:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int				ft_printf(const char *fmt, ...);
 int				ft_dprintf(int fd, const char *fmt, ...);
 int				ft_vdprintf(int fd, const char *fmt, va_list argp);
 
-char *removespace(t_vars *v, char *line);
+char *parse_cd(t_vars *v, char *line);
 // void	read_user_input(t_vars *v);
 
 // int	run_command(t_vars *v, char **params);
@@ -79,7 +79,7 @@ int env(t_vars *v, t_node *node, char **params, char **ret);
 int exitt(t_vars *v, t_node *node, char **params, char **ret);
 int debug(t_vars *v, t_node *node, char **params, char **ret);
 
-int ft_execve(t_vars *v, t_node *node, char **params);
+int					ft_execve(t_vars *v, t_node *node, char **params, char **ret);
 
 char *find_environment_variable(t_vars *v, char *line);
 

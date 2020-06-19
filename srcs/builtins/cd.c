@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 11:57:42 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/19 15:08:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int cd(t_vars *v, t_node *node, char **params, char **ret)
 	}
 	else
 	{
-		dir = removespace(v, ft_strnstr(node->line, "cd", ft_strlen(node->line)) + 2);
+		dir = parse_cd(v, ft_strnstr(node->line, "cd", ft_strlen(node->line)) + 2);
 		if (!dir)
 			return (0);
 		ret_chdir = chdir(dir);

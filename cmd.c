@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 15:25:38 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/19 15:37:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,16 @@ int run_command(t_vars *v, char **params, t_node *node, char **ret)
 			return ((*p[i])(v, node, params + 1, ret));
 		i++;
 	}
-	ft_execve(v, node, params);
+	i = ft_execve(v, node, params, ret);
+	if (!i)
+		return (0);
+	else if (i)
+		return (1);
 	ft_printf(cmd_notfound, v->__executable + 2, params[0]);
 	*ret = ft_strdup("0"); // maybe 1?
 	if (!*ret)
 		return (0);
-	return (-1);
+	return (1);
 }
 
 t_history *__init_set_history(t_vars *v)

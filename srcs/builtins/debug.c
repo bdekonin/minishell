@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 11:26:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/19 17:32:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,17 @@ static char				**make_param(char *ppid)
 ** @return int				0 = correct
 */
 
-int				leaks(t_vars *v, t_node *node)
+int				leaks(t_vars *v, t_node *node, char **ret)
 {
 	char **arr;
 
 	arr = make_param(v->__$ppid);
 	if (!arr)
 		return (1);
-	ft_execve(v, node, arr);
+	ft_execve(v, node, arr, ret);
 	ft_free_array((void*)arr, 3);
 	ft_printf("\n");
+	free(*ret);
 	return (0);
 }
 
@@ -142,7 +143,7 @@ int						debug(t_vars *v, t_node *node, char **params, char **ret)
 
 	error = 0;
 	if ((params[0] && !ft_strncmp(params[0], "leaks", 7)) || !params[0])
-		error += leaks(v, node);
+		error += leaks(v, node, ret);
 	if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
 		error += his(v);
 	if ((params[0] && !ft_strncmp(params[0], "nodes", 9)) || !params[0])

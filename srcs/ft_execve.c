@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 11:36:49 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/19 15:34:21 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,19 @@
 **
 */
 
-static char *look_in_locations(t_vars *v, int i, char *command) // make sure it also checks it types of file
+static int look_in_locations(t_vars *v, int i, char *command, char **path) // make sure it also checks it types of file
 {
-	DIR *d;
-	struct dirent *dir;
-	struct stat		sb;
-	char **locs;
+	DIR					*d;
+	struct dirent		*dir;
+	struct stat			sb;
+	char 				**locs;
+	size_t				size;
 
 	locs = ft_split(v->__path->content, ':');
 	if (!locs)
-		return (NULL);
+	{
+		return (0);
+	}
 	while (locs[i])
 	{
 		d = opendir(locs[i]);
@@ -48,52 +51,22 @@ static char *look_in_locations(t_vars *v, int i, char *command) // make sure it 
 			// printf("dir = %s\n", dir->d_name);
 			if (!ft_strncmp(command, dir->d_name, 1024))
 			{
-					lstat(dir->d_name, &sb);
-					int statchmod = sb.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
-
-					ft_printf("chmod:                 %d\n", statchmod);
-
-					switch (sb.st_mode & S_IFMT)
-					{
-						case S_IFBLK:  printf("block device\n");            break;
-						case S_IFCHR:  printf("character device\n");        break;
-						case S_IFDIR:  printf("directory\n");               break;
-						case S_IFIFO:  printf("FIFO/pipe\n");               break;
-						case S_IFLNK:  printf("symlink\n");                 break;
-						case S_IFREG:  printf("regular file\n");            break;
-						case 28672:	   printf("binary\n");            break;
-						case S_IFSOCK: printf("socket\n");                  break;
-						default:       printf("unknown?\n");                break;
-					}
-
-					// printf("I-node number:            %ld\n", (long) sb.st_ino);
-
-					// printf("Mode:                     %lo (octal)\n",
-					// 			(unsigned long) sb.st_mode);
-
-					// printf("Link count:               %ld\n", (long) sb.st_nlink);
-					// printf("Ownership:                UID=%ld   GID=%ld\n",
-					// 			(long) sb.st_uid, (long) sb.st_gid);
-
-					// printf("Preferred I/O block size: %ld bytes\n",
-					// 			(long) sb.st_blksize);
-					// printf("File size:                %lld bytes\n",
-					// 			(long long) sb.st_size);
-					// printf("Blocks allocated:         %lld\n",
-					// 			(long long) sb.st_blocks);
-
-					// printf("Last status change:       %s", ctime(&sb.st_ctime));
-					// printf("Last file access:         %s", ctime(&sb.st_atime));
-					// printf("Last file modification:   %s\n\n", ctime(&sb.st_mtime));
-			
+				lstat(dir->d_name, &sb);
+				int statchmod = sb.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
 				closedir(d);
-				return (ft_strjoin(locs[i], ft_strjoin("/", command)));
+				*path = ft_calloc(ft_strlen(locs[i]) + ft_strlen(command) + 2, sizeof(char));
+				*path = ft_strcat(*path, locs[i]);
+				*path = ft_strcat(*path, "/");
+				*path = ft_strcat(*path, command);
+				ft_free_array((void*)locs, ft_counter(v->__path->content, ':') + 1);
+				return (1);
 			}
 		}
 		closedir(d);
 		i++;
 	}
-	return (NULL);
+	ft_free_array((void*)locs, ft_counter(v->__path->content, ':') + 1);
+	return (0);
 	// ft_printf("path = [%s]\n", v->__path->content);
 }
 
@@ -149,7 +122,7 @@ static char			**__linkedlist_to_array(t_vars *v, char **envp, t_env *head)
 ** @return char **			envp (filled)
 */
 
-int					ft_execve(t_vars *v, t_node *node, char **params)
+int					ft_execve(t_vars *v, t_node *node, char **params, char **ret)
 {
 	char *path;
 	char **envp;
@@ -160,9 +133,11 @@ int					ft_execve(t_vars *v, t_node *node, char **params)
 	envp = __linkedlist_to_array(v, envp, v->env_head);
 	if (!envp)
 		return (0);
-	path = look_in_locations(v, 0, params[0]); // leaks
-	if (!path)
+	if (!look_in_locations(v, 0, params[0], &path)) // leaks
+	{
+		ft_free_array((void*)envp, env__ft_lstsize(v->env_head) + 1);
 		return (0);
+	}
 	spoon = fork();
 	ft_printf("path = %s\n", path);
 
@@ -182,10 +157,12 @@ int					ft_execve(t_vars *v, t_node *node, char **params)
 		ft_printf("HIeruit\n");
 	wait(&stat);
 	ft_free_array((void*)envp, env__ft_lstsize(v->env_head) + 1);
+	free(path);
 	if (WTERMSIG(stat) != SIGTSTP && WEXITSTATUS(stat) == EXIT_FAILURE)
-	{
 		return (0);
-	}
+	*ret = ft_strdup("1");
+	if (!*ret)
+		return (0);
 	return (1);
 	(void)(node);
 }
