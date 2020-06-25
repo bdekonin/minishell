@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 14:13:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/24 14:24:36 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,21 @@
 int env__makelist(t_vars *v, char **envp)
 {
 	t_env	*env;
-	char	*name;
-	char	*content;
-	int		loc;
+	char	*tmp;
 	int		i;
+	char **arr;
 
-	i = 1;
-	loc = ft_charsearch(envp[0], '='); // make better function; universal one
-	name = ft_substr(envp[0], 0, loc);
-	content = ft_substr(envp[0], loc + 1, ft_strlen(envp[0] + loc));
-	if (!name || !content)
-		return (0);
-	env = env__ft_lstnew(name, content);
+	i = 0;
 	while (envp[i])
 	{
-		loc = ft_charsearch(envp[i], '='); // make better function; universal one
-		name = ft_substr(envp[i], 0, loc);
-		content = ft_substr(envp[i], loc + 1, ft_strlen(envp[i] + loc));
-		if (!name || !content)
-			return (0);
-		env__ft_lstadd_back(&env, env__ft_lstnew(name, content));
+		arr = ft_split(envp[i], '=');
+		if (!arr)
+			return (0); // free stuff maybe
+		if (!ft_strncmp)
+		if (i == 0)
+			env = env__ft_lstnew(arr[0], arr[1]);
+		else
+			env__ft_lstadd_back(&env, env__ft_lstnew(arr[0], arr[1]));
 		i++;
 	}
 	v->env_head = env;
@@ -69,23 +64,52 @@ int env__makelist(t_vars *v, char **envp)
 			env->content = v->__oldpwd;
 		}
 		if (!ft_strncmp("PATH", env->name, ft_strlen(env->name))) // will go in here if you run it seperate
+		{
 			v->__path = env;
-		if (!ft_strncmp("PPID", env->name, ft_strlen(env->name))) // will go in here if you run it seperate
-			v->__$ppid = env->content;			
+			tmp = ft_calloc(ft_strlen(v->current_path) + 2 + ft_strlen(v->__path->content), sizeof(char));
+			if (!tmp)
+				return (0);
+			ft_strcat(tmp, v->__path->content);
+			ft_printf("Return = %s\n", v->current_path, env->content);
+			if (!ft_strnstr(env->content, v->current_path, PATH_MAX))
+			{
+				ft_strcat(tmp, ":");
+				ft_strcat(tmp, v->current_path);
+			}
+			free(v->__path->content);
+			v->__path->content = tmp;
+		}
+		if (!ft_strncmp("PARENT_PID", env->name, ft_strlen(env->name))) // will go in here if you run it seperate
+			v->__parentpid = env->content;
+		if (!ft_strncmp("CURRENT_PID", env->name, ft_strlen(env->name))) // will go in here if you run it seperate
+		{
+			free(env->content);
+			v->__currentpid = ft_itoa(getpid());
+			if (!v->__currentpid)
+				return (0);
+			env->content = v->__currentpid;
+		}
 		env = env->next;
 	}
-	if (!v->__$ppid)
+	if (!v->__parentpid)
 	{
-		v->__$ppid = ft_itoa(getpid());
-		if (!v->__$ppid)
+		v->__parentpid = ft_itoa(getpid());
+		if (!v->__parentpid)
 			return (0);
-		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("PPID"), v->__$ppid));
+		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("PARENT_PID"), v->__parentpid));
 	}
 	if (!v->__oldpwd)
 	{
 		v->__oldpwd = ft_calloc(PATH_MAX, sizeof(char));
 		ft_memcpy(v->__oldpwd, v->current_path, ft_strlen(v->current_path));
 		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("OLDPWD"), v->__oldpwd));
+	}
+	if (!v->__currentpid)
+	{
+		v->__currentpid = ft_itoa(getpid());
+		if (!v->__currentpid)
+			return (0);
+		env__ft_lstadd_front(&v->env_head, env__ft_lstnew(ft_strdup("CURRENT_PID"), v->__currentpid));
 	}
 	env = env__ft_lstlast(v->env_head);
 	v->__executable = ft_strrchr(env->content, '.');
@@ -101,8 +125,10 @@ int main(int argc, char **argv, char **envp)
 	(void)argc; // voor de warnign
 	(void)argv; // voor de warnign
 	v.__oldpwd = NULL; // can be overwritten.
-	v.__$ppid = NULL; // cant be overwritten.
+	v.__parentpid = NULL; // cant be overwritten.
+	v.__currentpid = NULL;
 
+	ft_printf("pid = %d\n", getpid());
 	/*
 	** Initializing prompt
 	*/

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/19 17:32:38 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/23 18:54:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int				leaks(t_vars *v, t_node *node, char **ret)
 {
 	char **arr;
 
-	arr = make_param(v->__$ppid);
+	arr = make_param(v->__parentpid);
 	if (!arr)
 		return (1);
 	ft_execve(v, node, arr, ret);

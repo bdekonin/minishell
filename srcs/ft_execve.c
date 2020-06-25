@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/19 15:34:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/22 22:40:53 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int look_in_locations(t_vars *v, int i, char *command, char **path) // ma
 	}
 	ft_free_array((void*)locs, ft_counter(v->__path->content, ':') + 1);
 	return (0);
-	// ft_printf("path = [%s]\n", v->__path->content);
+	// // ft_printf("path = [%s]\n", v->__path->content);
 }
 
 /*
@@ -93,7 +93,7 @@ static char			**__linkedlist_to_array(t_vars *v, char **envp, t_env *head)
 		return (NULL);
 	while (head)
 	{
-		length = ft_strlen(head->name) + 1 + ft_strlen(head->content);
+		length = ft_strlen(head->name) + 2 + ft_strlen(head->content);
 		envp[i] = ft_calloc(length, sizeof(char));
 		if (!envp[i])
 		{
@@ -139,12 +139,6 @@ int					ft_execve(t_vars *v, t_node *node, char **params, char **ret)
 		return (0);
 	}
 	spoon = fork();
-	ft_printf("path = %s\n", path);
-
-	// for (int i = 0; params[i]; i++)
-	// 	ft_printf("params = [%s]\n", params[i]);
-	// fork protect
-	
 	if (!spoon)
 	{
 		if (execve(path, &params[0], envp) < 0)
@@ -154,7 +148,6 @@ int					ft_execve(t_vars *v, t_node *node, char **params, char **ret)
 			exit(EXIT_FAILURE);
 		}
 	}
-		ft_printf("HIeruit\n");
 	wait(&stat);
 	ft_free_array((void*)envp, env__ft_lstsize(v->env_head) + 1);
 	free(path);

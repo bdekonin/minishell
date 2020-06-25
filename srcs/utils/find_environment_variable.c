@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/04 10:10:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/18 11:57:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/23 18:54:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char *find_environment_variable(t_vars *v, char *line)
 	if (*line == '?')
 		return (v->history_head->output);
 	if (*line == '$')
-		return (v->__$ppid);
+		return (v->__parentpid);
 	name = ft_strdup(line);
 	if (!name)
 		return (NULL);
