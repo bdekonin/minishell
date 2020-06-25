@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/19 15:08:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/25 22:05:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int cd(t_vars *v, t_node *node, char **params, char **ret)
 		ret_chdir = chdir(v->__homedir->content);
 	else if (!ft_strncmp(params[0], "-", 3))
 	{
-		ft_printf("%s\n", v->__oldpwd);
-		ret_chdir = chdir(v->__oldpwd);
+		ft_printf("%s\n", v->__oldpwd->content);
+		ret_chdir = chdir(v->__oldpwd->content);
 	}
 	else
 	{
@@ -70,7 +70,7 @@ int cd(t_vars *v, t_node *node, char **params, char **ret)
 	else
 	{
 		*ret = ft_strdup("0");
-		ft_strlcpy(v->__oldpwd, oldpwd_backup, PATH_MAX);
+		ft_strlcpy(v->__oldpwd->content, oldpwd_backup, PATH_MAX);
 	}
 	v->current_path = getcwd(v->current_path, PATH_MAX);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/23 18:56:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/25 15:35:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct		s_vars
 
 	char			*__executable;	// another struct maybe?
 	// char			*__homedir;		//this aswell lars.
-	char			*__oldpwd; // location of old pwd
+	// char			*__oldpwd; // location of old pwd
 	char			*__parentpid; // pid of parent program
 	char			*__currentpid; // pid of parent program
 	// char			*__$path;
@@ -59,6 +59,7 @@ typedef struct		s_vars
 	t_env			*__path; // keeps the node * even if the pointer of the variable changes.
 	t_env			*__logname;
 	t_env			*__homedir;
+	t_env			*__oldpwd;
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
