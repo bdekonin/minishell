@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/25 22:45:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/28 23:19:53 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ int main(int argc, char **argv, char **envp)
 	v.current_path = getcwd(v.current_path, PATH_MAX);
 
 	env__makelist(&v, envp); // leak in here
+	// exit(1);
 	/*
 	** End initializing prompt
 	*/

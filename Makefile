@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/06/16 13:51:45 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/06/26 08:07:59 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ CC = gcc -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra $(SRCS) $(LIBFT) $(FT_PRINTF) -o $(NAME)
+	gcc -Wall -Wextra -g $(SRCS) $(LIBFT) $(FT_PRINTF) -o $(NAME)
 
 fclean:
 	/bin/rm -f $(OFILES)

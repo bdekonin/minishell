@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/25 12:45:26 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/28 23:21:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,17 @@ void	read_user_input(t_vars *v)
 	char	*trimline;
 	t_history	*history;
 
+
+	static count = 0;
 	history = __init_set_history(v);
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
-	if (v->ret < 0)
-		exit(1);
+	// // if (count == 0)
+	// // 	v->line = ft_strdup("ls");
+	// // else if (count == 1)
+	// // 	v->line = ft_strdup("debug");
+	// if (v->ret < 0)
+	// 	exit(1);
 	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
 	{
 		argv_semicolen = ft_split_sep(v->line, ";", &splitsize);
