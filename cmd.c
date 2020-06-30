@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/28 23:21:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/29 21:04:51 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int run_command(t_vars *v, char **params, t_node *node, char **ret)
 			return ((*p[i])(v, node, params + 1, ret));
 		i++;
 	}
-	i = ft_execve(v, node, params, ret);
+	// i = ft_execve(v, node, params, ret);
 	// if (!i)
 	// 	return (0);
 	// else if (i)
@@ -82,23 +82,25 @@ int run_cmd(t_vars *v, t_node *node)
 	char	*ret = NULL;
 	char	**args;
 	size_t	splitsize;
-
+	
 	while (node)
 	{
 		args = ft_split_sep(node->line, " \t", &splitsize);
 		if (!run_command(v, args, node, &ret))
 			return (0);
+			// fork here
 		node->i += findflag(node->line, "|><");
-		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(node->line), ft_strdup(ret), ft_strdup(v->line))); // protect
+		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(node->line), ret, ft_strdup(v->line))); // protect
 		if (node->line[node->i] == '|' || node->line[node->i] == '>' || node->line[node->i] == '<')		
 		{
 			newnode = node__ft_lstnew(node->line[node->i], 0, node->line + (node->i + 1));
-			// if (!newnode)
-			// 	return (0);
-			// ft_printf("			found a flag [%s]\n", newnode->line + newnode->i);
+			// // if (!newnode)
+			// // 	return (0);
 			run_cmd(v, newnode);
+			// if (!runcmd)
 		}
-		free(ret);
+		// ft_printf("")
+		// free(ret);
 		ft_free_array((void*)args, (int)splitsize);
 		node = node->next;
 	}
@@ -107,22 +109,14 @@ int run_cmd(t_vars *v, t_node *node)
 
 void	read_user_input(t_vars *v)
 {
-	size_t	splitsize;
-	char **argv_semicolen;
-	char	*trimline;
+	size_t		splitsize;
+	char		**argv_semicolen;
+	char		*trimline;
 	t_history	*history;
 
-
-	static count = 0;
 	history = __init_set_history(v);
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
-	// // if (count == 0)
-	// // 	v->line = ft_strdup("ls");
-	// // else if (count == 1)
-	// // 	v->line = ft_strdup("debug");
-	// if (v->ret < 0)
-	// 	exit(1);
 	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
 	{
 		argv_semicolen = ft_split_sep(v->line, ";", &splitsize);

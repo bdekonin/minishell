@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/15 17:17:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/06/29 21:28:29 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,12 @@ typedef	struct			s_node
 	struct s_node		*next;
 }						t_node;
 
-
 /*
 **		type			size			argv
 **		;				3				{cd ..},{pwd}
+**
+**		command1 | command2 | command3 > output-file
+**
 **
 ** cd ..  | echo | pwd ; env && env ; env}
 **
