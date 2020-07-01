@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 10:12:29 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/01 12:50:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ int run_cmd(t_vars *v, t_node *node)
 			return (0);
 			// fork here
 		node->i += findflag(node->line, "|><");
-		his__ft_lstadd_front(&v->history_head, his__ft_lstnew(ft_strdup(node->line), ret, ft_strdup(v->line))); // protect
-		if (node->line[node->i] == '|' || node->line[node->i] == '>' || node->line[node->i] == '<')		
 		{
 			newnode = node__ft_lstnew(node->line[node->i], 0, node->line + (node->i + 1));
 			// // if (!newnode)
@@ -123,6 +121,7 @@ void	read_user_input(t_vars *v)
 	{
 		ft_split_input(v);
 		// if (ft_split_input)
+		exit(1);
 		if (!run_cmd(v, v->nodehead->next))
 			exit(EXIT_FAILURE);
 	}

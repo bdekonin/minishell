@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/27 15:25:54 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 10:21:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/01 17:58:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	node__ft_lstclear(t_node **lst, void (*del)(void*))
 {
 	t_node		*tmp;
 
+	tmp = *lst;
 	if (!lst)
 		return ;
 	if (del)
@@ -23,6 +24,7 @@ void	node__ft_lstclear(t_node **lst, void (*del)(void*))
 		{
 			tmp = (*lst)->next;
 			cmd__ft_lstclear(*lst, del);
+			free(*lst);
 			*lst = tmp;
 		}
 	*lst = NULL;
