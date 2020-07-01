@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/23 19:35:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/01/23 20:11:09 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/01 00:00:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_csearch(char c, char *str)
 	return (-1);
 }
 
-int	ft_strsearch(const char *s1, char *s2)
+int	ft_strsearchh(const char *s1, char *s2)
 {
 	int i;
 	int j;

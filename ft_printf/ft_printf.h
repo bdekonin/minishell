@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 11:26:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/17 14:58:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/01 00:00:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int				ft_putstr(t_list *flags);
 char			*ft_printf_strdup(const char *s1);
 int				ft_atoi(const char *str);
 int				ft_csearch(char c, char *str);
-int				ft_strsearch(const char *s1, char *s2);
+int				ft_strsearchh(const char *s1, char *s2);
 int				free_struct(t_list *flags);
 int				format_int_left(t_list *flags);
 int				format_int_right(t_list *flags);

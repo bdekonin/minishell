@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/11 15:21:30 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/01/23 19:33:35 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/01 00:00:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_list		*init_flags(const char *str, va_list argp)
 	flags = malloc(1 * sizeof(t_list));
 	if (!flags)
 		return (0);
-	i = ft_strsearch(str, "cspdiuxX%");
+	i = ft_strsearchh(str, "cspdiuxX%");
 	flags->conversion = str[i];
 	flags->n_flags = i;
 	flags->just = read_justifier(str, flags);
