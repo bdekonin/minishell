@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 14:13:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 17:49:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@
 # define cmd_notfound "%s: command not found: %s\n"
 # define bultins 8
 # define dquote "dquote> "
+# define PIPE 124
+# define RDIRLEFT 60
+# define RDIRRIGHT 62
 
-#define KNRM  "\x1B[0m"
+
+#define KNRM  "\x1B[31m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
 #define KYEL  "\x1B[33m"

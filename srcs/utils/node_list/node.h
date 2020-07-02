@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 11:15:38 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 15:04:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,12 @@ typedef	struct			s_node
 	struct s_node		*next;
 }						t_node;
 
-/*
-**		type			size			argv
-**		;				3				{cd ..},{pwd}
-**
-**		command1 | command2 | command3 > output-file
-**
-**
-** cd ..  | echo | pwd ; env && env ; env}
-**
-** cd ..  | echo | pwd 
-** {cd ..}  {echo} {pwd}
-** env
-** env
-*/
-
 // cd .. || echo
 // pwd
 
 t_node		*node__ft_lstlast(t_node *lst);
 t_node		*node__ft_lstnew(t_cmd **cmd);
 void	node__ft_lstdelone(t_node *lst, void (*del)(void*));
-// void		node__ft_lstdelone(t_node *lst, void (*del)(void*));
 void		node__ft_lstadd_back(t_node **alst, t_node *new);
 void		node__ft_lstadd_front(t_node **alst, t_node *new);
 void	node__ft_lstclear(t_node **lst, void (*del)(void*));

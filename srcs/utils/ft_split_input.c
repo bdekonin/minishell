@@ -6,13 +6,22 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 13:37:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 17:53:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 #define FLAGS "<|>"
 #define TRIMS " \t"
+
+/*
+** Will delete a cmd(node) when the head if == to list
+**
+** @param t_cmd *head	Starting location of te list.
+** @param t_cmd *list	list to be deleted.
+**
+** @return N/A
+*/
 
 static void				cmd__delinvalid(t_cmd *head, t_cmd *list)
 {
@@ -51,41 +60,48 @@ static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 		return (1);
 }
 
-t_cmd	*split_semicolen(char *string)
-{
-	t_cmd	*cmd_head;
-	t_cmd	*cmd;
-	unsigned char type;
-	int i;
 
-	cmd_head = NULL;
-	type = 1;
-	while (type)
+/*
+** Returns te linked list of the current command.
+**
+** cmd[0] = The head pointer.
+** cmd[1] = The new list to be added to cmd[0].
+**
+** @param  char *string		Current full command.
+** @param  int i			Is the location of the First flag. \
+**										ˆ(will be 0 if non found)
+**
+** @return t_cmd*			Returns the linked list of the curent command.
+*/
+
+static t_cmd	*line_to_linkedlist(char *string, int i)
+{
+	t_cmd	*cmd[2];
+
+	cmd[0] = NULL;
+	i = 1;
+	while (i)
 	{
 		i = findflag(string, FLAGS);
 		if (!i)
-		{
 			i = ft_strlen(string);
-			type = 0;
-		}
-		else
-			type = string[i];
-		if (!cmd_head)
+		if (!cmd[0])
 		{
-			if (!getstring_and_newcmd(string, i, &cmd_head, type))
+			if (!getstring_and_newcmd(string, i, &cmd[0], string[i]))
 				return (NULL);
 		}
 		else
 		{
-			if (!getstring_and_newcmd(string, i, &cmd, type))
+			if (!getstring_and_newcmd(string, i, &cmd[1], string[i]))
 				return (NULL);
-			cmd__ft_lstadd_back(&cmd_head, cmd);
+			cmd__ft_lstadd_back(&cmd[0], cmd[1]);
 		}
-		string = ft_strchr(string, type) + 1;
-		if (cmd__ft_lstlast(cmd_head)->line[0] == 0)
-			cmd__delinvalid(cmd_head, cmd__ft_lstlast(cmd_head));
+		string = ft_strchr(string, string[i]) + 1;
+		// ft_printf("\x1B[31mline = [%d]\x1B[31m\n", cmd__ft_lstlast(cmd[0])->line[0]);
+		if (cmd__ft_lstlast(cmd[0])->line[0] == 0)
+			cmd__delinvalid(cmd[0], cmd__ft_lstlast(cmd[0]));
 	}
-	return (cmd_head);
+	return (cmd[0]);
 }
 
 void print_nodes(t_node *node);
@@ -103,20 +119,20 @@ int ft_split_input(t_vars *v)
 	i = 0;
 	while (i < (int)size)
 	{
-		ret = split_semicolen(argv[i]);
+		ret = line_to_linkedlist(argv[i], 0);
 		if (!ret)
-		{
-			ft_printf("error\n");
 			return (0);
-		}
 		if (!v->nodehead)
 		{
 			v->nodehead = node__ft_lstnew(&ret);
-				// if (!node)
+			if (!v->nodehead)
+				return (0);
 		}
 		else
 		{
 			node_list = node__ft_lstnew(&ret);
+			if (!node_list)
+				return (0);
 			node__ft_lstadd_back(&v->nodehead, node_list);
 		}
 		i++;
@@ -126,6 +142,7 @@ int ft_split_input(t_vars *v)
 	return (1);
 }
 
+// cd .. < main.c
 void print_nodes(t_node *node)
 {
 	t_cmd *cmd;

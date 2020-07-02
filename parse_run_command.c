@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cmd.c                                              :+:    :+:            */
+/*   parse_run_command.c                                :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 14:10:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 17:44:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
-	int i = 0;
-
+	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
+
+	i = 0;
 	p[0] = echo;
 	p[1] = cd;
 	p[2] = pwd;
@@ -60,6 +61,39 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 	return (1);
 }
 
+static int confirm_flags(t_vars *v, t_cmd *cmd)
+{
+	char	*line;
+	int		fd;
+	// if (cmd->type == PIPE)
+	// 	ft_printf("\x1B[36m[|] NOW\n\x1B[0m");
+	// else if (cmd->type == RDIRLEFT)
+	// 	ft_printf("\x1B[36m[<] NOW\n\x1B[0m");
+	// else if (cmd->type == RDIRRIGHT)
+	// 	ft_printf("\x1B[36m[>] NOW\n\x1B[0m");
+	if (cmd->type && !cmd->next)
+	{
+		ft_printf("\x1B[31mMissing next command.\n\x1B[0m");
+		if (cmd->type == PIPE)
+		{
+			ft_printf("pipe> ");
+			get_next_line(STDIN_FILENO, &line); // make while loop
+			free(line);
+		}
+		if (cmd->type == RDIRLEFT || cmd->type == RDIRRIGHT)
+		{
+			ft_printf("%s: parse error near `\\n'\n", v->__executable + 2);
+		}
+	}
+	else if (cmd->type == RDIRLEFT)
+	{
+		fd = open(cmd->next->line, O_RDONLY);
+		if (fd < 0)
+			ft_printf("%s: %s: No such file or directory\n", \
+						v->__executable + 2, cmd->next->line);
+	}
+}
+
 /*
 ** call this command.
 **
@@ -73,10 +107,9 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd)
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		// if ()
+		confirm_flags(v, cmd);
 		if (!run_command(v, args, cmd, &ret))
 			return (0);
-			// fork here
 		sethistory(&v->history_head, v->line, ret, cmd->line);
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
@@ -99,7 +132,12 @@ void	read_user_input(t_vars *v)
 		while (node)
 		{
 			if (!run_cmd(v, node->cmd))
+			{
+				env__ft_lstclear(&v->env_head, free);
+				his__ft_lstclear(&v->history_head, free); // DO THIS
+				node__ft_lstclear(&v->nodehead, free);
 				exit(EXIT_FAILURE);
+			}
 			node = node->next;
 		}
 	}
