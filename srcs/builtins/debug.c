@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/29 15:05:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 00:05:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,10 @@ static int				his(t_vars *v)
 
 	his = v->history_head;
 	ft_printf("---- History list ----\nLines\t\t\t\tCommands\t\t\t\tOutput\n");
-	ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", v->line, v->nodehead->line, "1");
 	while (his)
 	{
 		ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", \
-								his->line, his->command, his->output);
+								his->fullcommand, his->singlecommand, his->ret);
 		his = his->next;
 	}
 	return (0);
@@ -108,21 +107,29 @@ int				dir(t_vars *v) // will be used to check if PATH
 		}
 		closedir(d);
 	}
-	return(0);
+	return (0);
 	(void)(v);
 }
 
 int				nodes(t_vars *v)
 {
 	t_node *node;
+	t_cmd *cmd;
 
 	node = v->nodehead;
 	ft_printf("---- Nodes list ----\n");
 	while (node)
 	{
-		ft_printf("[%s]\n", node->line);
+		cmd = node->cmd;
+		while (cmd)
+		{
+			ft_printf("%p - string = [%c][%s]\n", node, cmd->type, cmd->line);
+			cmd = cmd->next;
+		}
+		ft_printf("\n");
 		node = node->next;
 	}
+
 	return (0);
 }
 
@@ -137,7 +144,7 @@ int				nodes(t_vars *v)
 **							-1 = malloc fail
 */
 
-int						debug(t_vars *v, t_node *node, char **params, char **ret)
+int						debug(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
 	int error;
 
@@ -146,10 +153,14 @@ int						debug(t_vars *v, t_node *node, char **params, char **ret)
 	// 	error += leaks(v, node, ret);
 	if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
 		error += his(v);
+	ft_printf("param[0]\n");
 	if ((params[0] && !ft_strncmp(params[0], "nodes", 9)) || !params[0])
 		error += nodes(v);
 	*ret = (error) ? ft_strdup("0") : ft_strdup("1");
 	if (!*ret)
 		return (0);
+	(void)(v);
+	(void)(cmd);
+	(void)(params);
 	return (1);
 }

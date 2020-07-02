@@ -6,14 +6,14 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/25 22:05:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/01 22:42:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
 
-int cd(t_vars *v, t_node *node, char **params, char **ret)
+int cd(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
 	/*
 	** Sources
@@ -57,7 +57,7 @@ int cd(t_vars *v, t_node *node, char **params, char **ret)
 	}
 	else
 	{
-		dir = parse_cd(v, ft_strnstr(node->line, "cd", ft_strlen(node->line)) + 2);
+		dir = parse_cd(v, ft_strnstr(cmd->line, "cd", ft_strlen(cmd->line)) + 2);
 		if (!dir)
 			return (0);
 		ret_chdir = chdir(dir);

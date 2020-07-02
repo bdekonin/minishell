@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/28 23:20:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/01 23:02:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int env__makelist(t_vars *v, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		size_t sezeee;
+		// size_t sezeee;
 		// system("leaks minishell");
 		arr = ft_split(envp[i], '=');
 		// // if (!arr)

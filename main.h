@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/28 23:13:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/01 22:47:10 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,14 @@ char *parse_cd(t_vars *v, char *line);
 // int	run_command(t_vars *v, char **params);
 
 // tijdelijke gevulde functies
-int echo(t_vars *v, t_node *node, char **params, char **ret);
-int	cd(t_vars *v, t_node *node, char **params, char **ret);
-int pwd(t_vars *v, t_node *node, char **params, char **ret);
-int exportt(t_vars *v, t_node *node, char **params, char **ret);
-int unset(t_vars *v, t_node *node, char **params, char **ret);
-int env(t_vars *v, t_node *node, char **params, char **ret);
-int exitt(t_vars *v, t_node *node, char **params, char **ret);
-int debug(t_vars *v, t_node *node, char **params, char **ret);
+int echo(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int	cd(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int pwd(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int exportt(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int unset(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int env(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int exitt(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int debug(t_vars *v, t_cmd *cmd, char **params, char **ret);
 
 int					ft_execve(t_vars *v, t_node *node, char **params, char **ret);
 

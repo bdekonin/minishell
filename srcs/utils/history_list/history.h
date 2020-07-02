@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/04 13:47:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 00:03:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 
 typedef	struct			s_history
 {
-	char				*line;
-	char				*output;
-	char				*command;
+	char				*fullcommand;
+	char				*ret;
+	char				*singlecommand;
 	struct s_history	*next;
 }						t_history;
 
@@ -29,7 +29,7 @@ void					his__ft_lstclear(t_history **lst, void (*del)(void*));
 void					his__ft_lstdelone(t_history *lst, void (*del)(void*));
 int						his__ft_lstsize(t_history *lst);
 t_history				*his__ft_lstlast(t_history *lst);
-t_history				*his__ft_lstnew(void *command, void *output, \
-														void *line);
+t_history				*his__ft_lstnew(void *fullcommand, void *ret, \
+														void *singlecommand);
 
 #endif

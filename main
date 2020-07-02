@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/28 23:19:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 00:04:48 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ int main(int argc, char **argv, char **envp)
 	v.__parentpid = NULL; // cant be overwritten.
 	v.__currentpid = NULL; // cant be overwritten.
 
+	v.history_head = NULL;
+
 	ft_printf("pid = %d\n", getpid());
 	/*
 	** Initializing prompt
@@ -151,9 +153,8 @@ int main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
-		v.nodehead = node__ft_lstnew(';', 0, ft_strdup("."));
 		read_user_input(&v);
-		node__ft_lstclear(&v.nodehead, free); // reset the list.
+		node__ft_lstclear(&v.nodehead, free);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 11:40:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/01 22:44:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int	find_env_var_name(t_env **head, char **name, char **content)
 	return (0); //new name found in env list
 }
 
-int 			exportt(t_vars *v, t_node *node, char **params, char **ret)
+int 			exportt(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
 	char	**array;
 	size_t	size;
@@ -118,6 +118,6 @@ int 			exportt(t_vars *v, t_node *node, char **params, char **ret)
 	*ret= ft_strdup("0");
 	// if (!*ret)
 	//return
-	(void)(node);
+	(void)(cmd);
 	return (1);
 }

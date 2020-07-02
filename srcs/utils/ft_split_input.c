@@ -6,18 +6,41 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 18:11:12 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 11:22:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 # define FLAGS "<|>"
+# define TRIMS " \t"
+
+static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
+												unsigned char type)
+{
+	char *tmp;
+	char *tmp2;
+
+	tmp = ft_substr(string, 0, i);
+	if (!tmp)
+		return (0);
+	tmp2 = ft_strtrim(tmp, TRIMS);
+	free(tmp);
+	if (!tmp2)
+		return (0);
+	*cmd = cmd__ft_lstnew(type, tmp2);
+	if (!*cmd)
+	{
+		free(tmp2);
+		return (0);
+	}
+	else
+		return (1);
+}
 
 t_cmd	*split_semicolen(char *string)
 {
 	t_cmd	*cmd_head = NULL;
 	t_cmd	*cmd;
-	char *str;
 	unsigned char type;
 	int i;
 
@@ -34,13 +57,13 @@ t_cmd	*split_semicolen(char *string)
 			type = string[i];
 		if (!cmd_head)
 		{
-			str = ft_substr(string, 0, i); // leak
-			cmd_head = cmd__ft_lstnew(type, ft_strtrim(str, " \t"));//protect
+			if (!getstring_and_newcmd(string, i, &cmd_head, type))
+				return (NULL);
 		}
 		else
 		{
-			str = ft_substr(string, 0, i); // leak
-			cmd = cmd__ft_lstnew(type, ft_strtrim(str, " \t")); //protect
+			if (!getstring_and_newcmd(string, i, &cmd, type))
+				return (NULL);
 			cmd__ft_lstadd_back(&cmd_head, cmd);
 		}
 		string = ft_strchr(string, type) + 1;
@@ -57,39 +80,43 @@ t_cmd	*split_semicolen(char *string)
 **
 **
 ** pwd | cat < test.txt
-*/void print_nodes(t_node *node);
+*/
 
-int ft_split_input(char *line)
+void print_nodes(t_node *node);
+
+int ft_split_input(t_vars *v)
 {
 	char		**argv;
 	size_t		size;
 	int			i;
-	t_node	*node_head;
 	t_node	*node_list;
 	t_cmd	*ret;
 
-	node_head = NULL;
-	argv = ft_split_sep(line, ";", &size);
-	i = 0;	
+	v->nodehead = NULL;
+	argv = ft_split_sep(v->line, ";", &size);
+	i = 0;
 	while (i < (int)size)
 	{
 		ret = split_semicolen(argv[i]);
-		// if (!ret)
-		if (!node_head)
+		if (!ret)
 		{
-			node_head = node__ft_lstnew(&ret);
+			ft_printf("error\n");
+			return (0);
+		}
+		if (!v->nodehead)
+		{
+			v->nodehead = node__ft_lstnew(&ret);
 				// if (!node)
 		}
 		else
 		{
 			node_list = node__ft_lstnew(&ret);
-			node__ft_lstadd_back(&node_head, node_list);
+			node__ft_lstadd_back(&v->nodehead, node_list);
 		}
 		i++;
 	}
 	ft_free_array((void*)argv, size);
-	print_nodes(node_head);
-	node__ft_lstclear(&node_head, free);
+	print_nodes(v->nodehead);
 	return (1);
 }
 
@@ -104,22 +131,6 @@ void print_nodes(t_node *node)
 			ft_printf("%p - string = [%c][%s]\n", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
-		ft_printf("\n");
 		node = node->next;
 	}
-	// node->cmd->next->type == '<'
-}
-
-// pwd1 | pwd2 > pwd3 | pwd4
-// pwd | cat < test.txt
-
-int main(void)
-{
-	ft_split_input("pwd1 | pwd2 > pwd3 | pwd4 ; pwd | cat < test.txt ; env ; env ; env");
-	// ft_printf("\n");
-	
-	// ft_split_input("pwd | cat < test.txt");
-	// ft_printf("\n");
-	// ft_printf("\n");
-	// ft_split_input("pwd | cat < test.txt");
 }

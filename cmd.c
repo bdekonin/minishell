@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 12:50:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 10:38:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ char		*cmd_str(int i)
 	return (cmd_str[i]);
 }
 
-int run_command(t_vars *v, char **params, t_node *node, char **ret)
+int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
 	int i = 0;
 
-	int (*p[8]) (t_vars *v, t_node *node, char **params, char **ret);
+	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
 	p[0] = echo;
 	p[1] = cd;
 	p[2] = pwd;
@@ -42,10 +42,11 @@ int run_command(t_vars *v, char **params, t_node *node, char **ret)
 	p[6] = exitt;
 	p[7] = debug;
 	ft_str_tolower(params[0]);
+	ft_printf("Type = [%c]\n", cmd->type);
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
-			return ((*p[i])(v, node, params + 1, ret));
+			return ((*p[i])(v, cmd, params + 1, ret));
 		i++;
 	}
 	// i = ft_execve(v, node, params, ret);
@@ -60,47 +61,43 @@ int run_command(t_vars *v, char **params, t_node *node, char **ret)
 	return (1);
 }
 
-t_history *__init_set_history(t_vars *v)
+int sethistory(t_history **his, char *fullcommand, char *ret, char *singlecommand)
 {
-	static int init;
-	t_history *lst;
-
-	if (!init)
+	t_history *newlist;
+	if (!*his)
 	{
-		lst = his__ft_lstnew(ft_strdup(""), ft_strdup(""), ft_strdup(""));
-		v->history_head = lst;
-		init++;
+		*his = his__ft_lstnew(ft_strdup(singlecommand), ret, ft_strdup(fullcommand)); // protect
+		if (!*his)
+			return (0);
+		else
+			return (1);
 	}
-	return (v->history_head);
+	else
+	{
+		newlist = his__ft_lstnew(ft_strdup(singlecommand), ret, ft_strdup(fullcommand)); // protect
+		his__ft_lstadd_front(&*his, newlist);
+	}
 }
 
-// cd ..  | cd .. | cd ..
-
-int run_cmd(t_vars *v, t_node *node)
+int run_cmd(t_vars *v, t_cmd *cmd)
 {
-	t_node	*newnode;
+	// t_node	*newnode;
 	char	*ret = NULL;
 	char	**args;
 	size_t	splitsize;
 	
-	while (node)
+	while (cmd)
 	{
-		args = ft_split_sep(node->line, " \t", &splitsize);
-		if (!run_command(v, args, node, &ret))
+		args = ft_split_sep(cmd->line, " \t", &splitsize);
+		if (!run_command(v, args, cmd, &ret))
 			return (0);
 			// fork here
-		node->i += findflag(node->line, "|><");
-		{
-			newnode = node__ft_lstnew(node->line[node->i], 0, node->line + (node->i + 1));
-			// // if (!newnode)
-			// // 	return (0);
-			run_cmd(v, newnode);
-			// if (!runcmd)
-		}
+		sethistory(&v->history_head, v->line, ret, cmd->line);
+		// ft_printf("%s\n", v->history_head->line);
 		// ft_printf("")
 		// free(ret);
 		ft_free_array((void*)args, (int)splitsize);
-		node = node->next;
+		cmd = cmd->next;
 	}
 	return (1);
 }
@@ -109,21 +106,20 @@ int ft_split_input(t_vars *v);
 
 void	read_user_input(t_vars *v)
 {
-	size_t		splitsize;
-	char		**argv_semicolen;
-	char		*trimline;
-	t_history	*history;
+	t_node *node;
 
-	history = __init_set_history(v);
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
 	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
 	{
 		ft_split_input(v);
-		// if (ft_split_input)
-		exit(1);
-		if (!run_cmd(v, v->nodehead->next))
-			exit(EXIT_FAILURE);
+		node = v->nodehead;
+		while (node)
+		{
+			if (!run_cmd(v, node->cmd))
+				exit(EXIT_FAILURE);
+			node = node->next;
+		}
 	}
 	free(v->line);
 }
