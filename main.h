@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 22:47:10 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 14:13:43 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #include "srcs/utils/history_list/history.h"
 #include "srcs/utils/env_list/env.h"
 
-# define d_prefix "%s@%s -> "
+# define d_prefix "%s@%s: "
 # define cmd_notfound "%s: command not found: %s\n"
 # define bultins 8
 # define dquote "dquote> "
@@ -63,8 +63,6 @@ typedef struct		s_vars
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
-int				ft_dprintf(int fd, const char *fmt, ...);
-int				ft_vdprintf(int fd, const char *fmt, va_list argp);
 
 char *parse_cd(t_vars *v, char *line);
 // void	read_user_input(t_vars *v);
@@ -81,10 +79,13 @@ int env(t_vars *v, t_cmd *cmd, char **params, char **ret);
 int exitt(t_vars *v, t_cmd *cmd, char **params, char **ret);
 int debug(t_vars *v, t_cmd *cmd, char **params, char **ret);
 
-int					ft_execve(t_vars *v, t_node *node, char **params, char **ret);
+int		ft_execve(t_vars *v, t_node *node, char **params, char **ret);
 
-char *find_environment_variable(t_vars *v, char *line);
+char	*find_environment_variable(t_vars *v, char *line);
 
-int findflag(char *str, char *flags); // returns i of first flag found
+int		findflag(char *str, char *flags); // returns i of first flag found
+
+int		sethistory(t_history **his, char *fullcommand, char *ret, \
+															char *singlecommand);
 
 #endif

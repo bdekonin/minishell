@@ -6,13 +6,27 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 11:22:19 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 13:37:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
-# define FLAGS "<|>"
-# define TRIMS " \t"
+#define FLAGS "<|>"
+#define TRIMS " \t"
+
+static void				cmd__delinvalid(t_cmd *head, t_cmd *list)
+{
+	while (head->next)
+	{
+		if (head->next == list)
+		{
+			cmd__ft_lstdelone(head->next, free);
+			head->next = NULL;
+			return ;
+		}
+		head = head->next;
+	}
+}
 
 static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 												unsigned char type)
@@ -39,11 +53,12 @@ static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 
 t_cmd	*split_semicolen(char *string)
 {
-	t_cmd	*cmd_head = NULL;
+	t_cmd	*cmd_head;
 	t_cmd	*cmd;
 	unsigned char type;
 	int i;
 
+	cmd_head = NULL;
 	type = 1;
 	while (type)
 	{
@@ -67,20 +82,11 @@ t_cmd	*split_semicolen(char *string)
 			cmd__ft_lstadd_back(&cmd_head, cmd);
 		}
 		string = ft_strchr(string, type) + 1;
+		if (cmd__ft_lstlast(cmd_head)->line[0] == 0)
+			cmd__delinvalid(cmd_head, cmd__ft_lstlast(cmd_head));
 	}
 	return (cmd_head);
 }
-
-/*
-** [0] = ;
-** [1] = |
-** [2] = >
-** [3] = <
-** pwd1 | pwd2 > pwd3 | pwd4
-**
-**
-** pwd | cat < test.txt
-*/
 
 void print_nodes(t_node *node);
 
@@ -128,7 +134,7 @@ void print_nodes(t_node *node)
 		cmd = node->cmd;
 		while (cmd)
 		{
-			ft_printf("%p - string = [%c][%s]\n", node, cmd->type, cmd->line);
+			ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;

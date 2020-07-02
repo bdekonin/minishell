@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 22:44:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 14:15:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int exitt(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
 	env__ft_lstclear(&v->env_head, free);
 	his__ft_lstclear(&v->history_head, free); // DO THIS
-	// // // node__ft_lstclear(&v->nodehead, free); // reset the list.
+	node__ft_lstclear(&v->nodehead, free);
 	exit(EXIT_SUCCESS);
 	(void)(params);
 	(void)(cmd);

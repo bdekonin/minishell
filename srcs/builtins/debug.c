@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 00:05:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 14:00:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,9 +153,10 @@ int						debug(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	// 	error += leaks(v, node, ret);
 	if ((params[0] && !ft_strncmp(params[0], "history", 9)) || !params[0])
 		error += his(v);
-	ft_printf("param[0]\n");
 	if ((params[0] && !ft_strncmp(params[0], "nodes", 9)) || !params[0])
 		error += nodes(v);
+	if ((params[0] && !ft_strncmp(params[0], "dir", 4)) || !params[0])
+		error += dir(v);
 	*ret = (error) ? ft_strdup("0") : ft_strdup("1");
 	if (!*ret)
 		return (0);

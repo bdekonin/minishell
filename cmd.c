@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 10:38:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 14:10:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 	p[6] = exitt;
 	p[7] = debug;
 	ft_str_tolower(params[0]);
-	ft_printf("Type = [%c]\n", cmd->type);
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
@@ -61,41 +60,24 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 	return (1);
 }
 
-int sethistory(t_history **his, char *fullcommand, char *ret, char *singlecommand)
-{
-	t_history *newlist;
-	if (!*his)
-	{
-		*his = his__ft_lstnew(ft_strdup(singlecommand), ret, ft_strdup(fullcommand)); // protect
-		if (!*his)
-			return (0);
-		else
-			return (1);
-	}
-	else
-	{
-		newlist = his__ft_lstnew(ft_strdup(singlecommand), ret, ft_strdup(fullcommand)); // protect
-		his__ft_lstadd_front(&*his, newlist);
-	}
-}
-
+/*
+** call this command.
+**
+*/
 int run_cmd(t_vars *v, t_cmd *cmd)
 {
-	// t_node	*newnode;
 	char	*ret = NULL;
 	char	**args;
 	size_t	splitsize;
-	
+
 	while (cmd)
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
+		// if ()
 		if (!run_command(v, args, cmd, &ret))
 			return (0);
 			// fork here
 		sethistory(&v->history_head, v->line, ret, cmd->line);
-		// ft_printf("%s\n", v->history_head->line);
-		// ft_printf("")
-		// free(ret);
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
 	}
