@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/06/26 08:07:59 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/07/03 10:29:54 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,5 +34,6 @@ fclean:
 	/bin/rm -f $(OFILES)
 	/bin/rm -f $(NAME)
 	/bin/rm -f minishell
+	/bin/rm -r *.dSYM
 
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/18 14:43:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 14:12:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 20:51:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	node__ft_lstadd_back(t_node **alst, t_node *new)
 void	cmd__ft_lstadd_back(t_cmd **alst, t_cmd *new)
 {
 	t_cmd *last;
+	t_cmd *tmp;
 
 	if (!new)
 		return ;
@@ -37,6 +38,7 @@ void	cmd__ft_lstadd_back(t_cmd **alst, t_cmd *new)
 	{
 		last = cmd__ft_lstlast(*alst);
 		last->next = new;
+		new->prev = last;
 	}
 	else
 	{

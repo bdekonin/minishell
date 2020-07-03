@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 17:44:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/03 10:31:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
+	if (cmd->prev && cmd->prev->type == RDIRLEFT)
+		return (1);
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
 
@@ -64,34 +66,40 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 static int confirm_flags(t_vars *v, t_cmd *cmd)
 {
 	char	*line;
-	int		fd;
-	// if (cmd->type == PIPE)
-	// 	ft_printf("\x1B[36m[|] NOW\n\x1B[0m");
-	// else if (cmd->type == RDIRLEFT)
-	// 	ft_printf("\x1B[36m[<] NOW\n\x1B[0m");
-	// else if (cmd->type == RDIRRIGHT)
-	// 	ft_printf("\x1B[36m[>] NOW\n\x1B[0m");
+	t_cmd	*newcmd;
+	int fd;
+
 	if (cmd->type && !cmd->next)
 	{
-		ft_printf("\x1B[31mMissing next command.\n\x1B[0m");
 		if (cmd->type == PIPE)
 		{
 			ft_printf("pipe> ");
-			get_next_line(STDIN_FILENO, &line); // make while loop
-			free(line);
+			get_next_line(STDIN_FILENO, &line);
+			newcmd = cmd__ft_lstnew(line[findflag(line, FLAGS)], line);
+			if (!newcmd)
+			{
+				free(line);
+				return (0);
+			}
+			cmd__ft_lstadd_back(&cmd, newcmd);
 		}
-		if (cmd->type == RDIRLEFT || cmd->type == RDIRRIGHT)
+		else if (cmd->type == RDIRLEFT || cmd->type == RDIRRIGHT)
 		{
 			ft_printf("%s: parse error near `\\n'\n", v->__executable + 2);
 		}
 	}
-	else if (cmd->type == RDIRLEFT)
+	else if (cmd->type)
 	{
-		fd = open(cmd->next->line, O_RDONLY);
-		if (fd < 0)
-			ft_printf("%s: %s: No such file or directory\n", \
-						v->__executable + 2, cmd->next->line);
+		if (cmd->type == RDIRLEFT)
+		{
+			fd = open(cmd->next->line, O_RDONLY);
+			if (fd < 0)
+				ft_printf("\x1B[31m'%s' Does not exist\n\x1B[0m", cmd->next->line);
+			else
+				ft_printf("\x1B[32m'%s' Exists!\n\x1B[0m", cmd->next->line);
+		}
 	}
+	return (1);
 }
 
 /*
@@ -104,13 +112,17 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	char	**args;
 	size_t	splitsize;
 
-	while (cmd)
+	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		confirm_flags(v, cmd);
-		if (!run_command(v, args, cmd, &ret))
+		if (!confirm_flags(v, cmd) || !run_command(v, args, cmd, &ret))
+		{
+			ft_free_array((void*)args, (int)splitsize);
+			free(ret);
 			return (0);
-		sethistory(&v->history_head, v->line, ret, cmd->line);
+		}
+		if (cmd->type != RDIRLEFT)
+			sethistory(&v->history_head, v->line, ret, cmd->line);
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
 	}

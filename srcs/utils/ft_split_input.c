@@ -6,13 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 17:53:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/02 23:25:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
-#define FLAGS "<|>"
-#define TRIMS " \t"
 
 /*
 ** Will delete a cmd(node) when the head if == to list
@@ -97,7 +95,7 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 			cmd__ft_lstadd_back(&cmd[0], cmd[1]);
 		}
 		string = ft_strchr(string, string[i]) + 1;
-		// ft_printf("\x1B[31mline = [%d]\x1B[31m\n", cmd__ft_lstlast(cmd[0])->line[0]);
+		// ft_printf("\x1B[31mline = [%d]\x1B[31m\n", cmd__ft_lstlast(cmd[0]));
 		if (cmd__ft_lstlast(cmd[0])->line[0] == 0)
 			cmd__delinvalid(cmd[0], cmd__ft_lstlast(cmd[0]));
 	}
@@ -138,7 +136,7 @@ int ft_split_input(t_vars *v)
 		i++;
 	}
 	ft_free_array((void*)argv, size);
-	print_nodes(v->nodehead);
+	// print_nodes(v->nodehead);
 	return (1);
 }
 

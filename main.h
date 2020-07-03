@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 17:49:19 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/03 10:27:26 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,18 @@
 #include "srcs/utils/history_list/history.h"
 #include "srcs/utils/env_list/env.h"
 
-# define d_prefix "%s@%s: "
+# define d_prefix "%s@%s$ "
 # define cmd_notfound "%s: command not found: %s\n"
 # define bultins 8
 # define dquote "dquote> "
 # define PIPE 124
 # define RDIRLEFT 60
 # define RDIRRIGHT 62
+#define FLAGS "<|>"
+#define TRIMS " \t"
 
 
-#define KNRM  "\x1B[31m"
+#define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
 #define KYEL  "\x1B[33m"
