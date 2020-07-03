@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 23:02:54 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/03 17:33:05 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,3 +73,52 @@ int env__makelist(t_vars *v, char **envp)
 	v->__executable = ft_strrchr(env->content, '.');
 	return (1);
 }
+
+
+//https://stackoverflow.com/questions/40584034/when-and-why-do-i-have-to-close-pipe#:~:text=5-,dup2(pipefd%5B1%5D%2C%201)%3B%20close(pipefd,its%20own%20pipe%20file%20descriptors.
+// int dup2(int oldfd, int newfd);
+
+// int main(void)
+// {
+	// int pipefd[2];
+	// pipe(pipefd);	
+
+	// if (fork() == 0)
+	// {
+	// 	close(pipefd[0]);    // close reading end in the child	
+	// 	dup2(pipefd[1], 1);  // send stdout to the pipe
+	// 	dup2(pipefd[1], 2);  // send stderr to the pipe	
+
+	// 	close(pipefd[1]);    // this descriptor is no longer needed	
+	// 	system("cat srcs/utils/env_list/ft_envadd_front_bonus.c");
+	// }
+	// else
+	// {
+	// 	// parent
+	// 	char *line;
+	// 	close(pipefd[1]);  // close the write end of the pipe in the parent	
+
+	// 	ft_printf("\x1B[33m");
+	// 	while (get_next_line(pipefd[0], &line) > 0)
+	// 	{
+	// 		ft_printf("%s\n", line);
+	// 		free(line);
+	// 	}
+	// 	ft_printf("\x1B[0m");
+	// }
+
+	// if (fork() == 0)
+	// {
+	// 	// child
+	// 	int fd = open("kaulo", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	
+	// 	dup2(fd, 1);	// make stdout go to file
+	// 	dup2(fd, 2);	// make stderr go to file - you may choose to not do this
+	// 					// or perhaps send stderr to another file
+	
+	// 	close(fd);		// fd no longer needed - the dup'ed handles are sufficient
+	
+	// 	system("cat srcs/utils/env_list/ft_envadd_front_bonus.c");
+	// }
+
+// }

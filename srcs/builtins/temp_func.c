@@ -6,11 +6,20 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 14:15:02 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/03 17:56:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
+
+/*
+** https://man7.org/linux/man-pages/man1/pwd.1p.html
+**
+**	EXIT STATUS         top
+**  The following exit values shall be returned:
+**  0    Successful completion.
+**  >0    An error occurred.
+*/
 
 int pwd(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {

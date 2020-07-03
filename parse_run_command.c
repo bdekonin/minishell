@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/03 10:31:38 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/03 17:56:10 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
-	if (cmd->prev && cmd->prev->type == RDIRLEFT)
+	if (cmd->prev && (cmd->type != RDIRLEFT || cmd->type != RDIRRIGHT))
 		return (1);
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
@@ -62,6 +62,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 		return (0);
 	return (1);
 }
+			pid_t forky;
 
 static int confirm_flags(t_vars *v, t_cmd *cmd)
 {
@@ -98,6 +99,20 @@ static int confirm_flags(t_vars *v, t_cmd *cmd)
 			else
 				ft_printf("\x1B[32m'%s' Exists!\n\x1B[0m", cmd->next->line);
 		}
+		if (cmd->type == RDIRRIGHT)
+		{
+			int stat;
+
+			forky = fork();
+			if (!forky)
+			{
+				int fd = open(cmd->next->line, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR); // check things
+				dup2(fd, 1);
+				close(fd);
+			}
+			// else if (forky > 0)
+				// wait(&stat);
+		}
 	}
 	return (1);
 }
@@ -114,6 +129,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 
 	while (cmd) // loops through commands
 	{
+		ft_printf("runcmd - forky = %d\n", forky);
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
 		if (!confirm_flags(v, cmd) || !run_command(v, args, cmd, &ret))
 		{
@@ -121,7 +137,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			free(ret);
 			return (0);
 		}
-		if (cmd->type != RDIRLEFT)
+		if (cmd->type != RDIRLEFT || cmd->type != RDIRRIGHT)
 			sethistory(&v->history_head, v->line, ret, cmd->line);
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;

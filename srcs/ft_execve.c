@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/22 22:40:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/03 13:03:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 ** minishell && kaas
 ** chmod:                 493
 ** regular file
-**
+** https://stackoverflow.com/questions/2605130/redirecting-exec-output-to-a-buffer-or-file
 **
 **
 **
