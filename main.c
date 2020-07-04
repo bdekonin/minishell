@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 00:04:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/04 15:17:44 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,11 +135,11 @@ int main(int argc, char **argv, char **envp)
 	/*
 	** Initializing prompt
 	*/
-	v.prefix = ft_strdup(d_prefix);
+	v.prefix = ft_strdup(PREFIX);
 	if (!v.prefix)
 		return (0);
 	v.current_path = ft_calloc(PATH_MAX, sizeof(char));
-	if (!v.current_path)
+	if (!v.current_path) // free prefix
 		return (0);
 	v.current_path = getcwd(v.current_path, PATH_MAX);
 
