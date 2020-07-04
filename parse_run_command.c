@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 15:49:19 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/04 17:20:56 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,24 +147,25 @@ int ft_split_input(t_vars *v);
 void	read_user_input(t_vars *v)
 {
 	t_node *node;
+	int i;
 
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
 	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
 	{
 		ft_split_input(v); // sometimes random memory.
-		node = v->nodehead;
-		while (node)
-		{
-			if (!run_cmd(v, node->cmd))
-			{
-				env__ft_lstclear(&v->env_head, free);
-				his__ft_lstclear(&v->history_head, free); // DO THIS
-				node__ft_lstclear(&v->nodehead, free);
+		// node = v->nodehead;
+		// while (node)
+		// {
+		// 	if (!run_cmd(v, node->cmd))
+		// 	{
+		// 		env__ft_lstclear(&v->env_head, free);
+		// 		his__ft_lstclear(&v->history_head, free); // DO THIS
+		// 		node__ft_lstclear(&v->nodehead, free);
 				exit(EXIT_FAILURE);
-			}
-			node = node->next;
-		}
+		// 	}
+		// node = node->next;
+		// }
 	}
 	free(v->line);
 }

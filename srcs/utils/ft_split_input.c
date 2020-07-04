@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/02 23:25:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/04 17:31:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 	if (!tmp2)
 		return (0);
 	*cmd = cmd__ft_lstnew(type, tmp2);
+
+	ft_printf("string = %s\n", tmp2);
 	if (!*cmd)
 	{
 		free(tmp2);
@@ -102,7 +104,7 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 	return (cmd[0]);
 }
 
-void print_nodes(t_node *node);
+void print_nodes(t_cmd **list);
 
 int ft_split_input(t_vars *v)
 {
@@ -115,43 +117,33 @@ int ft_split_input(t_vars *v)
 	v->nodehead = NULL;
 	argv = ft_split_sep(v->line, ";", &size);
 	i = 0;
+	
+	v->cmdlist = ft_calloc(size + 1, sizeof(t_cmd*));
+
+	
+
 	while (i < (int)size)
 	{
-		ret = line_to_linkedlist(argv[i], 0);
-		if (!ret)
-			return (0);
-		if (!v->nodehead)
-		{
-			v->nodehead = node__ft_lstnew(&ret);
-			if (!v->nodehead)
-				return (0);
-		}
-		else
-		{
-			node_list = node__ft_lstnew(&ret);
-			if (!node_list)
-				return (0);
-			node__ft_lstadd_back(&v->nodehead, node_list);
-		}
+		v->cmdlist[i] = line_to_linkedlist(argv[i], 0);
+		if (!v->cmdlist[i])
+			return (0); // and free
 		i++;
 	}
-	ft_free_array((void*)argv, size);
-	// print_nodes(v->nodehead);
+	// ft_free_array((void*)argv, size);
+	print_nodes(v->cmdlist);
 	return (1);
 }
 
 // cd .. < main.c
-void print_nodes(t_node *node)
+void print_nodes(t_cmd **list)
 {
-	t_cmd *cmd;
-	while (node)
+	int i;
+
+	i = 0;
+
+	while (list[i])
 	{
-		cmd = node->cmd;
-		while (cmd)
-		{
-			ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
-			cmd = cmd->next;
-		}
-		node = node->next;
+		ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", list[i], list[i]->type, list[i]->line);
+		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 16:26:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/04 17:23:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct		s_vars
 	t_env			*env_head; // DO NOT CHANGE THE VALUE!
 	t_history		*history_head; // DO NOT CHANGE THE VALUE!
 	t_node			*nodehead;
+
+	t_cmd			**cmdlist;
 
 	char			*prefix;
 	char			*current_path;
