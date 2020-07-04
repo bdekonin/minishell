@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/03 13:03:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/04 15:58:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int					ft_execve(t_vars *v, t_node *node, char **params, char **ret)
 	pid_t spoon;
 
 	envp = NULL;
-	envp = __linkedlist_to_array(v, envp, v->env_head);
+	envp = __linkedlist_to_array(v, envp, v->env_head); // return or parameter not both bitch
 	if (!envp)
 		return (0);
 	if (!look_in_locations(v, 0, params[0], &path)) // leaks

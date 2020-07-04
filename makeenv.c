@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/03 17:33:05 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/04 15:49:03 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int env__makelist(t_vars *v, char **envp)
 	// !LOGNAME
 	// !HOME
 	// !OLDPWD
+	// !PWD
 	env = env__ft_lstlast(v->env_head);
 	v->__executable = ft_strrchr(env->content, '.');
 	return (1);

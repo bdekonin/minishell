@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 15:12:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/04 15:49:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
-	// if (cmd->prev && cmd->prev->type == RDIRLEFT)
-	// 	return (1);
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
 
@@ -154,7 +152,7 @@ void	read_user_input(t_vars *v)
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
 	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
 	{
-		ft_split_input(v);
+		ft_split_input(v); // sometimes random memory.
 		node = v->nodehead;
 		while (node)
 		{
