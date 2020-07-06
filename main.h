@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 17:23:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/05 21:53:57 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,14 @@
 
 typedef struct		s_vars
 {
-	t_env			*env_head; // DO NOT CHANGE THE VALUE!
-	t_history		*history_head; // DO NOT CHANGE THE VALUE!
-	t_node			*nodehead;
+	t_env			*env_head; // malloc
+	t_history		*history_head; // malloc
 
 	t_cmd			**cmdlist;
 
-	char			*prefix;
-	char			*current_path;
-	char			*line;
+	char			*prefix; // malloc
+	char			*current_path; // malloc
+	char			*line; // malloc
 	int				ret;
 
 	char			*__executable;	// another struct maybe?
@@ -68,6 +67,7 @@ typedef struct		s_vars
 	t_env			*__logname;
 	t_env			*__homedir;
 	t_env			*__oldpwd;
+	int				exit_status;
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
@@ -84,10 +84,10 @@ int pwd(t_vars *v, t_cmd *cmd, char **params, char **ret);
 int exportt(t_vars *v, t_cmd *cmd, char **params, char **ret);
 int unset(t_vars *v, t_cmd *cmd, char **params, char **ret);
 int env(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int exitt(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int ft_exit(t_vars *v, t_cmd *cmd, char **params, char **ret);
 int debug(t_vars *v, t_cmd *cmd, char **params, char **ret);
 
-int		ft_execve(t_vars *v, t_node *node, char **params, char **ret);
+int		ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret);
 
 char	*find_environment_variable(t_vars *v, char *line);
 
@@ -95,5 +95,7 @@ int		findflag(char *str, char *flags); // returns i of first flag found
 
 int		sethistory(t_history **his, char *fullcommand, char *ret, \
 															char *singlecommand);
+
+void	ft_exit_error(t_vars *v, int status); // call this function to exit program if error or just return 1 anywhere
 
 #endif

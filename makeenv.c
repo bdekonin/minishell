@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 15:49:03 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/05 19:14:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,3 +123,7 @@ int env__makelist(t_vars *v, char **envp)
 	// }
 
 // }
+
+
+#include <stdio.h>
+#include <fcntl.h>

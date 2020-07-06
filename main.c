@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 15:17:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 10:54:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,14 @@ int main(int argc, char **argv, char **envp)
 	t_vars v;
 	(void)argc; // voor de warnign
 	(void)argv; // voor de warnign
-	v.__oldpwd = NULL; // can be overwritten. needs to be malloced size of pathmax
-	v.__parentpid = NULL; // cant be overwritten.
-	v.__currentpid = NULL; // cant be overwritten.
+	// v.__oldpwd = NULL; // can be overwritten. needs to be malloced size of pathmax
+	// v.__parentpid = NULL; // cant be overwritten.
+	// v.__currentpid = NULL; // cant be overwritten.
 
-	v.history_head = NULL;
+	// v.history_head = NULL;
+	ft_bzero(&v, sizeof(v));
+
+	// ft_exit(v, NULL, NULL, NULL);
 
 	ft_printf("pid = %d\n", getpid());
 	/*
@@ -137,13 +140,14 @@ int main(int argc, char **argv, char **envp)
 	*/
 	v.prefix = ft_strdup(PREFIX);
 	if (!v.prefix)
-		return (0);
+		ft_exit_error(&v, 1);
 	v.current_path = ft_calloc(PATH_MAX, sizeof(char));
 	if (!v.current_path) // free prefix
-		return (0);
+		ft_exit_error(&v, 1);
 	v.current_path = getcwd(v.current_path, PATH_MAX);
 
-	env__makelist(&v, envp); // leak in here
+	if (!env__makelist(&v, envp)) // leak in here
+		ft_exit_error(&v, 1);
 	// exit(1);
 	/*
 	** End initializing prompt
@@ -154,7 +158,9 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		read_user_input(&v);
-		node__ft_lstclear(&v.nodehead, free);
+		for (int k = 0; v.cmdlist[k]; k++)
+			cmd__ft_lstclear(&v.cmdlist[k], free);
+		free(v.cmdlist);
 	}
 }
 

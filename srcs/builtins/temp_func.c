@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/03 17:56:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 10:49:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,5 @@ int env(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	*ret = ft_strdup("1");
 	(void)(params);
 	(void)(cmd);
-	return (1);
-}
-
-int exitt(t_vars *v, t_cmd *cmd, char **params, char **ret)
-{
-	env__ft_lstclear(&v->env_head, free);
-	his__ft_lstclear(&v->history_head, free); // DO THIS
-	node__ft_lstclear(&v->nodehead, free);
-	exit(EXIT_SUCCESS);
-	(void)(params);
-	(void)(cmd);
-	(void)(ret);
 	return (1);
 }

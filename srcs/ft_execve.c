@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 15:58:15 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 10:55:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int look_in_locations(t_vars *v, int i, char *command, char **path) // ma
 	struct dirent		*dir;
 	struct stat			sb;
 	char 				**locs;
-	size_t				size;
+	// size_t				size;
 
 	locs = ft_split(v->__path->content, ':');
 	if (!locs)
@@ -52,7 +52,7 @@ static int look_in_locations(t_vars *v, int i, char *command, char **path) // ma
 			if (!ft_strncmp(command, dir->d_name, 1024))
 			{
 				lstat(dir->d_name, &sb);
-				int statchmod = sb.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
+				// int statchmod = sb.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO);
 				closedir(d);
 				*path = ft_calloc(ft_strlen(locs[i]) + ft_strlen(command) + 2, sizeof(char));
 				*path = ft_strcat(*path, locs[i]);
@@ -122,7 +122,7 @@ static char			**__linkedlist_to_array(t_vars *v, char **envp, t_env *head)
 ** @return char **			envp (filled)
 */
 
-int					ft_execve(t_vars *v, t_node *node, char **params, char **ret)
+int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
 	char *path;
 	char **envp;
@@ -157,5 +157,5 @@ int					ft_execve(t_vars *v, t_node *node, char **params, char **ret)
 	if (!*ret)
 		return (0);
 	return (1);
-	(void)(node);
+	(void)(cmd);
 }

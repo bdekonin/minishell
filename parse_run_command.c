@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 17:20:56 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 14:06:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 	p[3] = exportt;
 	p[4] = unset;
 	p[5] = env;
-	p[6] = exitt;
+	p[6] = ft_exit;
 	p[7] = debug;
 	ft_str_tolower(params[0]);
 	while (i < bultins)
@@ -132,10 +132,17 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 		{
 			ft_free_array((void*)args, (int)splitsize);
 			free(ret);
-			return (0);
+			ft_exit_error(v, 1);
 		}
-		if (cmd->type != RDIRLEFT)
-			sethistory(&v->history_head, v->line, ret, cmd->line);
+		// if (cmd->type != RDIRLEFT)
+		// {
+			if (!sethistory(&v->history_head, v->line, ret, cmd->line))
+			{
+				ft_free_array((void*)args, (int)splitsize);
+				free(ret);
+				ft_exit_error(v, 1);
+			}
+		// }
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
 	}
@@ -146,26 +153,24 @@ int ft_split_input(t_vars *v);
 
 void	read_user_input(t_vars *v)
 {
-	t_node *node;
 	int i;
 
+	i = 0;
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
-	if (*v->line != 0) // so it doesnt do any bullshit if line is empty
+	if (v->ret < 0)
+		ft_exit_error(v, 1);
+	//gnl protect
+	if (*v->line != 0)
 	{
-		ft_split_input(v); // sometimes random memory.
-		// node = v->nodehead;
-		// while (node)
-		// {
-		// 	if (!run_cmd(v, node->cmd))
-		// 	{
-		// 		env__ft_lstclear(&v->env_head, free);
-		// 		his__ft_lstclear(&v->history_head, free); // DO THIS
-		// 		node__ft_lstclear(&v->nodehead, free);
-				exit(EXIT_FAILURE);
-		// 	}
-		// node = node->next;
-		// }
+		if (!ft_split_input(v)) // sometimes random memory.
+			ft_exit_error(v, 1);
+		while (v->cmdlist[i])
+		{
+			if (!run_cmd(v, v->cmdlist[i]))
+				ft_exit_error(v, 1);
+			i++;
+		}
 	}
 	free(v->line);
 }
