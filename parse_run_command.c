@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 14:06:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/07 15:34:56 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
+	if (cmd->prev && cmd->type != RDIRLEFT)
+		return (1);
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
 
@@ -49,12 +51,12 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 			return ((*p[i])(v, cmd, params + 1, ret));
 		i++;
 	}
-	// i = ft_execve(v, node, params, ret);
+	i = ft_execve(v, NULL, params, ret);
 	// if (!i)
 	// 	return (0);
 	// else if (i)
 	// 	return (1);
-	ft_printf(cmd_notfound, v->__executable + 2, params[0]);
+	ft_printf(CMD_NOTFOUND, v->__executable + 2, params[0]);
 	*ret = ft_strdup("0"); // maybe 1?
 	if (!*ret)
 		return (0);
@@ -92,9 +94,9 @@ static int confirm_flags(t_vars *v, t_cmd *cmd)
 		{
 			fd = open(cmd->next->line, O_RDONLY);
 			if (fd < 0)
-				ft_printf("\x1B[31m'%s' Does not exist\n\x1B[0m", cmd->next->line);
+				ft_printf(DIR_NOTFOUND, v->__executable + 2, cmd->next->line);
 			else
-				ft_printf("\x1B[32m'%s' Exists!\n\x1B[0m", cmd->next->line);
+				ft_printf("\x1B[32m'%s' exist!\n\x1B[0m", cmd->next->line);
 		}
 		// if (cmd->type == RDIRRIGHT)
 		// {
@@ -134,15 +136,15 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			free(ret);
 			ft_exit_error(v, 1);
 		}
-		// if (cmd->type != RDIRLEFT)
-		// {
+		if (cmd->type != RDIRLEFT)
+		{
 			if (!sethistory(&v->history_head, v->line, ret, cmd->line))
 			{
 				ft_free_array((void*)args, (int)splitsize);
 				free(ret);
 				ft_exit_error(v, 1);
 			}
-		// }
+		}
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
 	}
@@ -160,7 +162,6 @@ void	read_user_input(t_vars *v)
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
 	if (v->ret < 0)
 		ft_exit_error(v, 1);
-	//gnl protect
 	if (*v->line != 0)
 	{
 		if (!ft_split_input(v)) // sometimes random memory.

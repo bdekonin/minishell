@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/05 21:53:57 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 21:04:50 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 #include "srcs/utils/env_list/env.h"
 
 # define PREFIX "%s@%s$ "
-# define cmd_notfound "%s: command not found: %s\n"
+# define CMD_NOTFOUND "%s: %s: command not found\n"
+# define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m"
 # define bultins 8
 # define dquote "dquote> "
 # define PIPE 124

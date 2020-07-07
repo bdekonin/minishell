@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/01 22:42:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 17:51:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ int cd(t_vars *v, t_cmd *cmd, char **params, char **ret)
 		*ret = ft_strdup("0");
 		ft_strlcpy(v->__oldpwd->content, oldpwd_backup, PATH_MAX);
 	}
+	if (!*ret)
+		return (0);
 	v->current_path = getcwd(v->current_path, PATH_MAX);
 	return (1);
 }

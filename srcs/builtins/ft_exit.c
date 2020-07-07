@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 13:47:12 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/07 20:23:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,15 @@ int ft_exit(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
 	int stat_temp = v->exit_status;
 	env__ft_lstclear(&v->env_head, free);
-	his__ft_lstclear(&v->history_head, free); // DO THIS
+	his__ft_lstclear(&v->history_head, free);
 	checkif_freed_else_i_will_free_everything(v);
-	
+
 	ft_bzero(v, sizeof(t_vars)); // this will leak if we dont free everything, so testing purposes
 	system("leaks minishell");
+	if (errno)
+		ft_printf("%s\n", strerror(errno));
+	else
+		ft_printf("exit\n");
 	exit(stat_temp);
 	(void)(params);
 	(void)(cmd);

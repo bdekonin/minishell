@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 10:49:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 20:05:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int unset(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
 	env__ft_lstremove_middle(params[0], v->env_head);
 	*ret = ft_strdup("1");
+	if (!*ret)
+		return (0);
 	(void)(params);
 	(void)(cmd);
 	return (1);
@@ -66,6 +68,8 @@ int env(t_vars *v, t_cmd *cmd, char **params, char **ret)
 		env = env->next;
 	}
 	*ret = ft_strdup("1");
+	if (!*ret)
+		return (0);
 	(void)(params);
 	(void)(cmd);
 	return (1);

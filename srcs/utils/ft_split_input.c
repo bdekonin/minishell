@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 14:04:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/06 14:19:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void print_nodes(t_cmd **list);
 
 int ft_split_input(t_vars *v)
 {
-	char		**argv;
+	char		**argv = NULL;
 	size_t		size;
 	int			i;
 
@@ -113,8 +113,7 @@ int ft_split_input(t_vars *v)
 	if (!argv)
 		return (0);
 	i = 0;
-	v->cmdlist = NULL;
-	ft_calloc(size + 1, sizeof(t_cmd*));
+	v->cmdlist = ft_calloc(size + 1, sizeof(t_cmd*));
 	if (!v->cmdlist)
 	{
 		ft_free_array((void*)argv, size);

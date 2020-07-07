@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/05 19:14:38 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/07 17:00:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int env__makelist(t_vars *v, char **envp)
 			env->content = temp;
 			v->__oldpwd = env;
 		}
+		else if (!ft_strcmp("PATH", arr[0]))
+			v->__path = env;
 		// else if (!ft_strcmp("OLDPWD", arr[0]))
 		if (i != 0)
 			env__ft_lstadd_back(&v->env_head, env);
