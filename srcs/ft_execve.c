@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/07 23:15:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 09:47:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,34 +32,35 @@
 
 int set_errno(void)
 {
-	if (errno == EACCES)
-	{
-		ft_printf("%s\n", strerror(errno));
-		errno = 0;
-		return (0);
-	}
-	if (errno == ENAMETOOLONG)
-	{
-		ft_printf("%s\n", strerror(errno));
-		errno = 0;
-		return (0);
-	}
-	if (errno == ENOENT)
-	{
-		ft_printf("%s\n", strerror(errno));
-		errno = 0;
-		return (0);
-	}
-	if (errno == ENOTDIR)
-	{
-		ft_printf("%s\n", strerror(errno));
-		errno = 0;
-		return (0);
-	}
+	// if (errno == EACCES) //nope
+	// {
+	// 	ft_printf("%s\n", strerror(errno));
+	// 	errno = 0;
+	// 	return (0);
+	// }
+	// if (errno == ENAMETOOLONG)
+	// {
+	// 	ft_printf("%s\n", strerror(errno));
+	// 	errno = 0;
+	// 	return (0);
+	// }
+	// if (errno == ENOENT) //nope
+	// {
+	// 	ft_printf("%s\n", strerror(errno));
+	// 	errno = 0;
+	// 	return (0);
+	// }
+	// if (errno == ENOTDIR) //nope
+	// {
+	// 	ft_printf("%s\n", strerror(errno));
+	// 	errno = 0;
+	// 	return (0);
+	// }
 	if (errno == ENOMEM)
-		return (-1);
-	return (0);
+		return (0);
+	return (1);
 }
+// mkdir "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012346890123456789012345678901234567890"
 
 int listFiles(const char *path, const char *command)
 {
@@ -112,6 +113,7 @@ static int find_executable(t_vars *v, char **newpath, char *command)
 		return (-1);
 	while (j < (int)size)
 	{
+		*newpath = NULL;
 		ret = listFiles(argv_dirs[j], command);
 		if (ret == 1)
 		{
@@ -121,10 +123,10 @@ static int find_executable(t_vars *v, char **newpath, char *command)
 				return (-1);
 			return (1);
 		}
-		if (ret < 0)
+		else if (ret < 0 && !set_errno())
 		{
 			ft_free_array((void*)argv_dirs, size);
-			return (set_errno());
+			return (-1);
 		}
 		j++;
 	}
@@ -191,16 +193,25 @@ int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	
 	ii = find_executable(v, &path, params[0]);
 	
+	printf("ret = %d - %s\n", ii, path);
 	if (ii < 0)
-		return (-1);
+	{
+		ft_printf("Something went wrong >:(\n");			
+		// return (-1);
+	}
 	else if (ii == 1)
 		ft_printf("Correctly!, path = %s\n", path);
 	else if (ii == 0)
 		ft_printf("Argoument not found :((\n");
-	free(path);
-		// ft_exit_error(v, 0); // TEMP
-		exit(1);
-	
+	if (path)
+		free(path);
+	ft_exit_error(v, 0); // TEMP
+		// exit(1);
+
+// bestaat			1 - (....)
+// bestaat niet		0 - (null)
+// error			
+
 	// envp = NULL;
 	// envp = __linkedlist_to_array(v, envp, v->env_head); // return or parameter not both bitch
 	// if (!envp)
