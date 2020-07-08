@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 10:54:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 09:17:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,9 +158,12 @@ int main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		read_user_input(&v);
-		for (int k = 0; v.cmdlist[k]; k++)
-			cmd__ft_lstclear(&v.cmdlist[k], free);
-		free(v.cmdlist);
+		if (v.cmdlist)
+		{
+			for (int k = 0; v.cmdlist[k]; k++)
+				cmd__ft_lstclear(&v.cmdlist[k], free);
+			free(v.cmdlist);
+		}
 	}
 }
 
