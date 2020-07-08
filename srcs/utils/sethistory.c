@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/02 14:10:25 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/05 10:44:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 14:31:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@ int		sethistory(t_history **his, char *fullcommand, char *ret, \
 	char			*tmp;
 	char			*tmp2;
 
-	tmp = ft_strdup(singlecommand);
+	tmp = ft_strdup(fullcommand);
 	if (!tmp)
 		return (0);
-	tmp2 = ft_strdup(fullcommand);
+	tmp2 = ft_strdup(singlecommand);
 	if (!tmp2)
 	{
 		free(tmp);
 		return (0);
 	}
+	ft_printf("\x1B[31m%s - %s - %s\n\x1B[0m", fullcommand, ret, singlecommand);
 	if (!*his)
 	{
 		*his = his__ft_lstnew(tmp, ret, tmp2);

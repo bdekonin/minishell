@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 09:47:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 13:29:15 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
+
+/*
+** https://tldp.org/LDP/abs/html/exitcodes.html
+*/
 
 /*
 ** main.c
@@ -32,30 +36,18 @@
 
 int set_errno(void)
 {
-	// if (errno == EACCES) //nope
-	// {
-	// 	ft_printf("%s\n", strerror(errno));
-	// 	errno = 0;
-	// 	return (0);
-	// }
+	if (errno == EACCES) // temp
+		return (0);
 	// if (errno == ENAMETOOLONG)
 	// {
 	// 	ft_printf("%s\n", strerror(errno));
 	// 	errno = 0;
 	// 	return (0);
 	// }
-	// if (errno == ENOENT) //nope
-	// {
-	// 	ft_printf("%s\n", strerror(errno));
-	// 	errno = 0;
-	// 	return (0);
-	// }
-	// if (errno == ENOTDIR) //nope
-	// {
-	// 	ft_printf("%s\n", strerror(errno));
-	// 	errno = 0;
-	// 	return (0);
-	// }
+	if (errno == ENOENT) // temp
+		return (0);
+	if (errno == ENOTDIR) // temp
+		return (0);
 	if (errno == ENOMEM)
 		return (0);
 	return (1);
@@ -126,7 +118,8 @@ static int find_executable(t_vars *v, char **newpath, char *command)
 		else if (ret < 0 && !set_errno())
 		{
 			ft_free_array((void*)argv_dirs, size);
-			return (-1);
+			if (!set_errno())
+				return (-1);
 		}
 		j++;
 	}
@@ -186,36 +179,43 @@ static char			**__linkedlist_to_array(t_vars *v, char **envp, t_env *head)
 ** @return char **			envp (filled)
 */
 
+/*
+**	1	Finished
+**	0	No command found
+** -1	Error
+*/
 int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
-	char *path = NULL;
+	char *path;
+	char **envp;
 	int ii;
 	
+	path = NULL;
 	ii = find_executable(v, &path, params[0]);
-	
-	printf("ret = %d - %s\n", ii, path);
+
 	if (ii < 0)
-	{
-		ft_printf("Something went wrong >:(\n");			
-		// return (-1);
-	}
-	else if (ii == 1)
-		ft_printf("Correctly!, path = %s\n", path);
+		return (-1);
 	else if (ii == 0)
-		ft_printf("Argoument not found :((\n");
-	if (path)
+		return (0);
+	else if (ii == 1)
+	{
 		free(path);
-	ft_exit_error(v, 0); // TEMP
-		// exit(1);
+		ft_printf("Correctly!, path = %s\n", path);
+		return (1);
+	}
 
-// bestaat			1 - (....)
-// bestaat niet		0 - (null)
-// error			
+	// ft_exit_error(v, 0); // TEMP
 
-	// envp = NULL;
-	// envp = __linkedlist_to_array(v, envp, v->env_head); // return or parameter not both bitch
-	// if (!envp)
-	// 	return (0);
+
+	//bestaat niet 		0 - (null)
+	//bestaat			1 - (....)
+	//error			   -1 - (null)
+	
+	envp = NULL;
+	envp = __linkedlist_to_array(v, envp, v->env_head); // return or parameter not both bitch
+	if (!envp)
+		return (-1);
+	
 	// if (!look_in_locations(v, 0, params[0], &path)) // leaks
 	// {
 	// 	ft_free_array((void*)envp, env__ft_lstsize(v->env_head) + 1);

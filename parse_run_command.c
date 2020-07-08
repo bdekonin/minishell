@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 09:18:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 14:27:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 		i++;
 	}
 	i = ft_execve(v, NULL, params, ret);
-	// if (!i)
-	// 	return (0);
-	// else if (i)
-	// 	return (1);
+	if (i < 0)
+		return (0);
+	else if (i)
+		return (1);
 	ft_printf(CMD_NOTFOUND, v->__executable + 2, params[0]);
 	*ret = ft_strdup("0"); // maybe 1?
 	if (!*ret)
@@ -133,7 +133,8 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 		if (!confirm_flags(v, cmd) || !run_command(v, args, cmd, &ret))
 		{
 			ft_free_array((void*)args, (int)splitsize);
-			free(ret);
+			// if (ret)
+			// 	free(ret);
 			ft_exit_error(v, 1);
 		}
 		if (cmd->type != RDIRLEFT)

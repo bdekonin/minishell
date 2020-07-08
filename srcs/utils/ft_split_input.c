@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 14:19:15 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 14:37:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 			cmd__ft_lstadd_back(&cmd[0], cmd[1]);
 		}
 		string = ft_strchr(string, string[i]) + 1;
+		if (cmd[1]->line[0] == 0)
+			cmd__delinvalid(cmd[0], cmd[1]);
 		if (cmd__ft_lstlast(cmd[0])->line[0] == 0)
 			cmd__delinvalid(cmd[0], cmd__ft_lstlast(cmd[0]));
 	}
@@ -130,7 +132,7 @@ int ft_split_input(t_vars *v)
 		i++;
 	}
 	ft_free_array((void*)argv, size);
-	// print_nodes(v->cmdlist);
+	print_nodes(v->cmdlist);
 	return (1);
 }
 
@@ -151,4 +153,4 @@ void print_nodes(t_cmd **cmd_arr)
 		}
 		i++;
 	}
-}
+} //export PATH=/Users/bdekonin/minishell/noperm
