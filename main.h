@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 12:46:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 17:41:05 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 #include "srcs/utils/history_list/history.h"
 #include "srcs/utils/env_list/env.h"
 
-# define PREFIX "%s@%s$ "
-# define CMD_NOTFOUND "%s: %s: command not found\n"
-# define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m"
+# define PREFIX "%s@%s$ " /* WILL BE SHOWED BEFORE COMMAND INPUT */
+# define CMD_NOTFOUND "%s: %s: command not found\n" /* IF COMMAND DOESNT EXIST*/
+# define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m" /* IF DIRECTORY DOESNT EXIST*/
 # define bultins 8
 # define dquote "dquote> "
 # define PIPE 124
@@ -49,6 +49,7 @@ typedef struct		s_vars
 {
 	t_env			*env_head; // malloc
 	t_history		*history_head; // malloc
+	t_node			*nodehead;
 
 	t_cmd			**cmdlist;
 

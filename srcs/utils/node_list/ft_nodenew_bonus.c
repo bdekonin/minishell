@@ -6,11 +6,24 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/18 11:34:38 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/05 10:49:56 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 16:07:51 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "node.h"
+
+t_node		*node__ft_lstnew(t_cmd **cmd)
+{
+	t_node *tmp;
+
+	tmp = malloc(sizeof(t_node));
+	if (!tmp)
+		return (0);
+	tmp->cmd = *cmd;
+	tmp->next = NULL;
+	return (tmp);
+}
+
 
 t_cmd		*cmd__ft_lstnew(unsigned char type, char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 14:27:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/08 17:28:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 		}
 		if (cmd->type != RDIRLEFT)
 		{
+
 			if (!sethistory(&v->history_head, v->line, ret, cmd->line))
 			{
 				ft_free_array((void*)args, (int)splitsize);
@@ -156,6 +157,7 @@ int ft_split_input(t_vars *v);
 
 void	read_user_input(t_vars *v)
 {
+	t_node *node;
 	int i;
 
 	i = 0;
@@ -167,11 +169,18 @@ void	read_user_input(t_vars *v)
 	{
 		if (!ft_split_input(v)) // sometimes random memory.
 			ft_exit_error(v, 1);
-		while (v->cmdlist[i])
+		node= v->nodehead;
+		while (node)
 		{
-			if (!run_cmd(v, v->cmdlist[i]))
+			t_cmd *test = node->cmd;
+			while (test)
+			{
+				ft_printf("\x1B[34mparse | %p - string = [%c][%s]\n\x1B[0m", test, test->type, test->line);
+				test = test->next;
+			}
+			if (!run_cmd(v, node->cmd))
 				ft_exit_error(v, 1);
-			i++;
+			node = node->next;
 		}
 	}
 	free(v->line);

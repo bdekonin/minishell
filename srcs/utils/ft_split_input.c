@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 14:37:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 10:10:57 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,63 +94,67 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 				return (NULL);
 			cmd__ft_lstadd_back(&cmd[0], cmd[1]);
 		}
-		string = ft_strchr(string, string[i]) + 1;
-		if (cmd[1]->line[0] == 0)
-			cmd__delinvalid(cmd[0], cmd[1]);
+		string = ft_strchr(string, string[i]) + 1;		
+		// ft_printf("char = %d\n", cmd__ft_lstlast(cmd[0])->line[0]);
 		if (cmd__ft_lstlast(cmd[0])->line[0] == 0)
 			cmd__delinvalid(cmd[0], cmd__ft_lstlast(cmd[0]));
 	}
 	return (cmd[0]);
 }
 
-void print_nodes(t_cmd **list);
+void print_nodes(t_node *node);
 
 int ft_split_input(t_vars *v)
 {
-	char		**argv = NULL;
+	char		**argv;
 	size_t		size;
 	int			i;
+	t_node	*node_list;
+	t_cmd	*ret;
 
+	v->nodehead = NULL;
 	argv = ft_split_sep(v->line, ";", &size);
-	if (!argv)
-		return (0);
 	i = 0;
-	v->cmdlist = ft_calloc(size + 1, sizeof(t_cmd*));
-	if (!v->cmdlist)
-	{
-		ft_free_array((void*)argv, size);
-		return (0); // and free
-	}
 	while (i < (int)size)
 	{
-		v->cmdlist[i] = line_to_linkedlist(argv[i], 0);
-		if (!v->cmdlist[i])
+		ret = line_to_linkedlist(argv[i], 0);
+		if (!ret)
+			return (0);
+		if (!v->nodehead)
 		{
-			ft_free_array((void*)argv, size);
-			return (0); // and free
+			v->nodehead = node__ft_lstnew(&ret);
+			if (!v->nodehead)
+				return (0);
+		}
+		else
+		{
+			node_list = node__ft_lstnew(&ret);
+			if (!node_list)
+				return (0);
+			node__ft_lstadd_back(&v->nodehead, node_list);
 		}
 		i++;
 	}
 	ft_free_array((void*)argv, size);
-	print_nodes(v->cmdlist);
+	print_nodes(v->nodehead);
 	return (1);
 }
 
-void print_nodes(t_cmd **cmd_arr)
+void print_nodes(t_node *node)
 {
-	int i;
-	t_cmd *cmd_list;
-
-	i = 0;
-
-	while (cmd_arr[i])
+			// ft_printf("isascii - %d\n", ft_isascii(127));
+	t_cmd *cmd;
+	while (node)
 	{
-		cmd_list = cmd_arr[i];
-		while (cmd_list)
+		cmd = node->cmd;
+		while (cmd)
 		{
-			ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", cmd_list, cmd_list->type, cmd_list->line);
-			cmd_list = cmd_list->next;
+			if (!ft_isascii(cmd->line[0]))
+				cmd__delinvalid(node->cmd, cmd);
+			// ft_printf("\tchar = %d\n\x1B[0m", cmd->line[0]);
+			ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			cmd = cmd->next;
 		}
-		i++;
+		node = node->next;
 	}
-} //export PATH=/Users/bdekonin/minishell/noperm
+}//export PATH=/Users/bdekonin/minishell/noperm
