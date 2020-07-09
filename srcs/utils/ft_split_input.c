@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 10:10:57 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 12:25:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 				return (NULL);
 			cmd__ft_lstadd_back(&cmd[0], cmd[1]);
 		}
-		string = ft_strchr(string, string[i]) + 1;		
-		// ft_printf("char = %d\n", cmd__ft_lstlast(cmd[0])->line[0]);
+		string = ft_strchr(string, string[i]) + 1;	
 		if (cmd__ft_lstlast(cmd[0])->line[0] == 0)
 			cmd__delinvalid(cmd[0], cmd__ft_lstlast(cmd[0]));
+		i = findflag(string, FLAGS);	
 	}
 	return (cmd[0]);
 }
@@ -150,8 +150,10 @@ void print_nodes(t_node *node)
 		while (cmd)
 		{
 			if (!ft_isascii(cmd->line[0]))
+			{
 				cmd__delinvalid(node->cmd, cmd);
-			// ft_printf("\tchar = %d\n\x1B[0m", cmd->line[0]);
+			}
+			printf("\tchar = %d - %d - %d\n\x1B[0m", cmd->line[0], ft_isascii(cmd->line[0]), isascii(cmd->line[0]));
 			ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}

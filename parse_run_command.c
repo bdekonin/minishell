@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 17:28:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 12:53:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,14 @@ int ft_split_input(t_vars *v);
 
 void	read_user_input(t_vars *v)
 {
-	t_node *node;
+	t_node	*node;
+	t_cmd	*command;
 	int i;
 
 	i = 0;
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
+	// v->line = ft_strdup("export PATH=/Users/bdekonin/minishell/noperm");
 	if (v->ret < 0)
 		ft_exit_error(v, 1);
 	if (*v->line != 0)
@@ -172,11 +174,11 @@ void	read_user_input(t_vars *v)
 		node= v->nodehead;
 		while (node)
 		{
-			t_cmd *test = node->cmd;
-			while (test)
+			command = node->cmd;
+			while (command)
 			{
-				ft_printf("\x1B[34mparse | %p - string = [%c][%s]\n\x1B[0m", test, test->type, test->line);
-				test = test->next;
+				ft_printf("\x1B[34mparse | %p - string = [%c][%s]\n\x1B[0m", command, command->type, command->line);
+				command = command->next;
 			}
 			if (!run_cmd(v, node->cmd))
 				ft_exit_error(v, 1);
@@ -186,3 +188,4 @@ void	read_user_input(t_vars *v)
 	free(v->line);
 }
 // cd ..  | echo | pwd ; env < test.txt ; env
+// export PATH=/Users/bdekonin/Documents/Projects/minishell/noperm

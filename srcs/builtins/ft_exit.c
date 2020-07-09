@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 17:26:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 12:57:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ static inline void checkif_freed_else_i_will_free_everything(t_vars *v)
 		free(v->current_path);
 	if (v->line)
 		free(v->line);
-	/*
-	** export PATH=/Users/bdekonin/minishell/noperm
-	*/
 }
 
 void	ft_exit_error(t_vars *v, int status)

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 17:41:05 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 12:52:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct		s_vars
 {
 	t_env			*env_head; // malloc
 	t_history		*history_head; // malloc
-	t_node			*nodehead;
+	t_node			*nodehead; // malloc
 
 	t_cmd			**cmdlist;
 
