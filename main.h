@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 12:52:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 19:39:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #include "srcs/utils/node_list/node.h"
 #include "srcs/utils/history_list/history.h"
@@ -32,9 +33,9 @@
 # define PIPE 124
 # define RDIRLEFT 60
 # define RDIRRIGHT 62
-#define FLAGS "<|>"
-#define TRIMS " \t"
-
+# define FLAGS "<|>"
+# define TRIMS " \t"
+# define COMMAND_NOT_RUNNABLE 127 /* command not found / not runnable */
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
@@ -90,14 +91,14 @@ int ft_exit(t_vars *v, t_cmd *cmd, char **params, char **ret);
 int debug(t_vars *v, t_cmd *cmd, char **params, char **ret);
 
 int		ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret);
-
 char	*find_environment_variable(t_vars *v, char *line);
 
 int		findflag(char *str, char *flags); // returns i of first flag found
 
 int		sethistory(t_history **his, char *fullcommand, char *ret, \
-															char *singlecommand);
+														char *singlecommand);
 
 void	ft_exit_error(t_vars *v, int status); // call this function to exit program if error or just return 1 anywhere
 
+int find_executable(t_vars *v, char **newpath, char *command);
 #endif

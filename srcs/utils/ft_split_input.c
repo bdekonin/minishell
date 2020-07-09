@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 12:25:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 15:17:51 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,27 +136,22 @@ int ft_split_input(t_vars *v)
 		i++;
 	}
 	ft_free_array((void*)argv, size);
-	print_nodes(v->nodehead);
+	// print_nodes(v->nodehead);
 	return (1);
 }
 
 void print_nodes(t_node *node)
 {
-			// ft_printf("isascii - %d\n", ft_isascii(127));
 	t_cmd *cmd;
 	while (node)
 	{
 		cmd = node->cmd;
 		while (cmd)
 		{
-			if (!ft_isascii(cmd->line[0]))
-			{
-				cmd__delinvalid(node->cmd, cmd);
-			}
-			printf("\tchar = %d - %d - %d\n\x1B[0m", cmd->line[0], ft_isascii(cmd->line[0]), isascii(cmd->line[0]));
 			ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}
-}//export PATH=/Users/bdekonin/minishell/noperm
+}
+//export PATH=/Users/bdekonin/minishell/noperm

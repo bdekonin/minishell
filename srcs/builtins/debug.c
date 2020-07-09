@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 10:56:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 17:27:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,20 +75,20 @@
 // ** @return int				0 = correct
 // */
 
-// static int				his(t_vars *v)
-// {
-// 	t_history *his;
+static int				his(t_vars *v)
+{
+	t_history *his;
 
-// 	his = v->history_head;
-// 	ft_printf("---- History list ----\nLines\t\t\t\tCommands\t\t\t\tOutput\n");
-// 	while (his)
-// 	{
-// 		ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", \
-// 								his->fullcommand, his->singlecommand, his->ret);
-// 		his = his->next;
-// 	}
-// 	return (0);
-// }
+	his = v->history_head;
+	ft_printf("---- History list ----\tFull\t\t\t\tSingle\t\t\t\tRet\n");
+	while (his)
+	{
+		ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", \
+								his->fullcommand, his->singlecommand, his->ret);
+		his = his->next;
+	}
+	return (0);
+}
 
 
 
@@ -151,8 +151,8 @@ int						debug(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	error = 0;
 	// if ((params[0] && !ft_strncmp(params[0], "leaks", 7)) || !params[0])
 	// 	error += leaks(v, node, ret);
-	// if ((params[0] && !ft_strncmp(params[0], "his", 4)) || !params[0])
-	// 	error += his(v);
+	if ((params[0] && !ft_strncmp(params[0], "his", 4)) || !params[0])
+		error += his(v);
 	// if ((params[0] && !ft_strncmp(params[0], "nodes", 9)) || !params[0])
 	// 	error += nodes(v);
 	// if ((params[0] && !ft_strncmp(params[0], "dir", 4)) || !params[0])

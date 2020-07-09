@@ -6,16 +6,17 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/07/03 10:29:54 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/07/09 15:57:09 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS = *.c srcs/builtins/*.c \
-	srcs/*.c srcs/utils/*.c srcs/utils/env_list/*.c \
+	srcs/utils/*.c srcs/utils/env_list/*.c \
 	srcs/utils/history_list/*.c \
-		srcs/utils/node_list/*.c
+		srcs/utils/node_list/*.c \
+		srcs/ft_execve/*.c 
 
 OFILES = $(SRCS:.c=.o)
 

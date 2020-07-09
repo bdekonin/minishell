@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 12:45:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/09 19:45:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,7 @@ int main(int argc, char **argv, char **envp)
 	t_vars v;
 	(void)argc; // voor de warnign
 	(void)argv; // voor de warnign
-	// v.__oldpwd = NULL; // can be overwritten. needs to be malloced size of pathmax
-	// v.__parentpid = NULL; // cant be overwritten.
-	// v.__currentpid = NULL; // cant be overwritten.
-
-	// v.history_head = NULL;
 	ft_bzero(&v, sizeof(v));
-
-	// ft_exit(v, NULL, NULL, NULL);
-
 	ft_printf("pid = %d\n", getpid());
 	/*
 	** Initializing prompt
