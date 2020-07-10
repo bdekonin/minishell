@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 12:53:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 12:35:53 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 	else if (i)
 		return (1);
 	ft_printf(CMD_NOTFOUND, v->__executable + 2, params[0]);
-	*ret = ft_strdup("0"); // maybe 1?
+	*ret = ft_strdup("127"); // COMMAND_NOT_RUNNABLE
 	if (!*ret)
 		return (0);
 	return (1);
@@ -139,8 +139,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 		}
 		if (cmd->type != RDIRLEFT)
 		{
-
-			if (!sethistory(&v->history_head, v->line, ret, cmd->line))
+			if (!sethistory(&v->history_head, v->line, ret))
 			{
 				ft_free_array((void*)args, (int)splitsize);
 				free(ret);
@@ -189,3 +188,16 @@ void	read_user_input(t_vars *v)
 }
 // cd ..  | echo | pwd ; env < test.txt ; env
 // export PATH=/Users/bdekonin/Documents/Projects/minishell/noperm
+
+int main(void)
+{
+	char *line;
+	
+	while (1)
+	{
+		ft_printf("Input = ");
+		
+		ft_printf("[%s]", line);
+		ft_printf("\n\n");
+	}
+}

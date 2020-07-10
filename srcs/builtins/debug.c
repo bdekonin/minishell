@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 17:27:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 11:22:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,10 @@ static int				his(t_vars *v)
 	t_history *his;
 
 	his = v->history_head;
-	ft_printf("---- History list ----\tFull\t\t\t\tSingle\t\t\t\tRet\n");
+	ft_printf("---- History list ----\tFull\t\t\t\tRet\n");
 	while (his)
 	{
-		ft_printf("[%s]\t\t\t\t[%s]\t\t\t\t[%s]\n", \
-								his->fullcommand, his->singlecommand, his->ret);
+		ft_printf("[%s]\t\t\t\t[%s]\n", his->fullcommand, his->ret);
 		his = his->next;
 	}
 	return (0);

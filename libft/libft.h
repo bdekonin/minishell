@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 08:07:31 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 16:14:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 12:32:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,6 @@ char				**ft_calloc_2d(size_t width, size_t height);
 char				**ft_split_sep(const char *src, char *sep, size_t *size);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_iserrno(int error);
+int					ft_getline(int fd, char **line);
 
 #endif

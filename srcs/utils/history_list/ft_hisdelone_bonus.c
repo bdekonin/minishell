@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/26 12:51:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 14:31:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 10:42:43 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	his__ft_lstdelone(t_history *lst, void (*del)(void*))
 	{
 		del(lst->fullcommand);
 		del(lst->ret);
-		del(lst->singlecommand);
 	}
 	free(lst);
 }

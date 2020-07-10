@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 15:17:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 12:02:27 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 
 	cmd[0] = NULL;
 	i = 1;
-	while (i)
+	while (1)
 	{
 		i = findflag(string, FLAGS);
 		if (!i)
@@ -94,10 +94,14 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 				return (NULL);
 			cmd__ft_lstadd_back(&cmd[0], cmd[1]);
 		}
+		if (!findflag(string, FLAGS))
+		{
+			// printf("findflag\n");
+			break;
+		}
 		string = ft_strchr(string, string[i]) + 1;	
 		if (cmd__ft_lstlast(cmd[0])->line[0] == 0)
 			cmd__delinvalid(cmd[0], cmd__ft_lstlast(cmd[0]));
-		i = findflag(string, FLAGS);	
 	}
 	return (cmd[0]);
 }
@@ -136,7 +140,7 @@ int ft_split_input(t_vars *v)
 		i++;
 	}
 	ft_free_array((void*)argv, size);
-	// print_nodes(v->nodehead);
+	print_nodes(v->nodehead);
 	return (1);
 }
 
@@ -148,7 +152,7 @@ void print_nodes(t_node *node)
 		cmd = node->cmd;
 		while (cmd)
 		{
-			ft_printf("\x1B[34m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			ft_printf("\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;

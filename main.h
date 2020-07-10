@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 19:39:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 11:21:52 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ char	*find_environment_variable(t_vars *v, char *line);
 
 int		findflag(char *str, char *flags); // returns i of first flag found
 
-int		sethistory(t_history **his, char *fullcommand, char *ret, \
-														char *singlecommand);
+int		sethistory(t_history **his, char *fullcommand, char *ret);
 
 void	ft_exit_error(t_vars *v, int status); // call this function to exit program if error or just return 1 anywhere
 

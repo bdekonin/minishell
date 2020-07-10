@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_get_line.c                                      :+:    :+:            */
+/*   ft_getline_bonus.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/06 13:36:49 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/06 13:37:38 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 12:32:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	read_file(int fd, char **line, char *buffer)
 	return (ret);
 }
 
-int     	ft_get_line(int fd, char **line)
+int			ft_getline(int fd, char **line)
 {
 	int		ret;
 	char	buffer[BUFFER_SIZE + 1];

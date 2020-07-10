@@ -6,50 +6,37 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/02 14:10:25 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 17:30:10 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 11:23:44 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-int		sethistory(t_history **his, char *fullcommand, char *ret, \
-															char *singlecommand)
+int		sethistory(t_history **his, char *fullcommand, char *ret)
 {
 	t_history		*newlist;
 	char			*tmp;
-	char			*tmp2;
 
 	tmp = ft_strdup(fullcommand);
 	if (!tmp)
 		return (0);
-	tmp2 = ft_strdup(singlecommand);
-	if (!tmp2)
-	{
-		free(tmp);
-		return (0);
-	}
 	if (!*his)
 	{
-		*his = his__ft_lstnew(tmp, ret, tmp2);
+		*his = his__ft_lstnew(tmp, ret);
 		if (!*his)
 		{
 			free(tmp);
-			free(tmp2);
 			return (0);
 		}
 		else
 			return (1);
 	}
-	else
+	newlist = his__ft_lstnew(tmp, ret);
+	if (!newlist)
 	{
-		newlist = his__ft_lstnew(tmp, ret, tmp2);
-		if (!newlist)
-		{
-			free(tmp);
-			free(tmp2);
-			return (0);
-		}
-		his__ft_lstadd_front(&*his, newlist);
+		free(tmp);
+		return (0);
 	}
+	his__ft_lstadd_front(&*his, newlist);
 	return (1);
 }

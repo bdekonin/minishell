@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 19:33:40 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 10:37:17 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 // #include <sys/types.h>
 // #include <sys/stat.h>
 // #include <time.h>
+#include <sysexits.h>
 
 /*
 ** https://tldp.org/LDP/abs/html/exitcodes.html
@@ -120,47 +121,45 @@ int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	{
 		signal(SIGINT, SIG_DFL); // ctrl c - for cat so you can quit
 		signal(SIGTSTP, SIG_DFL); // ctrl z
-		if (execve(path, "Testter", envp) < 0)
+		if (execve(path, params, envp) < 0)
 		{
-			printf("ERROR1\n");
-			errno = ENOEXEC;
-			kill(spoon, SIGUSR1);
+			ft_printf("%s: %s\n", v->__executable + 2, strerror(errno));
 			exit(COMMAND_NOT_RUNNABLE);
-			// free(path);
-			// ft_free_array((void*)envp, env__ft_lstsize(v->env_head));
-			// return (-1);
 		}
 	}
-	// pid_t w = waitpid(spoon, &stat, WUNTRACED | WCONTINUED);
 	wait(&stat);
-	// wait(&stat);
 	ft_free_array((void*)envp, env__ft_lstsize(v->env_head) + 1);
 	free(path);
-
-	if (errno == ENOEXEC && WEXITSTATUS(stat) == 127)
-		printf("IN HEREEEE\n");
 	*ret = ft_itoa(WEXITSTATUS(stat));
-
-	if (WIFEXITED(stat))
-	{
-		printf("exited, status=%d\n", WEXITSTATUS(stat));
-	}
-	else if (WIFSIGNALED(stat))
-	{
-		printf("killed by signal %d\n", WTERMSIG(stat));
-	}
-	else if (WIFSTOPPED(stat))
-	{
-		printf("stopped by signal %d\n", WSTOPSIG(stat));
-	}
-	else if (WIFCONTINUED(stat))
-	{
-		printf("continued\n");
-	}
-	printf("WEXITSTATUS(stat) = %s\n", *ret);
 	if (!*ret)
 		return (0);
 	return (1);
 	(void)(cmd);
 
 }
+
+// exited, status=0
+// killed by signal 0
+// stopped by signal 0
+// continued
+// WEXITSTATUS(stat) = 0bin/ls
+
+// exited, status=0
+// killed by signal 2
+// stopped by signal 0
+// continued
+// WEXITSTATUS(stat) = 0bin/cat
+
+// exited, status=127
+// killed by signal 0
+// stopped by signal 127
+// continued
+// WEXITSTATUS(stat) = 127
+
+// ERROR1 - 0
+// error = : Bad address
+// exited, status=127
+// killed by signal 0
+// stopped by signal 127
+// continued
+// WEXITSTATUS(stat) = 127
