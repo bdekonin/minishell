@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 12:35:53 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 13:04:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,16 +188,3 @@ void	read_user_input(t_vars *v)
 }
 // cd ..  | echo | pwd ; env < test.txt ; env
 // export PATH=/Users/bdekonin/Documents/Projects/minishell/noperm
-
-int main(void)
-{
-	char *line;
-	
-	while (1)
-	{
-		ft_printf("Input = ");
-		
-		ft_printf("[%s]", line);
-		ft_printf("\n\n");
-	}
-}
