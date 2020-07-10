@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 18:19:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 21:50:21 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ static inline int	env__oldpwd(t_vars *v, t_env *env)
 	return (1);
 }
 
+static inline int	env__missing(t_env *head, t_env **env, char *name, char *content)
+{
+	name = ft_strdup(name);
+	content = ft_strdup(content);
+	printf("\x1B[31m%s\x1B[34m=\x1B[37m%s\n", name, content);
+	*env = env__ft_lstnew(name, content);
+	env__ft_lstadd_back(&head, *env);
+}
+
 void print_env(t_vars *v)
 {
 	t_env *env;
@@ -46,6 +55,8 @@ void print_env(t_vars *v)
 	}
 	return ;
 }
+
+
 
 int verify_enviroment_vars(t_vars *v, t_env *env)
 {
@@ -62,7 +73,24 @@ int verify_enviroment_vars(t_vars *v, t_env *env)
 		}
 		else if (!ft_strcmp("PATH", env->name))
 			v->__path = env;
+		else if (!ft_strcmp("SHELLNAME", env->name))
+			v->executable__ = env;
 		env = env->next;
+	}
+	if (!v->__logname)
+	{
+		printf("Missing - __logname\n");
+		env__missing(v->env_head, &v->__logname, "LOGNAME", MISSING_LOGNAME);
+	}
+	if (!v->__homedir)
+	{
+		printf("Missing - __homedir\n");
+		env__missing(v->env_head, &v->__homedir, "HOME", MISSING_HOMEDIR);
+	}
+	if (!v->executable__)
+	{
+		printf("Missing - executable__\n");
+		env__missing(v->env_head, &v->executable__, "SHELLNAME", MISSING_SHELLNAME);
 	}
 	return (1);
 }
@@ -140,12 +168,10 @@ int env__makelist(t_vars *v, char **envp)
 	// 	free(arr);
 	// 	i++;
 	// }
-	// // !LOGNAME
-	// // !HOME
+	// // !LOGNAME .
+	// // !HOME .
 	// // !OLDPWD
 	// // !PWD
-	// // !PARENT_PID
-	// // !CURRENTPID
 	// env = env__ft_lstlast(v->env_head);
 	// v->__executable = ft_strrchr(env->content, '.');
 	// return (1);
@@ -203,3 +229,6 @@ int env__makelist(t_vars *v, char **envp)
 
 #include <stdio.h>
 #include <fcntl.h>
+
+
+// 

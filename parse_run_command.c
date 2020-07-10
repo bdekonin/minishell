@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 13:04:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 21:23:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
 	if (cmd->prev && cmd->type != RDIRLEFT)
 		return (1);
+	printf(" - %s\n", cmd->line);
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
 
@@ -56,7 +57,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 		return (0);
 	else if (i)
 		return (1);
-	ft_printf(CMD_NOTFOUND, v->__executable + 2, params[0]);
+	ft_printf(CMD_NOTFOUND, v->executable__->content, params[0]);
 	*ret = ft_strdup("127"); // COMMAND_NOT_RUNNABLE
 	if (!*ret)
 		return (0);
@@ -85,7 +86,7 @@ static int confirm_flags(t_vars *v, t_cmd *cmd)
 		}
 		else if (cmd->type == RDIRLEFT || cmd->type == RDIRRIGHT)
 		{
-			ft_printf("%s: parse error near `\\n'\n", v->__executable + 2);
+			ft_printf("%s: parse error near `\\n'\n", v->executable__->content);
 		}
 	}
 	else if (cmd->type)
@@ -94,7 +95,7 @@ static int confirm_flags(t_vars *v, t_cmd *cmd)
 		{
 			fd = open(cmd->next->line, O_RDONLY);
 			if (fd < 0)
-				ft_printf(DIR_NOTFOUND, v->__executable + 2, cmd->next->line);
+				ft_printf(DIR_NOTFOUND, v->executable__->content, cmd->next->line);
 			else
 				ft_printf("\x1B[32m'%s' exist!\n\x1B[0m", cmd->next->line);
 		}
@@ -163,7 +164,7 @@ void	read_user_input(t_vars *v)
 	i = 0;
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
-	// v->line = ft_strdup("export PATH=/Users/bdekonin/minishell/noperm");
+	// v->line = ft_strdup("cd / ; cd ..");
 	if (v->ret < 0)
 		ft_exit_error(v, 1);
 	if (*v->line != 0)

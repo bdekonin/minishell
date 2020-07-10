@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 16:05:29 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 21:35:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 
+
+# define MISSING_LOGNAME "user"
+# define MISSING_HOMEDIR v->current_path //norm?
+# define MISSING_SHELLNAME "minishell" //norm?
+
 typedef struct		s_vars
 {
 	t_env			*env_head; // malloc
@@ -69,6 +74,7 @@ typedef struct		s_vars
 	t_env			*__logname;
 	t_env			*__homedir;
 	t_env			*__oldpwd;
+	t_env			*executable__;
 	int				exit_status;
 }					t_vars;
 
