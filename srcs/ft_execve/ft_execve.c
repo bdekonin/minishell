@@ -6,41 +6,15 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 10:37:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 16:02:40 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
-// #include <sys/stat.h>
-// #include <sys/types.h>
-// #include <sys/stat.h>
-// #include <time.h>
-#include <sysexits.h>
 
 /*
 ** https://tldp.org/LDP/abs/html/exitcodes.html
 */
-
-/*
-** main.c
-** chmod:                 420
-** regular file
-**
-** minishell && kaas
-** chmod:                 493
-** regular file
-** https://stackoverflow.com/questions/2605130/redirecting-exec-output-to-a-buffer-or-file
-**
-**
-**
-*/
-
-
-// mkdir "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012346890123456789012345678901234567890"
-
-
-
-
 
 /*
 ** Converts the linked list environ to a array of strings. Terminated by NULL.
@@ -115,7 +89,10 @@ int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	envp = NULL;
 	envp = __linkedlist_to_array(v, envp, v->env_head); // return or parameter not both bitch
 	if (!envp)
+	{
+		free(path);
 		return (-1);
+	}
 	pid_t	spoon = fork();
 	if (!spoon)
 	{
@@ -137,29 +114,3 @@ int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	(void)(cmd);
 
 }
-
-// exited, status=0
-// killed by signal 0
-// stopped by signal 0
-// continued
-// WEXITSTATUS(stat) = 0bin/ls
-
-// exited, status=0
-// killed by signal 2
-// stopped by signal 0
-// continued
-// WEXITSTATUS(stat) = 0bin/cat
-
-// exited, status=127
-// killed by signal 0
-// stopped by signal 127
-// continued
-// WEXITSTATUS(stat) = 127
-
-// ERROR1 - 0
-// error = : Bad address
-// exited, status=127
-// killed by signal 0
-// stopped by signal 127
-// continued
-// WEXITSTATUS(stat) = 127

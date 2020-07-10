@@ -6,39 +6,17 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/09 15:33:31 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/09 18:01:15 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/10 16:03:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-/*
-int set_errno(void)
-{
-	if (errno == EACCES) // temp
-		return (0);
-	// if (errno == ENAMETOOLONG)
-	// {
-	// 	ft_printf("%s\n", strerror(errno));
-	// 	errno = 0;
-	// 	return (0);
-	// }
-	if (errno == ENOENT) // temp
-		return (0);
-	if (errno == ENOTDIR) // temp
-		return (0);
-	if (errno == ENOMEM)
-		return (0);
-	return (1);
-}
-*/
-
-static int listfiles(const char *path, const char *command)
+static int			listfiles(const char *path, const char *command)
 {
 	struct dirent *dp;
 	DIR *dir = opendir(path); //norm
 
-	// Unable to open directory stream
 	if (!dir)
 		return (-1);
 	dp = readdir(dir);
@@ -67,10 +45,10 @@ static int listfiles(const char *path, const char *command)
 	return (0);
 }
 
-static char *make_command(char *path, char *command)
+static char			*make_command(char *path, char *command)
 {
-	size_t length;
-	char *newpath;
+	size_t		length;
+	char		*newpath;
 
 	length = ft_strlen(path) + 1 + ft_strlen(command) + 1;
 	newpath = ft_calloc(length, sizeof(char));
@@ -82,17 +60,13 @@ static char *make_command(char *path, char *command)
 	return (newpath);
 }
 
-int find_executable(t_vars *v, char **newpath, char *command)
+static inline int	loop_locations(int size, char **argv_dirs, \
+						char *command, char **newpath)
 {
-	char	**argv_dirs;
-	size_t	size;
-	int		j;
-	int		ret;
+	int j;
+	int ret;
 
 	j = 0;
-	argv_dirs = ft_split_sep(v->__path->content, ":", &size);
-	if (!argv_dirs)
-		return (-1);
 	while (j < (int)size)
 	{
 		*newpath = NULL;
@@ -100,24 +74,30 @@ int find_executable(t_vars *v, char **newpath, char *command)
 		if (ret == 1)
 		{
 			*newpath = make_command(argv_dirs[j], command);
-			ft_free_array((void*)argv_dirs, size);
 			if (!*newpath)
 				return (-1);
 			return (1);
 		}
-		else if (ret < 0 && !ft_iserrno(ENOENT) && !ft_iserrno(EACCES) && !ft_iserrno(ENOTDIR))
-		{
-			ft_free_array((void*)argv_dirs, size);
+		else if (ret < 0 && !ft_iserrno(ENOENT) && \
+						!ft_iserrno(EACCES) && !ft_iserrno(ENOTDIR))
 			return (-1);
-		}
 		j++;
 	}
-	ft_free_array((void*)argv_dirs, size);
 	return (0);
 }
 
-// parse | 0x7fc036d00670 - string = [][cat]
-// ERROR
-// exited, status=8
+int					find_executable(t_vars *v, char **newpath, char *command)
+{
+	char	**argv_dirs;
+	size_t	size;
+	int		ret;
 
-//exited, status=8
+	argv_dirs = ft_split_sep(v->__path->content, ":", &size);
+	if (!argv_dirs)
+		return (-1);
+	ret = loop_locations((int)size, argv_dirs, command, newpath);
+	ft_free_array((void*)argv_dirs, size);
+	if (ret == -1 || ret == 1)
+		return (ret);
+	return (0);
+}
