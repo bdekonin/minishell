@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 11:50:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 19:02:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static char			**__linkedlist_to_array(t_vars *v, char **envp, t_env *head)
 **	Not found	0 - (null)
 **	Error	   -1 - (null)
 */
-int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
+int					ft_execve(t_vars *v, t_cmd *cmd, char **params)
 {
 	char *path;
 	char **envp;
@@ -107,9 +107,13 @@ int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	wait(&stat);
 	ft_free_array((void*)envp, env__ft_lstsize(v->env_head) + 1);
 	free(path);
-	*ret = ft_itoa(WEXITSTATUS(stat));
-	if (!*ret)
+	// path = ft_itoa(WEXITSTATUS(stat));
+	if (!sethistory(&v->history_head, v->line, "EXECVE"))
+	{
+		// free(path)
 		return (0);
+	}
+	// free(path);
 	return (1);
 	(void)(cmd);
 

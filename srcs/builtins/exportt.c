@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   export.c                                           :+:    :+:            */
+/*   exportt.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/04 15:51:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 18:07:43 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int	find_env_var_name(t_env **head, char **name, char **content)
 	return (0); //new name found in env list
 }
 
-int 			exportt(t_vars *v, t_cmd *cmd, char **params, char **ret) //tttttt?
+int 			exportt(t_vars *v, t_cmd *cmd, char **params) //tttttt?
 {
 	char	**array;
 	size_t	size;
@@ -115,9 +115,8 @@ int 			exportt(t_vars *v, t_cmd *cmd, char **params, char **ret) //tttttt?
 		}
 		i++;
 	}
-	*ret= ft_strdup("0");
-	// if (!*ret)
-	//return
+	if (!sethistory(&v->history_head, v->line, "0"))
+		return (0);
 	(void)(cmd);
 	return (1);
 }

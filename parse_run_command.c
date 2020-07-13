@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 11:50:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 19:36:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ char		*cmd_str(int i)
 	return (cmd_str[i]);
 }
 
-int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
+int run_command(t_vars *v, char **params, t_cmd *cmd)
 {
-	if (cmd->prev && cmd->type != RDIRLEFT)
+	if (cmd->prev && cmd->type != PIPE)
 		return (1);
+	printf("runcommand | getpid = %d\n", getpid());;
 	int i;
-	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
+	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params); 
 
 	i = 0;
 	p[0] = echo;
@@ -48,17 +49,16 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 15))
-			return ((*p[i])(v, cmd, params + 1, ret));
+			return ((*p[i])(v, cmd, params + 1));
 		i++;
 	}
-	i = ft_execve(v, NULL, params, ret);
+	i = ft_execve(v, NULL, params);
 	if (i < 0)
 		return (0);
 	else if (i)
 		return (1);
 	ft_printf(CMD_NOTFOUND, v->__executable->content, params[0]);
-	*ret = ft_strdup("127"); // COMMAND_NOT_RUNNABLE
-	if (!*ret)
+	if (!sethistory(&v->history_head, v->line, "127"))
 		return (0);
 	return (1);
 }
@@ -66,6 +66,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 {
 	char	*line;
+	char	*temp;
 	t_cmd	*newcmd;
 	int fd;
 
@@ -79,10 +80,12 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 			if (!newcmd)
 			{
 				free(line);
-				return (0);
+				return (-1);
 			}
 			cmd__ft_lstadd_back(&cmd, newcmd);
-			v->line = ft_strjoin(v->line, line); // leaks
+			temp = ft_strjoin(v->line, line);
+			free(v->line);
+			v->line = temp;
 		}
 		else if (cmd->type == RDIRLEFT || cmd->type == RDIRRIGHT)
 		{
@@ -103,21 +106,25 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 		{
 			ft_printf("PIPE JA");
 		}
-		// if (cmd->type == RDIRRIGHT)
-		// {
-		// 	int stat;
-		// 	pid_t forky;
-
-		// 	forky = fork();
-		// 	if (!forky)
-		// 	{
-		// 		int fd = open(cmd->next->line, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR); // check things
-		// 		dup2(fd, 1);
-		// 		close(fd);
-		// 	}
-		// 	else if (forky > 0)
-		// 		wait(&stat);
-		// }
+		if (cmd->type == RDIRRIGHT)
+		{
+			int stat;
+			v->fork_flag = 0;
+			v->fork_flag = fork();
+			if (!v->fork_flag)
+			{
+				int fd = open(cmd->next->line, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR); // check things
+				dup2(fd, 1);
+				close(fd);
+			}
+			else if (v->fork_flag > 0)
+			{
+				ft_printf("v->fork_flag = %d\n", v->fork_flag);
+				wait(&stat);
+				ft_printf("WEXITSTATUS(stat) = %d\n", WEXITSTATUS(stat));
+				return (0);
+			}
+		}
 	}
 	return (1);
 }
@@ -128,32 +135,30 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 */
 int run_cmd(t_vars *v, t_cmd *cmd)
 {
-	char	*ret = NULL;
+	// char	*ret = NULL;
 	char	**args;
 	size_t	splitsize;
+	int ret;
 
 	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		if (!confirm_flags(v, args, cmd) || !run_command(v, args, cmd, &ret))
+		ret = confirm_flags(v, args, cmd);
+		if (ret == -1)
 		{
 			ft_free_array((void*)args, (int)splitsize);
-			// if (ret)
-			// 	free(ret);
 			ft_exit_error(v, 1);
 		}
-		if (cmd->type != RDIRLEFT)
+		if (!run_command(v, args, cmd))
 		{
-			if (!sethistory(&v->history_head, v->line, &ret))
-			{
-				ft_free_array((void*)args, (int)splitsize);
-				free(ret);
-				ft_exit_error(v, 1);
-			}
-			ft_printf("ret = %s\n", ret);
+			ft_free_array((void*)args, (int)splitsize);
+			ft_exit_error(v, 1);
 		}
+		if (!v->fork_flag)
+			exit(42);
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
+		errno = 0;
 	}
 	return (1);
 }

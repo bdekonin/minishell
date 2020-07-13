@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/11 23:32:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 19:35:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static inline void checkif_freed_else_i_will_free_everything(t_vars *v)
 void	ft_exit_error(t_vars *v, int status)
 {
 	v->exit_status = status;
-	ft_exit(v, NULL, NULL, NULL);
+	ft_exit(v, NULL, NULL);
 }
 
-int ft_exit(t_vars *v, t_cmd *cmd, char **params, char **ret)
+int ft_exit(t_vars *v, t_cmd *cmd, char **params)
 {
 	int stat_temp = v->exit_status; //do this because bzero will be overwritten
 
@@ -50,6 +50,5 @@ int ft_exit(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	exit(stat_temp);
 	(void)(params);
 	(void)(cmd);
-	(void)(ret);
 	return (1);
 }

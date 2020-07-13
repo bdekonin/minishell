@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 21:34:36 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 19:32:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,13 @@ void	read_user_input(t_vars *v);
 
 int main(int argc, char **argv, char **envp)
 {
-	ft_printf("---- Starting ----\n\n");
+	ft_printf("---- Starting ----\n----- %d -----\n\n", getpid());
 	t_vars v;
 	(void)argc; // voor de warnign
 	(void)argv; // voor de warnign
+
 	ft_bzero(&v, sizeof(v));
-	ft_printf("pid = %d\n", getpid());
+	v.fork_flag = 1;
 	/*
 	** Initializing prompt
 	*/

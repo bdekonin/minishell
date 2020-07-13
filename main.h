@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 11:52:00 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 19:31:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,15 @@ typedef struct		s_vars
 	t_node			*nodehead; // malloc
 
 	t_cmd			**cmdlist;
+	pid_t			fork_flag;
 
 	char			*prefix; // malloc // user@minishell$ 
 	char			*current_path; // malloc
 	char			*line; // malloc for gnl
 	int				ret; // gnl ret
 
+
+	t_env			*__path;
 	t_env			*__logname;
 	t_env			*__homedir;
 	t_env			*__oldpwd;
@@ -76,21 +79,21 @@ int				ft_printf(const char *fmt, ...);
 char *parse_cd(t_vars *v, char *line);
 
 // tijdelijke gevulde functies
-int echo(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int	cd(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int pwd(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int exportt(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int unset(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int env(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int ft_exit(t_vars *v, t_cmd *cmd, char **params, char **ret);
-int debug(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int echo(t_vars *v, t_cmd *cmd, char **params);
+int	cd(t_vars *v, t_cmd *cmd, char **params);
+int pwd(t_vars *v, t_cmd *cmd, char **params);
+int exportt(t_vars *v, t_cmd *cmd, char **params);
+int unset(t_vars *v, t_cmd *cmd, char **params);
+int env(t_vars *v, t_cmd *cmd, char **params);
+int ft_exit(t_vars *v, t_cmd *cmd, char **params);
+int debug(t_vars *v, t_cmd *cmd, char **params);
 
-int		ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret);
+int		ft_execve(t_vars *v, t_cmd *cmd, char **params);
 char	*find_environment_variable(t_vars *v, char *line);
 
 int		findflag(char *str, char *flags); // returns i of first flag found
 
-int		sethistory(t_history **his, char *fullcommand, char **ret);
+int		sethistory(t_history **his, char *fullcommand, char *ret_str);
 
 void	ft_exit_error(t_vars *v, int status); // call this function to exit program if error or just return 1 anywhere
 

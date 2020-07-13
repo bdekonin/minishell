@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 11:50:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 17:27:57 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void print_env(t_vars *v)
 	env = v->env_head;
 	while (env)
 	{
-		printf("\x1B[31m%s\x1B[34m=\x1B[37m%s\n", env->name, env->content);
+		ft_printf("\x1B[31m%s\x1B[34m=\x1B[37m%s\n", env->name, env->content);
 		env = env->next;
 	}
 	return ;
@@ -100,7 +100,6 @@ int verify_enviroment_vars(t_vars *v, t_env *env)
 	}
 	if (!v->__executable)
 	{
-		printf("Missing - __executable\n");
 		env__missing(v->env_head, &v->__executable, "SHELLNAME", MISSING_SHELLNAME);
 	}
 	return (1);

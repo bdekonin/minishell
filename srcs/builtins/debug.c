@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/08 20:35:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 11:22:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 18:14:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ static int				his(t_vars *v)
 **							-1 = malloc fail
 */
 
-int						debug(t_vars *v, t_cmd *cmd, char **params, char **ret)
+int						debug(t_vars *v, t_cmd *cmd, char **params)
 {
 	int error;
 
@@ -156,8 +156,7 @@ int						debug(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	// 	error += nodes(v);
 	// if ((params[0] && !ft_strncmp(params[0], "dir", 4)) || !params[0])
 	// 	error += dir(v);
-	*ret = (error) ? ft_strdup("0") : ft_strdup("1");
-	if (!*ret)
+	if (!sethistory(&v->history_head, v->line, "Debug test"))
 		return (0);
 	(void)(v);
 	(void)(cmd);
