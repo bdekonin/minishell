@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 11:23:00 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/11 23:32:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int ft_exit(t_vars *v, t_cmd *cmd, char **params, char **ret)
 	else
 		ft_printf("exit\n");
 	exit(stat_temp);
-
 	(void)(params);
 	(void)(cmd);
 	(void)(ret);

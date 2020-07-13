@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 21:50:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 11:50:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,23 @@ static inline int	env__oldpwd(t_vars *v, t_env *env)
 
 static inline int	env__missing(t_env *head, t_env **env, char *name, char *content)
 {
+	ft_printf(ENVIRONMENT_VAR_MISSING, name, content);
 	name = ft_strdup(name);
+	if (!name)
+		return (0);
 	content = ft_strdup(content);
-	printf("\x1B[31m%s\x1B[34m=\x1B[37m%s\n", name, content);
+	if (!content)
+	{
+		free(name);
+		return (0);
+	}
 	*env = env__ft_lstnew(name, content);
+	if (!*env)
+	{
+		free(name);
+		free(content);
+		return (0);
+	}
 	env__ft_lstadd_back(&head, *env);
 }
 
@@ -74,23 +87,21 @@ int verify_enviroment_vars(t_vars *v, t_env *env)
 		else if (!ft_strcmp("PATH", env->name))
 			v->__path = env;
 		else if (!ft_strcmp("SHELLNAME", env->name))
-			v->executable__ = env;
+			v->__executable = env;
 		env = env->next;
 	}
 	if (!v->__logname)
 	{
-		printf("Missing - __logname\n");
 		env__missing(v->env_head, &v->__logname, "LOGNAME", MISSING_LOGNAME);
 	}
 	if (!v->__homedir)
 	{
-		printf("Missing - __homedir\n");
-		env__missing(v->env_head, &v->__homedir, "HOME", MISSING_HOMEDIR);
+		env__missing(v->env_head, &v->__homedir, "HOME", v->current_path);
 	}
-	if (!v->executable__)
+	if (!v->__executable)
 	{
-		printf("Missing - executable__\n");
-		env__missing(v->env_head, &v->executable__, "SHELLNAME", MISSING_SHELLNAME);
+		printf("Missing - __executable\n");
+		env__missing(v->env_head, &v->__executable, "SHELLNAME", MISSING_SHELLNAME);
 	}
 	return (1);
 }

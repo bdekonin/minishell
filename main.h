@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 21:35:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 11:52:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@
 # define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m" /* IF DIRECTORY DOESNT EXIST*/
 # define bultins 8
 # define dquote "dquote> "
-# define PIPE 124
-# define RDIRLEFT 60
-# define RDIRRIGHT 62
-# define FLAGS "<|>"
-# define TRIMS " \t"
+# define PIPE 124 // |
+# define RDIRLEFT 60 // <
+# define RDIRRIGHT 62 // >
+# define FLAGS "<|>" //mandatory flags
+# define TRIMS " \t" // Command will be trimmed in spaces and tabs
+# define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n" /*, name, content*/
 # define COMMAND_NOT_RUNNABLE 127 /* command not found / not runnable */
 
 #define KNRM  "\x1B[0m"
@@ -47,9 +48,8 @@
 #define KWHT  "\x1B[37m"
 
 
-# define MISSING_LOGNAME "user"
-# define MISSING_HOMEDIR v->current_path //norm?
-# define MISSING_SHELLNAME "minishell" //norm?
+# define MISSING_LOGNAME "user" // is logname env is missing
+# define MISSING_SHELLNAME "minishell" //if SHELLname env is missing
 
 typedef struct		s_vars
 {
@@ -59,23 +59,16 @@ typedef struct		s_vars
 
 	t_cmd			**cmdlist;
 
-	char			*prefix; // malloc
+	char			*prefix; // malloc // user@minishell$ 
 	char			*current_path; // malloc
-	char			*line; // malloc
-	int				ret;
+	char			*line; // malloc for gnl
+	int				ret; // gnl ret
 
-	char			*__executable;	// another struct maybe?
-	// char			*__homedir;		//this aswell lars.
-	// char			*__oldpwd; // location of old pwd
-	// char			*__parentpid; // pid of parent program
-	// char			*__currentpid; // pid of parent program
-
-	t_env			*__path; // keeps the node * even if the pointer of the variable changes.
 	t_env			*__logname;
 	t_env			*__homedir;
 	t_env			*__oldpwd;
-	t_env			*executable__;
-	int				exit_status;
+	t_env			*__executable; //
+	int				exit_status; // existatus is 1 if error, used in ft_exit_error
 }					t_vars;
 
 int				ft_printf(const char *fmt, ...);
@@ -97,7 +90,7 @@ char	*find_environment_variable(t_vars *v, char *line);
 
 int		findflag(char *str, char *flags); // returns i of first flag found
 
-int		sethistory(t_history **his, char *fullcommand, char *ret);
+int		sethistory(t_history **his, char *fullcommand, char **ret);
 
 void	ft_exit_error(t_vars *v, int status); // call this function to exit program if error or just return 1 anywhere
 

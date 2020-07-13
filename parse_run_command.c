@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 21:23:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 11:50:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 {
 	if (cmd->prev && cmd->type != RDIRLEFT)
 		return (1);
-	printf(" - %s\n", cmd->line);
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params, char **ret);
 
@@ -57,14 +56,14 @@ int run_command(t_vars *v, char **params, t_cmd *cmd, char **ret)
 		return (0);
 	else if (i)
 		return (1);
-	ft_printf(CMD_NOTFOUND, v->executable__->content, params[0]);
+	ft_printf(CMD_NOTFOUND, v->__executable->content, params[0]);
 	*ret = ft_strdup("127"); // COMMAND_NOT_RUNNABLE
 	if (!*ret)
 		return (0);
 	return (1);
 }
 
-static int confirm_flags(t_vars *v, t_cmd *cmd)
+static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 {
 	char	*line;
 	t_cmd	*newcmd;
@@ -83,10 +82,11 @@ static int confirm_flags(t_vars *v, t_cmd *cmd)
 				return (0);
 			}
 			cmd__ft_lstadd_back(&cmd, newcmd);
+			v->line = ft_strjoin(v->line, line); // leaks
 		}
 		else if (cmd->type == RDIRLEFT || cmd->type == RDIRRIGHT)
 		{
-			ft_printf("%s: parse error near `\\n'\n", v->executable__->content);
+			ft_printf("%s: parse error near `\\n'\n", v->__executable->content);
 		}
 	}
 	else if (cmd->type)
@@ -95,14 +95,18 @@ static int confirm_flags(t_vars *v, t_cmd *cmd)
 		{
 			fd = open(cmd->next->line, O_RDONLY);
 			if (fd < 0)
-				ft_printf(DIR_NOTFOUND, v->executable__->content, cmd->next->line);
+				ft_printf(DIR_NOTFOUND, v->__executable->content, cmd->next->line);
 			else
 				ft_printf("\x1B[32m'%s' exist!\n\x1B[0m", cmd->next->line);
+		}
+		if (cmd->prev && cmd->prev->type == PIPE)
+		{
+			ft_printf("PIPE JA");
 		}
 		// if (cmd->type == RDIRRIGHT)
 		// {
 		// 	int stat;
-			// pid_t forky;
+		// 	pid_t forky;
 
 		// 	forky = fork();
 		// 	if (!forky)
@@ -111,8 +115,8 @@ static int confirm_flags(t_vars *v, t_cmd *cmd)
 		// 		dup2(fd, 1);
 		// 		close(fd);
 		// 	}
-		// 	// else if (forky > 0)
-		// 		// wait(&stat);
+		// 	else if (forky > 0)
+		// 		wait(&stat);
 		// }
 	}
 	return (1);
@@ -131,7 +135,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		if (!confirm_flags(v, cmd) || !run_command(v, args, cmd, &ret))
+		if (!confirm_flags(v, args, cmd) || !run_command(v, args, cmd, &ret))
 		{
 			ft_free_array((void*)args, (int)splitsize);
 			// if (ret)
@@ -140,12 +144,13 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 		}
 		if (cmd->type != RDIRLEFT)
 		{
-			if (!sethistory(&v->history_head, v->line, ret))
+			if (!sethistory(&v->history_head, v->line, &ret))
 			{
 				ft_free_array((void*)args, (int)splitsize);
 				free(ret);
 				ft_exit_error(v, 1);
 			}
+			ft_printf("ret = %s\n", ret);
 		}
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
@@ -164,7 +169,6 @@ void	read_user_input(t_vars *v)
 	i = 0;
 	ft_printf(v->prefix, v->__logname->content, ft_strrchr(v->current_path, '/') + 1);
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
-	// v->line = ft_strdup("cd / ; cd ..");
 	if (v->ret < 0)
 		ft_exit_error(v, 1);
 	if (*v->line != 0)
@@ -188,4 +192,5 @@ void	read_user_input(t_vars *v)
 	free(v->line);
 }
 // cd ..  | echo | pwd ; env < test.txt ; env
+// cd ..  | echo | pwd ; env ; env
 // export PATH=/Users/bdekonin/Documents/Projects/minishell/noperm

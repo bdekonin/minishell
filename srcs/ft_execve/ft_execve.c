@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 21:23:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 11:50:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int					ft_execve(t_vars *v, t_cmd *cmd, char **params, char **ret)
 		signal(SIGTSTP, SIG_DFL); // ctrl z
 		if (execve(path, params, envp) < 0)
 		{
-			ft_printf("%s: %s\n", v->executable__->content, strerror(errno));
+			ft_printf("%s: %s\n", v->__executable->content, strerror(errno));
 			exit(COMMAND_NOT_RUNNABLE);
 		}
 	}

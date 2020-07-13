@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/09 15:33:31 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 16:03:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/11 20:47:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,19 @@ static inline int	loop_locations(int size, char **argv_dirs, \
 	return (0);
 }
 
+int get_relativepath(char *currentpath, char **newpath, char *command);
+
 int					find_executable(t_vars *v, char **newpath, char *command)
 {
 	char	**argv_dirs;
 	size_t	size;
 	int		ret;
 
+	if (command[0] == '.' && command[1] == '/')
+	{
+		ret = get_relativepath(v->current_path, newpath, command);
+		return (ret);
+	}
 	argv_dirs = ft_split_sep(v->__path->content, ":", &size);
 	if (!argv_dirs)
 		return (-1);

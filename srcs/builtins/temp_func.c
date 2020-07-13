@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 21:23:15 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/13 11:50:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int pwd(t_vars *v, t_cmd *cmd, char **params, char **ret)
 
 int echo(t_vars *v, t_cmd *cmd, char **params, char **ret)
 {
-	ft_printf("%.0s\t", v->executable__->content);
+	ft_printf("%.0s\t", v->__executable->content);
 	for (int i = 0; params[i]; i++)
 		ft_printf("echo\t%s\n", params[i]);
 	*ret = ft_strdup("1");
