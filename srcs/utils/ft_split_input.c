@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/12 11:33:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 10:57:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,21 @@ static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 ** @return t_cmd*			Returns the linked list of the curent command.
 */
 
+static void printer(char *str, int i)
+{
+	int j = 0;
+
+	while (str[j])
+	{
+		if (j == i)
+			ft_printf("\x1B[31m%c\x1B[0m", str[i]);
+		else
+			ft_printf("%c", str[j]);
+		j++;
+	}
+	ft_printf("\n");
+}
+
 static t_cmd	*line_to_linkedlist(char *string, int i)
 {
 	t_cmd	*cmd[2];
@@ -83,6 +98,13 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 		i = findflag(string, FLAGS);
 		if (!i)
 			i = ft_strlen(string);
+		if (string[i + 1] == ANGLEBRACKETRIGHT)
+		{
+			string[i] = 32;
+			string[i + 1] = ANGLEBRACKETDOUBLERIGHT;
+			i = i + 1;
+		}
+		printer(string, i);
 		if (!cmd[0])
 		{
 			if (!getstring_and_newcmd(string, i, &cmd[0], string[i]))
@@ -94,11 +116,13 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 				return (NULL);
 			cmd__ft_lstadd_back(&cmd[0], cmd[1]);
 		}
-		if (!findflag(string, FLAGS))
+		if (string[i] == ANGLEBRACKETDOUBLERIGHT)
 		{
-			// printf("findflag\n");
-			break;
+			string = ft_strchr(string, string[i]) + 1;	
+			continue;
 		}
+		if (!findflag(string, FLAGS))
+			break;
 		string = ft_strchr(string, string[i]) + 1;	
 		if (cmd__ft_lstlast(cmd[0])->line[0] == 0)
 			cmd__delinvalid(cmd[0], cmd__ft_lstlast(cmd[0]));

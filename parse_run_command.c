@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 19:36:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 10:10:17 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 			free(v->line);
 			v->line = temp;
 		}
-		else if (cmd->type == RDIRLEFT || cmd->type == RDIRRIGHT)
+		else if (cmd->type == ANGLEBRACKETLEFT || cmd->type == ANGLEBRACKETRIGHT)
 		{
 			ft_printf("%s: parse error near `\\n'\n", v->__executable->content);
 		}
 	}
 	else if (cmd->type)
 	{
-		if (cmd->type == RDIRLEFT)
+		if (cmd->type == ANGLEBRACKETLEFT)
 		{
 			fd = open(cmd->next->line, O_RDONLY);
 			if (fd < 0)
@@ -106,7 +106,7 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 		{
 			ft_printf("PIPE JA");
 		}
-		if (cmd->type == RDIRRIGHT)
+		if (cmd->type == ANGLEBRACKETRIGHT)
 		{
 			int stat;
 			v->fork_flag = 0;
@@ -149,13 +149,16 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			ft_free_array((void*)args, (int)splitsize);
 			ft_exit_error(v, 1);
 		}
-		if (!run_command(v, args, cmd))
+		if (ret && !run_command(v, args, cmd))
 		{
 			ft_free_array((void*)args, (int)splitsize);
 			ft_exit_error(v, 1);
 		}
-		if (!v->fork_flag)
+		if (cmd->prev && cmd->prev->type && !v->fork_flag)
+		{
+			ft_printf("EXIT NOW %d\n", v->fork_flag);
 			exit(42);
+		}
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
 		errno = 0;

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/18 11:34:38 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 16:07:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 09:25:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_node		*node__ft_lstnew(t_cmd **cmd)
 	tmp->next = NULL;
 	return (tmp);
 }
-
 
 t_cmd		*cmd__ft_lstnew(unsigned char type, char *line)
 {

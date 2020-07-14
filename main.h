@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 19:31:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 10:11:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,21 @@
 #include "srcs/utils/history_list/history.h"
 #include "srcs/utils/env_list/env.h"
 
+/*
+** FLAGS
+*/
+
+# define PIPE 124 // |
+# define ANGLEBRACKETLEFT 60 // <
+# define ANGLEBRACKETRIGHT 62 // >
+# define ANGLEBRACKETDOUBLERIGHT 63 // >
+
+
 # define PREFIX "%s@%s$ " /* WILL BE SHOWED BEFORE COMMAND INPUT */
 # define CMD_NOTFOUND "%s: %s: command not found\n" /* IF COMMAND DOESNT EXIST*/
 # define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m" /* IF DIRECTORY DOESNT EXIST*/
 # define bultins 8
 # define dquote "dquote> "
-# define PIPE 124 // |
-# define RDIRLEFT 60 // <
-# define RDIRRIGHT 62 // >
 # define FLAGS "<|>" //mandatory flags
 # define TRIMS " \t" // Command will be trimmed in spaces and tabs
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n" /*, name, content*/
