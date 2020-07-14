@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 10:57:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:04:26 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 			string[i + 1] = ANGLEBRACKETDOUBLERIGHT;
 			i = i + 1;
 		}
-		printer(string, i);
+		// printer(string, i);
 		if (!cmd[0])
 		{
 			if (!getstring_and_newcmd(string, i, &cmd[0], string[i]))
@@ -171,6 +171,8 @@ int ft_split_input(t_vars *v)
 void print_nodes(t_node *node, t_node *nodehead)
 {
 	t_cmd *cmd;
+
+	// int fd = open("/dev/ttys001", O_RDWR); // change to other terminal
 	while (node)
 	{
 		cmd = node->cmd;
@@ -178,10 +180,11 @@ void print_nodes(t_node *node, t_node *nodehead)
 		{
 			if (cmd->line[0] == 0)
 				cmd__delinvalid(nodehead->cmd, cmd);
-			// ft_printf("\x1B[32m%p -- string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			dprintf(1, "\x1B[32msplit_input | %p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}
+	dprintf(1, "\n\n\n\n\n\n\n\n\n\n");
 }
 //export PATH=/Users/bdekonin/minishell/noperm

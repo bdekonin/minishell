@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/07/10 15:54:41 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/07/14 15:38:13 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,12 @@ all: $(NAME)
 
 $(NAME):
 	gcc -Wall -Wextra -g $(SRCS) $(LIBFT) $(FT_PRINTF) -o $(NAME)
+
+1:
+	mv main.c main
+
+2:
+	mv main main.c
 
 fclean:
 	/bin/rm -f $(OFILES)

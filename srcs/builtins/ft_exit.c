@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 19:35:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 15:41:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ static inline void checkif_freed_else_i_will_free_everything(t_vars *v)
 		free(v->current_path);
 	if (v->line)
 		free(v->line);
+	if (v->stdout_copy) // if stdout has been copied.
+	{
+		dup2(v->fd, STDOUT_FILENO);
+		close(v->fd);
+		ft_printf("EXIT - EXIT NOW %d\n", v->stdout_copy);
+		dup2(v->stdout_copy, 1);
+		close(v->stdout_copy);
+		ft_printf("EXIT - DONE\n");
+	}
 }
 
 void	ft_exit_error(t_vars *v, int status)

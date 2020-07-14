@@ -6,11 +6,20 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 14:47:16 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:03:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+
+static inline int reset_fd(t_vars *v)
+{
+	dup2(v->fd, STDOUT_FILENO);
+	dup2(v->stdout_copy, 1);
+	close(v->stdout_copy);
+	v->stdout_copy = 0;
+	return (1);
+}
 
 char		*cmd_str(int i)
 {
@@ -32,7 +41,6 @@ int run_command(t_vars *v, char **params, t_cmd *cmd)
 {
 	if (cmd->prev && cmd->type != PIPE)
 		return (1);
-	printf("runcommand | getpid = %d\n", getpid());;
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params); 
 
@@ -57,13 +65,15 @@ int run_command(t_vars *v, char **params, t_cmd *cmd)
 		return (0);
 	else if (i)
 		return (1);
+	if (v->stdout_copy) // if stdout has been copied. so > must exist
+		reset_fd(v); // protect
 	ft_printf(CMD_NOTFOUND, v->__executable->content, params[0]);
 	if (!sethistory(&v->history_head, v->line, "127"))
 		return (0);
 	return (1);
 }
 
-static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
+static int confirm_flags(t_vars *v, char ***params, t_cmd *cmd)
 {
 	char	*line;
 	char	*temp;
@@ -116,10 +126,8 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 		if (cmd->type == ANGLEBRACKETRIGHT)
 		{
 			v->stdout_copy = dup(1);
-			// close(1);
-			// int fd = open(cmd->next->line, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-			// dup(fd, 1);
-			// close(fd);
+			close(STDOUT_FILENO);
+			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		}
 		if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
 		{
@@ -135,13 +143,13 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 	return (1);
 }
 
+
 /*
 ** call this command.
 **
 */
 int run_cmd(t_vars *v, t_cmd *cmd)
 {
-	// char	*ret = NULL;
 	char	**args;
 	size_t	splitsize;
 	int ret;
@@ -149,7 +157,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		ret = confirm_flags(v, args, cmd);
+		ret = confirm_flags(v, &args, cmd, splitsize);
 		if (ret == -1)
 		{
 			ft_free_array((void*)args, (int)splitsize);
@@ -160,10 +168,8 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			ft_free_array((void*)args, (int)splitsize);
 			ft_exit_error(v, 1);
 		}
-		if (v->stdout_copy)
-		{
-			ft_printf("EXIT NOW %d\n", v->stdout_copy);
-		}
+		if (v->stdout_copy) // if stdout has been copied. so > must exist
+			reset_fd(v); // protect
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
 		errno = 0;
@@ -186,17 +192,18 @@ void	read_user_input(t_vars *v)
 		ft_exit_error(v, 1);
 	if (*v->line != 0)
 	{
+		// system(ft_strjoin(v->line, "2")); // for comparing output
 		if (!ft_split_input(v)) // sometimes random memory.
 			ft_exit_error(v, 1);
 		node= v->nodehead;
 		while (node)
 		{
-			command = node->cmd;
-			while (command)
-			{
-				ft_printf("\x1B[34mparse | %p - string = [%c][%s]\n\x1B[0m", command, command->type, command->line);
-				command = command->next;
-			}
+			// command = node->cmd;
+			// while (command)
+			// {
+			// 	ft_printf("\x1B[34mparse | %p - string = [%c][%s]\n\x1B[0m", command, command->type, command->line);
+			// 	command = command->next;
+			// }
 			if (!run_cmd(v, node->cmd))
 				ft_exit_error(v, 1);
 			node = node->next;

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 14:47:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 15:39:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,5 +239,4 @@ int env__makelist(t_vars *v, char **envp)
 // 		close (stdout_copy);
 // 		ft_printf("Dit is een test\n");
 // 	}
-// 	while(1);
 // }
