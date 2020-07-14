@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 18:08:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:14:30 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,6 @@ int pwd(t_vars *v, t_cmd *cmd, char **params)
 		if (!sethistory(&v->history_head, v->line, v->current_path))
 			return (0);
 	ft_printf("%s\n", v->current_path);
-	(void)(params);
-	(void)(cmd);
-	return (1);
-}
-
-int echo(t_vars *v, t_cmd *cmd, char **params)
-{
-	ft_printf("%.0s\t", v->__executable->content);
-	for (int i = 0; params[i]; i++)
-		ft_printf("echo\t%s\n", params[i]);
-	if (!sethistory(&v->history_head, v->line, "1"))
-		return (0);
 	(void)(params);
 	(void)(cmd);
 	return (1);

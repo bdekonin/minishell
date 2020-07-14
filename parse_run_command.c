@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:07:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:19:49 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd)
 	return (1);
 }
 
-static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
+static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 {
 	char	*line;
 	char	*temp;
@@ -122,6 +122,8 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 			** 4. Run command normally.
 			*/
 			ft_printf("TYPE NOW = %c\n", PIPE);
+
+			ft_split("splitsize = %d\n", splitsize);
 		}
 		if (cmd->type == ANGLEBRACKETRIGHT)
 		{
@@ -157,7 +159,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		ret = confirm_flags(v, args, cmd);
+		ret = confirm_flags(v, &args, cmd, splitsize);
 		if (ret == -1)
 		{
 			ft_free_array((void*)args, (int)splitsize);

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:11:30 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:18:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static int check_newline_option(char *param)
 	int newline_opt;
 
 	if (!ft_strncmp(param, "-n", 3))
-	newline_opt = 1;
+		newline_opt = 1;
 	else
-	newline_opt = 0;
+		newline_opt = 0;
 	return (newline_opt);
 }
 
@@ -32,7 +32,7 @@ static char *trim_string(char *src)
 	set[1] = 39;
 	set[2] = 0;
 	dst = ft_strtrim(src, set);
-	printf("src = [%s]\ndst = [%s]\n", src, dst);
+	// printf("src = [%s]\ndst = [%s]\n", src, dst);
 	return (dst);
 }
 
