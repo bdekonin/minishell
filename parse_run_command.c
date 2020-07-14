@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:03:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:07:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd)
 	return (1);
 }
 
-static int confirm_flags(t_vars *v, char ***params, t_cmd *cmd)
+static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 {
 	char	*line;
 	char	*temp;
@@ -157,7 +157,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		ret = confirm_flags(v, &args, cmd, splitsize);
+		ret = confirm_flags(v, args, cmd);
 		if (ret == -1)
 		{
 			ft_free_array((void*)args, (int)splitsize);
