@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 14:12:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:47:27 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int					cd(t_vars *v, t_cmd *cmd, char **params)
 	int			ret_chdir;
 	char		oldpwd_backup[PATH_MAX];
 
-	ret_chdir = cd_2(v, cmd, params[0], &oldpwd_backup);
+	ret_chdir = cd_2(v, cmd, params[0], oldpwd_backup);
 	if (ret_chdir == -1 && ft_iserrno(ENOMEM))
 		return (0);
 	if (ret_chdir == -1)

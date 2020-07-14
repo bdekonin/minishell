@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:21:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:47:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,11 +180,11 @@ void print_nodes(t_node *node, t_node *nodehead)
 		{
 			if (cmd->line[0] == 0)
 				cmd__delinvalid(nodehead->cmd, cmd);
-			// dprintf(fd, "\x1B[32msplit_input | %p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			dprintf(fd, "\x1B[32msplit_input | %p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}
-	// dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
+	dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
 }
 //export PATH=/Users/bdekonin/minishell/noperm

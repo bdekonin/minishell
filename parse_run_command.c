@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:19:49 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 19:36:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd)
 {
-	if (cmd->prev && cmd->type != PIPE)
-		return (1);
+	// if (cmd->prev && cmd->type != PIPE)
+	// 	return (1);
 	int i;
 	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params); 
 
@@ -102,9 +102,9 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 			ft_printf("%s: parse error near `\\n'\n", v->__executable->content);
 		}
 	}
-	else if (cmd->type)
+	else
 	{
-		if (cmd->type == ANGLEBRACKETLEFT)
+		if (cmd->type && cmd->type == ANGLEBRACKETLEFT)
 		{
 			fd = open(cmd->next->line, O_RDONLY);
 			if (fd < 0)
@@ -115,23 +115,40 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 		}
 		if (cmd->prev && cmd->prev->type == PIPE)
 		{
+			char **arr;
 			/*
 			** 1. Malloc the array bigger by one.
 			** 2. Move every argument further
 			** 3. Put the output in the second.
 			** 4. Run command normally.
 			*/
-			ft_printf("TYPE NOW = %c\n", PIPE);
-
-			ft_split("splitsize = %d\n", splitsize);
+			// ft_printf("before | %p\n", *argv[0]);
+			arr = ft_calloc(splitsize + 2, sizeof(char*));
+			int l = 0;
+			for(int k = 0; k < splitsize + 1; k++)
+			{
+				if (k == 1)
+					arr[k] = ft_strdup("main.c");
+				else
+					arr[k] = ft_strdup(*argv[l]);
+				l++;
+			}
+			// ft_printf("string | %s\n", arr[0]);
+			for (int i = 0; arr[i]; i++)
+			{
+				ft_printf("arr [%d] - %s\n", i, arr[i]);
+			}
+			ft_printf("\n");
+			char **test;
+			*argv = arr;
 		}
-		if (cmd->type == ANGLEBRACKETRIGHT)
+		if (cmd->type && cmd->type == ANGLEBRACKETRIGHT)
 		{
 			v->stdout_copy = dup(1);
 			close(STDOUT_FILENO);
 			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 		}
-		if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
+		if (cmd->type && cmd->type == ANGLEBRACKETDOUBLERIGHT)
 		{
 			/*
 			** 1. Read the file using ft_getline and store it.
@@ -159,7 +176,12 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
+		ft_printf("1 pointer = %p\n", args);
 		ret = confirm_flags(v, &args, cmd, splitsize);
+		for (int i = 0; args[i]; i++)
+		{
+			ft_printf("%p - args [%d] - %s\n", args, i, args[i]);
+		}
 		if (ret == -1)
 		{
 			ft_free_array((void*)args, (int)splitsize);
@@ -184,7 +206,6 @@ int ft_split_input(t_vars *v);
 void	read_user_input(t_vars *v)
 {
 	t_node	*node;
-	t_cmd	*command;
 	int i;
 
 	i = 0;
@@ -200,12 +221,6 @@ void	read_user_input(t_vars *v)
 		node= v->nodehead;
 		while (node)
 		{
-			// command = node->cmd;
-			// while (command)
-			// {
-			// 	ft_printf("\x1B[34mparse | %p - string = [%c][%s]\n\x1B[0m", command, command->type, command->line);
-			// 	command = command->next;
-			// }
 			if (!run_cmd(v, node->cmd))
 				ft_exit_error(v, 1);
 			node = node->next;

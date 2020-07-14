@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 15:41:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 17:56:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int ft_exit(t_vars *v, t_cmd *cmd, char **params)
 	checkif_freed_else_i_will_free_everything(v);
 
 	ft_bzero(v, sizeof(t_vars)); // this will leak if we dont free everything, so testing purposes
-	system("leaks minishell");
+	// system("leaks minishell");
 	if (errno)
 		ft_printf("%s\n", strerror(errno));
 	else
