@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 09:17:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 14:47:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,45 +193,51 @@ int env__makelist(t_vars *v, char **envp)
 
 // int main(void)
 // {
-	// int pipefd[2];
-	// pipe(pipefd);	
+// 	int pipefd[2];
+// 	pipe(pipefd);	
 
-	// if (fork() == 0)
-	// {
-	// 	close(pipefd[0]);    // close reading end in the child	
-	// 	dup2(pipefd[1], 1);  // send stdout to the pipe
-	// 	dup2(pipefd[1], 2);  // send stderr to the pipe	
+// 	// if (fork() == 0)
+// 	// {
+// 	// 	close(pipefd[0]);    // close reading end in the child	
+// 	// 	dup2(pipefd[1], 1);  // send stdout to the pipe
+// 	// 	dup2(pipefd[1], 2);  // send stderr to the pipe	
 
-	// 	close(pipefd[1]);    // this descriptor is no longer needed	
-	// 	system("cat srcs/utils/env_list/ft_envadd_front_bonus.c");
-	// }
-	// else
-	// {
-	// 	// parent
-	// 	char *line;
-	// 	close(pipefd[1]);  // close the write end of the pipe in the parent	
+// 	// 	close(pipefd[1]);    // this descriptor is no longer needed	
+// 	// 	system("cat srcs/utils/env_list/ft_envadd_front_bonus.c");
+// 	// }
+// 	// else
+// 	// {
+// 	// 	// parent
+// 	// 	char *line;
+// 	// 	close(pipefd[1]);  // close the write end of the pipe in the parent	
 
-	// 	ft_printf("\x1B[33m");
-	// 	while (get_next_line(pipefd[0], &line) > 0)
-	// 	{
-	// 		ft_printf("%s\n", line);
-	// 		free(line);
-	// 	}
-	// 	ft_printf("\x1B[0m");
-	// }
+// 	// 	ft_printf("\x1B[33m");
+// 	// 	while (get_next_line(pipefd[0], &line) > 0)
+// 	// 	{
+// 	// 		ft_printf("%s\n", line);
+// 	// 		free(line);
+// 	// 	}
+// 	// 	ft_printf("\x1B[0m");
+// 	// }
 
-	// if (fork() == 0)
-	// {
-	// 	// child
-	// 	int fd = open("kaulo", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+// // https://stackoverflow.com/questions/9084099/re-opening-stdout-and-stdin-file-descriptors-after-closing-them
+// 	if (fork() == 0)
+// 	{
+// 		// child
+// 		int stdout_copy = dup(1);
+// 		close(1);
+
+// 		int fd = open("kaulo", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 	
-	// 	dup2(fd, 1);	// make stdout go to file
-	// 	dup2(fd, 2);	// make stderr go to file - you may choose to not do this
-	// 					// or perhaps send stderr to another file
-	
-	// 	close(fd);		// fd no longer needed - the dup'ed handles are sufficient
-	
-	// 	system("cat srcs/utils/env_list/ft_envadd_front_bonus.c");
-	// }
+// 		dup2(fd, 1);	// make stdout go to file
+// 						// or perhaps send stderr to another file
+// 		close(fd);
+// 		ft_printf("Dit is een test\n");
+// 		//do stuff here
 
+// 		dup2(stdout_copy, 1);
+// 		close (stdout_copy);
+// 		ft_printf("Dit is een test\n");
+// 	}
+// 	while(1);
 // }

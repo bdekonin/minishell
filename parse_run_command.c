@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 10:10:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 14:47:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,29 +101,35 @@ static int confirm_flags(t_vars *v, char **params, t_cmd *cmd)
 				ft_printf(DIR_NOTFOUND, v->__executable->content, cmd->next->line);
 			else
 				ft_printf("\x1B[32m'%s' exist!\n\x1B[0m", cmd->next->line);
+			close(fd);
 		}
 		if (cmd->prev && cmd->prev->type == PIPE)
 		{
-			ft_printf("PIPE JA");
+			/*
+			** 1. Malloc the array bigger by one.
+			** 2. Move every argument further
+			** 3. Put the output in the second.
+			** 4. Run command normally.
+			*/
+			ft_printf("TYPE NOW = %c\n", PIPE);
 		}
 		if (cmd->type == ANGLEBRACKETRIGHT)
 		{
-			int stat;
-			v->fork_flag = 0;
-			v->fork_flag = fork();
-			if (!v->fork_flag)
-			{
-				int fd = open(cmd->next->line, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR); // check things
-				dup2(fd, 1);
-				close(fd);
-			}
-			else if (v->fork_flag > 0)
-			{
-				ft_printf("v->fork_flag = %d\n", v->fork_flag);
-				wait(&stat);
-				ft_printf("WEXITSTATUS(stat) = %d\n", WEXITSTATUS(stat));
-				return (0);
-			}
+			v->stdout_copy = dup(1);
+			// close(1);
+			// int fd = open(cmd->next->line, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+			// dup(fd, 1);
+			// close(fd);
+		}
+		if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
+		{
+			/*
+			** 1. Read the file using ft_getline and store it.
+			** 2. Delete the file.
+			** 3. Print out the old file.
+			** 4. Run command normally.
+			*/
+			ft_printf("TYPE NOW = %c\n", ANGLEBRACKETDOUBLERIGHT);
 		}
 	}
 	return (1);
@@ -154,10 +160,9 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			ft_free_array((void*)args, (int)splitsize);
 			ft_exit_error(v, 1);
 		}
-		if (cmd->prev && cmd->prev->type && !v->fork_flag)
+		if (v->stdout_copy)
 		{
-			ft_printf("EXIT NOW %d\n", v->fork_flag);
-			exit(42);
+			ft_printf("EXIT NOW %d\n", v->stdout_copy);
 		}
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
