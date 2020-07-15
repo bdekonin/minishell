@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_calloc_2d_bonus.c                               :+:    :+:            */
+/*   ft_quotations.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/06/12 17:53:13 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/12 18:04:10 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/07/15 19:55:42 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/07/15 20:10:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../main.h"
 
-char **ft_calloc_2d(size_t width, size_t height)
+int ft_quotations(char **line, char type, char *prompt)
 {
-	char **array;
-	size_t i;
+	int i;
+	int ret_expand;
+	char *temp = ft_calloc(PATH_MAX, sizeof(char));
 
 	i = 0;
-	array = ft_calloc(height + 1, sizeof(char*));
-	if (!array)
-		return (NULL);
-	while (i < height)
+	while (*line[i])
 	{
-		array[i] = ft_calloc(width, sizeof(char));
-		if (!array[i])
-		{
-			ft_free_array((void*)array, i - 1);
-			return (NULL);
-		}
-		i++;
+		if (*line[i] == type)
+			return (1);
+		if (*line[i] == '$')
+			printf("DOLLAR TEKEN\n");
+		temp[i] = *line[i]
 	}
-	return (array);
+
+	ft_printf("temp-%s\n", temp);
 }

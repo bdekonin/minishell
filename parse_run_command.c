@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 10:09:43 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/15 19:56:52 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char		*cmd_str(int i)
 	cmd_str[5] = "env";
 	cmd_str[6] = "exit";
 	cmd_str[7] = "debug";
-	cmd_str[8] = NULL;
+	cmd_str[8] = "history";
+	cmd_str[9] = NULL;
 	return (cmd_str[i]);
 }
 
@@ -42,7 +43,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd)
 	// if (cmd->prev && cmd->type != PIPE)
 	// 	return (1);
 	int i;
-	int (*p[8]) (t_vars *v, t_cmd *cmd, char **params); 
+	int (*p[bultins]) (t_vars *v, t_cmd *cmd, char **params); 
 
 	i = 0;
 	p[0] = echo;
@@ -53,6 +54,7 @@ int run_command(t_vars *v, char **params, t_cmd *cmd)
 	p[5] = env;
 	p[6] = ft_exit;
 	p[7] = debug;
+	p[8] = ft_history;
 	ft_str_tolower(params[0]);
 	while (i < bultins)
 	{
@@ -113,35 +115,36 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 				ft_printf("\x1B[32m'%s' exist!\n\x1B[0m", cmd->next->line);
 			close(fd);
 		}
-		if (cmd->prev && cmd->prev->type == PIPE)
-		{
-			char **arr;
-			/*
-			** 1. Malloc the array bigger by one.
-			** 2. Move every argument further
-			** 3. Put the output in the second.
-			** 4. Run command normally.
-			*/
-			// ft_printf("before | %p\n", *argv[0]);
-			arr = ft_calloc(splitsize + 2, sizeof(char*));
-			int l = 0;
-			for(int k = 0; k < splitsize + 1; k++)
-			{
-				if (k == 1)
-					arr[k] = ft_strdup("main.c");
-				else
-					arr[k] = ft_strdup(*argv[l]);
-				l++;
-			}
-			// ft_printf("string | %s\n", arr[0]);
-			for (int i = 0; arr[i]; i++)
-			{
-				ft_printf("arr [%d] - %s\n", i, arr[i]);
-			}
-			ft_printf("\n");
-			char **test;
-			*argv = arr;
-		}
+		// if (cmd->prev && cmd->prev->type == PIPE)
+		// {
+		// 	char **arr;
+		// 	/*
+		// 	** 1. Malloc the array bigger by one.
+		// 	** 2. Move every argument further
+		// 	** 3. Put the output in the second.
+		// 	** 4. Run command normally.
+		// 	*/
+		// 	// ft_printf("before | %p\n", *argv[0]);
+		// 	arr = ft_calloc(splitsize + 2, sizeof(char*));
+		// 	int l = 0;
+		// 	int fd1 = open("output", O_RDONLY);
+		// 	for(int k = 0; k < splitsize + 1; k++)
+		// 	{
+		// 		if (k == 1)
+		// 			ft_getline(fd1, &arr[k]);
+		// 		else
+		// 			arr[k] = ft_strdup(*argv[l]);
+		// 		l++;
+		// 	}
+		// 	// ft_printf("string | %s\n", arr[0]);
+		// 	for (int i = 0; arr[i]; i++)
+		// 	{
+		// 		ft_printf("arr [%d] - %s\n", i, arr[i]);
+		// 	}
+		// 	ft_printf("\n");
+		// 	char **test;
+		// 	*argv = arr;
+		// }
 		if (cmd->type && cmd->type == ANGLEBRACKETRIGHT)
 		{
 			v->stdout_copy = dup(1);
@@ -176,7 +179,6 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd) // loops through commands
 	{
 		args = ft_split_sep(cmd->line, " \t", &splitsize);
-		//ft_printf("1 pointer = %p\n", args);
 		ret = confirm_flags(v, &args, cmd, splitsize);
 		for (int i = 0; args[i]; i++)
 		{

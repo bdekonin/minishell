@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/04 10:10:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/08 12:47:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/15 17:41:52 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,40 @@
 ** @param  t_vars *v	vars							 ↓
 ** @param  char *line	Points to character after $ (cd $PATH)
 **
-** @return char*		Returns pointer of environment variable
+** @return char*		Returns pointer of environment variable (DONT FREE)
 */
 
-char *find_environment_variable(t_vars *v, char *line)
+static inline int findspace(char *str)
 {
-	t_env		*lst;
-	int			j;
-	char		*name;
-
-	if (*line == '?')
-		return (v->history_head->ret);
-	// if (*line == '$')
-	// 	return (v->__parentpid); // change to current pid
-	name = ft_strdup(line);
-	if (!name)
-		return (NULL);
-	j = 0;
-	lst = v->env_head;
-	while (name[j] && name[j] != ' ' && name[j] != '/' && name[j] != '|' \
-	&& name[j] != '>') // change to flags
-		j++;
-	name[j] = '\0';
-	while (lst)
-	{
-		if (!ft_strncmp(lst->name, name, ft_strlen(name)))
-		{
-			free(name);
-			return (lst->content);
-		}
-		lst = lst->next;
-	}
-	free(name);
+	int i;
 	
-	return (v->__homedir->content);
+	i = 0;
+	while (str[i] && str[i] != ' ' && str[i] != '/')
+		i++;
+	return (i);
+}
+
+char *find_environment_variable(t_vars *v, char *var)
+{
+	t_env	*temp;
+	int		length;
+
+	if (*var == '?')
+	{
+		if (!v->history_head)
+			return ("0");
+		else
+			return (v->history_head->ret);
+	}
+	// else if (*line == '$')
+	// 	return (v->__parentpid); // change to current pid
+	length = findspace(var);
+	temp = v->env_head;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->name, var, length))
+			return (temp->content);
+		temp = temp->next;
+	}
+	return (NULL);
 }

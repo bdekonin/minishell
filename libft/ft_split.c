@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/14 16:18:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 10:54:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 21:42:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,3 @@ char			**ft_split(char const *s, char c)
 	sep[1] = '\0';
 	return (ft_split_sep(s, sep, &temp_size));
 }
-

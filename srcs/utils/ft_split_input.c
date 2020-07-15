@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 10:25:44 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/15 19:56:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void print_nodes(t_node *node, t_node *nodehead)
 {
 	t_cmd *cmd;
 
-	int fd = open("/dev/ttys001", O_RDWR); // change to other terminal
+	// int fd = open("/dev/ttys001", O_RDWR); // change to other terminal
 	while (node)
 	{
 		cmd = node->cmd;

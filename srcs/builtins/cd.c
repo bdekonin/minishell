@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:47:27 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/15 19:37:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static inline int	cd_2(t_vars *v, t_cmd *cmd, char *argument, \
 
 int					cd(t_vars *v, t_cmd *cmd, char **params)
 {
-	char		*dir;
 	int			ret_chdir;
 	char		oldpwd_backup[PATH_MAX];
 

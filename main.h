@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 15:40:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/15 15:53:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define PREFIX "%s@%s$ " /* WILL BE SHOWED BEFORE COMMAND INPUT */
 # define CMD_NOTFOUND "%s: %s: command not found\n" /* IF COMMAND DOESNT EXIST*/
 # define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m" /* IF DIRECTORY DOESNT EXIST*/
-# define bultins 8
+# define bultins 9
 # define dquote "dquote> "
 # define FLAGS "<|>" //mandatory flags
 # define TRIMS " \t" // Command will be trimmed in spaces and tabs
@@ -80,7 +80,7 @@ typedef struct		s_vars
 	t_env			*__logname;
 	t_env			*__homedir;
 	t_env			*__oldpwd;
-	t_env			*__executable; //
+	t_env			*__executable;
 	int				exit_status; // existatus is 1 if error, used in ft_exit_error
 }					t_vars;
 
@@ -97,6 +97,8 @@ int unset(t_vars *v, t_cmd *cmd, char **params);
 int env(t_vars *v, t_cmd *cmd, char **params);
 int ft_exit(t_vars *v, t_cmd *cmd, char **params);
 int debug(t_vars *v, t_cmd *cmd, char **params);
+
+int	ft_history(t_vars *v, t_cmd *cmd, char **params);
 
 int		ft_execve(t_vars *v, t_cmd *cmd, char **params);
 char	*find_environment_variable(t_vars *v, char *line);

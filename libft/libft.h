@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 08:07:31 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 12:32:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/15 20:05:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,10 @@ char				*ft_strcat(char *dst, const char *src);
 void				ft_free_array(void **ptr, int size);
 void				ft_swap(double *xp, double *yp);
 void				ft_str_tolower(char *str);
-char				**ft_calloc_2d(size_t width, size_t height);
 char				**ft_split_sep(const char *src, char *sep, size_t *size);
 int					ft_strcmp(const char *s1, const char *s2);
 int					ft_iserrno(int error);
 int					ft_getline(int fd, char **line);
+int					ft_strexpand(char **str, size_t size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/16 08:58:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/06/16 11:59:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 21:42:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int		init_dst(char **dst, const char *src, char *sep, size_t size)
 ** @return char**				splitted line
 */
 
-char		**ft_split_sep(const char *src, char *sep, size_t *size)
+char			**ft_split_sep(const char *src, char *sep, size_t *size)
 {
 	char **dst;
 

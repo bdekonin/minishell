@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/06 13:36:49 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/10 12:32:16 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 21:44:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	free_and_exit(char **line)
 {
 	free(*line);
-	return (-1);	
+	return (-1);
 }
 
 static char	*strjoin_and_free(char *s1, char *s2)
@@ -24,6 +24,7 @@ static char	*strjoin_and_free(char *s1, char *s2)
 	size_t	i;
 	size_t	len_1;
 	size_t	len_2;
+
 	len_1 = ft_strlen(s1);
 	len_2 = ft_strlen(s2);
 	dst = ft_calloc(len_1 + len_2 + 1, sizeof(char));
@@ -48,6 +49,7 @@ static char	*strjoin_and_free(char *s1, char *s2)
 static int	read_file(int fd, char **line, char *buffer)
 {
 	int ret;
+
 	ret = read(fd, buffer, BUFFER_SIZE);
 	if (ret > 0)
 	{

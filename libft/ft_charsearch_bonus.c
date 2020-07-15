@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/16 23:43:02 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/06/16 11:59:49 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/14 21:42:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_charsearch_bool(char *str, char c)
 {
 	int i;
+
 	i = 0;
 	while (str[i] != '\0')
 	{
@@ -30,6 +31,7 @@ int	ft_charsearch_bool(char *str, char c)
 int	ft_charsearch(char *str, char c)
 {
 	int i;
+
 	i = 0;
 	while (str[i] != '\0')
 	{
