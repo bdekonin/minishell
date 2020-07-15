@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 19:56:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/15 20:14:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd)
 {
-	// if (cmd->prev && cmd->type != PIPE)
-	// 	return (1);
+	if (cmd->prev && cmd->type != PIPE)
+		return (1);
 	int i;
 	int (*p[bultins]) (t_vars *v, t_cmd *cmd, char **params); 
 
