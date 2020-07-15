@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:18:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/15 10:41:21 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,38 @@ static char *trim_string(char *src)
 	return (dst);
 }
 
-int echo(t_vars *v, t_cmd *cmd, char **params)
+static int	print_text(char ** params, int i)
 {
-	int i = 0;
-	int fd = 1;
-	int newline_opt;
-	ssize_t write_ret;
-	char *str;
-
-	newline_opt = check_newline_option(params[i]);
-	i += newline_opt;
+	char	*str;
+	ssize_t	write_ret;
+	
 	while (params[i])
 	{
 		str = trim_string(params[i]);
 		if (!str)
-			return (1);
-		write_ret = write(fd, str, ft_strlen(str));
+			return (0);
+		write_ret = write(1, str, ft_strlen(str));
 		free(str);
-		if (write_ret < 0 || write_ret != ft_strlen(str))
-			return (1);
+		if (write_ret < 0 || (size_t)write_ret != ft_strlen(str))
+			return (0);
+		if (params[i + 1] && write (1, " ", 1) != 1)
+			return (0);
 		i++;
 	}
-	if (!newline_opt && write(fd, "\n", 1) != 1)
+	return (1);
+}
+
+int echo(t_vars *v, t_cmd *cmd, char **params)
+{
+	int i;
+	int newline_opt;
+
+	i = 0;
+	newline_opt = check_newline_option(params[i]);
+	i += newline_opt;
+	if (!print_text(params, i))
+		return (1);
+	if (!newline_opt && write(1, "\n", 1) != 1)
 		return (1);
 	if (!sethistory(&v->history_head, v->line, "1"))
 		return (0);
