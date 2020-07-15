@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/15 10:41:21 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/15 11:56:26 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,35 @@ static char *trim_string(char *src)
 	return (dst);
 }
 
-static int	print_text(char ** params, int i)
+static char *find_env_var_name(t_env **head, char *param)
+{
+	t_env	*tmp;
+	char	*str;
+	
+	tmp = *head;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->name, param, ft_strlen(param)))
+		{
+			str = ft_strdup(tmp->content);
+			return (str);
+		}
+		tmp = tmp->next;
+	}
+	return (0); //$name does not exist in env list
+}
+
+static int	print_text(t_vars *v, char ** params, int i)
 {
 	char	*str;
 	ssize_t	write_ret;
 	
 	while (params[i])
 	{
-		str = trim_string(params[i]);
+		if (params[i][0] == '$' && params[i][1] != ' ')
+			str = find_env_var_name(&v->env_head, params[i] + 1);
+		else
+			str = trim_string(params[i]);
 		if (!str)
 			return (0);
 		write_ret = write(1, str, ft_strlen(str));
@@ -65,7 +86,7 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 	i = 0;
 	newline_opt = check_newline_option(params[i]);
 	i += newline_opt;
-	if (!print_text(params, i))
+	if (!print_text(v, params, i))
 		return (1);
 	if (!newline_opt && write(1, "\n", 1) != 1)
 		return (1);
