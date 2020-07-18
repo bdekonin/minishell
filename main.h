@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 15:53:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/18 12:48:22 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,7 @@ int		sethistory(t_history **his, char *fullcommand, char *ret_str);
 void	ft_exit_error(t_vars *v, int status); // call this function to exit program if error or just return 1 anywhere
 
 int find_executable(t_vars *v, char **newpath, char *command);
+
+
+char	**ft_split_sep_exep(const char *src, char *sep, size_t *size);
 #endif
