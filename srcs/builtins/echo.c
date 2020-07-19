@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/15 11:56:26 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/19 18:03:56 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,65 +14,106 @@
 
 static int check_newline_option(char *param)
 {
-	int newline_opt;
-
 	if (!ft_strncmp(param, "-n", 3))
-		newline_opt = 1;
-	else
-		newline_opt = 0;
-	return (newline_opt);
+		return (1);
+	return (0);
 }
 
-static char *trim_string(char *src)
+static int do_dollar_mark(t_vars *v, char *str, size_t *i)
 {
-	char *dst;
-	char set[3];
+	size_t len;
+	char *env_name;
+	char *env_content;
 
-	set[0] = 34;
-	set[1] = 39;
-	set[2] = 0;
-	dst = ft_strtrim(src, set);
-	// printf("src = [%s]\ndst = [%s]\n", src, dst);
-	return (dst);
+	*i += 1;
+	len = 0;
+	while (str[*i + len] != '\0' && str[*i + len] != '\"' && str[*i + len] != ' ')
+		len++;
+	//printf("len=[%lu]\n", len); //debug
+	if (len == 0)
+		return (0);
+	env_name = str + *i;
+	//printf("name=[%s]\n", env_name); //debug
+	env_content = find_environment_variable(v, env_name);
+	//printf("cont=[%s]\n", env_content); //debug
+	if (!env_content)
+		return (0);
+	write(1, env_content, ft_strlen(env_content)); //protect
+	*i += len;
+	return (1);
 }
 
-static char *find_env_var_name(t_env **head, char *param)
+static int do_double_quote(t_vars *v, char *str, size_t *i)
 {
-	t_env	*tmp;
-	char	*str;
-	
-	tmp = *head;
-	while (tmp)
+	*i += 1;
+	while (str[*i] != '\0' && str[*i] != '\"')
 	{
-		if (!ft_strncmp(tmp->name, param, ft_strlen(param)))
+		if (str[*i] == '$')
 		{
-			str = ft_strdup(tmp->content);
-			return (str);
+			if (do_dollar_mark(v, str, i) != 1)
+				return (0);
 		}
-		tmp = tmp->next;
+		else
+		{
+			write(1, str + *i, 1); //protect?
+			*i += 1;
+		}
 	}
-	return (0); //$name does not exist in env list
+	return (1);
 }
 
-static int	print_text(t_vars *v, char ** params, int i)
+static int do_single_quote(char *str, size_t *i)
 {
-	char	*str;
-	ssize_t	write_ret;
-	
-	while (params[i])
+	*i += 1;
+	while (str[*i] != '\0' && str[*i] != '\'')
 	{
-		if (params[i][0] == '$' && params[i][1] != ' ')
-			str = find_env_var_name(&v->env_head, params[i] + 1);
+		write(1, str + *i, 1); //protect?
+		*i += 1;
+	}
+	return (1);
+}
+
+static int do_comment_mark(char *str, size_t *i)
+{
+	*i += 1;
+	while (str[*i] != '\0')
+		*i += 1;
+	return (*i);
+	//return (ft_strlen(str + *i));
+}
+
+static int do_something(char *str, size_t *i)
+{
+	*i += 1;
+	write(1, str + *i, 1); //prot
+	*i += 1;
+	return (1);
+}
+
+static int print_strings(t_vars *v, char *str)
+{
+	size_t	i;
+	int	ret;
+
+	if (!v)
+		return (0);
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\\')
+			ret = do_something(str, &i);
+		else if (str[i] == '\'')
+			ret = do_single_quote(str, &i);
+		else if (str[i] == '\"')
+			ret = do_double_quote(v, str, &i);
+		else if (str[i] == '$')
+			ret = do_dollar_mark(v, str, &i);
+		else if (str[i] == '#')
+			ret = do_comment_mark(str, &i);
 		else
-			str = trim_string(params[i]);
-		if (!str)
-			return (0);
-		write_ret = write(1, str, ft_strlen(str));
-		free(str);
-		if (write_ret < 0 || (size_t)write_ret != ft_strlen(str))
-			return (0);
-		if (params[i + 1] && write (1, " ", 1) != 1)
-			return (0);
+			ret = write(1, str + i, 1);
+		if (ret < 1)
+			return (ret);
 		i++;
 	}
 	return (1);
@@ -80,14 +121,33 @@ static int	print_text(t_vars *v, char ** params, int i)
 
 int echo(t_vars *v, t_cmd *cmd, char **params)
 {
-	int i;
+	size_t size;
+	size_t i;
 	int newline_opt;
-
-	i = 0;
-	newline_opt = check_newline_option(params[i]);
-	i += newline_opt;
-	if (!print_text(v, params, i))
-		return (1);
+	int ret;
+	
+	newline_opt = check_newline_option(params[0]);
+	i = newline_opt;
+	size = 0;
+	params = ft_split_sep_exep(cmd->line, " ", &size);
+	if (!params)
+		return (0); //malloc
+	params = params + 1; //delete this when arg char **params is correct
+	// int j = 0; //debug
+	// while (params[j]) //debug
+	// {
+	// 	printf("params[%d] = [%s]\n", j, params[j]);
+	// 	j++;
+	// }
+	while (params[i] && i < size)
+	{
+		ret = print_strings(v, params[i]);
+		if (ret == 1 && i < size)
+			write(1, " ", 1);
+		else if (ret < 0)
+			return (0); //error
+		i++;
+	}
 	if (!newline_opt && write(1, "\n", 1) != 1)
 		return (1);
 	if (!sethistory(&v->history_head, v->line, "1"))
