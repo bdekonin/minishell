@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 19:56:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/20 18:13:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int ft_split_input(t_vars *v)
 	t_cmd	*ret;
 
 	v->nodehead = NULL;
-	argv = ft_split_sep(v->line, ";", &size);
+	argv = ft_split_sep_exep(v->line, ";", &size);
 	i = 0;
 	while (i < (int)size)
 	{
