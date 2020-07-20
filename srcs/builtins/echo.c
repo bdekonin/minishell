@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/19 18:03:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/20 08:27:54 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static int do_something(char *str, size_t *i)
 {
 	*i += 1;
 	write(1, str + *i, 1); //prot
-	*i += 1;
 	return (1);
 }
 
