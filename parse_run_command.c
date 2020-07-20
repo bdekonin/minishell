@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 20:14:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/20 11:59:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,13 +153,14 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 		}
 		if (cmd->type && cmd->type == ANGLEBRACKETDOUBLERIGHT)
 		{
-			/*
-			** 1. Read the file using ft_getline and store it.
-			** 2. Delete the file.
-			** 3. Print out the old file.
-			** 4. Run command normally.
-			*/
-			ft_printf("TYPE NOW = %c\n", ANGLEBRACKETDOUBLERIGHT);
+			v->stdout_copy = dup(1);
+			close(STDOUT_FILENO);
+
+			v->fd = open(cmd->next->line, O_RDONLY);
+			ft_getline(v->fd, &v->temp);
+			close(v->fd);
+			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			ft_printf("%s", v->temp);
 		}
 	}
 	return (1);

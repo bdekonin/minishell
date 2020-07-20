@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/18 12:48:22 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/20 09:53:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct		s_vars
 	int				ret; // gnl ret
 
 	int				stdout_copy;
+
+	char			*temp;
 
 
 	t_env			*__path;

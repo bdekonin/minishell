@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 19:02:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/20 09:52:18 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ int					ft_execve(t_vars *v, t_cmd *cmd, char **params)
 	path = NULL;
 	ii = find_executable(v, &path, params[0]);
 	if (ii < 0)
-		return (-1);
+		return (-1); // error
 	else if (ii == 0)
-		return (0);
+		return (0); // no command found
 	envp = NULL;
 	envp = __linkedlist_to_array(v, envp, v->env_head); // return or parameter not both bitch
 	if (!envp)
