@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/20 11:59:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/20 18:11:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,23 +145,35 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 		// 	char **test;
 		// 	*argv = arr;
 		// }
-		if (cmd->type && cmd->type == ANGLEBRACKETRIGHT)
+		if (cmd->type && (cmd->type == ANGLEBRACKETRIGHT || cmd->type == ANGLEBRACKETDOUBLERIGHT))
 		{
 			v->stdout_copy = dup(1);
 			close(STDOUT_FILENO);
+			if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
+			{
+				v->fd = open(cmd->next->line, O_RDONLY);
+				ft_getline(v->fd, &v->temp);
+				close(v->fd);
+			}
 			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
+			{
+				write(1, v->temp, ft_strlen(v->temp));
+					// return ()
+				free(v->temp);
+				
+			}
 		}
-		if (cmd->type && cmd->type == ANGLEBRACKETDOUBLERIGHT)
-		{
-			v->stdout_copy = dup(1);
-			close(STDOUT_FILENO);
-
-			v->fd = open(cmd->next->line, O_RDONLY);
-			ft_getline(v->fd, &v->temp);
-			close(v->fd);
-			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-			ft_printf("%s", v->temp);
-		}
+		// if (cmd->type && cmd->type == ANGLEBRACKETDOUBLERIGHT)
+		// {
+		// 	v->stdout_copy = dup(1);
+		// 	close(STDOUT_FILENO);
+		// 	// v->fd = open(cmd->next->line, O_RDONLY);
+		// 	// ft_getline(v->fd, &v->temp);
+		// 	// close(v->fd);
+		// 	v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		// 	write(1, v->temp, ft_strlen(v->temp));
+		// }
 	}
 	return (1);
 }
@@ -179,7 +191,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 
 	while (cmd) // loops through commands
 	{
-		args = ft_split_sep(cmd->line, " \t", &splitsize);
+		args = ft_split_sep_exep(cmd->line, " \t", &splitsize);
 		ret = confirm_flags(v, &args, cmd, splitsize);
 		for (int i = 0; args[i]; i++)
 		{
@@ -206,6 +218,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 
 int ft_split_input(t_vars *v);
 
+char *print_strings2(t_vars *v, char *str, char *command);
 void	read_user_input(t_vars *v)
 {
 	t_node	*node;
@@ -218,7 +231,6 @@ void	read_user_input(t_vars *v)
 		ft_exit_error(v, 1);
 	if (*v->line != 0)
 	{
-		// system(ft_strjoin(v->line, "2")); // for comparing output
 		if (!ft_split_input(v)) // sometimes random memory.
 			ft_exit_error(v, 1);
 		node= v->nodehead;

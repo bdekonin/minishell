@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/19 18:03:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/20 15:52:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,10 @@ static int do_dollar_mark(t_vars *v, char *str, size_t *i)
 	len = 0;
 	while (str[*i + len] != '\0' && str[*i + len] != '\"' && str[*i + len] != ' ')
 		len++;
-	//printf("len=[%lu]\n", len); //debug
 	if (len == 0)
 		return (0);
 	env_name = str + *i;
-	//printf("name=[%s]\n", env_name); //debug
 	env_content = find_environment_variable(v, env_name);
-	//printf("cont=[%s]\n", env_content); //debug
 	if (!env_content)
 		return (0);
 	write(1, env_content, ft_strlen(env_content)); //protect
@@ -125,7 +122,7 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 	size_t i;
 	int newline_opt;
 	int ret;
-	
+
 	newline_opt = check_newline_option(params[0]);
 	i = newline_opt;
 	size = 0;
@@ -133,12 +130,6 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 	if (!params)
 		return (0); //malloc
 	params = params + 1; //delete this when arg char **params is correct
-	// int j = 0; //debug
-	// while (params[j]) //debug
-	// {
-	// 	printf("params[%d] = [%s]\n", j, params[j]);
-	// 	j++;
-	// }
 	while (params[i] && i < size)
 	{
 		ret = print_strings(v, params[i]);
@@ -148,7 +139,7 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 			return (0); //error
 		i++;
 	}
-	if (!newline_opt && write(1, "\n", 1) != 1)
+	if (newline_opt == 0 && write(1, "\n", 1) != 1)
 		return (1);
 	if (!sethistory(&v->history_head, v->line, "1"))
 		return (0);
