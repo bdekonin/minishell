@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/20 15:52:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/20 18:13:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int do_double_quote(t_vars *v, char *str, size_t *i)
 	{
 		if (str[*i] == '$')
 		{
-			if (do_dollar_mark(v, str, i) != 1)
+			if (do_dollar_mark(v, str, i) != 1) //return func?
 				return (0);
 		}
 		else
@@ -75,15 +75,14 @@ static int do_comment_mark(char *str, size_t *i)
 	*i += 1;
 	while (str[*i] != '\0')
 		*i += 1;
-	return (*i);
+	return (1);
 	//return (ft_strlen(str + *i));
 }
 
-static int do_something(char *str, size_t *i)
+static int do_backslash(char *str, size_t *i)
 {
 	*i += 1;
 	write(1, str + *i, 1); //prot
-	*i += 1;
 	return (1);
 }
 
@@ -98,7 +97,7 @@ static int print_strings(t_vars *v, char *str)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\\')
-			ret = do_something(str, &i);
+			ret = do_backslash(str, &i);
 		else if (str[i] == '\'')
 			ret = do_single_quote(str, &i);
 		else if (str[i] == '\"')

@@ -1,0 +1,16 @@
+export a=5 b="6" c="now c" d="\"" e="bob en lars" f=$a$b g="\$" h=\' i=\\ j=\# k=q\_p l="maken minishell" m=$e" "$l n="$c"
+
+a=5
+b=6
+c=now c
+d="
+e=bob en lars
+f=
+g=$
+h='
+i=\
+j=#
+k=q_p
+l=maken minishell
+m=bob en lars maken minishell
+n=now c
