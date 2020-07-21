@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/20 18:13:02 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/21 17:33:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 		return (1);
 }
 
-
 /*
 ** Returns te linked list of the current command.
 **
@@ -71,21 +70,6 @@ static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 **
 ** @return t_cmd*			Returns the linked list of the curent command.
 */
-
-static void printer(char *str, int i)
-{
-	int j = 0;
-
-	while (str[j])
-	{
-		if (j == i)
-			ft_printf("\x1B[31m%c\x1B[0m", str[i]);
-		else
-			ft_printf("%c", str[j]);
-		j++;
-	}
-	ft_printf("\n");
-}
 
 static t_cmd	*line_to_linkedlist(char *string, int i)
 {
@@ -104,7 +88,6 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 			string[i + 1] = ANGLEBRACKETDOUBLERIGHT;
 			i = i + 1;
 		}
-		// printer(string, i);
 		if (!cmd[0])
 		{
 			if (!getstring_and_newcmd(string, i, &cmd[0], string[i]))
@@ -172,7 +155,7 @@ void print_nodes(t_node *node, t_node *nodehead)
 {
 	t_cmd *cmd;
 
-	// int fd = open("/dev/ttys001", O_RDWR); // change to other terminal
+	// int fd = open("/dev/ttys003", O_RDWR); // change to other terminal
 	while (node)
 	{
 		cmd = node->cmd;
@@ -180,11 +163,11 @@ void print_nodes(t_node *node, t_node *nodehead)
 		{
 			if (cmd->line[0] == 0)
 				cmd__delinvalid(nodehead->cmd, cmd);
-			//dprintf(fd, "\x1B[32msplit_input | %p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			// dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}
-	//dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
+	// dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
 }
 //export PATH=/Users/bdekonin/minishell/noperm
