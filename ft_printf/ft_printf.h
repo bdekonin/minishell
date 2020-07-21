@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 11:26:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/01 00:00:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/21 19:54:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ int				ft_strsearchh(const char *s1, char *s2);
 int				free_struct(t_list *flags);
 int				format_int_left(t_list *flags);
 int				format_int_right(t_list *flags);
+void			*ft_calloc2(size_t count, size_t size);
 
 #endif

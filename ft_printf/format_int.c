@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/16 16:18:47 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/17 14:58:32 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/21 19:54:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	find_len_fstr(t_list *flags)
 int			format_int(t_list *flags)
 {
 	find_len_fstr(flags);
-	flags->fstr = malloc((flags->len_fstr + 1) * sizeof(char));
+	flags->fstr = ft_calloc2((flags->len_fstr + 1), sizeof(char));
 	if (!flags->fstr)
 	{
 		free(flags->bstr);

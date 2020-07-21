@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 10:23:47 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/01/18 16:15:37 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/21 19:54:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char		*ft_itoa(int n, t_list *flags)
 	char	*str;
 
 	len = find_len(n);
-	str = malloc((len + 1) * sizeof(char));
+	str = ft_calloc2((len + 1), sizeof(char));
 	if (!str)
 		return (0);
 	if (n < 0)
