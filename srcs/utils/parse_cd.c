@@ -6,11 +6,129 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/21 14:50:46 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/21 22:13:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
+
+static int	copy_dollar_mark(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+{
+	size_t env_len;
+	char *env_name;
+	char *env_content;
+
+	*i += 1;
+	env_len = 0;
+	while (src[*i + env_len] != '\0' && src[*i + env_len] != '\"' && src[*i + env_len] != ' ' && src[*i + env_len] != '\\')
+		env_len++;
+	if (env_len == 0)
+		return (0); //env var name has len of 0. Don't delete this check.
+	env_name = src + *i;
+	env_content = find_environment_variable(v, env_name, &env_len);
+	if (!env_content)
+		return (0); //env name not in env list
+	ft_strlcat(dst + *j, env_content, PATH_MAX);
+	*i += env_len - 1;
+	*j += ft_strlen(env_content);
+	return (1);
+}
+
+static int	copy_comment_mark(char *src, size_t *i)
+{
+	*i += 1;
+	while (src[*i] != '\0')
+		*i += 1;
+	return (1);
+}
+
+static int	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+{
+	*i += 1;
+	while (src[*i] != '\0' && src[*i] != '\"')
+	{
+		if (src[*i] == '$')
+		{
+			copy_dollar_mark(v, dst, src, i, j); //check return
+		}
+		else
+		{
+			dst[*j] = src[*i];
+			*i += 1;
+			*j += 1;
+		}
+	}
+	return (1);
+}
+
+static int	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
+{
+	*i += 1;
+	while (src[*i] != '\0' && src[*i] != '\'')
+	{
+		dst[*j] = src[*i];
+		*i += 1;
+		*j += 1;
+	}
+	return (1);
+}
+
+static int copy_backslash(char *dst, char *src, size_t *i, size_t *j)
+{
+	*i += 1;
+	dst[*j] = src[*i];
+	*j += 1;
+	return (1);
+}
+
+static int get_directory_len(t_vars *v, char *dst, char *src)
+{
+	size_t i;
+	size_t j;
+
+	i = 0;
+	j = 0;
+	while (src[i] != '\0') // && dst[j] != '\0';
+	{
+		if (src[i] == '\\')
+			copy_backslash(dst, src, &i, &j);
+		else if (src[i] == '\'')
+			copy_single_quote(dst, src, &i, &j);
+		else if (src[i] == '\"')
+			copy_double_quote(v, dst, src, &i, &j);
+		else if (src[i] == '$')
+			copy_dollar_mark(v, dst, src, &i, &j);
+		else if (src[i] == '#' && i == 0)
+			copy_comment_mark(src, &i);
+		else
+		{
+			dst[j] = src[i];
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+char	*parse_cd(t_vars *v, char *line)
+{
+	char *src;
+	char *dst;
+	size_t i;
+	ssize_t ret;
+
+	i = 0;
+	src = line + 1;
+	dst = ft_calloc(PATH_MAX, sizeof(char)); //PATH_MAX + 1?
+	if (!dst)
+		return (NULL);
+	ret = get_directory_len(v, dst, src);
+	if (ret < 0)
+		return (0); //error
+	return (dst);
+}
+
+
 
 // static char		*dquote_incomplete(char *temp, int c)
 // {
@@ -104,135 +222,6 @@
 // 	return (temp);
 // }
 
-static int	copy_dollar_mark(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{
-	size_t env_len;
-	char *env_name;
-	char *env_content;
-
-	*i += 1;
-	env_len = 0;
-	while (src[*i + env_len] != '\0' && src[*i + env_len] != '\"' && src[*i + env_len] != ' ')
-		env_len++;
-	if (env_len == 0)
-		return (0); //env var name has len of 0
-	env_name = src + *i;
-	printf("name=[%s]\n", env_name); //debug
-	env_content = find_environment_variable(v, env_name, &env_len);
-	if (!env_content)
-		return (0); //env name not in env list
-	printf("cont=[%s]\n", env_content); //debug
-	ft_strlcat(dst + *j, env_content, PATH_MAX);
-	*i += env_len;
-	return (1);
-}
-
-static int	copy_comment_mark(char *src, size_t *i)
-{
-	*i += 1;
-	while (src[*i] != '\0')
-		*i += 1;
-	return (1);
-}
-
-static int	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	while (src[*i] != '\0' && src[*i] != '\"')
-	{
-		if (src[*i] == '$')
-		{
-			copy_dollar_mark(v, dst, src, i, j); //check return
-		}
-		else
-		{
-			dst[*j] = src[*i];
-			*i += 1;
-			*j += 1;
-		}
-	}
-	return (1);
-}
-
-static int	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	while (src[*i] != '\0' && src[*i] != '\'')
-	{
-		dst[*j] = src[*i];
-		*i += 1;
-		*j += 1;
-	}
-	return (1);
-}
-
-static int copy_backslash(char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	dst[*j] = src[*i];
-	return (1);
-}
-
-static int get_directory_len(t_vars *v, char *dst, char *src)
-{
-	size_t i;
-	size_t j;
-
-	i = 0;
-	j = 0;
-	while (src[i] != '\0') // && dst[j] != '\0';
-	{
-		if (src[i] == '\\')
-			copy_backslash(dst, src, &i, &j);
-		else if (src[i] == '\'')
-			copy_single_quote(dst, src, &i, &j);
-		else if (src[i] == '\"')
-			copy_double_quote(v, dst, src, &i, &j);
-		else if (src[i] == '$')
-			copy_dollar_mark(v, dst, src, &i, &j);
-		else if (src[i] == '#' && i == 0)
-			copy_comment_mark(src, &i);
-		else
-			dst[j] = src[i];
-		i++;
-		j++;
-	}
-	printf("dst=[%s]\n", dst);
-	return (1);
-}
-
-char	*parse_cd(t_vars *v, char *line)
-{
-	char *src;
-	char *dst;
-	size_t i;
-	ssize_t ret;
-
-
-	//src = ft_split_sep_exep(line + 1, "/", NULL);
-	// int z = 0; //debug
-	// while (src[z]) //debug
-	// {
-	// 	printf("src[%d] = [%s]\n", z, src[z]);
-	// 	z++;
-	// }
-	i = 0;
-	printf("line=[%s]\n", line);
-	src = line + 1;
-	printf("src=[%s]\n", src);
-	dst = ft_calloc(PATH_MAX, sizeof(char));
-	if (!dst)
-		return (NULL);
-	printf("src=[%s]\n", i, src);
-	ret = get_directory_len(v, src, dst);
-	if (ret < 0)
-		return (0); //error
-	printf("dst=[%s]\n", dst);
-	// int ret = chdir(dst);
-	// printf("ret = %d\n",ret);
-	return (dst);
-	
-
 	
 	// i = ft_strlen(line) - 1;
 	// if (i < PATH_MAX)
@@ -248,4 +237,3 @@ char	*parse_cd(t_vars *v, char *line)
 	// 	return (quote_complete(v, temp, line + i + 1, line[i]));
 	// else
 	// 	return (standard_parse(v, temp, line + i, 0));
-}
