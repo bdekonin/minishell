@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 08:07:31 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 20:05:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/20 14:00:30 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,6 @@ int					ft_strcmp(const char *s1, const char *s2);
 int					ft_iserrno(int error);
 int					ft_getline(int fd, char **line);
 int					ft_strexpand(char **str, size_t size);
+char            	*ft_strxjoin(size_t args, ...);
 
 #endif

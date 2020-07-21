@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/04 10:10:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 17:41:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/21 09:41:42 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 ** @return char*		Returns pointer of environment variable (DONT FREE)
 */
 
-static inline int findspace(char *str)
+static inline size_t findspace(char *str)
 {
-	int i;
+	size_t i;
 	
 	i = 0;
 	while (str[i] && str[i] != ' ' && str[i] != '/')
@@ -31,10 +31,10 @@ static inline int findspace(char *str)
 	return (i);
 }
 
-char *find_environment_variable(t_vars *v, char *var)
+char *find_environment_variable(t_vars *v, char *var, size_t *len)
 {
 	t_env	*temp;
-	int		length;
+	size_t	length;
 
 	if (*var == '?')
 	{
@@ -45,7 +45,10 @@ char *find_environment_variable(t_vars *v, char *var)
 	}
 	// else if (*line == '$')
 	// 	return (v->__parentpid); // change to current pid
-	length = findspace(var);
+	if (!len)
+		length = findspace(var);
+	else
+		length = *len;
 	temp = v->env_head;
 	while (temp)
 	{

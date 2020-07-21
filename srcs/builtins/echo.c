@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/20 18:13:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/21 14:26:59 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int check_newline_option(char *param)
 	return (0);
 }
 
-static int do_dollar_mark(t_vars *v, char *str, size_t *i)
+static int write_dollar_mark(t_vars *v, char *str, size_t *i)
 {
 	size_t len;
 	char *env_name;
@@ -32,22 +32,24 @@ static int do_dollar_mark(t_vars *v, char *str, size_t *i)
 	if (len == 0)
 		return (0);
 	env_name = str + *i;
-	env_content = find_environment_variable(v, env_name);
+	printf("name=[%s]\n", env_name); //debug
+	env_content = find_environment_variable(v, env_name, &len);
 	if (!env_content)
 		return (0);
+	printf("cont=[%s]\n", env_content); //debug
 	write(1, env_content, ft_strlen(env_content)); //protect
 	*i += len;
 	return (1);
 }
 
-static int do_double_quote(t_vars *v, char *str, size_t *i)
+static int write_double_quote(t_vars *v, char *str, size_t *i)
 {
 	*i += 1;
 	while (str[*i] != '\0' && str[*i] != '\"')
 	{
 		if (str[*i] == '$')
 		{
-			if (do_dollar_mark(v, str, i) != 1) //return func?
+			if (write_dollar_mark(v, str, i) != 1) //return func?
 				return (0);
 		}
 		else
@@ -59,7 +61,7 @@ static int do_double_quote(t_vars *v, char *str, size_t *i)
 	return (1);
 }
 
-static int do_single_quote(char *str, size_t *i)
+static int write_single_quote(char *str, size_t *i)
 {
 	*i += 1;
 	while (str[*i] != '\0' && str[*i] != '\'')
@@ -70,16 +72,15 @@ static int do_single_quote(char *str, size_t *i)
 	return (1);
 }
 
-static int do_comment_mark(char *str, size_t *i)
+static int write_comment_mark(char *str, size_t *i)
 {
 	*i += 1;
 	while (str[*i] != '\0')
 		*i += 1;
 	return (1);
-	//return (ft_strlen(str + *i));
 }
 
-static int do_backslash(char *str, size_t *i)
+static int write_backslash(char *str, size_t *i)
 {
 	*i += 1;
 	write(1, str + *i, 1); //prot
@@ -97,15 +98,15 @@ static int print_strings(t_vars *v, char *str)
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\\')
-			ret = do_backslash(str, &i);
+			ret = write_backslash(str, &i);
 		else if (str[i] == '\'')
-			ret = do_single_quote(str, &i);
+			ret = write_single_quote(str, &i);
 		else if (str[i] == '\"')
-			ret = do_double_quote(v, str, &i);
+			ret = write_double_quote(v, str, &i);
 		else if (str[i] == '$')
-			ret = do_dollar_mark(v, str, &i);
-		else if (str[i] == '#')
-			ret = do_comment_mark(str, &i);
+			ret = write_dollar_mark(v, str, &i);
+		else if (str[i] == '#' && i == 0)
+			ret = write_comment_mark(str, &i);
 		else
 			ret = write(1, str + i, 1);
 		if (ret < 1)
@@ -117,25 +118,25 @@ static int print_strings(t_vars *v, char *str)
 
 int echo(t_vars *v, t_cmd *cmd, char **params)
 {
-	size_t size;
 	size_t i;
 	int newline_opt;
 	int ret;
 
+	int z = 0; //debug
+	while (params[z]) //debug
+	{
+		printf("params[%d] = [%s]\n", z, params[z]);
+		z++;
+	}
 	newline_opt = check_newline_option(params[0]);
 	i = newline_opt;
-	size = 0;
-	params = ft_split_sep_exep(cmd->line, " ", &size);
-	if (!params)
-		return (0); //malloc
-	params = params + 1; //delete this when arg char **params is correct
-	while (params[i] && i < size)
+	while (params[i])
 	{
 		ret = print_strings(v, params[i]);
-		if (ret == 1 && i < size)
-			write(1, " ", 1);
+		if (ret == 1)
+			write(1, " ", 1); //dit gaat nog niet goed
 		else if (ret < 0)
-			return (0); //error
+			return (0);
 		i++;
 	}
 	if (newline_opt == 0 && write(1, "\n", 1) != 1)
