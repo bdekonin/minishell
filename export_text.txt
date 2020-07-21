@@ -14,3 +14,31 @@ k=q_p
 l=maken minishell
 m=bob en lars maken minishell
 n=now c
+
+
+
+
+cd
+
+
+export a=nis
+cd /Users/$LOGNAME/'documents'/mi"$a"hell
+
+cd
+export a=lars b="'bob'" row=sid
+mkdir /Users/$LOGNAME/shell_cd_test
+mkdir /Users/$LOGNAME/shell_cd_test/"'bla'"
+mkdir /Users/$LOGNAME/shell_cd_test/"'bla'"/'"blaa"'
+mkdir /Users/$LOGNAME/shell_cd_test/"'bla'"/'"blaa"'/lars
+mkdir /Users/$LOGNAME/shell_cd_test/"'bla'"/'"blaa"'/lars/"'bob'"
+mkdir /Users/$LOGNAME/shell_cd_test/"'bla'"/'"blaa"'/lars/"'bob'"/$row
+mkdir /Users/$LOGNAME/shell_cd_test/"'bla'"/'"blaa"'/lars/"'bob'"/$row/sid
+cd /Users/$LOGNAME/shell_cd_test/"'bla'"/'"blaa"'/$a/"$b"/'$row'/$row
+
+
+
+cd
+
+cd
+export a=men
+cd docu$a\ts

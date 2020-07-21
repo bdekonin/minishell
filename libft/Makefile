@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/07/15 14:29:45 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/07/20 14:02:10 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ ft_swap_bonus.c ft_strsearch_bonus.c \
 ft_wordcount_bonus.c ft_counter_bonus.c ft_intlen_bonus.c ft_abs_bonus.c \
 ft_free_array_bonus.c ft_charsearch_bonus.c ft_strcat_bonus.c \
 ft_str_tolower_bonus.c ft_split_sep_bonus.c ft_strcmp_bonus.c \
-ft_getline_bonus.c ft_iserrno_bonus.c ft_strexpand_bonus.c
+ft_getline_bonus.c ft_iserrno_bonus.c ft_strexpand_bonus.c ft_strxjoin_bonus.c \
 
 
 SRCS = $(EXTRA_SRC) ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \

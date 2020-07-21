@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/20 09:53:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/21 09:40:38 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int debug(t_vars *v, t_cmd *cmd, char **params);
 int	ft_history(t_vars *v, t_cmd *cmd, char **params);
 
 int		ft_execve(t_vars *v, t_cmd *cmd, char **params);
-char	*find_environment_variable(t_vars *v, char *line);
+char	*find_environment_variable(t_vars *v, char *line, size_t *len);
 
 int		findflag(char *str, char *flags); // returns i of first flag found
 
