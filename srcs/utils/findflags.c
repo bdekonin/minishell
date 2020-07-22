@@ -6,15 +6,14 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/15 16:15:56 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/20 20:59:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 08:28:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-static void skip_quotations(char *str, char type, int *i)
+static void	skip_quotations(char *str, char type, int *i)
 {
-	ft_printf("SKIPPING\n");
 	while (str[*i])
 	{
 		if (str[*i] == type)
@@ -26,7 +25,7 @@ static void skip_quotations(char *str, char type, int *i)
 	}
 }
 
-int findflag(char *str, char *flags)
+int			findflag(char *str, char *flags)
 {
 	int i;
 	int j;
