@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 19:38:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 14:21:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argv; // voor de warnign
 
 	ft_bzero(&v, sizeof(v));
-	v.fork_flag = 1;
+	v.forky = 1;
 	/*
 	** Initializing prompt
 	*/

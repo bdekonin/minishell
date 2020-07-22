@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 11:22:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 14:44:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static inline int reset_fd(t_vars *v)
 {
-	dup2(v->fd, STDOUT_FILENO);
 	dup2(v->stdout_copy, 1);
 	close(v->stdout_copy);
 	v->stdout_copy = 0;
@@ -40,10 +39,9 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd)
 {
-	if (cmd->prev && cmd->type != PIPE)
-		return (1);
+	ft_printf("pid = %d\n", getpid());
 	int i;
-	int (*p[bultins]) (t_vars *v, t_cmd *cmd, char **params); 
+	int (*p[bultins]) (t_vars *v, t_cmd *cmd, char **params);
 
 	i = 0;
 	p[0] = echo;
@@ -122,13 +120,40 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 			}
 			close(fd);
 		}
-		if (cmd->prev && cmd->prev->type == PIPE)
+		if (cmd->type && cmd->type == PIPE) 
 		{
-			
+
+			// v->pipefd[0] read
+			// v->pipefd[1] write
+			ft_printf("pipe now\n");
+			v->forky = fork();
+			pipe(v->pipefd);
+			if (v->forky == 0)
+			{
+				// v->stdout_copy = dup(STDOUT_FILENO);
+				// close(STDOUT_FILENO);
+				// close(v->pipefd[0]);
+				// dup2(v->pipefd[1], STDOUT_FILENO);
+				return (1);
+			}
+			if (v->forky > 0)
+			{
+			// 	ft_printf("forky = %d\n\n", v->forky);
+				int stat;
+				wait(&stat);
+				// v->history_head->ret[0] = WEXITSTATUS(stat) - 48;
+				ft_printf("stat = %d\n", WEXITSTATUS(stat));
+				exit(WEXITSTATUS(stat) + 27);
+			}
 		}
+		else if (cmd->prev && cmd->prev->type == PIPE) 
+		{
+			ft_printf("pipe prev\n");
+		}
+		
 		if (cmd->type && (cmd->type == ANGLEBRACKETRIGHT || cmd->type == ANGLEBRACKETDOUBLERIGHT))
 		{
-			v->stdout_copy = dup(1);
+			v->stdout_copy = dup(STDOUT_FILENO);
 			close(STDOUT_FILENO);
 			if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
 			{
@@ -142,6 +167,7 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			if (v->fd < 0)
 				return (-1);
+			dup2(v->fd, STDOUT_FILENO);
 			if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
 			{
 				if (v->temp)
@@ -180,6 +206,11 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			ft_free_array((void*)args, (int)splitsize);
 			ft_exit_error(v, 1);
 		}
+		if (cmd->type && cmd->type == PIPE && !v->forky)
+		{
+			// exit(ft_atoi(v->history_head->ret));
+			exit(42);
+		}
 		if (v->stdout_copy) // if stdout has been copied. so > must exist
 			reset_fd(v); // protect
 		ft_free_array((void*)args, (int)splitsize);
@@ -202,6 +233,8 @@ void	read_user_input(t_vars *v)
 	v->ret = get_next_line(STDIN_FILENO, &v->line);
 	if (v->ret < 0)
 		ft_exit_error(v, 1);
+
+	// v->line = ft_strdup("pwd | test");
 	if (*v->line != 0)
 	{
 		if (!ft_split_input(v)) // sometimes random memory.

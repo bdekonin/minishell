@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/11 15:21:30 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/21 19:52:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 13:13:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	read_precision(const char *str, t_list *flags, va_list argp)
 			if (str[i] == '*')
 				return (va_arg(argp, int));
 			else if (str[i] >= 48 && str[i] <= 57)
-				return (ft_atoi((char *)str + i));
+				return (ft_atoi2((char *)str + i));
 			else
 				return (0);
 		}
@@ -93,7 +93,7 @@ static int	read_minwidth(const char *str, t_list *flags, va_list argp)
 			return (n);
 		}
 		if (str[i] >= 49 && str[i] <= 57 && str[i - 1] != '.')
-			return (ft_atoi((char *)str + i));
+			return (ft_atoi2((char *)str + i));
 		i++;
 	}
 	return (0);
