@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/15 16:15:56 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 08:28:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 09:34:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			findflag(char *str, char *flags)
 	{
 		j = 0;
 		if (str[i] == '\"' || str[i] == '\'')
-			skip_quotations(str, *str + i, &i);
+			skip_quotations(str, str[i], &i);
 		while (flags[j])
 		{
 			if (flags[j] == str[i])

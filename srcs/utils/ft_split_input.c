@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 09:24:00 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 09:36:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,11 @@ int ft_split_input(t_vars *v)
 	i = 0;
 	while (i < (int)size)
 	{
-		if (ft_counter(argv[i], '\"') % 2)
+		if (ft_counter(argv[i], '\"') % 2 || ft_counter(argv[i], '\'') % 2)
 		{
 			argv[i] = ft_quote(argv[i], (ft_counter(argv[i], '\"') % 2) ? '\"' : '\'');
-			// ft_printf("dquote = [%s]\n", argv[i]);
+			if (!argv[i])
+				return (0);
 		}
 		ret = line_to_linkedlist(argv[i], 0);
 		if (!ret)
@@ -161,7 +162,7 @@ void print_nodes(t_node *node, t_node *nodehead)
 {
 	t_cmd *cmd;
 
-	// int fd = open("/dev/ttys003", O_RDWR); // change to other terminal
+	// int fd = open("/dev/ttys001", O_RDWR); // change to other terminal
 	while (node)
 	{
 		cmd = node->cmd;
