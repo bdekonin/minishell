@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 11:23:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 12:01:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ typedef struct		s_vars
 	int				fd;
 
 	t_cmd			**cmdlist;
-	pid_t			fork_flag;
 
 	char			*prefix; // malloc // user@minishell$ 
 	char			*current_path; // malloc
@@ -74,6 +73,11 @@ typedef struct		s_vars
 	int				ret; // gnl ret
 
 	int				stdout_copy;
+	
+	
+	int				stdin_copy;
+	int pipefd[2];
+	pid_t forky;
 
 	char			*temp;
 
