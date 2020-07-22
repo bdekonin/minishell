@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/15 15:48:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/15 19:35:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/21 19:55:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ int						ft_history(t_vars *v, t_cmd *cmd, char **params)
 	if (!sethistory(&v->history_head, v->line, "his"))
 		return (0);
 	return (1);
+	(void)(cmd);
 }
