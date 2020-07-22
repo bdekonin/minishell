@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/21 17:50:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 11:31:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,16 @@ static inline int	env__missing(t_env *head, t_env **env, \
 	return (1);
 }
 
+static inline int	env__shell(t_vars *v, t_env *env)
+{
+	free(env->content);
+	env->content = ft_strdup(MISSING_SHELLNAME);
+	if (!env->content)
+		return (0);
+	v->__executable = env;
+	return (1);
+}
+
 static int			verify_enviroment_vars(t_vars *v, t_env *env, int ret)
 {
 	while (env)
@@ -58,15 +68,12 @@ static int			verify_enviroment_vars(t_vars *v, t_env *env, int ret)
 			v->__logname = env;
 		else if (!ft_strcmp("HOME", env->name))
 			v->__homedir = env;
-		else if (!ft_strcmp("OLDPWD", env->name))
-		{
-			if (!env__oldpwd(v, env))
-				return (0);
-		}
+		else if (!ft_strcmp("OLDPWD", env->name) && !env__oldpwd(v, env))
+			return (0);
 		else if (!ft_strcmp("PATH", env->name))
 			v->__path = env;
-		else if (!ft_strcmp("SHELLNAME", env->name))
-			v->__executable = env;
+		else if (!ft_strcmp("SHELL", env->name) && !env__shell(v, env))
+			return (0);
 		env = env->next;
 	}
 	if (ret && !v->__logname)
@@ -74,7 +81,7 @@ static int			verify_enviroment_vars(t_vars *v, t_env *env, int ret)
 	if (ret && !v->__homedir)
 		ret = env__missing(v->env_head, &v->__homedir, "HOME", v->current_path);
 	if (ret && !v->__executable)
-		ret = env__missing(v->env_head, &v->__executable, "SHELLNAME", MISSING_SHELLNAME);
+		ret = env__missing(v->env_head, &v->__executable, "SHELL", MISSING_SHELLNAME);
 	return (ret);
 }
 

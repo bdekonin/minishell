@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/04 10:10:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 09:25:50 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 11:16:26 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char *find_environment_variable(t_vars *v, char *var, size_t *len)
 		if (!v->history_head)
 			return ("0");
 		else
-			return (v->history_head->ret);
+			return (his__ft_lstlast(v->history_head)->ret);
 	}
 	// else if (*line == '$')
 	// 	return (v->__parentpid); // change to current pid

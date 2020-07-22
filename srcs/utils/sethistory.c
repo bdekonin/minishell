@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/02 14:10:25 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/13 18:06:36 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 11:16:10 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		sethistory(t_history **his, char *fullcommand, char *ret_str)
 		free(tmp);
 		return (0);
 	}
-	his__ft_lstadd_front(&*his, newlist);
+	his__ft_lstadd_back(&*his, newlist);
 	ret = NULL;
 	return (1);
 }

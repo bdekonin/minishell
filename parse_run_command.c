@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/20 18:11:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 11:22:09 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 	char	*temp;
 	t_cmd	*newcmd;
 	int fd;
+	v->temp = NULL;
 
 	if (cmd->type && !cmd->next)
 	{
@@ -110,41 +111,21 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 		{
 			fd = open(cmd->next->line, O_RDONLY);
 			if (fd < 0)
+			{
+				close(fd);
 				ft_printf(DIR_NOTFOUND, v->__executable->content, cmd->next->line);
+				return (0);
+			}
 			else
+			{
 				ft_printf("\x1B[32m'%s' exist!\n\x1B[0m", cmd->next->line);
+			}
 			close(fd);
 		}
-		// if (cmd->prev && cmd->prev->type == PIPE)
-		// {
-		// 	char **arr;
-		// 	/*
-		// 	** 1. Malloc the array bigger by one.
-		// 	** 2. Move every argument further
-		// 	** 3. Put the output in the second.
-		// 	** 4. Run command normally.
-		// 	*/
-		// 	// ft_printf("before | %p\n", *argv[0]);
-		// 	arr = ft_calloc(splitsize + 2, sizeof(char*));
-		// 	int l = 0;
-		// 	int fd1 = open("output", O_RDONLY);
-		// 	for(int k = 0; k < splitsize + 1; k++)
-		// 	{
-		// 		if (k == 1)
-		// 			ft_getline(fd1, &arr[k]);
-		// 		else
-		// 			arr[k] = ft_strdup(*argv[l]);
-		// 		l++;
-		// 	}
-		// 	// ft_printf("string | %s\n", arr[0]);
-		// 	for (int i = 0; arr[i]; i++)
-		// 	{
-		// 		ft_printf("arr [%d] - %s\n", i, arr[i]);
-		// 	}
-		// 	ft_printf("\n");
-		// 	char **test;
-		// 	*argv = arr;
-		// }
+		if (cmd->prev && cmd->prev->type == PIPE)
+		{
+			
+		}
 		if (cmd->type && (cmd->type == ANGLEBRACKETRIGHT || cmd->type == ANGLEBRACKETDOUBLERIGHT))
 		{
 			v->stdout_copy = dup(1);
@@ -152,28 +133,23 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 			if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
 			{
 				v->fd = open(cmd->next->line, O_RDONLY);
-				ft_getline(v->fd, &v->temp);
-				close(v->fd);
+				if (v->fd)
+				{
+					ft_getline(v->fd, &v->temp);
+					close(v->fd);
+				}
 			}
 			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			if (v->fd < 0)
+				return (-1);
 			if (cmd->type == ANGLEBRACKETDOUBLERIGHT)
 			{
-				write(1, v->temp, ft_strlen(v->temp));
+				if (v->temp)
+					write(1, v->temp, ft_strlen(v->temp));
 					// return ()
 				free(v->temp);
-				
 			}
 		}
-		// if (cmd->type && cmd->type == ANGLEBRACKETDOUBLERIGHT)
-		// {
-		// 	v->stdout_copy = dup(1);
-		// 	close(STDOUT_FILENO);
-		// 	// v->fd = open(cmd->next->line, O_RDONLY);
-		// 	// ft_getline(v->fd, &v->temp);
-		// 	// close(v->fd);
-		// 	v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-		// 	write(1, v->temp, ft_strlen(v->temp));
-		// }
 	}
 	return (1);
 }
@@ -183,6 +159,7 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 ** call this command.
 **
 */
+
 int run_cmd(t_vars *v, t_cmd *cmd)
 {
 	char	**args;
@@ -193,10 +170,6 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	{
 		args = ft_split_sep_exep(cmd->line, " \t", &splitsize);
 		ret = confirm_flags(v, &args, cmd, splitsize);
-		for (int i = 0; args[i]; i++)
-		{
-			//ft_printf("%p - args [%d] - %s\n", args, i, args[i]);
-		}
 		if (ret == -1)
 		{
 			ft_free_array((void*)args, (int)splitsize);
