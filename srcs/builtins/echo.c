@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/21 14:26:59 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/22 12:07:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ static int write_dollar_mark(t_vars *v, char *str, size_t *i)
 
 	*i += 1;
 	len = 0;
-	while (str[*i + len] != '\0' && str[*i + len] != '\"' && str[*i + len] != ' ')
+	while (str[*i + len] != '\0' && str[*i + len] != '\"' && str[*i + len] != ' ') //see charsearch_bool in parse_cd.c
 		len++;
 	if (len == 0)
 		return (0);
 	env_name = str + *i;
-	printf("name=[%s]\n", env_name); //debug
+	//printf("name=[%s]\n", env_name); //debug
 	env_content = find_environment_variable(v, env_name, &len);
 	if (!env_content)
 		return (0);
-	printf("cont=[%s]\n", env_content); //debug
+	//printf("cont=[%s]\n", env_content); //debug
 	write(1, env_content, ft_strlen(env_content)); //protect
 	*i += len;
 	return (1);
@@ -122,12 +122,12 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 	int newline_opt;
 	int ret;
 
-	int z = 0; //debug
-	while (params[z]) //debug
-	{
-		printf("params[%d] = [%s]\n", z, params[z]);
-		z++;
-	}
+	// int z = 0; //debug
+	// while (params[z]) //debug
+	// {
+	// 	printf("params[%d] = [%s]\n", z, params[z]);
+	// 	z++;
+	// }
 	newline_opt = check_newline_option(params[0]);
 	i = newline_opt;
 	while (params[i])

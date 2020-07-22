@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 13:48:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 11:31:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 13:50:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,14 @@ int					env__makelist(t_vars *v, char **envp)
 	char	*content;
 	char	*temp;
 	int		i;
+
+	int fd = open("/dev/ttys004", O_RDWR);
+	int u = 0;
+	while (envp[u])
+	{
+		dprintf(fd, "[%s]\n", envp[u]);
+		u++;
+	}
 
 	i = 0;
 	while (envp[i])

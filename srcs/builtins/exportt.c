@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/18 12:45:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/22 14:25:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,6 @@
 **
 */
 
-static int	trim_strings(char **src, size_t size)
-{
-	char	set[3];
-	size_t	i;
-	char	*tmp;
-
-	set[0] = 34;
-	set[1] = 39;
-	set[2] = 0;
-	i = 1;
-	while (src[i])
-	{	
-		tmp = ft_strtrim(src[i], set);
-		if (!tmp)
-		{
-			ft_free_array((void**)src, size);
-			return (0); //malloc
-		}
-		free(src[i]);
-		src[i] = tmp;
-		i++;
-	}
-	return (1);
-}
-
 static int	find_env_var_name(t_env **head, char *name, char *content)
 {
 	t_env	*tmp;
@@ -77,30 +52,48 @@ static int	find_env_var_name(t_env **head, char *name, char *content)
 	return (0); //new name found in env list
 }
 
+static int parse_export(t_vars *v, char *str)
+{
+	size_t i;
+	
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i == '\'')
+			do_something(v, str, &i);
+		else if (str[i == '\"')
+			do_something(v, str, &i);
+		else if (str[i == '=')
+			do_something(v, str, &i);
+		else
+		
+		i++;
+	}
+}
+
 int 			exportt(t_vars *v, t_cmd *cmd, char **params) //tttttt?
 {
-	if (!params) //del this
-		return (0); //del this
-	printf("cmd = [%s]\n", cmd->line);
-	char	**array;
-	size_t	size;
 	size_t	i;
+	int 	ret;
 	
-	size = 0;
-	array = ft_split_sep_exep(cmd->line, " =", &size);
-	if (!array || size % 2 == 0) //size should be odd.
-		return (0); //malloc	
-	if (!trim_strings(array, size))
-		return (0); //malloc
-	i = 1; //i = 1, because: array[0] == "export"
-	while (i < size)
+	int z = 0; //debug
+	while (params[z]) //debug
 	{
-		if (!find_env_var_name(&v->env_head, array[i], array[i + 1]))
-		{
-			env__ft_lstadd_back(&v->env_head, env__ft_lstnew(array[i], array[i + 1]));
-			env__ft_lstmove_back("_", v->env_head);	
-		}
-		i += 2;
+		printf("params[%d] = [%s]\n", z, params[z]);
+		z++;
+	}
+	i = 0;
+	while (params[i])
+	{
+		ret = parse_export(v, params[i]);
+		if (ret < 0)
+			return (ret);
+		i++;
+		// if (!find_env_var_name(&v->env_head, array[i], array[i + 1]))
+		// {
+		// 	env__ft_lstadd_back(&v->env_head, env__ft_lstnew(array[i], array[i + 1]));
+		// 	env__ft_lstmove_back("_", v->env_head);	
+		// }
 	}
 	if (!sethistory(&v->history_head, v->line, "0"))
 		return (0);
