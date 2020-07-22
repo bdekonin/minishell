@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/15 16:15:56 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 09:34:16 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 13:03:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	skip_quotations(char *str, char type, int *i)
 {
+	*i += 1;
 	while (str[*i])
 	{
 		if (str[*i] == type)
