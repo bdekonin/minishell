@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/04 10:10:40 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/21 09:41:42 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/22 09:25:50 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static inline size_t findspace(char *str)
 	size_t i;
 	
 	i = 0;
-	while (str[i] && str[i] != ' ' && str[i] != '/')
+	while (str[i] && str[i] != ' ' && str[i] != '/' && str[i] != '\n')
 		i++;
 	return (i);
 }
