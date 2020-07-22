@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/20 10:50:14 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/21 19:47:57 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ static inline int	cd_2(t_vars *v, t_cmd *cmd, char *argument, \
 	int			ret;
 
 	ft_strlcpy(oldpwd_backup, v->current_path, ft_strlen(v->current_path) + 1);
-	if (!argument || !ft_strncmp("|", argument, 3))
-		ret = chdir(v->__homedir->content);
-	else if (!ft_strncmp(argument, "--", 3) || !ft_strncmp(argument, "~", 2))
+	if (!argument || !ft_strncmp(argument, "--", 3) || \
+											!ft_strncmp(argument, "~", 2))
 		ret = chdir(v->__homedir->content);
 	else if (!ft_strncmp(argument, "-", 3))
 	{
@@ -35,6 +34,9 @@ static inline int	cd_2(t_vars *v, t_cmd *cmd, char *argument, \
 		if (!dir)
 			return (-1);
 		ret = chdir(dir);
+		if (ret == -1)
+			ft_printf("%s: cd: %s: %s\n", v->__executable->content, \
+												dir, strerror(errno));
 		free(dir);
 	}
 	return (ret);
@@ -50,8 +52,6 @@ int					cd(t_vars *v, t_cmd *cmd, char **params)
 		return (0);
 	if (ret_chdir == -1)
 	{
-		ft_printf("%s: cd: %s: %s\n", v->__executable->content, \
-									params[0], strerror(errno));
 		if (!sethistory(&v->history_head, v->line, "1"))
 			return (0);
 	}
