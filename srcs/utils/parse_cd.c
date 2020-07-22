@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/21 22:13:10 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/22 11:38:48 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	copy_dollar_mark(t_vars *v, char *dst, char *src, size_t *i, size_t *
 
 	*i += 1;
 	env_len = 0;
-	while (src[*i + env_len] != '\0' && src[*i + env_len] != '\"' && src[*i + env_len] != ' ' && src[*i + env_len] != '\\')
+	//while (ft_charsearch_bool("\"\'' '\\$/", src[*i + env_len])
+	while (src[*i + env_len] != '\0' && src[*i + env_len] != '\"' && src[*i + env_len] != ' ' && src[*i + env_len] != '\\' && src[*i + env_len] != '$' && src[*i + env_len] != '/')
 		env_len++;
 	if (env_len == 0)
 		return (0); //env var name has len of 0. Don't delete this check.
@@ -50,6 +51,7 @@ static int	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t 
 		if (src[*i] == '$')
 		{
 			copy_dollar_mark(v, dst, src, i, j); //check return
+			*i += 1;
 		}
 		else
 		{

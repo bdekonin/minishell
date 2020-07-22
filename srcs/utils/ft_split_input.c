@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 09:36:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 10:23:53 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void print_nodes(t_node *node, t_node *nodehead)
 {
 	t_cmd *cmd;
 
-	// int fd = open("/dev/ttys001", O_RDWR); // change to other terminal
+	int fd = open("/dev/ttys002", O_RDWR); // change to other terminal
 	while (node)
 	{
 		cmd = node->cmd;
@@ -170,11 +170,11 @@ void print_nodes(t_node *node, t_node *nodehead)
 		{
 			if (cmd->line[0] == 0)
 				cmd__delinvalid(nodehead->cmd, cmd);
-			// dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			 dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}
-	// dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
+	 dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
 }
 //export PATH=/Users/bdekonin/minishell/noperm
