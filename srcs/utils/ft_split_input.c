@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/21 17:33:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/22 09:24:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 }
 
 void print_nodes(t_node *node, t_node *nodehead);
+char *ft_quote(char *line, char type);
 
 int ft_split_input(t_vars *v)
 {
@@ -128,6 +129,11 @@ int ft_split_input(t_vars *v)
 	i = 0;
 	while (i < (int)size)
 	{
+		if (ft_counter(argv[i], '\"') % 2)
+		{
+			argv[i] = ft_quote(argv[i], (ft_counter(argv[i], '\"') % 2) ? '\"' : '\'');
+			// ft_printf("dquote = [%s]\n", argv[i]);
+		}
 		ret = line_to_linkedlist(argv[i], 0);
 		if (!ret)
 			return (0);
