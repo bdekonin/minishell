@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 12:01:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/23 09:14:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define TRIMS " \t" // Command will be trimmed in spaces and tabs
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n" /*, name, content*/
 # define COMMAND_NOT_RUNNABLE 127 /* command not found / not runnable */
+# define SYNTAX_ERROR "%s: syntax error near unexpected token `%c'\n"
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
@@ -78,6 +79,7 @@ typedef struct		s_vars
 	int				stdin_copy;
 	int pipefd[2];
 	pid_t forky;
+	pid_t spoon;
 
 	char			*temp;
 

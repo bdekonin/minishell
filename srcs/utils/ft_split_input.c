@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 14:55:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/22 15:46:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 ** @return t_cmd*			Returns the linked list of the curent command.
 */
 
-static t_cmd	*line_to_linkedlist(char *string, int i)
+static t_cmd	*line_to_linkedlist(char *string, int i, char *executable)
 {
 	t_cmd	*cmd[2];
 
@@ -82,6 +82,13 @@ static t_cmd	*line_to_linkedlist(char *string, int i)
 		i = findflag(string, FLAGS);
 		if (!i)
 			i = ft_strlen(string);
+		if (string[i + 1] == ANGLEBRACKETRIGHT && \
+		string[i + 2] == ANGLEBRACKETRIGHT)
+		{
+			ft_printf(SYNTAX_ERROR, executable, '>');
+			errno = 0;
+			return (0);
+		}
 		if (string[i + 1] == ANGLEBRACKETRIGHT)
 		{
 			string[i] = 32;
@@ -135,7 +142,7 @@ int ft_split_input(t_vars *v)
 			if (!argv[i])
 				return (0);
 		}
-		ret = line_to_linkedlist(argv[i], 0);
+		ret = line_to_linkedlist(argv[i], 0, v->__executable->content);
 		if (!ret)
 			return (0);
 		if (!v->nodehead)
@@ -162,11 +169,7 @@ void print_nodes(t_node *node, t_node *nodehead)
 {
 	t_cmd *cmd;
 
-<<<<<<< HEAD
 	//int fd = open("/dev/ttys002", O_RDWR); // change to other terminal
-=======
-	// int fd = open("/dev/ttys002", O_RDWR);
->>>>>>> feeb7871ff3fdf996a915fc3fd5f560cb623dfac
 	while (node)
 	{
 		cmd = node->cmd;
@@ -174,19 +177,11 @@ void print_nodes(t_node *node, t_node *nodehead)
 		{
 			if (cmd->line[0] == 0)
 				cmd__delinvalid(nodehead->cmd, cmd);
-<<<<<<< HEAD
 			 //dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
-=======
-			//  dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
->>>>>>> feeb7871ff3fdf996a915fc3fd5f560cb623dfac
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}
-<<<<<<< HEAD
 	 //dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
-=======
-	//  dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
->>>>>>> feeb7871ff3fdf996a915fc3fd5f560cb623dfac
 }
 //export PATH=/Users/bdekonin/minishell/noperm

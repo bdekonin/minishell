@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/23 09:31:26 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/23 09:08:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,7 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 			}
 			else
 			{
-				ft_printf("forky: %d\n", v->forky);
-				int stat;
-				wait(&stat);
-				ft_printf("output of cmd->type->PIPE: %d\n", WEXITSTATUS(stat));
+				wait(NULL);
 				// ft_printf("now here1\n");
 				return (0);
 			}
@@ -158,8 +155,8 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 			// v->pipefd[0] read
 			// v->pipefd[1] write
 			// v->forky = 0;
-			v->spoon = fork();
-			if (v->spoon == 0)
+			v->forky = fork();
+			if (v->forky == 0)
 			{
 				v->stdin_copy = dup(STDIN_FILENO);
 				close(STDIN_FILENO);
@@ -170,10 +167,7 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 			}
 			else
 			{
-				ft_printf("spoon: %d\n", v->spoon);
-				int stat;
-				wait(&stat);
-				ft_printf("output of cmd->prev->type->PIPE: %d\n", WEXITSTATUS(stat));
+				wait(NULL);
 				// ft_printf("now here2\n");
 				return (0);
 			}
@@ -239,7 +233,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			reset_stdout(v); // protect
 		if (v->stdin_copy) // if stdin has been copied. so > must exist
 			reset_stdin(v); // protect
-		if ((v->forky == 0 && cmd->type == PIPE) || (v->spoon == 0 && cmd->prev && cmd->prev->type == PIPE)) // maybe prev->type == PIPE
+		if (v->forky == 0) // maybe prev->type == PIPE
 			exit(42);
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
