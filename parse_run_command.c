@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/23 09:31:26 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/23 10:35:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ char		*cmd_str(int i)
 
 int run_command(t_vars *v, char **params, t_cmd *cmd)
 {
-	// ft_printf("pid = %d\n", getpid());
+	if (cmd->prev && (cmd->prev->type == ANGLEBRACKETLEFT || cmd->prev->type == ANGLEBRACKETRIGHT || cmd->prev->type == ANGLEBRACKETDOUBLERIGHT))
+		return (1);
 	int i;
 	int (*p[bultins]) (t_vars *v, t_cmd *cmd, char **params);
 
@@ -115,70 +116,20 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 	{
 		if (cmd->type && cmd->type == ANGLEBRACKETLEFT)
 		{
-			fd = open(cmd->next->line, O_RDONLY);
-			if (fd < 0)
+			v->fd = open(cmd->next->line, O_RDONLY);
+			if (v->fd < 0)
 			{
-				close(fd);
+				close(v->fd);
 				ft_printf(DIR_NOTFOUND, v->__executable->content, cmd->next->line);
 				return (0);
 			}
 			else
 			{
-				ft_printf("\x1B[32m'%s' exist!\n\x1B[0m", cmd->next->line);
-			}
-			close(fd);
-		}
-		if (cmd->type && cmd->type == PIPE) 
-		{
-			// v->pipefd[0] read
-			// v->pipefd[1] write
-			pipe(v->pipefd);
-			v->forky = fork();
-			if (v->forky == 0)
-			{
-				v->stdout_copy = dup(STDOUT_FILENO);
-				close(STDOUT_FILENO);
-				close(v->pipefd[0]);
-				dup2(v->pipefd[1], STDOUT_FILENO);
-				return (1);
-			}
-			else
-			{
-				ft_printf("forky: %d\n", v->forky);
-				int stat;
-				wait(&stat);
-				ft_printf("output of cmd->type->PIPE: %d\n", WEXITSTATUS(stat));
-				// ft_printf("now here1\n");
-				return (0);
-			}
-		}
-		else if (cmd->prev && cmd->prev->type == PIPE) 
-		{
-			// v->forky = 0;
-			// v->pipefd[0] read
-			// v->pipefd[1] write
-			// v->forky = 0;
-			v->spoon = fork();
-			if (v->spoon == 0)
-			{
 				v->stdin_copy = dup(STDIN_FILENO);
 				close(STDIN_FILENO);
-				close(v->pipefd[1]);
-				dup2(v->pipefd[0], STDIN_FILENO);
-				close(v->pipefd[0]);
-				return (1);
-			}
-			else
-			{
-				ft_printf("spoon: %d\n", v->spoon);
-				int stat;
-				wait(&stat);
-				ft_printf("output of cmd->prev->type->PIPE: %d\n", WEXITSTATUS(stat));
-				// ft_printf("now here2\n");
-				return (0);
+				dup2(v->fd, STDIN_FILENO);
 			}
 		}
-		
 		if (cmd->type && (cmd->type == ANGLEBRACKETRIGHT || cmd->type == ANGLEBRACKETDOUBLERIGHT))
 		{
 			v->stdout_copy = dup(STDOUT_FILENO);
@@ -239,8 +190,6 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			reset_stdout(v); // protect
 		if (v->stdin_copy) // if stdin has been copied. so > must exist
 			reset_stdin(v); // protect
-		if ((v->forky == 0 && cmd->type == PIPE) || (v->spoon == 0 && cmd->prev && cmd->prev->type == PIPE)) // maybe prev->type == PIPE
-			exit(42);
 		ft_free_array((void*)args, (int)splitsize);
 		cmd = cmd->next;
 		errno = 0;
