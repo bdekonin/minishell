@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/23 10:35:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/23 14:32:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ char		*cmd_str(int i)
 	cmd_str[9] = NULL;
 	return (cmd_str[i]);
 }
-
-int run_command(t_vars *v, char **params, t_cmd *cmd)
+// pwd | cat > output 
+int run_command(t_vars *v, char ***params, t_cmd *cmd, size_t *splitsize)
 {
 	if (cmd->prev && (cmd->prev->type == ANGLEBRACKETLEFT || cmd->prev->type == ANGLEBRACKETRIGHT || cmd->prev->type == ANGLEBRACKETDOUBLERIGHT))
 		return (1);
@@ -62,21 +62,21 @@ int run_command(t_vars *v, char **params, t_cmd *cmd)
 	p[6] = ft_exit;
 	p[7] = debug;
 	p[8] = ft_history;
-	ft_str_tolower(params[0]);
+	ft_str_tolower(params[0][0]);
 	while (i < bultins)
 	{
-		if (!ft_strncmp(cmd_str(i), params[0], 15))
-			return ((*p[i])(v, cmd, params + 1));
+		if (!ft_strncmp(cmd_str(i), params[0][0], 15))
+			return ((*p[i])(v, cmd, *(params + 1)));
 		i++;
 	}
-	i = ft_execve(v, NULL, params);
+	i = ft_execve(v, cmd, params, splitsize);
 	if (i < 0)
 		return (0);
 	else if (i)
 		return (1);
 	if (v->stdout_copy) // if stdout has been copied. so > must exist
 		reset_stdout(v); // protect
-	ft_printf(CMD_NOTFOUND, v->__executable->content, params[0]);
+	ft_printf(CMD_NOTFOUND, v->__executable->content, params[0][0]);
 	if (!sethistory(&v->history_head, v->line, "127"))
 		return (0);
 	return (1);
@@ -114,22 +114,22 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 	}
 	else
 	{
-		if (cmd->type && cmd->type == ANGLEBRACKETLEFT)
-		{
-			v->fd = open(cmd->next->line, O_RDONLY);
-			if (v->fd < 0)
-			{
-				close(v->fd);
-				ft_printf(DIR_NOTFOUND, v->__executable->content, cmd->next->line);
-				return (0);
-			}
-			else
-			{
-				v->stdin_copy = dup(STDIN_FILENO);
-				close(STDIN_FILENO);
-				dup2(v->fd, STDIN_FILENO);
-			}
-		}
+		// if (cmd->type && cmd->type == ANGLEBRACKETLEFT)
+		// {
+		// 	v->fd = open(cmd->next->line, O_RDONLY);
+		// 	if (v->fd < 0)
+		// 	{
+		// 		close(v->fd);
+		// 		ft_printf(DIR_NOTFOUND, v->__executable->content, cmd->next->line);
+		// 		return (0);
+		// 	}
+		// 	else
+		// 	{
+		// 		v->stdin_copy = dup(STDIN_FILENO);
+		// 		close(STDIN_FILENO);
+		// 		dup2(v->fd, STDIN_FILENO);
+		// 	}
+		// }
 		if (cmd->type && (cmd->type == ANGLEBRACKETRIGHT || cmd->type == ANGLEBRACKETDOUBLERIGHT))
 		{
 			v->stdout_copy = dup(STDOUT_FILENO);
@@ -180,7 +180,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 			ft_free_array((void*)args, (int)splitsize);
 			ft_exit_error(v, 1);
 		}
-		if (ret && !run_command(v, args, cmd))
+		if (ret && !run_command(v, &args, cmd, &splitsize))
 		{
 			ft_free_array((void*)args, (int)splitsize);
 			ft_exit_error(v, 1);
