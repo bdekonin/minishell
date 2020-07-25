@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/23 15:01:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/25 12:41:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ void makething(t_cmd *cmd, char ***params, char *str, size_t *splitsize)
 	arr = ft_split_sep(str, " \t", &size);
 	for (int j = 0; arr[j]; j++)
 	argv = ft_calloc(100, sizeof(char*)); // LEAK
-	*splitsize = 100; // LEAK
 	while (params[0][i])
 	{
-		argv[i] = params[0][i];
+		argv[i] = ft_strdup(params[0][i]);
+		//protec
 		i++;
 	}
 	int j = 0;
@@ -82,7 +82,8 @@ void makething(t_cmd *cmd, char ***params, char *str, size_t *splitsize)
 	// ft_free_array((void*)arr, size);
 	// ft_free_array((void*)params[0], ft_wordcount(cmd->line));
 	free(arr);
-	free(params[0]);
+	ft_free_array((void*)params[0], *splitsize);
+	*splitsize = 100; // LEAK
 	// for (int j = 0; arr[j]; j++)
 	// {
 	// 	ft_printf("arr[%d]: %s\n", j, arr[j]);
@@ -100,33 +101,23 @@ void makething(t_cmd *cmd, char ***params, char *str, size_t *splitsize)
 	params[0] = argv;
 }
 
-// 0x7fa0f8700050 - string = [<][cat]
-// 0x7fa0f8700050 - string = [][bitch backup]
-// cat < hallo.txt doei.txt hallo.txt doei.txt
-// cat -e < doei.txt hallo.txt doei.txt 
 void check_stdin_arguments(t_cmd *cmd,  char ***params, size_t *splitsize)
 {
 	size_t wordcount;
-	char **arr;
 	char *str;
-	int i;
+
 	str = NULL;
-	i = 0;
 	if (cmd->next)
 	{
 		str = cmd->next->line;
 		wordcount = ft_wordcount(str);
-		if (cmd->type == ANGLEBRACKETLEFT && cmd->next && wordcount >= 2)
+		if (cmd->type != PIPE && cmd->next && wordcount >= 2)
 		{
 			str[ft_strlcpy(str, str + (ft_strchr(str, ' ') - str + 1), ft_strlen(str))] = 0;
-			// ft_printf("str: '%s' %d\n", str, wordcount);
 			makething(cmd, params, str, splitsize); // BETTER NAME
 		}
 	}
-	// for (int j = 0; params[0][j]; j++)
-	// {
-	// 	ft_printf("params[%d]: '%s'\n", j, params[0][j]);
-	// }
+
 }
 
 /*
@@ -167,7 +158,7 @@ int		ft_execve(t_vars *v, t_cmd *cmd, char ***params, size_t *splitsize)
 		free(path);
 		return (-1);
 	}
-	check_stdin_arguments(cmd, params, splitsize);
+	// check_stdin_arguments(cmd, params, splitsize);
 	pid_t	spoon = fork();
 	if (!spoon)
 	{

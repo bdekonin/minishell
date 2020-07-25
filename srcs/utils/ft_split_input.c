@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 15:46:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/25 12:28:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ static t_cmd	*line_to_linkedlist(char *string, int i, char *executable)
 }
 
 void print_nodes(t_node *node, t_node *nodehead);
+void verify_nodes(t_node *node, t_node *nodehead);
 char *ft_quote(char *line, char type);
 
 int ft_split_input(t_vars *v)
@@ -161,15 +162,50 @@ int ft_split_input(t_vars *v)
 		i++;
 	}
 	ft_free_array((void*)argv, size);
+	verify_nodes(v->nodehead, v->nodehead);
 	print_nodes(v->nodehead, v->nodehead);
 	return (1);
 }
+ //cat < doei.txt < hallo.txt
+char *check_arguments(t_cmd *cmdhead, t_cmd *cmd, char *line)
+{
+	int		fd;
+	size_t	space_location;
+	char	oldchar;
+	char	*temp;
+	if (!ft_counter(line, 32)) // change to that it doesnt get one with a \ before so "Test\ ing\ ing/" is one word not space
+		return (line);
+	
+	space_location = ft_strchr(line, 32) - line;
+	oldchar = line[space_location];
+	line[space_location] = 0;
 
-void print_nodes(t_node *node, t_node *nodehead)
+	fd = open(line, O_RDONLY);
+	line[space_location] = oldchar;
+	if (fd)
+	{
+		cmd->prev->type = 0;
+		line[ft_strlcpy(line, line + space_location, ft_strlen(line))] = 0;
+		temp = ft_strjoin(cmd->prev->line, line);
+		free(cmd->prev->line);
+		cmd->prev->line = temp;
+		cmd__delinvalid(cmdhead, cmd);
+	}	
+	close(fd);
+	
+	return (line);
+}
+
+
+// 1. meerdere argumenten
+// 2. arg[0] moet bestaan.
+// 3. zet vorige flag op 0 en move alles naar voren
+
+
+void verify_nodes(t_node *node, t_node *nodehead)
 {
 	t_cmd *cmd;
 
-	//int fd = open("/dev/ttys002", O_RDWR); // change to other terminal
 	while (node)
 	{
 		cmd = node->cmd;
@@ -177,11 +213,29 @@ void print_nodes(t_node *node, t_node *nodehead)
 		{
 			if (cmd->line[0] == 0)
 				cmd__delinvalid(nodehead->cmd, cmd);
-			 //dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			else if (cmd->prev && cmd->prev->type != PIPE)
+				cmd->line = check_arguments(nodehead->cmd, cmd, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}
-	 //dprintf(fd, "\n\n\n\n\n\n\n\n\n\n");
+}
+
+void print_nodes(t_node *node, t_node *nodehead)
+{
+	t_cmd *cmd;
+
+	int fd = open("/dev/ttys003", O_RDWR);
+	while (node)
+	{
+		cmd = node->cmd;
+		while (cmd)
+		{
+			dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			cmd = cmd->next;
+		}
+		node = node->next;
+	}	
+	dprintf(fd, "\n\n\n\n\n\n\n\n");
 }
 //export PATH=/Users/bdekonin/minishell/noperm

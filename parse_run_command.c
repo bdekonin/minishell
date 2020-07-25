@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/23 14:32:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/24 15:28:50 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int run_command(t_vars *v, char ***params, t_cmd *cmd, size_t *splitsize)
 	while (i < bultins)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0][0], 15))
-			return ((*p[i])(v, cmd, *(params + 1)));
+			return ((*p[i])(v, cmd, params[0] + 1));
 		i++;
 	}
 	i = ft_execve(v, cmd, params, splitsize);
@@ -114,22 +114,26 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 	}
 	else
 	{
-		// if (cmd->type && cmd->type == ANGLEBRACKETLEFT)
-		// {
-		// 	v->fd = open(cmd->next->line, O_RDONLY);
-		// 	if (v->fd < 0)
-		// 	{
-		// 		close(v->fd);
-		// 		ft_printf(DIR_NOTFOUND, v->__executable->content, cmd->next->line);
-		// 		return (0);
-		// 	}
-		// 	else
-		// 	{
-		// 		v->stdin_copy = dup(STDIN_FILENO);
-		// 		close(STDIN_FILENO);
-		// 		dup2(v->fd, STDIN_FILENO);
-		// 	}
-		// }
+		if (cmd->type && cmd->type == ANGLEBRACKETLEFT)
+		{
+			// v->fd = open((!ft_strrchr(cmd->next->line, 32) ? cmd->next->line : ft_strrchr(cmd->next->line, 32) + 1), O_RDONLY);
+			char *test = ft_substr(cmd->next->line, 0, ft_strchr(cmd->next->line, 32) - cmd->next->line); // leak
+			// ft_printf("gnl: [%s] - %d\n", cmd->next->line, ft_strchr(cmd->next->line, 32) - cmd->next->line);
+			// ft_printf("test: [%s]\n", test);
+			v->fd = open(test, O_RDONLY);
+			if (v->fd < 0)
+			{
+				close(v->fd);
+				ft_printf(DIR_NOTFOUND, v->__executable->content, test);
+				return (0);
+			}
+			else
+			{
+				v->stdin_copy = dup(STDIN_FILENO);
+				close(STDIN_FILENO);
+				dup2(v->fd, STDIN_FILENO);
+			}
+		}
 		if (cmd->type && (cmd->type == ANGLEBRACKETRIGHT || cmd->type == ANGLEBRACKETDOUBLERIGHT))
 		{
 			v->stdout_copy = dup(STDOUT_FILENO);
@@ -143,7 +147,8 @@ static int confirm_flags(t_vars *v, char ***argv, t_cmd *cmd, size_t splitsize)
 					close(v->fd);
 				}
 			}
-			v->fd = open(cmd->next->line, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			char *test = ft_substr(cmd->next->line, 0, ft_strchr(cmd->next->line, 32) - cmd->next->line); // leak {cat -e > test doei.txt}
+			v->fd = open(test, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 			if (v->fd < 0)
 				return (-1);
 			dup2(v->fd, STDOUT_FILENO);
