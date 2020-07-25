@@ -6,56 +6,47 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/21 12:21:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/06/10 13:36:06 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/25 18:14:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdarg.h>
 
-static char	*concat_strings(char **ptrs, size_t args, size_t len)
+static size_t	get_len(char *src, va_list list)
 {
-	char	*dst;
-	size_t	i;
+	size_t	len;
+	va_list	copy;
 
-	dst = ft_calloc(len + 1, sizeof(char));
-	if (!dst)
-		return (0);
-	i = 0;
-	while (i < args)
+	len = 0;
+	va_copy(copy, list);
+	while (src)
 	{
-		if (ptrs[i])
-			ft_strlcat(dst, ptrs[i], len + 1);
-		i++;
+		len += ft_strlen(src);
+		src = va_arg(copy, char *);
 	}
-	return (dst);
+	va_end(copy);
+	return (len);
 }
 
-char		*ft_strxjoin(size_t args, ...)
+char			*ft_strxjoin(char *src, ...)
 {
-	va_list list;
-	char	**ptrs;
 	char	*dst;
+	va_list	list;
 	size_t	len;
-	size_t	i;
 
-	if (args == 0)
-		return (0);
-	va_start(list, args);
-	i = 0;
-	len = 0;
-	ptrs = ft_calloc(args + 1, sizeof(char *));
-	if (!ptrs)
-		return (0);
-	while (i < args)
+	if (!src)
+		return (NULL);
+	va_start(list, src);
+	len = get_len(src, list);
+	dst = ft_calloc(len + 1, sizeof(char));
+	if (!dst)
+		return (NULL);
+	while (src)
 	{
-		ptrs[i] = va_arg(list, char *);
-		if (ptrs[i])
-			len += ft_strlen(ptrs[i]);
-		i++;
+		ft_strlcat(dst, src, len + 1);
+		src = va_arg(list, char *);
 	}
 	va_end(list);
-	dst = concat_strings(ptrs, args, len);
-	free(ptrs);
 	return (dst);
 }
