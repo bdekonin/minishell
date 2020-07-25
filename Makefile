@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/07/14 15:38:13 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/07/25 16:58:02 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS = *.c srcs/builtins/*.c \
 	srcs/utils/*.c srcs/utils/env_list/*.c \
 	srcs/utils/history_list/*.c \
 		srcs/utils/node_list/*.c \
-		srcs/ft_execve/*.c 
+		srcs/ft_execve/*.c srcs/flags/*.c
 
 OFILES = $(SRCS:.c=.o)
 

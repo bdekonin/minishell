@@ -6,7 +6,7 @@
 /*   By: lverdoes <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/18 14:50:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/25 12:41:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/25 16:55:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,71 +55,6 @@ static char			**__linkedlist_to_array(t_vars *v, char **envp, t_env *head)
 	return (envp);
 }
 
-void makething(t_cmd *cmd, char ***params, char *str, size_t *splitsize)
-{
-	size_t i;
-	size_t size;
-	char **arr;
-	char **argv;
-
-	i = 0;
-	arr = ft_split_sep(str, " \t", &size);
-	for (int j = 0; arr[j]; j++)
-	argv = ft_calloc(100, sizeof(char*)); // LEAK
-	while (params[0][i])
-	{
-		argv[i] = ft_strdup(params[0][i]);
-		//protec
-		i++;
-	}
-	int j = 0;
-	while (arr[j])
-	{
-		argv[i] = arr[j];
-		i++;
-		j++;
-	}
-	// ft_free_array((void*)arr, size);
-	// ft_free_array((void*)params[0], ft_wordcount(cmd->line));
-	free(arr);
-	ft_free_array((void*)params[0], *splitsize);
-	*splitsize = 100; // LEAK
-	// for (int j = 0; arr[j]; j++)
-	// {
-	// 	ft_printf("arr[%d]: %s\n", j, arr[j]);
-	// }
-	// ft_printf("\n");
-	// for (int j = 0; params[0][j]; j++)
-	// {
-	// 	ft_printf("params[%d]: %s\n", j, params[0][j]);
-	// }
-	// ft_printf("\n");
-	// for (int j = 0; argv[j]; j++)
-	// {
-	// 	ft_printf("argv[%d]: %s\n", j, argv[j]);
-	// }
-	params[0] = argv;
-}
-
-void check_stdin_arguments(t_cmd *cmd,  char ***params, size_t *splitsize)
-{
-	size_t wordcount;
-	char *str;
-
-	str = NULL;
-	if (cmd->next)
-	{
-		str = cmd->next->line;
-		wordcount = ft_wordcount(str);
-		if (cmd->type != PIPE && cmd->next && wordcount >= 2)
-		{
-			str[ft_strlcpy(str, str + (ft_strchr(str, ' ') - str + 1), ft_strlen(str))] = 0;
-			makething(cmd, params, str, splitsize); // BETTER NAME
-		}
-	}
-
-}
-
 /*
 ** Executes binary/executable based on arguments
 **
@@ -138,7 +73,7 @@ void check_stdin_arguments(t_cmd *cmd,  char ***params, size_t *splitsize)
 **	Not found	0 - (null)
 **	Error	   -1 - (null)
 */
-int		ft_execve(t_vars *v, t_cmd *cmd, char ***params, size_t *splitsize)
+int		ft_execve(t_vars *v, t_cmd *cmd, char **params, size_t *splitsize)
 {
 	char *path;
 	char **envp;
@@ -146,7 +81,7 @@ int		ft_execve(t_vars *v, t_cmd *cmd, char ***params, size_t *splitsize)
 	int stat;
 	
 	path = NULL;
-	ii = find_executable(v, &path, params[0][0]);
+	ii = find_executable(v, &path, params[0]);
 	if (ii < 0)
 		return (-1); // error
 	else if (ii == 0)
@@ -158,13 +93,12 @@ int		ft_execve(t_vars *v, t_cmd *cmd, char ***params, size_t *splitsize)
 		free(path);
 		return (-1);
 	}
-	// check_stdin_arguments(cmd, params, splitsize);
 	pid_t	spoon = fork();
 	if (!spoon)
 	{
 		signal(SIGINT, SIG_DFL); // ctrl c - for cat so you can quit
 		signal(SIGTSTP, SIG_DFL); // ctrl z
-		if (execve(path, params[0], envp) < 0)
+		if (execve(path, &params[0], envp) < 0)
 		{
 			ft_printf("%s: %s\n", v->__executable->content, strerror(errno));
 			exit(COMMAND_NOT_RUNNABLE);

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/25 12:28:02 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/07/25 17:09:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,10 @@ char *check_arguments(t_cmd *cmdhead, t_cmd *cmd, char *line)
 	space_location = ft_strchr(line, 32) - line;
 	oldchar = line[space_location];
 	line[space_location] = 0;
-
+	
 	fd = open(line, O_RDONLY);
 	line[space_location] = oldchar;
-	if (fd)
+	if (fd > 0)
 	{
 		cmd->prev->type = 0;
 		line[ft_strlcpy(line, line + space_location, ft_strlen(line))] = 0;
@@ -190,9 +190,8 @@ char *check_arguments(t_cmd *cmdhead, t_cmd *cmd, char *line)
 		free(cmd->prev->line);
 		cmd->prev->line = temp;
 		cmd__delinvalid(cmdhead, cmd);
-	}	
+	}
 	close(fd);
-	
 	return (line);
 }
 
@@ -213,7 +212,7 @@ void verify_nodes(t_node *node, t_node *nodehead)
 		{
 			if (cmd->line[0] == 0)
 				cmd__delinvalid(nodehead->cmd, cmd);
-			else if (cmd->prev && cmd->prev->type != PIPE)
+			else if (cmd->prev && cmd->prev->type == ANGLEBRACKETLEFT)
 				cmd->line = check_arguments(nodehead->cmd, cmd, cmd->line);
 			cmd = cmd->next;
 		}
