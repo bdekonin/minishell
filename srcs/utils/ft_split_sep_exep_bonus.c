@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/16 08:58:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/18 11:23:57 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/25 12:35:27 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,19 @@ static size_t	get_len(const char *src, char *sep, size_t start)
 {
 	size_t	i;
 	size_t	len;
-	int		quotation;
+	int		s_quot;
+	int		d_quot;
 
 	i = start;
 	len = 0;
-	quotation = 0;
-	while (src[i] != '\0' && (quotation || !ft_charsearch_l(src[i], sep)))
+	s_quot = 0;
+	d_quot = 0;
+	while (src[i] != '\0' && (s_quot || s_quot || !ft_charsearch_l(src[i], sep)))
 	{
-		if (i > 0 && src[i] == 34 && src[i - 1] != '\\')
-			quotation = 1 - quotation;
+		if (src[i] == '\'' && (i == 0 || src[i - 1] != '\\'))
+        	s_quot = 1 - s_quot;
+        else if (src[i] == '\"' && (i == 0 || src[i - 1] != '\\'))
+        	d_quot = 1 - d_quot;
 		i++;
 		len++;
 	}

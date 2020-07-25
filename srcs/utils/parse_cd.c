@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 13:40:30 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/24 13:18:46 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static int	copy_dollar_mark(t_vars *v, char *dst, char *src, size_t *i, size_t *
 	env_content = find_environment_variable(v, env_name, &env_len);
 	if (!env_content)
 		return (0); //env name not in env list
-	ft_strlcat(dst + *j, env_content, PATH_MAX);
+	ft_strlcat(dst + *j, env_content, PATH_MAX + 1);
 	*i += env_len - 1;
 	*j += ft_strlen(env_content);
 	return (1);
 }
 
-static int	copy_comment_mark(char *src, size_t *i)
+static int	copy_hashtag(char *src, size_t *i)
 {
 	*i += 1;
 	while (src[*i] != '\0')
@@ -82,7 +82,7 @@ static int copy_backslash(char *dst, char *src, size_t *i, size_t *j)
 	return (1);
 }
 
-static int get_directory_len(t_vars *v, char *dst, char *src)
+static int parse_input(t_vars *v, char *dst, char *src)
 {
 	size_t i;
 	size_t j;
@@ -100,7 +100,7 @@ static int get_directory_len(t_vars *v, char *dst, char *src)
 		else if (src[i] == '$')
 			copy_dollar_mark(v, dst, src, &i, &j);
 		else if (src[i] == '#' && i == 0)
-			copy_comment_mark(src, &i);
+			copy_hashtag(src, &i);
 		else
 		{
 			dst[j] = src[i];
@@ -120,10 +120,10 @@ char	*parse_cd(t_vars *v, char *line)
 
 	i = 0;
 	src = line + 1;
-	dst = ft_calloc(PATH_MAX, sizeof(char)); //PATH_MAX + 1?
+	dst = ft_calloc(PATH_MAX + 1, sizeof(char));
 	if (!dst)
 		return (NULL);
-	ret = get_directory_len(v, dst, src);
+	ret = parse_input(v, dst, src);
 	if (ret < 0)
 		return (0); //error
 	return (dst);

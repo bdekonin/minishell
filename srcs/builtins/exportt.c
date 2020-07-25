@@ -6,11 +6,60 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/22 14:25:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/25 12:33:50 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
+
+
+static char		**free_array(char **array, size_t i)
+{
+	while (i > 0)
+	{
+		i--;
+		free(array[i]);
+	}
+	free(array);
+	return (NULL);
+}
+
+static size_t	get_size_of_src(char **src)
+{
+	size_t i;
+
+	if (!src)
+		return (0);
+	i = 0;
+	while (src[i] != NULL)
+		i++;
+	return (i);
+}
+
+char			**ft_realloc(char **src, char *line)
+{
+	size_t	size;
+	char	**dst;
+	size_t	i;
+
+	size = get_size_of_src(src);
+	dst = ft_calloc(size + 2, sizeof(char *));
+	if (!dst)
+		return (free_array(src, size));
+	i = 0;
+	while (i < size)
+	{
+		dst[i] = ft_strdup(src[i]);
+		i++;
+	}
+	free_array(src, size);
+	dst[i] = ft_strdup(line);
+	if (!dst[i])
+		return (free_array(dst, i));
+	src = dst;
+	return (dst);
+}
+
 
 
 /*
@@ -52,49 +101,139 @@ static int	find_env_var_name(t_env **head, char *name, char *content)
 	return (0); //new name found in env list
 }
 
-static int parse_export(t_vars *v, char *str)
+static int	copy_double_quote(char *dst, char *src, size_t *i, size_t *j)
 {
-	size_t i;
-	
-	i = 0;
-	while (str[i] != '\0')
+	*i += 1;
+	while (src[*i] != '\0' && src[*i] != '\"')
 	{
-		if (str[i == '\'')
-			do_something(v, str, &i);
-		else if (str[i == '\"')
-			do_something(v, str, &i);
-		else if (str[i == '=')
-			do_something(v, str, &i);
-		else
-		
-		i++;
+		dst[*j] = src[*i];
+		*i += 1;
+		*j += 1;
 	}
+	return (1);
 }
 
-int 			exportt(t_vars *v, t_cmd *cmd, char **params) //tttttt?
+static int	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
+{
+	*i += 1;
+	while (src[*i] != '\0' && src[*i] != '\'')
+	{
+		dst[*j] = src[*i];
+		*i += 1;
+		*j += 1;
+	}
+	return (1);
+}
+
+static int	copy_backslash(char *dst, char *src, size_t *i, size_t *j)
+{
+	*i += 1;
+	dst[*j] = src[*i];
+	*j += 1;
+	return (1);
+}
+
+static int parse_input(char *dst, char *src)
+{
+	size_t i; //index in src
+	size_t j; //index in dst
+
+	i = 0;
+	j = 0;
+	while (src[i] != '\0')
+	{
+		if (src[i] == '\\')
+			copy_backslash(dst, src, &i, &j);
+		else if (src[i] == '\'')
+			copy_single_quote(dst, src, &i, &j);
+		else if (src[i] == '\"')
+			copy_double_quote(dst, src, &i, &j);
+		else if (src[i] == '#' && i == 0)
+			return (1);
+		else
+		{
+			dst[j] = src[i];
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+static size_t check_declare_option(char *first_param)
+{
+	if (!ft_strncmp(first_param, "declare", 8))
+		return (1);
+	return (0);
+}
+
+static size_t get_size_params(char **params)
+{
+	size_t size;
+
+	size = 0;
+	while (params[size] != NULL)
+		size++;
+	return (size);
+}
+
+static int	add_new_env_vars(t_vars *v, char **dst)
+{
+	size_t i;
+	char *ptr;
+	char *name;
+	char *cont;
+
+	i = 1; // 0 = export
+	while (dst[i] != NULL)
+	{
+		ptr = ft_strchr(dst[i], '=');
+		*ptr = '\0';
+		name = dst[i];
+		if (!ptr)
+			return (0); //malloc
+		cont = ft_strdup(ptr + 1);
+		if (!cont)
+		{
+			free (name);
+			return (0); //malloc
+		}
+		if (!find_env_var_name(&v->env_head, name, cont))
+		{
+			env__ft_lstadd_back(&v->env_head, env__ft_lstnew(name, cont));
+			env__ft_lstmove_back("_", v->env_head);	
+		}
+		i++;
+	}
+	return (1);
+}
+
+int 			exportt(t_vars *v, t_cmd *cmd, char **params)
 {
 	size_t	i;
-	int 	ret;
+	size_t	d;
+	size_t	size;
+	char	**dst;
 	
-	int z = 0; //debug
-	while (params[z]) //debug
+	size = get_size_params(params);
+	if (size == 0)
 	{
-		printf("params[%d] = [%s]\n", z, params[z]);
-		z++;
+		printf("alleen export dus\n");
+		return (0); //return (export_declare_-x_list);
 	}
 	i = 0;
-	while (params[i])
+	dst = 0;
+	d = check_declare_option(params[0]);
+	while (i + d < size)
 	{
-		ret = parse_export(v, params[i]);
-		if (ret < 0)
-			return (ret);
+		dst = ft_realloc(dst, params[i + d]);
+		if (!dst)
+			return (0);
+		parse_input(dst[i], params[i + d]);
 		i++;
-		// if (!find_env_var_name(&v->env_head, array[i], array[i + 1]))
-		// {
-		// 	env__ft_lstadd_back(&v->env_head, env__ft_lstnew(array[i], array[i + 1]));
-		// 	env__ft_lstmove_back("_", v->env_head);	
-		// }
 	}
+	add_new_env_vars(v, dst);
+	ft_free_array((void **)dst, i);
 	if (!sethistory(&v->history_head, v->line, "0"))
 		return (0);
 	(void)(cmd);
