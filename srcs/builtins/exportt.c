@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/25 20:26:10 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/25 21:04:06 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,15 @@
 static int		find_env_var_name(t_env **head, char *name, char *content)
 {
 	t_env	*tmp;
+	size_t	len;
 	
 	tmp = *head;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->name, name, ft_strlen(name)))
+		len = ft_strlen(tmp->name);
+		if (ft_strlen(name) > len)
+			len = ft_strlen(name);
+		if (!ft_strncmp(tmp->name, name, len))
 		{
 			free(name);
 			free(tmp->content);
@@ -85,9 +89,9 @@ static void		ascii_sort(char **array)
 	while (i < len)
 	{
 		j = 0;
-		while (j < len - i)
+		while (j < len)
 		{
-			if (ft_strncmp(array[j], array[j + 1], ft_strlen(array[i])) > 0)
+			if (ft_strncmp(array[j], array[j + 1], ft_strlen(array[j])) > 0)
 				swap(&array[j], &array[j + 1]);
 			j++;
 		}
