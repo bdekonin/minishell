@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/25 21:04:06 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/07/27 09:14:50 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,11 @@
 static int		find_env_var_name(t_env **head, char *name, char *content)
 {
 	t_env	*tmp;
-	size_t	len;
 	
 	tmp = *head;
 	while (tmp)
 	{
-		len = ft_strlen(tmp->name);
-		if (ft_strlen(name) > len)
-			len = ft_strlen(name);
-		if (!ft_strncmp(tmp->name, name, len))
+		if (!ft_strncmp(tmp->name, name, ft_strlen(name) + 1))
 		{
 			free(name);
 			free(tmp->content);
