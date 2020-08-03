@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/25 17:09:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/08/03 22:57:39 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,8 @@ int ft_split_input(t_vars *v)
 	i = 0;
 	while (i < (int)size)
 	{
+		if (!expansions(v, &argv[i]))
+            return (0);
 		if (ft_counter(argv[i], '\"') % 2 || ft_counter(argv[i], '\'') % 2)
 		{
 			argv[i] = ft_quote(argv[i], (ft_counter(argv[i], '\"') % 2) ? '\"' : '\'');

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/25 13:57:40 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/08/03 22:57:18 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,5 @@ int find_executable(t_vars *v, char **newpath, char *command);
 
 
 char	**ft_split_sep_exep(const char *src, char *sep, size_t *size);
+int     expansions(t_vars *v, char **arg);
 #endif
