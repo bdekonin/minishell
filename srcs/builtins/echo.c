@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/22 12:07:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/03 23:04:52 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 	while (params[i])
 	{
 		ret = print_strings(v, params[i]);
-		if (ret == 1)
+		if (ret == 1 && params[i + 1])
 			write(1, " ", 1); //dit gaat nog niet goed
 		else if (ret < 0)
 			return (0);
