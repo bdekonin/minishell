@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/27 09:14:50 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/04 09:05:51 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ static int		add_new_env_vars(t_vars *v, char *dst)
 	if (!name)
 		return (0); //malloc
 	if (!ptr)
+		content = NULL;
+	else if (ptr && ptr + 1 == '\0')
 		content = ft_strdup("\0");
 	else
 		content = ft_strdup(ptr + 1);
-	if (!content)
+	if (ptr && !content)
 	{
 		free (name);
 		return (0); //malloc
@@ -132,8 +134,10 @@ static int		declare_list(t_env **head)
 	i = 0;
 	while (i < len && tmp)
 	{
-		if (*(tmp->content) == '\0')
+		if (!tmp->content)
 			array[i] = ft_strxjoin("declare -x ", tmp->name, NULL);
+		else if (*(tmp->content) == '\0')
+			array[i] = ft_strxjoin("declare -x ", tmp->name, "=\"", "\"", NULL);
 		else
 			array[i] = ft_strxjoin("declare -x ", tmp->name, "=\"", tmp->content, "\"", NULL);
 		if (!array[i])

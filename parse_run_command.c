@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/25 23:53:59 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/08/04 11:25:55 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 
 	while (cmd) // loops through commands
 	{
+		printf("args=[%s]\n", args);
 		args = ft_split_sep_exep(cmd->line, " \t", &splitsize);
 		ret = confirm_flags(v, &args, cmd, splitsize);
 		if (ret == -1)
@@ -121,8 +122,8 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 }
 
 int ft_split_input(t_vars *v);
-
 char *print_strings2(t_vars *v, char *str, char *command);
+
 void	read_user_input(t_vars *v)
 {
 	t_node	*node;
