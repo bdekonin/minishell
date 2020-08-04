@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/04 12:49:02 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/04 12:51:57 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 
 	while (cmd) // loops through commands
 	{
-		printf("cmdline=[%s]\n", cmd->line);
+		//printf("cmdline=[%s]\n", cmd->line);
 		args = ft_split_sep_exep(cmd->line, "*", &splitsize);
 		//args = ft_split_sep_exep(cmd->line, " /t", &splitsize);
 		ret = confirm_flags(v, &args, cmd, splitsize);
