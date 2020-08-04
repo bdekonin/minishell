@@ -6,127 +6,15 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/28 15:47:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/24 13:18:46 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/04 13:27:14 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-static int	copy_dollar_mark(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{
-	size_t env_len;
-	char *env_name;
-	char *env_content;
-
-	*i += 1;
-	env_len = 0;
-	while (src[*i + env_len] != '\0' && src[*i + env_len] != '\"' && src[*i + env_len] != ' ' && src[*i + env_len] != '\\' && src[*i + env_len] != '$' && src[*i + env_len] != '/')
-		env_len++;
-	if (env_len == 0)
-		return (0); //env var name has len of 0. Don't delete this check.
-	env_name = src + *i;
-	env_content = find_environment_variable(v, env_name, &env_len);
-	if (!env_content)
-		return (0); //env name not in env list
-	ft_strlcat(dst + *j, env_content, PATH_MAX + 1);
-	*i += env_len - 1;
-	*j += ft_strlen(env_content);
-	return (1);
-}
-
-static int	copy_hashtag(char *src, size_t *i)
-{
-	*i += 1;
-	while (src[*i] != '\0')
-		*i += 1;
-	return (1);
-}
-
-static int	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	while (src[*i] != '\0' && src[*i] != '\"')
-	{
-		if (src[*i] == '$')
-		{
-			copy_dollar_mark(v, dst, src, i, j); //check return
-			*i += 1;
-		}
-		else
-		{
-			dst[*j] = src[*i];
-			*i += 1;
-			*j += 1;
-		}
-	}
-	return (1);
-}
-
-static int	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	while (src[*i] != '\0' && src[*i] != '\'')
-	{
-		dst[*j] = src[*i];
-		*i += 1;
-		*j += 1;
-	}
-	return (1);
-}
-
-static int copy_backslash(char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	dst[*j] = src[*i];
-	*j += 1;
-	return (1);
-}
-
-static int parse_input(t_vars *v, char *dst, char *src)
-{
-	size_t i;
-	size_t j;
-
-	i = 0;
-	j = 0;
-	while (src[i] != '\0') // && dst[j] != '\0';
-	{
-		if (src[i] == '\\')
-			copy_backslash(dst, src, &i, &j);
-		else if (src[i] == '\'')
-			copy_single_quote(dst, src, &i, &j);
-		else if (src[i] == '\"')
-			copy_double_quote(v, dst, src, &i, &j);
-		else if (src[i] == '$')
-			copy_dollar_mark(v, dst, src, &i, &j);
-		else if (src[i] == '#' && i == 0)
-			copy_hashtag(src, &i);
-		else
-		{
-			dst[j] = src[i];
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
 char	*parse_cd(t_vars *v, char *line)
 {
-	char *src;
-	char *dst;
-	size_t i;
-	ssize_t ret;
-
-	i = 0;
-	src = line + 1;
-	dst = ft_calloc(PATH_MAX + 1, sizeof(char));
-	if (!dst)
-		return (NULL);
-	ret = parse_input(v, dst, src);
-	if (ret < 0)
-		return (0); //error
-	return (dst);
+	return (ft_strdup(line + 1));
 }
 
 

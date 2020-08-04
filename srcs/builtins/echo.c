@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/04 11:12:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/04 12:55:00 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 	char *dst;
 	char *tmp;
 
-	// int z = 0; //debug
-	// while (params[z]) //debug
-	// {
-	// 	printf("params[%d] = [%s]\n", z, params[z]);
-	// 	z++;
-	// }
 	newline_opt = check_newline_option(params[0]);
 	i = newline_opt;
 	if (params[i])
