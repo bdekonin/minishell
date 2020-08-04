@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/04 11:14:11 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/04 11:54:12 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,14 @@ static int parse_cmd(t_vars *v, char *dst, char *src)
 			copy_double_quote(v, dst, src, &i, &j);
 		else if (src[i] == '$')
 			copy_envvar(v, dst, src, &i, &j);
+		else if (src[i] == ' ')
+		{
+			dst[j] = '*';
+			j++;
+			while (src[i] == ' ')
+				i++;
+			i--;
+		}
 		else
 		{
 			dst[j] = src[i];
