@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/04 13:25:59 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 09:52:56 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static inline int	cd_2(t_vars *v, t_cmd *cmd, char *argument, \
 														char *oldpwd_backup)
 {
 	char		*dir;
+	char		*tmp;
 	int			ret;
 
 	ft_strlcpy(oldpwd_backup, v->current_path, ft_strlen(v->current_path) + 1);
@@ -29,8 +30,8 @@ static inline int	cd_2(t_vars *v, t_cmd *cmd, char *argument, \
 	}
 	else
 	{
-		dir = parse_cd(v, ft_strnstr(cmd->line, "cd", \
-								ft_strlen(cmd->line)) + 2);
+		tmp = ft_strnstr(cmd->line, "cd", ft_strlen(cmd->line)) + 2; //maybe check return ptr?
+		dir = ft_strdup(tmp + 1);
 		if (!dir)
 			return (-1);
 		ret = chdir(dir);

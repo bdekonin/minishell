@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/03 22:57:18 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 09:54:08 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,6 @@ typedef struct		s_vars
 
 int				ft_printf(const char *fmt, ...);
 
-char *parse_cd(t_vars *v, char *line);
-
 // tijdelijke gevulde functies
 int echo(t_vars *v, t_cmd *cmd, char **params);
 int	cd(t_vars *v, t_cmd *cmd, char **params);
@@ -117,9 +115,10 @@ int		sethistory(t_history **his, char *fullcommand, char *ret_str);
 
 void	ft_exit_error(t_vars *v, int status); // call this function to exit program if error or just return 1 anywhere
 
-int find_executable(t_vars *v, char **newpath, char *command);
+int		find_executable(t_vars *v, char **newpath, char *command);
 
 
 char	**ft_split_sep_exep(const char *src, char *sep, size_t *size);
 int     expansions(t_vars *v, char **arg);
+int		export_declare_list(t_env **head);
 #endif

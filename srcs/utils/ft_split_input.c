@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/04 13:27:48 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 09:24:20 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,11 +232,11 @@ void print_nodes(t_node *node, t_node *nodehead)
 		cmd = node->cmd;
 		while (cmd)
 		{
-			dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
+			//dprintf(fd, "\x1B[32m%p - string = [%c][%s]\n\x1B[0m", node, cmd->type, cmd->line);
 			cmd = cmd->next;
 		}
 		node = node->next;
 	}	
-	dprintf(fd, "\n\n\n\n\n\n\n\n");
+	//dprintf(fd, "\n\n\n\n\n\n\n\n");
 }
 //export PATH=/Users/bdekonin/minishell/noperm

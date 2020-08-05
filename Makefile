@@ -6,7 +6,7 @@
 #    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/07/25 16:58:02 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/08/05 09:06:28 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,12 +24,14 @@ LIBFT = libft/libft.a
 
 FT_PRINTF = ft_printf/libftprintf.a
 
-CC = gcc -Wall -Wextra -Werror 
+CC = gcc -Wall -Wextra -Werror
+
+UNUSED = -Wno-unused-variable -Wno-unused-parameter
 
 all: $(NAME)
 
 $(NAME):
-	gcc -Wall -Wextra -g $(SRCS) $(LIBFT) $(FT_PRINTF) -o $(NAME)
+	gcc -Wall -Wextra -g $(UNUSED) $(SRCS) $(LIBFT) $(FT_PRINTF) -o $(NAME)
 
 1:
 	mv main.c main
