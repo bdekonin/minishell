@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/07/14 17:14:30 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/08/05 11:05:38 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,6 @@ int pwd(t_vars *v, t_cmd *cmd, char **params)
 		if (!sethistory(&v->history_head, v->line, v->current_path))
 			return (0);
 	ft_printf("%s\n", v->current_path);
-	(void)(params);
-	(void)(cmd);
-	return (1);
-}
-
-// The return status is zero unless a name does not exist or is readonly.
-int unset(t_vars *v, t_cmd *cmd, char **params)
-{
-	env__ft_lstremove_middle(params[0], v->env_head);
-	if (!sethistory(&v->history_head, v->line, "1"))
-		return (0);
 	(void)(params);
 	(void)(cmd);
 	return (1);
