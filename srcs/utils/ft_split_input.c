@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/05 15:08:09 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 15:20:55 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void				cmd__delinvalid(t_cmd *head, t_cmd *list)
 static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 												unsigned char type)
 {
-	char *tmp;						//Lars: ik heb hier dingen gecomment, want spaties hoeven niet meer weggetrimmd.
+	char *tmp;						//Lars: ik heb hier 7 dingen gecomment, want spaties hoeven niet meer weggetrimmd.
 	//char *tmp2;
 
 	tmp = ft_substr(string, 0, i);
