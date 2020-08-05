@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/04 11:54:12 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 15:30:44 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,6 @@ static size_t	ft_substrlen(const char *str, const char *set)
 	}
 	return (i);
 }
-
-// static char		*ft_strexp(char *src1, char *src2, char *tar, size_t tar_len)
-// {
-// 	size_t len;
-// 	char *dst;
-// 	if (!src1 || tar < src1 || tar_len > ft_strlen(src1))
-// 		return (NULL);
-// 	len = ft_strlen(src1) - tar_len + ft_strlen(src2);
-// 	dst = ft_calloc(len + 1, sizeof(char));
-// 	if (!dst)
-// 		return (NULL);
-// 	ft_strlcpy(dst, src1, tar - src1 + 1); 
-// 	ft_strlcat(dst, src2, len + 1);
-// 	ft_strlcat(dst, tar + tar_len, len + 1);
-// 	return (dst);
-// }
 
 static int	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {

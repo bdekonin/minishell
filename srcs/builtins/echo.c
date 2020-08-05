@@ -6,11 +6,19 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/05 15:18:32 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 15:36:14 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
+
+
+/*	Echo edgecases:
+**
+**	echo "" -n hoi"   "hoi"  " | cat -e
+**	echo -n -n -n -n -n -n -n
+**	
+*/
 
 static size_t	check_newline_option(char **params, int *newline_opt)
 {
