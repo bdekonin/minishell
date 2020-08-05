@@ -6,17 +6,27 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/04 12:55:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 13:48:30 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../main.h"
 
-static int check_newline_option(char *param)
+static size_t	check_newline_option(char **params, int *newline_opt)
 {
-	if (!ft_strncmp(param, "-n", 3))
-		return (1);
-	return (0);
+	size_t i;
+
+	i = 0;
+	if (!ft_strncmp(params[i], "-n", 3))
+	{
+		*newline_opt = 1;
+		i++;
+	}
+	else
+		*newline_opt = 0;
+	while (params[i] && !ft_strncmp(params[i], "-n", 3))
+		i++;
+	return (i);
 }
 
 int echo(t_vars *v, t_cmd *cmd, char **params)
@@ -27,13 +37,14 @@ int echo(t_vars *v, t_cmd *cmd, char **params)
 	char *dst;
 	char *tmp;
 
-	newline_opt = check_newline_option(params[0]);
-	i = newline_opt;
+	i = check_newline_option(params, &newline_opt);
 	if (params[i])
 	{
 		dst = ft_strdup(params[i]);
 		i++;
 	}
+	else
+		dst = ft_strdup("\0");
 	while (params[i])
 	{
 		tmp = ft_strxjoin(dst, " ", params[i], NULL);

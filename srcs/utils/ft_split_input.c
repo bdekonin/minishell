@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/30 10:35:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/05 09:24:20 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/05 15:08:09 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,21 @@ static void				cmd__delinvalid(t_cmd *head, t_cmd *list)
 static int	getstring_and_newcmd(char *string, int i, t_cmd **cmd, \
 												unsigned char type)
 {
-	char *tmp;
-	char *tmp2;
+	char *tmp;						//Lars: ik heb hier dingen gecomment, want spaties hoeven niet meer weggetrimmd.
+	//char *tmp2;
 
 	tmp = ft_substr(string, 0, i);
 	if (!tmp)
 		return (0);
-	tmp2 = ft_strtrim(tmp, TRIMS);
-	free(tmp);
-	if (!tmp2)
-		return (0);
-	*cmd = cmd__ft_lstnew(type, tmp2);
+	//tmp2 = ft_strtrim(tmp, TRIMS);
+	//free(tmp);
+	//if (!tmp2)
+	//	return (0);
+	*cmd = cmd__ft_lstnew(type, tmp);
+	//*cmd = cmd__ft_lstnew(type, tmp2);
 	if (!*cmd)
 	{
-		free(tmp2);
+	//	free(tmp2);
 		return (0);
 	}
 	else
@@ -137,9 +138,11 @@ int ft_split_input(t_vars *v)
 	i = 0;
 	while (i < (int)size)
 	{
+		//printf("argv=[%s]\n", argv[i]); //debug
 		if (!expansions(v, &argv[i]))
             return (0);
-		if (ft_counter(argv[i], '\"') % 2 || ft_counter(argv[i], '\'') % 2)
+		//printf("argv=[%s]\n", argv[i]); //debug
+		if (ft_counter(argv[i], '\"') % 2 || ft_counter(argv[i], '\'') % 2) //do not count quotations inbetween quotations
 		{
 			argv[i] = ft_quote(argv[i], (ft_counter(argv[i], '\"') % 2) ? '\"' : '\'');
 			if (!argv[i])
