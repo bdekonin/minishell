@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/06 14:54:14 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/06 23:40:08 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,46 @@ static int	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	size_t env_len;
 	char *env_name;
 	char *env_content;
+	
 	*i += 1;
+	if (src[*i] == '$')
+	{ // start a new func pls
+		char *tmp;
+		tmp = ft_itoa(getpid());
+		if (!tmp)
+			return (0);
+		ft_strlcat(dst + *j, tmp, PATH_MAX + 1);
+		return (1);
+	}
+	else if (src[*i] == '#')
+	{
+		dst[*j] = '0';
+		*j += 1;
+		return (1);
+	}
 	env_len = ft_substrlen(src + *i, "\"\\ $/");
+	//printf("env_len=[%lu]\n", env_len); //debug
 	if (env_len == 0)
-		return (0); //env var name has len of 0. Don't delete this check.
+	{
+		dst[*j] = '$';
+		*j += 1;
+		*i -= 1;
+		return (1); //env var name has len of 0. Don't delete this check.
+	}
 	env_name = src + *i;
 	env_content = find_environment_variable(v, env_name, &env_len);
+	//printf("env_name=[%s]\n", env_name); //debug
+	//printf("env_content=[%s]\n", env_content); //debug
 	if (!env_content)
-		return (0); //env name not in env list
+	{
+		*i += env_len - 1;
+		return (1);
+	}	
 	ft_strlcat(dst + *j, env_content, PATH_MAX + 1);
-	*i += env_len - 1;
 	*j += ft_strlen(env_content);
+	*i += env_len;
 	return (1);
+	
 }
 
 static int	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
@@ -118,11 +146,6 @@ static int parse_cmd(t_vars *v, char *dst, char *src)
 			copy_envvar(v, dst, src, &i, &j);
 		else if (src[i] == ' ')
 		{
-			// if (dst[j - 1] == '*') 	//?????
-			// {
-			// 	dst[j] = ' ';
-			// 	j++;
-			// } 						//???????
 			dst[j] = '*';
 			j++;
 			while (src[i] == ' ')

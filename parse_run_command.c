@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/19 23:48:14 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/06 17:13:20 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/06 23:39:49 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ int run_cmd(t_vars *v, t_cmd *cmd)
 	while (cmd) // loops through commands
 	{
 		//printf("cmdline=[%s]\n", cmd->line); //debug
-		args = ft_split_sep_exep(cmd->line, "*", &splitsize);
-		//args = ft_split_every_sep(cmd->line, "*", &splitsize); //split on every seperator.
+		//args = ft_split_sep_exep(cmd->line, "*", &splitsize);
+		args = ft_split_each(cmd->line, "*", &splitsize); //split on every seperator.
 		//printf("cmdline=[%s]\n", cmd->line); //debug
 		ret = confirm_flags(v, &args, cmd, splitsize);
 		if (ret == -1)
