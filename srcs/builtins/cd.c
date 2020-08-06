@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/08/05 09:52:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/06 11:14:07 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static inline int	cd_2(t_vars *v, t_cmd *cmd, char *argument, \
 	else
 	{
 		tmp = ft_strnstr(cmd->line, "cd", ft_strlen(cmd->line)) + 2; //maybe check return ptr?
+		if (!tmp)
+			return (-1);
 		dir = ft_strdup(tmp + 1);
 		if (!dir)
 			return (-1);
