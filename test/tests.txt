@@ -38,6 +38,10 @@ bash-3.2$ cat -e < hallo.txt doei.txt
 	echo Test\ ing\ ing\  > test
 	echo Test\ ing\ ing\         >              test
 
+	echo -n -n -n -n -n -n -n hoi
+	echo "" -n hoi"   "hoi"  "
+	echo hoi $qwertyuyiuop hoi
+	echo hoi "" hoi
 
 ---- General----
 

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/05 15:36:14 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/08/06 13:10:25 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /*	Echo edgecases:
 **
 **	echo "" -n hoi"   "hoi"  " | cat -e
-**	echo -n -n -n -n -n -n -n
+**	echo -n -n -n -n -n -n -n hoi
 **	
 */
 
