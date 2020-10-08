@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 10:35:22 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/04 18:06:42 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 16:41:39 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int		split_tokens(t_vars *v, char **args)
 
 int		split_input(t_vars *v, t_list *tmp, t_cmd *node)
 {
-	char 	*args;
+	char *args;
 	
 	args = NULL;
 	while (tmp)
@@ -147,10 +147,8 @@ int		split_input(t_vars *v, t_list *tmp, t_cmd *node)
 				return (ft_free(args));
 			break ;
 		}
-		if (!expansions(v, &node->token))
-			return (ft_free(args)); //exit?
-		if (!resize_str(&args, node->token))
-			ft_exit_error(v, EXIT_FAILURE);
+		expansions(v, &node->token);
+		resize_str(v, &args, node->token);
 		tmp = tmp->next;
 	}
 //	printf("args=[%s]\n", args); 							//debug
@@ -194,7 +192,7 @@ int		read_user_input(t_vars *v)
 	create_tokens(v, cli);
 	ft_free(cli);
  //	print_tokens(v); 			//debug
-	find_cmd_flags(v);
+	find_semicolons(v);
 	loop_input(v);
 	free_cmd_list(v);
 	ft_free(v->cmd_ptr);
@@ -205,14 +203,11 @@ int main(int argc, char **argv, char **envp)
 {
 	t_vars v;
 	
-	//ft_printf("---- Starting ----\n----- %d -----\n\n", getpid()); //debug
 	initialize_struct(&v, envp);
-//	signal(SIGINT, SIG_IGN); // ctrl c
-//	signal(SIGTSTP, SIG_IGN); // ctrl z
 	while (1)
 	{
 		print_prefix(&v);
 		read_user_input(&v);
 	}
-	return (1);
+	return (0);
 }

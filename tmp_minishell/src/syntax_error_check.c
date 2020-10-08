@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/25 09:22:55 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 13:41:35 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int		check_flag_syntax(t_vars *v, const char *cli, size_t i)
 {
 	if (cli[i] == '>' && cli[i + 1] == '>')
 		i = i + 2;
-	else if (cli[i] == '>' || cli[i] == '<' || cli[i] == '|' || cli[i] == ';')
+	else if (ft_charsearch(cli[i], "<>|;"))	
 		i++;
 	while (cli[i] == ' ')
 		i++;

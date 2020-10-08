@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/16 13:44:51 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/30 13:45:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 14:06:56 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ static size_t	get_counter(t_list *tmp)
 	return (counter);
 }
 
-void		find_cmd_flags(t_vars *v)
+void		find_semicolons(t_vars *v)
 {
 	size_t	counter;
 	size_t	i;

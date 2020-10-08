@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/24 08:16:31 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/24 08:32:40 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 16:42:53 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@ void	print_prefix(t_vars *v)
 		ft_strrchr(v->current_path, '/') + 1);	
 }
 
-int		resize_str(char **str1, char *str2)
+void	resize_str(t_vars *v, char **str1, char *str2)
 {
 	*str1 = ft_append(*str1, "*");
 	if (!*str1)
-		return (0);
+		ft_exit_error(v, EXIT_FAILURE);
 	*str1 = ft_append(*str1, str2);
 	if (!*str1)
-		return (0);
-	return (1);
+		ft_exit_error(v, EXIT_FAILURE);
 }

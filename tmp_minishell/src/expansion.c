@@ -6,14 +6,14 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/07 14:06:12 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 15:24:48 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{
+static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+{ 						//rewrite this whole thinggg [a-zA-Z_][a-zA-Z0-9_]*
 	size_t env_len;
 	char *env_name;
 	char *env_content;
@@ -24,51 +24,43 @@ static int	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	{
 		tmp = ft_itoa(v->cmd_ret);
 		if (!tmp)
-			return (0);
+			ft_exit_error(v, EXIT_FAILURE);
 		ft_strlcat(dst + *j, tmp, PATH_MAX + 1);
-		free(tmp);
-		return (1);
+		ft_free(tmp);
+		return ;
 	}
-	env_len = ft_substrlen(src + *i, "\"\\ =$/");		 //protect
+	env_len = ft_substrlen(src + *i, "\"\\ $/");	//identifiers accept: [a-zA-Z_][a-zA-Z0-9_]*
 	//printf("env_len=[%lu]\n", env_len); //debug
 	if (env_len == 0)
 	{
 		dst[*j] = '$';
 		*j += 1;
 		*i -= 1;
-		return (1); //env var name has len of 0. Don't delete this check.
+		return ; //env var name has len of 0. Don't delete this check.
 	}
 	env_name = src + *i;
-	env_name = ft_substr(src + *i, 0, env_len);
-	if (!env_name)
-		return (0);
 	env_content = find_environment_variable(v, env_name, &env_len);
 	//printf("env_name=[%s]\n", env_name); //debug
 	//printf("env_content=[%s]\n", env_content); //debug
 	if (!env_content)
 	{
-		*i += env_len - 1;
-		return (1);
+		*i += env_len + 0; // was -1 or should it be + 0
+		return ;
 	}	
 	ft_strlcat(dst + *j, env_content, PATH_MAX + 1);
 	*j += ft_strlen(env_content);
-	*i += env_len -1;
-	return (1);
-	
+	*i += env_len;	
+	// *i = *i - 1;??????????
 }
 
-static int	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+static void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
-	int ret;
-	
 	*i += 1;
 	while (src[*i] != '\0' && src[*i] != '\"')
 	{
 		if (src[*i] == '$')
 		{
-			ret = copy_envvar(v, dst, src, i, j); //check return
-			if (!ret)
-				return (0);
+			copy_envvar(v, dst, src, i, j);
 			*i += 1;
 		}
 		else
@@ -78,10 +70,9 @@ static int	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t 
 			*j += 1;
 		}
 	}
-	return (1);
 }
 
-static int	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
+static void	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
 {
 	*i += 1;
 	while (src[*i] != '\0' && src[*i] != '\'')
@@ -90,34 +81,29 @@ static int	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
 		*i += 1;
 		*j += 1;
 	}
-	return (1);
 }
 
-static int	copy_hashtag(char *src, size_t *i)
+static void	copy_hashtag(char *src, size_t *i)
 {
 	*i += 1;
 	while (src[*i] != '\0')
 		*i += 1;
-	return (1);
 }
 
-static int copy_backslash(char *dst, char *src, size_t *i, size_t *j)
+static void copy_backslash(char *dst, char *src, size_t *i, size_t *j)
 {
 	*i += 1;
 	dst[*j] = src[*i];
 	*j += 1;
-	return (1);
 }
 
-static int parse_cmd(t_vars *v, char *dst, char *src)
+static void parse_cmd(t_vars *v, char *dst, char *src)
 {
-	int ret;
 	size_t i;
 	size_t j;
 	
 	i = 0;
 	j = 0;
-	ret = 1;
 	while (src[i] != '\0') // && dst[j] != '\0';
 	{
 		if (src[i] == '\\')
@@ -127,9 +113,9 @@ static int parse_cmd(t_vars *v, char *dst, char *src)
 		else if (src[i] == '\'')
 			copy_single_quote(dst, src, &i, &j);
 		else if (src[i] == '\"')
-			ret = copy_double_quote(v, dst, src, &i, &j);
+			copy_double_quote(v, dst, src, &i, &j);
 		else if (src[i] == '$')
-			ret = copy_envvar(v, dst, src, &i, &j);
+			copy_envvar(v, dst, src, &i, &j);
 		else if (src[i] == ' ')
 		{
 			dst[j] = '*';
@@ -143,22 +129,18 @@ static int parse_cmd(t_vars *v, char *dst, char *src)
 			dst[j] = src[i];
 			j++;
 		}
-		if (!ret)
-			return (0);
 		i++;
 	}
-	return (1);
 }
 
 int		expansions(t_vars *v, char **arg)
 {
 	char *dst;
-	//dst = ft_calloc(ft_strlen(*arg) + 1, sizeof(char));
+
 	dst = ft_calloc(PATH_MAX + 1, sizeof(char));
 	if (!dst)
-		return (0);
-	if (!parse_cmd(v, dst, *arg))
-		return (ft_free(dst));
+		ft_exit_error(v, EXIT_FAILURE);
+	parse_cmd(v, dst, *arg);
 	ft_free(*arg);
 	*arg = dst;
 	return (1);

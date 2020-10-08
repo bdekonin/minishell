@@ -6,31 +6,34 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/23 15:55:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 14:33:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		create_new_node(t_vars *v, const char *cli, size_t len)
+static void		create_new_node(t_vars *v, const char *cli, size_t len)
 {
 	t_list	*new;
 	t_cmd	*node;
 
 	node = ft_calloc(1, sizeof(t_cmd));
 	if (!node)
-		return (0);
+		ft_exit_error(v, EXIT_FAILURE);
 	node->token = ft_substr(cli, 0, len);
 	if (!node->token)
-		return (ft_free_ret_int(node, 0));
+	{
+		ft_free(node);
+		ft_exit_error(v, EXIT_FAILURE);
+	}
 	new = ft_lstnew(node);
 	if (!new)
 	{
 		ft_free(node->token);
 		ft_free(node);
+		ft_exit_error(v, EXIT_FAILURE);
 	}
 	ft_lstadd_back(&v->cmd, new);
-	return (1);
 }
 
 static size_t	skip_quotations(const char *cli, char quotation)
@@ -80,8 +83,7 @@ int				create_tokens(t_vars *v, const char *cli)
 		while (cli[start] == ' ')
 			start++;
 		len = get_len(cli, start);
-		if (!create_new_node(v, cli + start, len))
-			return (0);
+		create_new_node(v, cli + start, len);
 		start = start + len;
 	}
 	return (1);

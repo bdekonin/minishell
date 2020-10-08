@@ -6,13 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/25 16:57:21 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/09/30 13:54:11 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 15:54:09 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	read_file(char *name, char **dest)
+static int	read_file(t_vars *v, char *name, char **dest)
 {
 	int fd;
 	int ret;
@@ -23,7 +23,7 @@ static int	read_file(char *name, char **dest)
 		ret = ft_getline(fd, dest);
 		close(fd);
 		if (ret < 0)
-			return (-1);
+			ft_exit_error(v, EXIT_FAILURE);
 		return (1);
 	}
 	return (0);
@@ -35,12 +35,9 @@ static int run_angle_right_double(t_vars *v, t_cmd *filename)
 	ssize_t	ret;
 	int		read_fd;
 	
-	if (!expansions(v, &filename->token))
-		return (0);		//some malloc error with expansions
+	expansions(v, &filename->token);
 	file_contents = NULL;
-	ret = read_file(filename->token, &file_contents);
-	if (ret < 0)
-		return (0);	
+	ret = read_file(v, filename->token, &file_contents);
 	v->stdout_copy = dup(STDOUT_FILENO);
 	close(STDOUT_FILENO);
 	v->fd = open(filename->token, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
@@ -58,8 +55,7 @@ static int run_angle_right_double(t_vars *v, t_cmd *filename)
 
 static int run_angle_right_single(t_vars *v, t_cmd *filename)
 {
-	if (!expansions(v, &filename->token))
-		return (0);
+	expansions(v, &filename->token);
 	v->stdout_copy = dup(STDOUT_FILENO);
 	close(STDOUT_FILENO);
 	v->fd = open(filename->token, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
@@ -71,8 +67,7 @@ static int run_angle_right_single(t_vars *v, t_cmd *filename)
 
 static int run_angle_left_single(t_vars *v, t_cmd *filename)
 {
-	if (!expansions(v, &filename->token))
-		return (0);		//some malloc error with expansions
+	expansions(v, &filename->token);
 	v->fd = open(filename->token, O_RDONLY);
 	if (v->fd < 0)
 	{

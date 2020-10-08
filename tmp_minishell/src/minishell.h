@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/07 09:40:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/30 13:52:08 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/08 15:09:34 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int				ft_env(t_vars *v, char **params);
 */
 
 void			print_prefix(t_vars *v);
-int				resize_str(char **str1, char *str2);
+void			resize_str(t_vars *v, char **str1, char *str2);
 int				export_declare_list(t_vars *v);
 char			**ft_split_sep_exep(const char *src, char *sep, size_t *size);
 int				ft_iserrno(int error);
@@ -135,7 +135,7 @@ int				is_redirection(t_list *tmp);
 int				is_pipe(char *arg);
 int				is_semicolon(char *arg);
 void			free_cmd_list(t_vars *v);
-void			find_cmd_flags(t_vars *v);
+void			find_semicolons(t_vars *v);
 
 /*
 **				src/signal_handler
