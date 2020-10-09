@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/09 14:53:24 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/09 14:58:22 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static size_t	check_newline_option(char **params, int *newline_opt)
 
 	*newline_opt = 0;
 	i = 0;
-	j = 2;
 	while (params[i] && !ft_strncmp(params[i], "-n", 2))
 	{
+		j = 2;
 		while (params[i][j] == 'n')
 			j++;
 		if (params[i][j] == '\0')
