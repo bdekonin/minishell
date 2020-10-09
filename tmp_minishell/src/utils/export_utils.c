@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 08:42:59 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/14 16:15:33 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/09 10:36:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static char		**create_declare_list(t_vars *v, size_t len)
 	i = 0;
 	array = ft_calloc(len + 1, sizeof(char *));
 	if (!array)
-		return (NULL);
+		ft_exit_error(v, EXIT_FAILURE);
 	tmp = v->env;
 	while (i < len && tmp)
 	{
@@ -87,7 +87,7 @@ static char		**create_declare_list(t_vars *v, size_t len)
 		if (!array[i])
 		{
 			ft_free_array((void **)array, i);
-			return (0);
+			ft_exit_error(v, EXIT_FAILURE);
 		}
 		i++;
 		tmp = tmp->next;
@@ -103,9 +103,9 @@ int		export_declare_list(t_vars *v)
 	char	**array;
 	
 	len = ft_lstsize(v->env);
-	printf("LEN = [%lu]\n", len);
+	printf("LEN = [%lu]\n", len); //debug?
 	array = create_declare_list(v, len);
 	if (!array)
-		return (0);
+		ft_exit_error(v, EXIT_FAILURE);
 	return (print_declare_list(array));
 }

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/16 10:01:04 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/09 14:53:24 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,51 @@
 **
 **	echo "" -n hoi"   "hoi"  " | cat -e
 **	echo -n -n -n -n -n -n -n hoi
+**	echo -n -n -n -nnnnnn hoi
 **	
 */
 
 static size_t	check_newline_option(char **params, int *newline_opt)
 {
 	size_t i;
+	size_t j;
 
+	*newline_opt = 0;
 	i = 0;
-	if (params[i] && !ft_strncmp(params[i], "-n", 3))
+	j = 2;
+	while (params[i] && !ft_strncmp(params[i], "-n", 2))
 	{
-		*newline_opt = 1;
+		while (params[i][j] == 'n')
+			j++;
+		if (params[i][j] == '\0')
+			*newline_opt = 1;
+		else
+			return (i);
 		i++;
 	}
-	else
-		*newline_opt = 0;
-	while (params[i] && !ft_strncmp(params[i], "-n", 3))
-		i++;
 	return (i);
+
+
+	
+	// if (params[i] && params[i][j] == '-')
+	// {
+	// 	j++;
+	// 	while (params[i][j] == 'n')
+	// 		j++;
+	// 	if (params[i][j] == '\0')
+	// 		*newline_opt = 1;
+	// }
+	
+	// if (params[i] && !ft_strncmp(params[i], "-n", 3))
+	// {
+	// 	*newline_opt = 1;
+	// 	i++;
+	// }
+	// else
+	// 	*newline_opt = 0;
+	// while (params[i] && !ft_strncmp(params[i], "-n", 3))
+	// 	i++;
+	// return (i);
 }
 
 static char		*init_dst(char *param, size_t *i)
