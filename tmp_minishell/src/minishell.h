@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 13:03:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 17:49:34 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int				loop_locations(t_vars *v, char **new_path, char **params);
 void			expansion(t_vars *v, char **arg);
 void			resize_str(t_vars *v, char **str1, char *str2);
 
-int				run_pipe(t_vars *v, t_list *first_cmd, t_list *flag);
+int				run_pipe(t_vars *v, char *args, t_list *first_cmd, t_list *flag);
 int				run_redirection(t_vars *v, t_list *first_cmd, t_list *flag);
 
 /*
@@ -125,6 +125,6 @@ char			*cmd_str(int i);
 **				debug functions - remove from .h, .c, and Makefile when finished
 */
 
-void			print_tokens(t_vars *v);
+void			print_tokens(t_vars *v, const char *title);
 
 #endif

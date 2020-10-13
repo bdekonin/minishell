@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 13:03:41 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 17:49:00 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	run_pipe(t_vars *v, t_list *first_cmd, t_list *flag)
+int	run_pipe(t_vars *v, char *args, t_list *first_cmd, t_list *flag)
 {
 	char *arg;
 
@@ -26,7 +26,7 @@ int	run_pipe(t_vars *v, t_list *first_cmd, t_list *flag)
 		dup2(v->pipefd[1], STDOUT_FILENO);
 		arg = first_cmd->content;
 		expansion(v, &arg);
-		split_tokens(v, &arg);
+		split_tokens(v, &args);
 		close(v->pipefd[1]);
 		exit(1);
 	}
@@ -36,7 +36,7 @@ int	run_pipe(t_vars *v, t_list *first_cmd, t_list *flag)
 		v->stdin_copy = dup(STDIN_FILENO);
 		close(STDIN_FILENO);
 		dup2(v->pipefd[0], STDIN_FILENO);
-		arg = flag->next->content;
+		arg = ft_strdup(flag->next->content);
 		expansion(v, &arg);
 		split_tokens(v, &arg);
 		close(v->pipefd[0]);

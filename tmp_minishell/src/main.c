@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 13:24:32 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 17:49:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,9 @@ void		split_tokens(t_vars *v, char **args)
 	size_t	size_tokens;
 	
 	tokens = ft_split_multi(*args, "*", &size_tokens);
+//	printf("args = [%s]\n", *args);						//debug
 	free(*args);
+//	print_tokens(v, "105");
 	if (!tokens && v->cmd)
 		ft_exit_error(v, EXIT_FAILURE);
 	if (tokens)
@@ -121,7 +123,7 @@ int		parse_input(t_vars *v, t_list *first_cmd)
 			break ;
 		if (is_pipe(tmp->content))
 		{
-			return (run_pipe(v, first_cmd, tmp));
+			return (run_pipe(v, args, first_cmd, tmp));
 		}
 		if (is_redirection(tmp->content))
 		{
@@ -152,7 +154,7 @@ static int	read_command_line_input(t_vars *v)
 		return (ft_free(cli));
 	create_tokens(v, cli);
 	free(cli);
-//	print_tokens(v);							//debug
+//	print_tokens(v, "156");							//debug
 	find_semicolons(v);
 	i = 0;
 	while (v->semicolon_ptrs[i] != NULL)
@@ -164,6 +166,7 @@ static int	read_command_line_input(t_vars *v)
 		
 		i++;
 	}
+//	print_tokens(v, "168");							//debug
 	ft_lstclear(&v->cmd, free);
 	return (ft_free(v->semicolon_ptrs));
 }
