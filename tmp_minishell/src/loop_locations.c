@@ -6,11 +6,12 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/14 17:43:10 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/12 13:03:40 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <dirent.h>
 
 static char			*make_command(t_vars *v, const char *path, char **params)
 {
@@ -20,7 +21,7 @@ static char			*make_command(t_vars *v, const char *path, char **params)
 	length = ft_strlen(path) + 1 + ft_strlen(params[0]) + 1;
 	newpath = ft_calloc(length, sizeof(char));
 	if (!newpath)
-		return (NULL);
+		ft_exit_error(v, EXIT_FAILURE);
 	ft_strlcat(newpath, path, length + 1);
 	ft_strlcat(newpath, "/", length + 1);
 	ft_strlcat(newpath, params[0], length + 1);
@@ -69,7 +70,7 @@ int	loop_locations(t_vars *v, char **new_path, char **params)
 	
 	argv = ft_split_multi(v->default_path->content, ":", &size);
 	if (!argv)
-		return (-1);
+		ft_exit_error(v, EXIT_FAILURE);
 	i = 0;
 	while (i < size)
 	{

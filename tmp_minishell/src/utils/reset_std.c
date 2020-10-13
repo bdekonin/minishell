@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   reset_stdin_stdout.c                               :+:    :+:            */
+/*   reset_std.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/14 18:00:13 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/30 13:57:00 by lverdoes      ########   odam.nl         */
+/*   Created: 2020/10/09 23:01:11 by lverdoes      #+#    #+#                 */
+/*   Updated: 2020/10/09 23:02:01 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static int reset_stdin(t_vars *v)
 {
@@ -28,20 +28,20 @@ static int reset_stdout(t_vars *v)
 	return (1);
 }
 
-static int	close_pipefd(t_vars *v)
-{
-	if (v->pipefd[0] != -1)
-	{
-		close(v->pipefd[0]);
-		v->pipefd[0] = -1;
-	}
-	if (v->pipefd[1] != -1)
-	{
-		close(v->pipefd[1]);
-		v->pipefd[1] = -1;
-	}
-	return (1);
-}
+// static int	close_pipefd(t_vars *v)
+// {
+// 	if (v->pipefd[0] != -1)
+// 	{
+// 		close(v->pipefd[0]);
+// 		v->pipefd[0] = -1;
+// 	}
+// 	if (v->pipefd[1] != -1)
+// 	{
+// 		close(v->pipefd[1]);
+// 		v->pipefd[1] = -1;
+// 	}
+// 	return (1);
+// }
 
 int	reset_std(t_vars *v)
 {
@@ -49,6 +49,6 @@ int	reset_std(t_vars *v)
 		reset_stdout(v);
 	if (v->stdin_copy)
 		reset_stdin(v);
-	close_pipefd(v);
+//	close_pipefd(v);
 	return (1);
 }

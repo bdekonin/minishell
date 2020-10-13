@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 11:26:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/22 13:13:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/13 10:49:07 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,13 @@ char			*ft_uitoa(unsigned int n, t_list *flags);
 char			*ft_uitohex(unsigned int n, t_list *flags);
 char			*ft_ptr(unsigned long long n, t_list *flags);
 int				ft_printf_strlen(const char *str);
-int				ft_putstr(t_list *flags);
+int				ft_printf_putstr(t_list *flags);
 char			*ft_printf_strdup(const char *s1);
-int				ft_atoi2(const char *str);
+int				ft_printf_atoi(const char *str);
 int				ft_csearch(char c, char *str);
-int				ft_strsearchh(const char *s1, char *s2);
+int				ft_strsearch(const char *s1, char *s2);
 int				free_struct(t_list *flags);
 int				format_int_left(t_list *flags);
 int				format_int_right(t_list *flags);
-void			*ft_calloc2(size_t count, size_t size);
 
 #endif

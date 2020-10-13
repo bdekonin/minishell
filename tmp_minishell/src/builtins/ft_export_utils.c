@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   export_utils.c                                     :+:    :+:            */
+/*   ft_export_utils.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 08:42:59 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/09 10:36:10 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/12 13:22:51 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,33 @@ static void		ascii_sort(char **array)
 	}
 }
 
-static int		print_declare_list(char **array)
+static int		print_declare_list(t_vars *v, char **array, size_t len)
 {
-	size_t i;
+	size_t	i;
+	ssize_t	ret;
 
 	ascii_sort(array);
 	i = 0;
-	while (array[i] != NULL)
+	while (i < len)
 	{
-		write(1, array[i], ft_strlen(array[i]));
-		write(1, "\n", 1);
+		ret = write(1, array[i], ft_strlen(array[i]));
+		if (ret < 0 || (size_t)ret != ft_strlen(array[i]))
+			ft_exit_error(v, EXIT_FAILURE);
+		if (write(1, "\n", 1) != 1)
+			ft_exit_error(v, EXIT_FAILURE);
 		i++;	
 	}
 	ft_free_array((void **)array, i);
-	return (1);
+	return (0);
 }
 
-static char		**create_declare_list(t_vars *v, size_t len)
+static void		create_declare_list(t_vars *v, char **array, size_t len)
 {
 	t_list	*tmp;
 	t_env	*node;
 	size_t	i;
-	char	**array;
 
 	i = 0;
-	array = ft_calloc(len + 1, sizeof(char *));
-	if (!array)
-		ft_exit_error(v, EXIT_FAILURE);
 	tmp = v->env;
 	while (i < len && tmp)
 	{
@@ -85,14 +85,10 @@ static char		**create_declare_list(t_vars *v, size_t len)
 		else
 			array[i] = ft_strxjoin("declare -x ", node->name, "=\"", node->content, "\"", NULL);
 		if (!array[i])
-		{
-			ft_free_array((void **)array, i);
 			ft_exit_error(v, EXIT_FAILURE);
-		}
 		i++;
 		tmp = tmp->next;
 	}
-	return (array);
 }
 
 int		export_declare_list(t_vars *v)
@@ -103,9 +99,9 @@ int		export_declare_list(t_vars *v)
 	char	**array;
 	
 	len = ft_lstsize(v->env);
-	printf("LEN = [%lu]\n", len); //debug?
-	array = create_declare_list(v, len);
+	array = ft_calloc(len + 1, sizeof(char *));
 	if (!array)
 		ft_exit_error(v, EXIT_FAILURE);
-	return (print_declare_list(array));
+	create_declare_list(v, array, len);
+	return (print_declare_list(v, array, len));
 }

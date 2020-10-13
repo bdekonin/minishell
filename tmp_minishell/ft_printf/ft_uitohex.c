@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 10:27:02 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/21 19:54:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/01/24 15:15:07 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char		*ft_uitohex(unsigned int n, t_list *flags)
 	int		len;
 
 	len = find_len(n);
-	str = ft_calloc2((len + 1), sizeof(char));
+	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	flags->neg = 0;

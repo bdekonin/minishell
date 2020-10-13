@@ -6,7 +6,7 @@
 #    By: lverdoes <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/01/11 15:22:52 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/08/06 23:50:56 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/10/09 23:38:01 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,10 +34,10 @@ norm:
 	norminette $(SRC) $(INCLUDES)
 
 clean:
-	/bin/rm -f $(OBJ)
-	/bin/rm -f *~
+	@/bin/rm -f $(OBJ)
+	@/bin/rm -f *~
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 
 re: fclean all

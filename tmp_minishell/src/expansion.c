@@ -6,20 +6,21 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/08 15:24:48 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 13:36:24 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{ 						//rewrite this whole thinggg [a-zA-Z_][a-zA-Z0-9_]*
+{ 						//rewrite this whole thing [a-zA-Z_][a-zA-Z0-9_]*
 	size_t env_len;
 	char *env_name;
 	char *env_content;
 	char *tmp;
 	
 	*i += 1;
+//	printf("str = [%s]\n", src + *i);
 	if (src[*i] == '?')			//new func
 	{
 		tmp = ft_itoa(v->cmd_ret);
@@ -29,8 +30,9 @@ static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 		ft_free(tmp);
 		return ;
 	}
-	env_len = ft_substrlen(src + *i, "\"\\ $/");	//identifiers accept: [a-zA-Z_][a-zA-Z0-9_]*
-	//printf("env_len=[%lu]\n", env_len); //debug
+	//env_len = ft_substrlen(src + *i, "\"\\ $/");	//identifiers accept: [a-zA-Z_][a-zA-Z0-9_]*
+	env_len = find_identifier_len(src + *i);
+//	printf("env_len=[%lu]\n", env_len); 			//debug
 	if (env_len == 0)
 	{
 		dst[*j] = '$';
@@ -39,9 +41,10 @@ static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 		return ; //env var name has len of 0. Don't delete this check.
 	}
 	env_name = src + *i;
-	env_content = find_environment_variable(v, env_name, &env_len);
-	//printf("env_name=[%s]\n", env_name); //debug
-	//printf("env_content=[%s]\n", env_content); //debug
+	//env_content = find_environment_variable(v, env_name, &env_len);
+	env_content = find_env_var(v, env_name, &env_len);
+//	printf("env_name=[%s]\n", env_name); 			//debug
+//	printf("env_content=[%s]\n", env_content); 		//debug
 	if (!env_content)
 	{
 		*i += env_len + 0; // was -1 or should it be + 0
@@ -133,7 +136,7 @@ static void parse_cmd(t_vars *v, char *dst, char *src)
 	}
 }
 
-int		expansions(t_vars *v, char **arg)
+void		expansion(t_vars *v, char **arg)
 {
 	char *dst;
 
@@ -143,5 +146,14 @@ int		expansions(t_vars *v, char **arg)
 	parse_cmd(v, dst, *arg);
 	ft_free(*arg);
 	*arg = dst;
-	return (1);
+}
+
+void	resize_str(t_vars *v, char **str1, char *str2)
+{
+	*str1 = ft_append(*str1, "*");
+	if (!*str1)
+		ft_exit_error(v, EXIT_FAILURE);
+	*str1 = ft_append(*str1, str2);
+	if (!*str1)
+		ft_exit_error(v, EXIT_FAILURE);
 }

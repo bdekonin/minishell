@@ -6,20 +6,21 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/11 19:08:00 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/09/14 17:40:18 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/12 13:04:30 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/stat.h>
 
-static inline char	*malloc_relative(size_t size, char *currentpath, \
+static inline char	*malloc_relative(t_vars *v, size_t size, char *currentpath, \
 														char *command)
 {
 	char *ptr;
 
 	ptr = ft_calloc(size, sizeof(char));
 	if (!ptr)
-		return (NULL);
+		ft_exit_error(v, EXIT_FAILURE);
 	ft_strlcat(ptr, currentpath, size + 1);
 	ft_strlcat(ptr, "/", size + 1);
 	ft_strlcat(ptr, (command + 2), size + 1);
@@ -51,7 +52,7 @@ int		get_relative_path(t_vars *v, char **new_path, char **tokens)
 
 	count = ft_strlen(v->current_path) + 1;
 	count += ft_strlen(tokens[0]) + 1;
-	path = malloc_relative(count, v->current_path, tokens[0]);
+	path = malloc_relative(v, count, v->current_path, tokens[0]);
 	if (!path)
 		return (-1);
 	ret = validate_file(path);

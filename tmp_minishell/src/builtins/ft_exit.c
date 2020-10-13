@@ -6,11 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/09/25 09:16:20 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/12 13:21:54 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_exit(t_vars *v, char **params)
 {
@@ -25,8 +25,8 @@ void	ft_exit_error(t_vars *v, int status)
 		free(v->prefix);
 	if (v->current_path)
 		free(v->current_path);
-	if (v->temp)
-		free(v->temp);
+//	if (v->temp)
+//		free(v->temp);
 	if (v->stdout_copy) // if stdout has been copied.
 	{
 		dup2(v->fd, STDOUT_FILENO);

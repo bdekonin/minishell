@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_free_array_bonus.c                              :+:    :+:            */
+/*   is_functions.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/05/16 13:42:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/24 11:55:40 by lverdoes      ########   odam.nl         */
+/*   Created: 2020/10/09 22:30:43 by lverdoes      #+#    #+#                 */
+/*   Updated: 2020/10/09 22:32:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../minishell.h"
 
-int		ft_free_array(void **array, size_t i)
+int	is_redirection(char *str)
 {
-	while (i > 0)
-	{
-		i--;
-		free(array[i]);
-	}
-	free(array);
+	if (!str)
+		return (0);
+	if (!ft_strncmp(str, ">>", 3) || \
+		(!ft_strncmp(str, ">", 2)) || \
+		(!ft_strncmp(str, "<", 2)))
+		return (1);
 	return (0);
 }
 
-int		ft_free_ret_int(void *ptr, int ret)
+int	is_pipe(char *str)
 {
-	free(ptr);
-	return (ret);
+	if (!str)
+		return (0);
+	if (!ft_strncmp(str, "|", 2))
+		return (1);
+	return (0);
 }
 
-void	*ft_free_ret_ptr(void *ptr, void *ret)
+int	is_semicolon(char *str)
 {
-	free(ptr);
-	return (ret);
-}
-
-int		ft_free(void *ptr)
-{
-	free(ptr);
+	if (!str)
+		return (0);
+	if (!ft_strncmp(str, ";", 2))
+		return (1);
 	return (0);
 }

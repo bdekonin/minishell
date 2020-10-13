@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/08 13:41:35 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/09 20:38:32 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 static int		syntax_error_return(t_vars *v, const char *token)
 {
-	ft_printf("%s: syntax error near unexpected token `%s'\n", \
-	v->default_executable->content, token);
+	ft_printf(SYNTAX_ERROR, v->default_executable->content, token);
 	return (0);
 }
 

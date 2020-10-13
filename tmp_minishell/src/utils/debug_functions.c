@@ -1,42 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_free_array_bonus.c                              :+:    :+:            */
+/*   debug_functions.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/05/16 13:42:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/24 11:55:40 by lverdoes      ########   odam.nl         */
+/*   Created: 2020/10/09 21:10:17 by lverdoes      #+#    #+#                 */
+/*   Updated: 2020/10/13 13:01:04 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../minishell.h"
 
-int		ft_free_array(void **array, size_t i)
+void	print_tokens(t_vars *v) //debug function
 {
-	while (i > 0)
+	t_list	*tmp;
+
+	tmp = v->cmd;
+	while (tmp)
 	{
-		i--;
-		free(array[i]);
+		printf("[%s]\tat [%p] and [%p]\n", tmp->content, tmp->content, tmp);
+		tmp = tmp->next;
+	//	if (tmp)
+	//		printf("\n");
 	}
-	free(array);
-	return (0);
-}
-
-int		ft_free_ret_int(void *ptr, int ret)
-{
-	free(ptr);
-	return (ret);
-}
-
-void	*ft_free_ret_ptr(void *ptr, void *ret)
-{
-	free(ptr);
-	return (ret);
-}
-
-int		ft_free(void *ptr)
-{
-	free(ptr);
-	return (0);
+	//printf("\n");
 }

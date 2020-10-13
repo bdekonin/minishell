@@ -6,11 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 16:59:08 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/14 10:35:59 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/12 13:06:03 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char    **env_list_to_array(t_vars *v)
 {

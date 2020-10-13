@@ -5,41 +5,41 @@
 #                                                      +:+                     #
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/09/07 09:40:23 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/09/30 12:31:43 by lverdoes      ########   odam.nl          #
+#    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
+#    Updated: 2020/10/13 11:40:08 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = \
-	/main.c \
-	/initialize.c \
-	/syntax_error_check.c \
 	/create_tokens.c \
-	/ft_exit.c \
-	/check_multiline_input.c \
-	/confirm_flags.c \
 	/expansion.c \
-	/find_flags.c \
-	/find_environment_variable.c \
-	/ft_run_pipe.c \
-	/get_relative_path.c \
+	/find_semicolons.c \
+	/initialize.c \
+	/main.c \
+	/syntax_error_check.c \
+	/run_pipe.c \
+	/run_redirection.c \
 	/loop_locations.c \
-	/env_list_to_array.c \
-	/reset_stdin_stdout.c \
-	/signal_handler.c \
-	/utils/export_utils.c \
+	/get_relative_path.c \
+	/utils/debug_functions.c \
 	/utils/cmd_utils.c \
-	/utils/print_prefix.c \
-	/utils/ft_split_sep_exep.c \
+	/utils/env_list_to_array.c \
 	/utils/ft_iserrno_bonus.c \
+	/utils/find_env_var.c \
+	/utils/is_functions.c \
+	/utils/linked_list_utils.c \
+	/utils/print_prefix.c \
+	/utils/reset_std.c \
 	/builtins/ft_cd.c \
 	/builtins/ft_echo.c \
 	/builtins/ft_env.c \
+	/builtins/ft_exit.c \
+	/builtins/ft_export_utils.c \
 	/builtins/ft_export.c \
-	/builtins/ft_unset.c \
-	/builtins/ft_pwd.c
+	/builtins/ft_pwd.c \
+	/builtins/ft_unset.c
 
 OBJ = $(addprefix obj, $(SRC:.c=.o))
 
