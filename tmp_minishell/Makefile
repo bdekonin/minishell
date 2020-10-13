@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/10/13 11:40:08 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/10/13 19:07:28 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = minishell
 
 SRC = \
 	/create_tokens.c \
+	/execve.c \
 	/expansion.c \
 	/find_semicolons.c \
 	/initialize.c \

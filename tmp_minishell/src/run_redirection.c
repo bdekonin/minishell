@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 17:46:43 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 19:15:39 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,7 @@ static int run_angle_left_single(t_vars *v, char **filename)
 	return (1);
 }
 
-int is_end(char *str)
-{
-	if (is_semicolon(str))
-		return (1);
-	if (is_pipe(str))
-		return (1);
-	if (is_redirection(str))
-		return (1);
-	return (0);
-}
+
 
 int	run_redirection(t_vars *v, t_list *first_cmd, t_list *flag)
 {

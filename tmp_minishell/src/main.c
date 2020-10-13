@@ -6,63 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 17:49:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 22:19:16 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-int		ft_execve(t_vars *v, char **params)
-{
-	int		ret;
-	char	*new_path;
-	char	**envp;
-	pid_t	spoon;
-	int		stat;
-	
-	new_path = NULL;
-	if (!ft_strncmp(params[0], "./", 2))
-	{
-		ret = get_relative_path(v, &new_path, params);
-		//printf("get_relative_path ret = [%d]-[%s]\n", ret, new_path); 	//debug
-		if (ret < 0)
-		{
-			ft_printf("%s: %s: %s\n", v->default_executable->content, params[0], strerror(errno));
-			return (ret);
-		}
-	}
-	else
-	{	
-		ret = loop_locations(v, &new_path, params);
-		if (ret == -1 || ret == 0)
-			return (ret);
-	}
-	envp = env_list_to_array(v);
-	if (!envp)
-		return (-1);
-	spoon = fork();
-	if (!spoon)
-	{
-//		signal(SIGINT, SIG_DFL); // ctrl c - for cat so you can quit
-//		signal(SIGTSTP, SIG_DFL); // ctrl z
-		//printf("params=[%s]\n", params[0]);		//debug
-		//printf("path=[%s]\n", new_path);			//debug
-		if (execve(new_path, &params[0], envp) < 0)
-		{
-			ft_printf("%s: %s\n", v->default_executable->content, strerror(errno));
-			exit(COMMAND_NOT_RUNNABLE);
-		}
-	}
-	else
-	{
-		wait(&stat);
-	}
-	ft_free_array((void **)envp, ft_lstsize(v->env));
-	free(new_path);
-	//set_history(v);
-	return (1);
-}
 
 int	run_command(t_vars *v, char **params)
 {
@@ -99,14 +47,11 @@ void		split_tokens(t_vars *v, char **args)
 	size_t	size_tokens;
 	
 	tokens = ft_split_multi(*args, "*", &size_tokens);
-//	printf("args = [%s]\n", *args);						//debug
 	free(*args);
-//	print_tokens(v, "105");
 	if (!tokens && v->cmd)
 		ft_exit_error(v, EXIT_FAILURE);
 	if (tokens)
 		v->cmd_ret = run_command(v, tokens);
-//	printf("cmd_ret = [%d]\n", v->cmd_ret);				//debug
 	ft_free_array((void **)tokens, size_tokens);
 }
 
@@ -139,7 +84,92 @@ int		parse_input(t_vars *v, t_list *first_cmd)
 	if (args)
 		split_tokens(v, &args);
 	return (1);
-}	
+}
+
+// // void	expand_tokens(t_vars *v, t_list *section_start)
+// // {
+// // 	t_list	*tmp;
+// // 	t_list	*prv;
+// // 	t_list *next;
+// // 	char	*str;
+// // 	// print_tokens(v, "");
+// // 	tmp = section_start;
+
+// // 	char *newString;
+// // 	while (tmp && !is_semicolon(tmp->content))
+// // 	{
+// // 		if (!is_pipe(tmp->content) && !is_redirection(tmp->content))
+// // 			expansion(v, (char **)&tmp->content);
+// // 	// 	newString = NULL;
+// // 		if (is_end(tmp->content))
+// // 		{
+// // 			tmp = tmp->next;
+// // 			continue;
+// // 		}
+// // 		newString = tmp->content;
+// // 		if (tmp)
+// // 			tmp = tmp->next;
+// // 		if (is_end(tmp->content))
+// // 			continue;
+// // 		while (tmp && !is_end(tmp->content))
+// // 		{
+// // 	// 		if (is_semicolon(tmp->content))
+// // 	// 			return ;
+// // 	// 		expansion(v, (char **)&tmp->content);
+// // 	// 		resize_str(v, &newString, tmp->content);
+// // 	// 		prv = tmp;
+// // 			if (!tmp)
+// // 				ft_printf("\033[0;31m1: [%s]\033[0m\n", "null");
+// // 			else
+// // 				ft_printf("\033[0;31m1: [%s]\033[0m\n", tmp->content);
+// // 	// 		if (tmp)
+// // 				tmp = tmp->next;
+// // 	// 		ft_lst_remove_one(&v->cmd, prv);
+// // 		}
+// // 		if (!tmp)
+// // 			ft_printf("\033[0;32m2: [%p]-[%s]\033[0m\n", section_start, "null");
+// // 		else
+// // 			ft_printf("\033[0;32m2: [%p]-[%s]\033[0m\n", section_start, tmp->content);
+// // 	// 	// ft_printf("\033[0;32m2: [%p]-[%s]\033[0m\n", section_start, newString);
+// // 		if (tmp)
+// // 			tmp = tmp->next;
+// // 	}
+// // 	// print_tokens(v, "");
+// // }
+
+// Bob
+// export a='hoi bob' ; echo $a ; export a='hoi lars' ; echo $a
+//			ls -la | 'cat' -e ; pwd
+// blabla:		ls -la | 'cat' -e | grep -R 'vaggginas' -O ; export a=pwd ; $LOGNAME ; echo -n -n -nnn hoi $USER ; echo en hallo "$SHELL" klaar 
+void	expand_tokens(t_vars *v, t_list *section_start)
+{
+	t_list	*tmp;
+	t_list	*prv;
+	t_list *next;
+	char	*str;
+	// print_tokens(v, "");
+	tmp = section_start;
+
+	char *newString = tmp->content;
+	while (tmp && !is_semicolon(tmp->content))
+	{
+		if (tmp->next && is_end(tmp->next->content))
+			newString = tmp->next->next->content;
+		else
+		{
+			while (tmp && !is_end(tmp->content))
+			{
+				resize_str(v, &newString, tmp->content);
+				tmp = tmp->next;
+			}
+		}
+		// newString = NULL;
+		if (tmp)
+			tmp = tmp->next;
+	}
+	printf("newString: %s\n", newString);
+	// print_tokens(v, "");
+}
 
 static int	read_command_line_input(t_vars *v)
 {
@@ -159,7 +189,9 @@ static int	read_command_line_input(t_vars *v)
 	i = 0;
 	while (v->semicolon_ptrs[i] != NULL)
 	{
-		parse_input(v, v->semicolon_ptrs[i]);
+		expand_tokens(v, v->semicolon_ptrs[i]);
+		printf("\n---\n\n");
+//		parse_input(v, v->semicolon_ptrs[i]);
 		reset_std(v);
 
 

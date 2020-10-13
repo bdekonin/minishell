@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 17:49:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 20:46:34 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void			split_tokens(t_vars *v, char **args);
 int				run_command(t_vars *v, char **params);
 int				get_relative_path(t_vars *v, char **new_path, char **tokens);
 int				loop_locations(t_vars *v, char **new_path, char **params);
-
+int				ft_execve(t_vars *v, char **params);
 
 void			expansion(t_vars *v, char **arg);
 void			resize_str(t_vars *v, char **str1, char *str2);
@@ -112,11 +112,15 @@ size_t			find_identifier_len(char *str);
 char			*find_env_var(t_vars *v, char *identifier, size_t *len);
 void			print_prefix(t_vars *v);
 int				export_declare_list(t_vars *v);
+
 int				ft_iserrno(int error);
+
 int				is_redirection(char *str);
 int				is_pipe(char *str);
 int				is_semicolon(char *str);
+int 			is_end(char *str);
 int				reset_std(t_vars *v);
+
 char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
 
