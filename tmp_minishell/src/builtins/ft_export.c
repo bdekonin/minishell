@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/10 16:46:50 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/14 14:39:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ static int		add_new_env_vars(t_vars *v, char *arg)
 int 			ft_export(t_vars *v, char **params)
 {
 	size_t	i;
+
+	// ft_printf("param now\n");
+	// ft_print_array(params);
+	// ft_printf("param end\n");
 
 	if (!*params)
 		return (export_declare_list(v));

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 20:11:14 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/12 16:41:49 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/14 14:27:52 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,25 @@ void	create_new_env_var(t_vars *v, char *name, char *content)
 		ft_exit_error(v, EXIT_FAILURE);
 	ft_lstadd_back(&v->env, new);
 }
+size_t	skip_quotations(const char *cli, char quotation_type);
+
+// echo 
+void test(char *src)
+{
+	size_t i;
+
+	i = 0;
+	while (src[i])
+	{
+		if (src[i] == '\'')
+			i += skip_quotations(src + i, src[i]);
+		else if (src[i] == '\"')
+			i += skip_quotations(src + i, src[i]);
+		if (src[i] == ' ')
+			src[i] = '*';
+		i++;
+	}
+}
 
 void	create_new_token(t_vars *v, const char *ptr, size_t len)
 {
@@ -34,6 +53,7 @@ void	create_new_token(t_vars *v, const char *ptr, size_t len)
 	char	*str;
 
 	str = ft_substr(ptr, 0, len); 
+	test(str);
 	if (!str)
 		ft_exit_error(v, EXIT_FAILURE);
 	new = ft_lstnew(str);

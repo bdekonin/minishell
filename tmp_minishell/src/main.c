@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 22:19:16 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/14 14:38:51 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,148 +57,48 @@ void		split_tokens(t_vars *v, char **args)
 
 int		parse_input(t_vars *v, t_list *first_cmd)
 {
-	t_list	*tmp;
-	char	*args;
-	
-	tmp = first_cmd;
-	args = NULL;
-	while (tmp)
-	{
-		if (is_semicolon(tmp->content))
-			break ;
-		if (is_pipe(tmp->content))
-		{
-			return (run_pipe(v, args, first_cmd, tmp));
-		}
-		if (is_redirection(tmp->content))
-		{
-			
-			if (!run_redirection(v, first_cmd, tmp))
-				return (ft_free(args));
-			break ;
-		}
-		expansion(v, (char **)&((tmp->content)));
-		resize_str(v, &args, tmp->content);
-		tmp = tmp->next;
-	}
-	if (args)
-		split_tokens(v, &args);
+	// while (tmp)
+	// {
+		
+	// }
+	char *temp = ft_strdup(first_cmd->content);
+	ft_printf("first_cmd: %s\n", temp);
+	split_tokens(v, &temp);
 	return (1);
 }
 
-// // void	expand_tokens(t_vars *v, t_list *section_start)
-// // {
-// // 	t_list	*tmp;
-// // 	t_list	*prv;
-// // 	t_list *next;
-// // 	char	*str;
-// // 	// print_tokens(v, "");
-// // 	tmp = section_start;
-
-// // 	char *newString;
-// // 	while (tmp && !is_semicolon(tmp->content))
-// // 	{
-// // 		if (!is_pipe(tmp->content) && !is_redirection(tmp->content))
-// // 			expansion(v, (char **)&tmp->content);
-// // 	// 	newString = NULL;
-// // 		if (is_end(tmp->content))
-// // 		{
-// // 			tmp = tmp->next;
-// // 			continue;
-// // 		}
-// // 		newString = tmp->content;
-// // 		if (tmp)
-// // 			tmp = tmp->next;
-// // 		if (is_end(tmp->content))
-// // 			continue;
-// // 		while (tmp && !is_end(tmp->content))
-// // 		{
-// // 	// 		if (is_semicolon(tmp->content))
-// // 	// 			return ;
-// // 	// 		expansion(v, (char **)&tmp->content);
-// // 	// 		resize_str(v, &newString, tmp->content);
-// // 	// 		prv = tmp;
-// // 			if (!tmp)
-// // 				ft_printf("\033[0;31m1: [%s]\033[0m\n", "null");
-// // 			else
-// // 				ft_printf("\033[0;31m1: [%s]\033[0m\n", tmp->content);
-// // 	// 		if (tmp)
-// // 				tmp = tmp->next;
-// // 	// 		ft_lst_remove_one(&v->cmd, prv);
-// // 		}
-// // 		if (!tmp)
-// // 			ft_printf("\033[0;32m2: [%p]-[%s]\033[0m\n", section_start, "null");
-// // 		else
-// // 			ft_printf("\033[0;32m2: [%p]-[%s]\033[0m\n", section_start, tmp->content);
-// // 	// 	// ft_printf("\033[0;32m2: [%p]-[%s]\033[0m\n", section_start, newString);
-// // 		if (tmp)
-// // 			tmp = tmp->next;
-// // 	}
-// // 	// print_tokens(v, "");
-// // }
-
 // Bob
 // export a='hoi bob' ; echo $a ; export a='hoi lars' ; echo $a
-//			ls -la | 'cat' -e ; pwd
-// blabla:		ls -la | 'cat' -e | grep -R 'vaggginas' -O ; export a=pwd ; $LOGNAME ; echo -n -n -nnn hoi $USER ; echo en hallo "$SHELL" klaar 
-void	expand_tokens(t_vars *v, t_list *section_start)
-{
-	t_list	*tmp;
-	t_list	*prv;
-	t_list *next;
-	char	*str;
-	// print_tokens(v, "");
-	tmp = section_start;
+// blabla:		ls -la | 'cat' -e | grep -R 'vaggginas' -O ; export a=pwd ; $LOGNAME ; echo -n -n -nnn hoi $USER ; echo en hallo "$ SHELL" klaar 
 
-	char *newString = tmp->content;
-	while (tmp && !is_semicolon(tmp->content))
-	{
-		if (tmp->next && is_end(tmp->next->content))
-			newString = tmp->next->next->content;
-		else
-		{
-			while (tmp && !is_end(tmp->content))
-			{
-				resize_str(v, &newString, tmp->content);
-				tmp = tmp->next;
-			}
-		}
-		// newString = NULL;
-		if (tmp)
-			tmp = tmp->next;
-	}
-	printf("newString: %s\n", newString);
-	// print_tokens(v, "");
-}
-
-static int	read_command_line_input(t_vars *v)
+static int	read_command_line_input(t_vars *v, char *cli)
 {
-	char	*cli;
-	int		gnl_ret;
 	size_t	i;
+	char **args;
 	
-	gnl_ret = get_next_line(STDIN_FILENO, &cli);
-	if (gnl_ret < 0)
-		ft_exit_error(v, EXIT_FAILURE);
 	if (!syntax_error_check(v, cli))
 		return (ft_free(cli));
-	create_tokens(v, cli);
+	size_t splitsize = 0;
+	args = ft_split_multi(cli, ";", &splitsize);
 	free(cli);
-//	print_tokens(v, "156");							//debug
-	find_semicolons(v);
 	i = 0;
-	while (v->semicolon_ptrs[i] != NULL)
+	while (i < splitsize)
 	{
-		expand_tokens(v, v->semicolon_ptrs[i]);
-		printf("\n---\n\n");
-//		parse_input(v, v->semicolon_ptrs[i]);
-		reset_std(v);
+		create_tokens(v, args[i]);
 
-
+		for (t_list *list = v->cmd; list; list = list->next)
+		{
+			if (!is_pipe(list->content) && !is_redirection(list->content))
+				expansion(v, (char**)&list->content);
+		}
 		
+		parse_input(v, v->cmd);
+		reset_std(v);
+		ft_lstclear(&v->cmd, free);
+		free(args[i]);
 		i++;
 	}
-//	print_tokens(v, "168");							//debug
+	free(args);
 	ft_lstclear(&v->cmd, free);
 	return (ft_free(v->semicolon_ptrs));
 }
@@ -206,13 +106,16 @@ static int	read_command_line_input(t_vars *v)
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
+	char *cli;
 
 	initialize(&v, envp);
 	//signals
 	while (1)
 	{
 		print_prefix(&v);
-		read_command_line_input(&v);
+		if (get_next_line(STDIN_FILENO, &cli) < 0)
+			ft_exit_error(&v, EXIT_FAILURE);
+		read_command_line_input(&v, cli);
 	}
 	return (0);
 }

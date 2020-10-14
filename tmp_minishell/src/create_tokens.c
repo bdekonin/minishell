@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/09 22:07:55 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/14 14:01:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static size_t	skip_quotations(const char *cli, char quotation_type)
+size_t	skip_quotations(const char *cli, char quotation_type)
 {
 	size_t i;
 
@@ -35,7 +35,7 @@ static size_t	get_len(const char *cli, size_t start)
 			return (2);
 		return (1);
 	}
-	while (cli[i] != '\0' && !ft_charsearch(cli[i], "<>| ;"))
+	while (cli[i] != '\0' && !ft_charsearch(cli[i], "<>|;"))
 	{
 		if (cli[i] == '\'' && (i == 0 || cli[i - 1] != '\\'))
 			i = i + skip_quotations(cli + i, '\'');
