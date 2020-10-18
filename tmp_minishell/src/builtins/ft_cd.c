@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/09/14 17:30:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/14 21:51:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static inline int	cd_arguments(t_vars *v, char **argument, char *oldpwd_backup)
 	{
 		ret = chdir(argument[0]);
 		if (ret < 0)
-			ft_printf("%s: cd: %s: %s\n", v->default_executable->content, argument[0], strerror(errno));
+			ft_printf("%s: cd: %s: %s\n", "minishell", argument[0], strerror(errno));
 	}
 	return (ret);
 }

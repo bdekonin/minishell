@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/10/13 19:07:28 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/10/15 18:01:23 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,6 @@ SRC = \
 	/utils/find_env_var.c \
 	/utils/is_functions.c \
 	/utils/linked_list_utils.c \
-	/utils/print_prefix.c \
 	/utils/reset_std.c \
 	/builtins/ft_cd.c \
 	/builtins/ft_echo.c \
@@ -44,7 +43,7 @@ SRC = \
 
 OBJ = $(addprefix obj, $(SRC:.c=.o))
 
-CC = gcc -Wall -Wextra -Werror
+CC = gcc -Wall -Wextra -Werror -g
 
 LIBFT = ./libft/libft.a
 

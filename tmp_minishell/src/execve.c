@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 19:07:45 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/15 18:00:06 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		ft_execve(t_vars *v, char **params)
 		//printf("get_relative_path ret = [%d]-[%s]\n", ret, new_path); 	//debug
 		if (ret < 0)
 		{
-			ft_printf("%s: %s: %s\n", v->default_executable->content, params[0], strerror(errno));
+			ft_printf("%s: %s: %s\n", "minishell", params[0], strerror(errno));
 			return (ret);
 		}
 	}
@@ -49,7 +49,7 @@ int		ft_execve(t_vars *v, char **params)
 		//printf("path=[%s]\n", new_path);			//debug
 		if (execve(new_path, &params[0], envp) < 0)
 		{
-			ft_printf("%s: %s\n", v->default_executable->content, strerror(errno));
+			ft_printf("%s: %s\n", "minishell", strerror(errno));
 			exit(COMMAND_NOT_RUNNABLE);
 		}
 	}

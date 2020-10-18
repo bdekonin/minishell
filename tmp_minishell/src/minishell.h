@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 20:46:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/15 13:08:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,13 @@
 # include <stdio.h>
 
 # define BUILTINS 7
-# define PREFIX "%s@%s$ "
 # define CMD_NOTFOUND "%s: %s: command not found\n"
 # define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m"
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n"
 # define COMMAND_NOT_RUNNABLE 127
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
 # define INVALID_IDENTIFIER "%s: export: `%s': not a valid identifier\n"
-# define MISSING_LOGNAME "user"
-# define MISSING_SHELLNAME "minishell"
+# define PROMPT "minishell-1.0$ "
 
 typedef	struct	s_env
 {
@@ -52,11 +50,10 @@ typedef struct  s_vars{
 	int			pipefd[2];
 	pid_t		forky;
 	pid_t		spoon;
+	
 	t_env		*default_path;
-	t_env		*default_logname;
 	t_env		*default_homedir;
 	t_env		*default_oldpwd;
-	t_env		*default_executable;
 }               t_vars;
 
 
@@ -75,7 +72,7 @@ void			initialize(t_vars *v, char **envp);
 int				syntax_error_check(t_vars *v, const char *cli);
 void			create_tokens(t_vars *v, const char *cli);
 void			find_semicolons(t_vars *v);
-void			split_tokens(t_vars *v, char **args);
+void			split_tokens(t_vars *v, char *args);
 int				run_command(t_vars *v, char **params);
 int				get_relative_path(t_vars *v, char **new_path, char **tokens);
 int				loop_locations(t_vars *v, char **new_path, char **params);
@@ -84,7 +81,7 @@ int				ft_execve(t_vars *v, char **params);
 void			expansion(t_vars *v, char **arg);
 void			resize_str(t_vars *v, char **str1, char *str2);
 
-int				run_pipe(t_vars *v, char *args, t_list *first_cmd, t_list *flag);
+// int				run_pipe(t_vars *v, char *args, t_list *list);
 int				run_redirection(t_vars *v, t_list *first_cmd, t_list *flag);
 
 /*

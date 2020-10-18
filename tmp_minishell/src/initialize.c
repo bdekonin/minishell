@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/07 11:45:55 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 11:35:15 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/15 15:37:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,6 @@ static void			env__oldpwd(t_vars *v, t_env *env)
 	//v->default_oldpwd->content = env->content;
 }
 
-static void			env__shell(t_vars *v, t_env *env)
-{
-	free(env->content);
-	env->content = ft_strdup(MISSING_SHELLNAME);
-	if (!env->content)
-		ft_exit_error(v, EXIT_FAILURE);
-	v->default_executable = env;
-}
-
 static void			verify_environment_vars(t_vars *v, t_list *lst, int ret)
 {
 	t_env *tmp;
@@ -58,24 +49,16 @@ static void			verify_environment_vars(t_vars *v, t_list *lst, int ret)
 			lst = lst->next;
 			continue ;
 		}
-		else if (!ft_strcmp("LOGNAME", tmp->name))
-			v->default_logname = tmp;
 		else if (!ft_strcmp("HOME", tmp->name))
 			v->default_homedir = tmp;
 		else if (!ft_strcmp("OLDPWD", tmp->name))
 			env__oldpwd(v, tmp);
 		else if (!ft_strcmp("PATH", tmp->name))
 			v->default_path = tmp;
-		else if (!ft_strcmp("SHELL", tmp->name))
-			env__shell(v, tmp);
 		lst = lst->next;
 	}
-	if (ret && !v->default_logname)
-		env__missing(v, "LOGNAME", MISSING_LOGNAME);
 	if (ret && !v->default_homedir)
 		env__missing(v, "HOME", v->current_path);
-	if (ret && !v->default_executable)
-		env__missing(v, "SHELL", MISSING_SHELLNAME);
 }
 
 static void	create_env_list(t_vars *v, char **envp)
@@ -105,7 +88,7 @@ static void	create_env_list(t_vars *v, char **envp)
 void		initialize(t_vars *v, char **envp)
 {
 	ft_bzero(v, sizeof(t_vars));
-	v->prefix = ft_strdup(PREFIX);
+	v->prefix = ft_strdup(PROMPT);
 	if (!v->prefix)
 		ft_exit_error(v, EXIT_FAILURE);
 	v->current_path = ft_calloc(PATH_MAX + 1, sizeof(char));

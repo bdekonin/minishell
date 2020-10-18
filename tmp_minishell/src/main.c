@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/14 14:38:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/18 21:19:12 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,33 +37,78 @@ int	run_command(t_vars *v, char **params)
 	ret = ft_execve(v, params);
 //	printf("ret = [%d]\n", ret);				//debug
 	if (!ret)
-		ft_printf(CMD_NOTFOUND, v->default_executable->content, params[0]);
+		ft_printf(CMD_NOTFOUND, "minishell", params[0]);
 	return (ret);
 }
 
-void		split_tokens(t_vars *v, char **args)
+void		split_tokens(t_vars *v, char *args)
 {
 	char	**tokens;
 	size_t	size_tokens;
-	
-	tokens = ft_split_multi(*args, "*", &size_tokens);
-	free(*args);
-	if (!tokens && v->cmd)
+
+	tokens = ft_split_multi(args, "*", &size_tokens);
+	if (!tokens)
 		ft_exit_error(v, EXIT_FAILURE);
-	if (tokens)
-		v->cmd_ret = run_command(v, tokens);
+	v->cmd_ret = run_command(v, tokens);
 	ft_free_array((void **)tokens, size_tokens);
 }
 
-int		parse_input(t_vars *v, t_list *first_cmd)
+
+t_list *lastpipe(t_list *headptr)
 {
-	// while (tmp)
-	// {
+	t_list *last;
+
+	last = headptr;
+	while (headptr)
+	{
+		if (is_pipe(headptr->content))
+			last = headptr;
+		headptr = headptr->next;
+	}
+	return (last->next);
+}
+
+// ls | pwd | cat
+int		execute_loop(t_vars *v, t_list *list)
+{
+	t_list *temp;
+
+	while (list)
+	{
+		if (list && list->next && is_pipe(list->next->content))
+		{
+			while (list && list->next && is_pipe(list->next->content))
+			{
+				// Check command ( Make sure is exist before forking)
+				ft_printf("\033[0;32m%s: pipe\033[0m\n", list->content);
+				ft_printf("\033[0;36m2				Executing %s\033[0m\n", list->content);
+				list = list->next;				
+			}
+		}
+		// else if (list && list->next && is_redirection(list->next->content))
+		// {
+		// 	if (get_prev_node(v, list) && is_pipe(get_prev_node(v, list)->content))
+		// 	{
+		// 		ft_printf("\033[0;31m%s: PREV PIPE\033[0m\n", list->content);
+		// 	}
+		// 	else
+		// 		ft_printf("\033[0;31m%s: REDIRRR\033[0m\n", list->content);
+		// 	list = list->next;
+		// }
+		else
+		{
+			if (list == lastpipe(v->cmd)) // LAST PIPE RESET FD
+			{	
+				ft_printf("\033[0;33m%s: last   pipe\033[0m\n", list->content);
+			}
+			else
+				ft_printf("\033[0;35m%s: aint a pipe\033[0m\n", list->content);
+			ft_printf("\033[0;36m1				Executing %s\033[0m\n", list->content);
+		}
 		
-	// }
-	char *temp = ft_strdup(first_cmd->content);
-	ft_printf("first_cmd: %s\n", temp);
-	split_tokens(v, &temp);
+		list = list->next;
+	}
+	
 	return (1);
 }
 
@@ -91,8 +136,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 			if (!is_pipe(list->content) && !is_redirection(list->content))
 				expansion(v, (char**)&list->content);
 		}
-		
-		parse_input(v, v->cmd);
+		execute_loop(v, v->cmd);
 		reset_std(v);
 		ft_lstclear(&v->cmd, free);
 		free(args[i]);
@@ -103,6 +147,10 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	return (ft_free(v->semicolon_ptrs));
 }
 
+int	run_pipe(t_vars *v, char *childCommand, char *parentCommand, int *fd);
+
+int first_pipe(t_vars *v, t_list *list);
+int pipe_next(t_vars *v, t_list *list, int *oldPipe, int first);
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
@@ -110,9 +158,63 @@ int 		main(int argc, char **argv, char **envp)
 
 	initialize(&v, envp);
 	//signals
+
+	ft_printf("[%d] - PID\n", getpid());
+
+	int pipefd[2];
+	// for (int i = 0; i < 3; i++)
+	// {
+	// 	if (i == 0)
+	// 		run_pipe(&v, "echo one", "cat -e", pipefd);
+	// 	if (i == 1)
+	// 		run_pipe(&v, "echo two", "cat -e", pipefd);
+	// 	if (i == 2)
+	// 		run_pipe(&v, "echo three", "cat -e", pipefd);
+	// }
+
+	ft_printf("-----------------------------------------------------------------------------\n");
+	
+
+	
+		t_list *list = ft_lstnew(ft_strdup("echo pwd"));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("cat -e")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("pwd")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("kaas")));
+
+	// first_pipe(&v, list);
+
+	// pwd$
+	
+	int fd[2];
+	fd[1] = STDIN_FILENO;
+	
+	pipe_next(&v, list, fd, 1);
+
+
+
+
+
+
+ 
+
+
+
+
+
+	
+	ft_printf("\n-----------------------------------------------------------------------------\n[%d] - Finisho\n", getpid());
+	return (0);
+
+
+		
+	v.stdin_copy = dup(STDIN_FILENO);
+	v.stdout_copy = dup(STDOUT_FILENO);
 	while (1)
 	{
-		print_prefix(&v);
+		ft_putstr_fd(PROMPT, STDOUT_FILENO);
 		if (get_next_line(STDIN_FILENO, &cli) < 0)
 			ft_exit_error(&v, EXIT_FAILURE);
 		read_command_line_input(&v, cli);
