@@ -6,11 +6,46 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 13:36:24 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/26 13:37:28 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char 		*ft_remove_redundant(const char *str, char *sep, char *new)
+{
+	size_t	size;
+	size_t	i;
+	char	**arr;
+	char	*dst;
+	char	*tmp;
+
+	size = 0;
+	arr = ft_split_multi(str, sep, &size);
+	if (!arr)
+		return (NULL);
+	dst = ft_strdup(arr[0]);
+	if (!dst)
+	{
+		ft_free_array((void **)arr, size);
+		return (NULL);
+	}
+	i = 1;
+	while (arr[i] != NULL)
+	{
+		tmp = ft_strxjoin(dst, new, arr[i], NULL);
+		ft_free(dst);
+		if (!tmp)
+		{
+			ft_free_array((void **)arr, size);
+			return (NULL);
+		}
+		dst = tmp;
+		i++;
+	}
+	ft_free_array((void **)arr, size);
+	return (dst);
+}
 
 static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 { 						//rewrite this whole thing [a-zA-Z_][a-zA-Z0-9_]*
@@ -50,9 +85,11 @@ static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 		*i += env_len + 0; // was -1 or should it be + 0
 		return ;
 	}	
-	ft_strlcat(dst + *j, env_content, PATH_MAX + 1);
-	*j += ft_strlen(env_content);
-	*i += env_len;	
+	char *modified_content = ft_remove_redundant(env_content, " ", " ");
+	ft_strlcat(dst + *j, modified_content, PATH_MAX + 1);
+	*j += ft_strlen(modified_content);
+	*i += env_len;
+	ft_free(modified_content);
 	// *i = *i - 1;??????????
 }
 
