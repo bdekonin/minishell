@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/18 21:19:12 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/26 16:02:33 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 int	run_pipe(t_vars *v, char *childCommand, char *parentCommand, int *fd);
 
 int first_pipe(t_vars *v, t_list *list);
-int pipe_next(t_vars *v, t_list *list, int *oldPipe, int first);
+int pipe_next(t_vars *v, t_list *list, int *oldPipe, int first, int *opper_fd);
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
@@ -159,41 +159,45 @@ int 		main(int argc, char **argv, char **envp)
 	initialize(&v, envp);
 	//signals
 
-	ft_printf("[%d] - PID\n", getpid());
+	 ft_printf("[%d] - PID\n", getpid());
 
-	int pipefd[2];
-	// for (int i = 0; i < 3; i++)
-	// {
-	// 	if (i == 0)
-	// 		run_pipe(&v, "echo one", "cat -e", pipefd);
-	// 	if (i == 1)
-	// 		run_pipe(&v, "echo two", "cat -e", pipefd);
-	// 	if (i == 2)
-	// 		run_pipe(&v, "echo three", "cat -e", pipefd);
-	// }
+	// int pipefd[2];
+	// // for (int i = 0; i < 3; i++)
+	// // {
+	// // 	if (i == 0)
+	// // 		run_pipe(&v, "echo one", "cat -e", pipefd);
+	// // 	if (i == 1)
+	// // 		run_pipe(&v, "echo two", "cat -e", pipefd);
+	// // 	if (i == 2)
+	// // 		run_pipe(&v, "echo three", "cat -e", pipefd);
+	// // }
 
-	ft_printf("-----------------------------------------------------------------------------\n");
+		ft_printf("-----------------------------------------------------------------------------\n");
 	
 
 	
-		t_list *list = ft_lstnew(ft_strdup("echo pwd"));
+		t_list *list = ft_lstnew(ft_strdup("pwd"));
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("cat -e")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("wc")));
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("pwd")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("kaas")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("wc")));
+		// ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
+		// ft_lstadd_back(&list, ft_lstnew(ft_strdup("pwd")));
 
-	// first_pipe(&v, list);
+	// // first_pipe(&v, list);
 
-	// pwd$
+	// // pwd$
+	v.stdin_copy = dup(STDIN_FILENO);
+	v.stdout_copy = dup(STDOUT_FILENO);
 	
 	int fd[2];
 	fd[1] = STDIN_FILENO;
+	int opper_fd[2]; 
+	if (pipe(opper_fd) < 0)
+			exit(EXIT_FAILURE);
+	pipe_next(&v, list, fd, 1, opper_fd);
+
 	
-	pipe_next(&v, list, fd, 1);
-
-
 
 
 
@@ -210,8 +214,6 @@ int 		main(int argc, char **argv, char **envp)
 
 
 		
-	v.stdin_copy = dup(STDIN_FILENO);
-	v.stdout_copy = dup(STDOUT_FILENO);
 	while (1)
 	{
 		ft_putstr_fd(PROMPT, STDOUT_FILENO);
