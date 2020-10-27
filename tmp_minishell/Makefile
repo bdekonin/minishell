@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/10/15 18:01:23 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/10/27 11:47:20 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC = \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \
 	/utils/ft_iserrno_bonus.c \
+	/utils/ft_reduce_spaces.c \
 	/utils/find_env_var.c \
 	/utils/is_functions.c \
 	/utils/linked_list_utils.c \

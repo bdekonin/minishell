@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/15 13:08:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/27 11:47:36 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void			print_prefix(t_vars *v);
 int				export_declare_list(t_vars *v);
 
 int				ft_iserrno(int error);
+char 			*ft_reduce_spaces(const char *str);
 
 int				is_redirection(char *str);
 int				is_pipe(char *str);
