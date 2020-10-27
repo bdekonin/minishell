@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/27 11:42:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/27 13:49:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,31 +147,22 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	return (ft_free(v->semicolon_ptrs));
 }
 
-int	run_pipe(t_vars *v, char *childCommand, char *parentCommand, int *fd);
-
-int first_pipe(t_vars *v, t_list *list);
-int pipe_next(t_vars *v, t_list *list, int *oldPipe, int first, int *opper_fd);
+int pipe_handler(t_vars *v, t_list *temp);
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
 	char *cli;
 
 	initialize(&v, envp);
-	//signals
 
-	 ft_printf("[%d] - PID\n", getpid());
-
-		ft_printf("-----------------------------------------------------------------------------\n");
 	
-// echo hoi hoi hoi daar bob hoe is het | grep hoi | wc | wc | cat -e
-	
-		t_list *list = ft_lstnew(ft_strdup("echo hoi hoi hoi daar bob hoe is het"));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("grep hoi")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("wc")));
+		t_list *list = ft_lstnew(ft_strdup("cat"));
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup("cat -e")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("wc")));
+		
+
 
 		
 
@@ -181,27 +172,12 @@ int 		main(int argc, char **argv, char **envp)
 	v.stdin_copy = dup(STDIN_FILENO);
 	v.stdout_copy = dup(STDOUT_FILENO);
 	
-	int fd[2];
-	fd[1] = STDIN_FILENO;
-	int opper_fd[2]; 
-	if (pipe(opper_fd) < 0)
-			exit(EXIT_FAILURE);
-	pipe_next(&v, list, fd, 1, opper_fd);
-
-	
-
-
-
-
- 
-
-
-
-
-
-	
-	ft_printf("\n-----------------------------------------------------------------------------\n[%d] - Finisho\n", getpid());
+	pipe_handler(&v, list);
 	return (0);
+
+
+
+
 
 
 		
