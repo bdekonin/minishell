@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/27 13:49:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/27 19:47:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int	run_command(t_vars *v, char **params)
 	return (ret);
 }
 
-void		split_tokens(t_vars *v, char *args)
+void		split_tokens(t_vars *v, char *string)
 {
 	char	**tokens;
 	size_t	size_tokens;
 
-	tokens = ft_split_multi(args, "*", &size_tokens);
+	tokens = ft_split_multi(string, "*", &size_tokens);
 	if (!tokens)
 		ft_exit_error(v, EXIT_FAILURE);
 	v->cmd_ret = run_command(v, tokens);
@@ -54,6 +54,7 @@ void		split_tokens(t_vars *v, char *args)
 }
 
 
+int pipe_handler(t_vars *v, t_list *temp);
 t_list *lastpipe(t_list *headptr)
 {
 	t_list *last;
@@ -75,43 +76,19 @@ int		execute_loop(t_vars *v, t_list *list)
 
 	while (list)
 	{
-		if (list && list->next && is_pipe(list->next->content))
+		if (list->next && is_pipe(list->next->content))
 		{
-			while (list && list->next && is_pipe(list->next->content))
-			{
-				// Check command ( Make sure is exist before forking)
-				ft_printf("\033[0;32m%s: pipe\033[0m\n", list->content);
-				ft_printf("\033[0;36m2				Executing %s\033[0m\n", list->content);
-				list = list->next;				
-			}
+			pipe_handler(v, list);
+			list = lastpipe(list);
 		}
-		// else if (list && list->next && is_redirection(list->next->content))
-		// {
-		// 	if (get_prev_node(v, list) && is_pipe(get_prev_node(v, list)->content))
-		// 	{
-		// 		ft_printf("\033[0;31m%s: PREV PIPE\033[0m\n", list->content);
-		// 	}
-		// 	else
-		// 		ft_printf("\033[0;31m%s: REDIRRR\033[0m\n", list->content);
-		// 	list = list->next;
-		// }
 		else
-		{
-			if (list == lastpipe(v->cmd)) // LAST PIPE RESET FD
-			{	
-				ft_printf("\033[0;33m%s: last   pipe\033[0m\n", list->content);
-			}
-			else
-				ft_printf("\033[0;35m%s: aint a pipe\033[0m\n", list->content);
-			ft_printf("\033[0;36m1				Executing %s\033[0m\n", list->content);
-		}
-		
+			split_tokens(v, list->content);
 		list = list->next;
 	}
 	
 	return (1);
 }
-
+// ls -la | wc | cat -e ; pwd
 // Bob
 // export a='hoi bob' ; echo $a ; export a='hoi lars' ; echo $a
 // blabla:		ls -la | 'cat' -e | grep -R 'vaggginas' -O ; export a=pwd ; $LOGNAME ; echo -n -n -nnn hoi $USER ; echo en hallo "$ SHELL" klaar 
@@ -137,7 +114,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 				expansion(v, (char**)&list->content);
 		}
 		execute_loop(v, v->cmd);
-		reset_std(v);
+		// reset_std(v);
 		ft_lstclear(&v->cmd, free);
 		free(args[i]);
 		i++;
@@ -147,7 +124,6 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	return (ft_free(v->semicolon_ptrs));
 }
 
-int pipe_handler(t_vars *v, t_list *temp);
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
@@ -155,25 +131,7 @@ int 		main(int argc, char **argv, char **envp)
 
 	initialize(&v, envp);
 
-	
-		t_list *list = ft_lstnew(ft_strdup("cat"));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("cat -e")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("wc")));
-		
 
-
-		
-
-	// // first_pipe(&v, list);
-
-	// // pwd$
-	v.stdin_copy = dup(STDIN_FILENO);
-	v.stdout_copy = dup(STDOUT_FILENO);
-	
-	pipe_handler(&v, list);
-	return (0);
 
 
 

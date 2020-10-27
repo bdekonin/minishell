@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/07 11:45:55 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/15 15:37:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/27 19:38:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void		initialize(t_vars *v, char **envp)
 	if (!v->current_path)
 		ft_exit_error(v, EXIT_FAILURE);
 	v->current_path = getcwd(v->current_path, PATH_MAX);
-	v->pipefd[0] = -1;
-	v->pipefd[1] = -1;
+	v->pipefd[0] = -1; // not used
+	v->pipefd[1] = -1; // not used
 	v->forky = 1;
 	create_env_list(v, envp);
 	verify_environment_vars(v, v->env, 1);

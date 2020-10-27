@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/27 11:47:36 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/27 19:00:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void			initialize(t_vars *v, char **envp);
 int				syntax_error_check(t_vars *v, const char *cli);
 void			create_tokens(t_vars *v, const char *cli);
 void			find_semicolons(t_vars *v);
-void			split_tokens(t_vars *v, char *args);
+void			split_tokens(t_vars *v, char *string);
 int				run_command(t_vars *v, char **params);
 int				get_relative_path(t_vars *v, char **new_path, char **tokens);
 int				loop_locations(t_vars *v, char **new_path, char **params);
