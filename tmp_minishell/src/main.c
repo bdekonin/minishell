@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/26 16:02:33 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/27 11:42:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,28 +161,19 @@ int 		main(int argc, char **argv, char **envp)
 
 	 ft_printf("[%d] - PID\n", getpid());
 
-	// int pipefd[2];
-	// // for (int i = 0; i < 3; i++)
-	// // {
-	// // 	if (i == 0)
-	// // 		run_pipe(&v, "echo one", "cat -e", pipefd);
-	// // 	if (i == 1)
-	// // 		run_pipe(&v, "echo two", "cat -e", pipefd);
-	// // 	if (i == 2)
-	// // 		run_pipe(&v, "echo three", "cat -e", pipefd);
-	// // }
-
 		ft_printf("-----------------------------------------------------------------------------\n");
 	
-
+// echo hoi hoi hoi daar bob hoe is het | grep hoi | wc | wc | cat -e
 	
-		t_list *list = ft_lstnew(ft_strdup("pwd"));
+		t_list *list = ft_lstnew(ft_strdup("echo hoi hoi hoi daar bob hoe is het"));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("grep hoi")));
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup("wc")));
 		ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		ft_lstadd_back(&list, ft_lstnew(ft_strdup("wc")));
-		// ft_lstadd_back(&list, ft_lstnew(ft_strdup("|")));
-		// ft_lstadd_back(&list, ft_lstnew(ft_strdup("pwd")));
+		ft_lstadd_back(&list, ft_lstnew(ft_strdup("cat -e")));
+
+		
 
 	// // first_pipe(&v, list);
 
