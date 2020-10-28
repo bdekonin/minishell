@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 22:30:43 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 21:51:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/09 22:32:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,6 @@ int	is_semicolon(char *str)
 	if (!str)
 		return (0);
 	if (!ft_strncmp(str, ";", 2))
-		return (1);
-	return (0);
-}
-
-int is_end(char *str)
-{
-	if (!str)
-		return (0);
-	if (is_semicolon(str))
-		return (1);
-	if (is_pipe(str))
-		return (1);
-	if (is_redirection(str))
 		return (1);
 	return (0);
 }

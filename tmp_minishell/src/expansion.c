@@ -6,11 +6,16 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/27 11:48:06 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/28 14:36:01 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	ret_value_last_cmd(t_vars *v, char *src, size_t *i, size_t *j)
+{
+	return ;
+}
 
 static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 { 						//rewrite this whole thing [a-zA-Z_][a-zA-Z0-9_]*
@@ -22,6 +27,7 @@ static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	*i += 1;
 //	printf("str = [%s]\n", src + *i);
 	if (src[*i] == '?')			//new func
+	//ret_value_last_cmd(v, src, i, j);
 	{
 		tmp = ft_itoa(v->cmd_ret);
 		if (!tmp)
@@ -51,6 +57,7 @@ static void	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 		return ;
 	}
 	char *modified_content = ft_reduce_spaces(env_content);
+	
 	ft_strlcat(dst + *j, modified_content, PATH_MAX + 1);
 	*j += ft_strlen(modified_content);
 	*i += env_len;

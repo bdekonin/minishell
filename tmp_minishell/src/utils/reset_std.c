@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 23:01:11 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/27 19:47:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/28 14:43:30 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,6 @@ static int reset_stdout(t_vars *v)
 	v->stdout_copy = 0;
 	return (1);
 }
-
-// static int	close_pipefd(t_vars *v)
-// {
-// 	if (v->pipefd[0] != -1)
-// 	{
-// 		close(v->pipefd[0]);
-// 		v->pipefd[0] = -1;
-// 	}
-// 	if (v->pipefd[1] != -1)
-// 	{
-// 		close(v->pipefd[1]);
-// 		v->pipefd[1] = -1;
-// 	}
-// 	return (1);
-// }
 
 int	reset_std(t_vars *v)
 {

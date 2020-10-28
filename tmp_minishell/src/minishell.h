@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/27 19:00:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/28 13:52:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ typedef struct  s_vars{
 	int			pipefd[2];
 	pid_t		forky;
 	pid_t		spoon;
-	
 	t_env		*default_path;
 	t_env		*default_homedir;
 	t_env		*default_oldpwd;

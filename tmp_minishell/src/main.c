@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/27 19:47:54 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/28 15:04:39 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void		split_tokens(t_vars *v, char *string)
 	ft_free_array((void **)tokens, size_tokens);
 }
 
-
 int pipe_handler(t_vars *v, t_list *temp);
 t_list *lastpipe(t_list *headptr)
 {
@@ -69,7 +68,6 @@ t_list *lastpipe(t_list *headptr)
 	return (last->next);
 }
 
-// ls | pwd | cat
 int		execute_loop(t_vars *v, t_list *list)
 {
 	t_list *temp;
@@ -85,13 +83,8 @@ int		execute_loop(t_vars *v, t_list *list)
 			split_tokens(v, list->content);
 		list = list->next;
 	}
-	
 	return (1);
 }
-// ls -la | wc | cat -e ; pwd
-// Bob
-// export a='hoi bob' ; echo $a ; export a='hoi lars' ; echo $a
-// blabla:		ls -la | 'cat' -e | grep -R 'vaggginas' -O ; export a=pwd ; $LOGNAME ; echo -n -n -nnn hoi $USER ; echo en hallo "$ SHELL" klaar 
 
 static int	read_command_line_input(t_vars *v, char *cli)
 {
@@ -114,7 +107,6 @@ static int	read_command_line_input(t_vars *v, char *cli)
 				expansion(v, (char**)&list->content);
 		}
 		execute_loop(v, v->cmd);
-		// reset_std(v);
 		ft_lstclear(&v->cmd, free);
 		free(args[i]);
 		i++;
@@ -124,21 +116,21 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	return (ft_free(v->semicolon_ptrs));
 }
 
+void		signal_handler(int sig)
+{
+	ft_putendl_fd("\b\b  ", 1);
+//	ft_putstr_fd("\b\b", 1);
+	ft_putstr_fd(PROMPT, STDOUT_FILENO);
+}
+
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
 	char *cli;
 
+	signal(SIGQUIT, signal_handler);
+	signal(SIGINT, signal_handler);
 	initialize(&v, envp);
-
-
-
-
-
-
-
-
-		
 	while (1)
 	{
 		ft_putstr_fd(PROMPT, STDOUT_FILENO);
