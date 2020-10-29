@@ -6,11 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/10/28 19:50:22 by bdekonin      ########   odam.nl         */
-=======
-/*   Updated: 2020/10/29 12:09:47 by lverdoes      ########   odam.nl         */
->>>>>>> ed6912c21b27e1851086b8e57786eebcefe5bca5
+/*   Updated: 2020/10/29 15:01:15 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
