@@ -6,91 +6,94 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/12 13:03:40 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/29 16:41:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <dirent.h>
+#include <sys/stat.h>
 
-static char			*make_command(t_vars *v, const char *path, char **params)
-{
-	size_t		length;
-	char		*newpath;
-
-	length = ft_strlen(path) + 1 + ft_strlen(params[0]) + 1;
-	newpath = ft_calloc(length, sizeof(char));
-	if (!newpath)
-		ft_exit_error(v, EXIT_FAILURE);
-	ft_strlcat(newpath, path, length + 1);
-	ft_strlcat(newpath, "/", length + 1);
-	ft_strlcat(newpath, params[0], length + 1);
-	return (newpath);
-}
-
-static int			list_files(t_vars *v, const char *path, char **params)
+static int searchDir(char *location, char *command)
 {
 	struct dirent *dp;
-	DIR *dir = opendir(path); //norm
+	DIR *dir;
 
+	dir = opendir(location);
 	if (!dir)
-		return (-1);
+		return (FILEERROR);
 	dp = readdir(dir);
 	if (dp < 0)
 	{
 		closedir(dir);
-		return (-1);
+		return (FILEERROR);
 	}
 	while (dp)
 	{
-		if (!ft_strcmp(dp->d_name, params[0]))
+		if (!ft_strncmp(dp->d_name, command, ft_strlen(dp->d_name)))
 		{
 			if (closedir(dir) < 0)
-				return (-1);
-			return (1);
+				return (FILEERROR);
+			return (FILEFOUND);
 		}
 		dp = readdir(dir);
 		if (dp < 0)
 		{
 			closedir(dir);
-			return (-1);
+			return (FILEERROR);
 		}
 	}
 	if (closedir(dir) < 0)
-		return (-1);
-	return (0);
+		return (FILEERROR);
+	return (FILENOTFOUND);
 }
 
 int	loop_locations(t_vars *v, char **new_path, char **params)
 {
-	char	**argv;
-	size_t	size;
-	size_t	i;
-	int		ret;
-	
-	argv = ft_split_multi(v->default_path->content, ":", &size);
-	if (!argv)
-		ft_exit_error(v, EXIT_FAILURE);
+	char **locations;
+	size_t splitsize;
+	int i;
+	int ret;
+
 	i = 0;
-	while (i < size)
+	ret = 0;
+	locations = ft_split_multi(v->default_path->content, ":", &splitsize);
+	if (!locations)
+		return (FILEERROR);
+	while (locations[i])
 	{
-		ret = list_files(v, argv[i], params);
-		if (ret == 1)
+		ret = searchDir(locations[i], params[0]);
+		if (ret == FILEFOUND)
 		{
-			*new_path = make_command(v, argv[i], params);
-			if (!*new_path)
-			{
-				ft_free_array((void **)argv, size);
-				return (-1);
-			}
-			return (1);
+			*new_path = ft_strdup(locations[i]);
+			break;
 		}
-		else if (ret < 0 && !ft_iserrno(ENOENT) && !ft_iserrno(EACCES) && !ft_iserrno(ENOTDIR))
-		{
-			ft_free_array((void **)argv, size);
-			return (-1);
-		}
+		if (ret == FILEERROR)
+			return (ret);
 		i++;
 	}
-	return (ft_free_array((void **)argv, size));
+	ft_free_array((void**)locations, splitsize);
+	return (ret);
+}
+
+int	handleLocations(t_vars *v, char **newpath, char **params)
+{
+	char *path;
+	char *totalpath;
+
+	int ret;
+	size_t length;
+
+	ret = loop_locations(v, &path, params);
+	if (ret == FILENOTFOUND || ret == FILEERROR)
+		return (ret);
+	length = ft_strlen(path) + 1 + ft_strlen(params[0]) + 1; // pwd + / + command + \0
+	totalpath = ft_calloc(length , sizeof(char));
+	if (!totalpath)
+		return (FILEERROR); // Malloc		
+	ft_strlcat(totalpath, path, length + 1);
+	ft_strlcat(totalpath, "/", length + 1);
+	ft_strlcat(totalpath, params[0], length + 1);
+	*newpath = totalpath;
+	return (ret);
 }

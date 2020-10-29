@@ -6,12 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/11 19:08:00 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/12 13:04:30 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/29 16:48:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/stat.h>
 
 static inline char	*malloc_relative(t_vars *v, size_t size, char *currentpath, \
 														char *command)
@@ -27,43 +26,17 @@ static inline char	*malloc_relative(t_vars *v, size_t size, char *currentpath, \
 	return (ptr);
 }
 
-static inline int	validate_file(char *filepath)
-{
-	struct stat	sb;
-	int			ret;
-
-	ret = stat(filepath, &sb);
-	if (ret == 0)
-	{
-		if (sb.st_mode & S_IXUSR)
-			return (1);
-		else
-			return (0);
-	}
-	else
-		return (-1);
-}
-
-int		get_relative_path(t_vars *v, char **new_path, char **tokens)
+int		get_relative_path(t_vars *v, char **newpath, char **params)
 {
 	char	*path;
 	size_t	count;
 	int		ret;
 
 	count = ft_strlen(v->current_path) + 1;
-	count += ft_strlen(tokens[0]) + 1;
-	path = malloc_relative(v, count, v->current_path, tokens[0]);
+	count += ft_strlen(params[0]) + 1;
+	path = malloc_relative(v, count, v->current_path, params[0]);
 	if (!path)
-		return (-1);
-	ret = validate_file(path);
-	if (ret == 1)
-	{
-		*new_path = path;
-		return (1);
-	}
-	else
-	{
-		free(path);
-		return (ret);
-	}
+		return (FILEERROR);
+	*newpath = path;
+	return (FILEFOUND);
 }

@@ -3,19 +3,17 @@
 /*                                                        ::::::::            */
 /*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/10/28 19:50:22 by bdekonin      ########   odam.nl         */
-=======
-/*   Updated: 2020/10/29 12:09:47 by lverdoes      ########   odam.nl         */
->>>>>>> ed6912c21b27e1851086b8e57786eebcefe5bca5
+/*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/10/29 17:04:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+// 
 
 #include "../libft/libft.h"
 #include <stdlib.h>		//EXIT_FAILURE EXIT_SUCCESS
@@ -26,11 +24,16 @@
 
 # include <stdio.h>
 
+// Execve
+# define FILEERROR -1
+# define FILENOTFOUND 127
+# define FILEFOUND 1
+# define FILEPERMISSIONS 126
+
 # define BUILTINS 7
 # define CMD_NOTFOUND "%s: %s: command not found\n"
 # define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m"
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n"
-# define COMMAND_NOT_RUNNABLE 127
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
 # define INVALID_IDENTIFIER "%s: export: `%s': not a valid identifier\n"
 # define PROMPT "minishell-1.0$ "

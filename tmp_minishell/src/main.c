@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/28 15:04:39 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/29 17:13:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	run_command(t_vars *v, char **params)
 //	ft_print_array(params);						//debug
 	ret = ft_execve(v, params);
 //	printf("ret = [%d]\n", ret);				//debug
-	if (!ret)
+	if (ret == FILENOTFOUND)
 		ft_printf(CMD_NOTFOUND, "minishell", params[0]);
 	return (ret);
 }
