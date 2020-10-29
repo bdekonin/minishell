@@ -6,7 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2020/10/28 19:50:22 by bdekonin      ########   odam.nl         */
+=======
+/*   Updated: 2020/10/29 12:09:47 by lverdoes      ########   odam.nl         */
+>>>>>>> ed6912c21b27e1851086b8e57786eebcefe5bca5
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +80,8 @@ int				run_command(t_vars *v, char **params);
 int				get_relative_path(t_vars *v, char **new_path, char **tokens);
 int				loop_locations(t_vars *v, char **new_path, char **params);
 int				ft_execve(t_vars *v, char **params);
-
 void			expansion(t_vars *v, char **arg);
-void			resize_str(t_vars *v, char **str1, char *str2);
+int	        	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
 
 // int				run_pipe(t_vars *v, char *args, t_list *list);
 int				run_redirection(t_vars *v, t_list *first_cmd, t_list *flag);

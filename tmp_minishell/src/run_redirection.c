@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/15 18:00:54 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/29 12:08:03 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,25 +90,8 @@ static int run_angle_left_single(t_vars *v, char **filename)
 
 int	run_redirection(t_vars *v, t_list *first_cmd, t_list *flag)
 {
-	int		ret;
-	// t_list	*tmp;
-	// t_list	*prev;
-	// char	*arg;
+	int ret;
 
-	// tmp = flag;
-	// arg = NULL;
-	// while (tmp)
-	// {
-	// 	prev = tmp;
-	// 	if (is_end(tmp->content))
-	// 		break ;
-	// 	expansion(v, (char **)&((tmp->content)));
-	// 	resize_str(v, &arg, tmp->content);
-	// 	free(prev->content);
-	// 	free(prev);
-	// 	tmp = tmp->next;
-	// }
-	
 	if (!ft_strncmp((flag->content), ">>", 3))
 		ret = run_angle_right_double(v, (char **)&(flag->next->content));
 //		ret = run_angle_right_double(v, &arg);
@@ -121,6 +104,5 @@ int	run_redirection(t_vars *v, t_list *first_cmd, t_list *flag)
 		ret = 0;
 	if (!ret)
 		return (0);
-//	print_tokens(v, "104");
 	return (ret);
 }
