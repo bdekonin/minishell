@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/28 14:47:01 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/29 00:12:04249 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,81 +16,70 @@ int tester = 0;
 
 
 t_list *lastpipe(t_list *headptr);
-int pipe_next(t_vars *v, t_list *list, int *oldPipe, int first, int *opper_fd);
-
-static void savefd(t_vars *v)
-{
-	v->stdin_copy = dup(STDIN_FILENO);
-	v->stdout_copy = dup(STDOUT_FILENO);
-}
+int piper(t_vars *v, t_list *list);
+int       pipe_stuff(t_vars *v, t_list *list);
 
 int pipe_handler(t_vars *v, t_list *temp)
 {
 	int opper_fd[2];
 
-	savefd(v);
-	if (pipe(opper_fd) < 0)
-			exit(EXIT_FAILURE);
-	pipe_next(v, temp, NULL, 1, opper_fd);
+	pid_t forky = fork();
+	if (!forky)
+	{
+		pipe_stuff(v, temp);
+	}
+	else
+		waitpid(forky, NULL, 0);
+	if (forky == 0)
+		exit(EXIT_SUCCESS);
 	reset_std(v);
-	close(opper_fd[0]);
-	close(opper_fd[1]);
 	return (1);
 }
 
-int pipe_next(t_vars *v, t_list *list, int *oldPipe, int first, int *opper_fd)
-{
-	int newPipe[2];
 
+// START
+static void fork_child(t_vars *v, t_list *list, int *fd)
+{
+	close(fd[0]);
+	if (dup2(fd[1], STDOUT_FILENO) == -1)
+	{
+		exit(EXIT_FAILURE);
+	}
+	close(fd[1]);
+
+	split_tokens(v, list->content);
+
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	exit(EXIT_SUCCESS);
+}
+
+static void fork_parent(t_vars *v, t_list *list, int *fd)
+{
+	close(fd[1]);
+	if (dup2(fd[0], STDIN_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	close(fd[0]);
 	if (list->next && is_pipe(list->next->content))
-	{
-		if (pipe(newPipe) < 0)
-			ft_exit_error(v, EXIT_FAILURE);
-		v->forky = fork();
-		if (first == 0)
-		{
-			close(oldPipe[1]);
-			dup2(oldPipe[0], STDIN_FILENO);
-		}
-		if (v->forky == 0) // Child
-		{
-			if (list->next->next == lastpipe(list))
-            {
-				close(opper_fd[0]);
-				close(STDOUT_FILENO);
-				dup2(opper_fd[1], STDOUT_FILENO);
-				
-            }
-			else
-			{
-				close(newPipe[0]);
-				close(STDOUT_FILENO);
-				dup2(newPipe[1], STDOUT_FILENO);
-				
-			}
-			split_tokens(v, list->content);
-			exit(EXIT_SUCCESS);
-		}
-		else if (v->forky > 0) // Parent
-		{
-			// Parent
-			pipe_next(v, list->next->next, newPipe, 0, opper_fd);
-			wait(&v->forky);
-		}
-		else // Error
-			ft_exit_error(v, EXIT_FAILURE);
-		close(newPipe[0]);
-		close(newPipe[1]);
-		if (first == 0)
-			return (1);
-	}
+		pipe_stuff(v, list);
 	else
-	{
-		close(opper_fd[1]);
-		dup2(opper_fd[0], STDIN_FILENO);
-		close(STDOUT_FILENO);
-		dup2(v->stdout_copy, STDOUT_FILENO);
 		split_tokens(v, list->content);
-	}
-	return (1);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+}
+
+int       pipe_stuff(t_vars *v, t_list *list)
+{
+	pid_t   pid;
+	int     fd[2];
+	if (pipe(fd) < 0)
+		exit(EXIT_FAILURE);
+	pid = fork();
+	if (pid < 0)
+		exit(EXIT_FAILURE);
+	if (pid > 0)
+		fork_parent(v, list->next->next, fd);
+	else
+		fork_child(v, list, fd);
+	return(1);
 }

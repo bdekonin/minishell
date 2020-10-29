@@ -6,11 +6,45 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/15 18:00:06 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/29 13:29:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		ft_execvee(t_vars *v, char **params)
+{
+	char *path;
+
+	path = NULL;
+	if (!ft_strncmp(params[0], "./", 2) | !ft_strncmp(params[0], "/", 1))
+	{
+		// Relative
+		ft_printf("Relative\n\n");
+
+		get_relative_path(v, &path, params);
+		ft_printf("Path = [%s]\n", path);
+	}
+	else
+	{
+		// $PATH executable
+		ft_printf("$PATH executable\n\n");
+	}
+	
+	return (1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 int		ft_execve(t_vars *v, char **params)
 {
@@ -24,10 +58,9 @@ int		ft_execve(t_vars *v, char **params)
 	if (!ft_strncmp(params[0], "./", 2))
 	{
 		ret = get_relative_path(v, &new_path, params);
-		//printf("get_relative_path ret = [%d]-[%s]\n", ret, new_path); 	//debug
 		if (ret < 0)
 		{
-			ft_printf("%s: %s: %s\n", "minishell", params[0], strerror(errno));
+			dprintf(STDERR_FILENO, "%s: %s: %s\n", "minishell", params[0], strerror(errno));
 			return (ret);
 		}
 	}
@@ -43,19 +76,15 @@ int		ft_execve(t_vars *v, char **params)
 	spoon = fork();
 	if (!spoon)
 	{
-//		signal(SIGINT, SIG_DFL); // ctrl c - for cat so you can quit
-//		signal(SIGTSTP, SIG_DFL); // ctrl z
-		//printf("params=[%s]\n", params[0]);		//debug
-		//printf("path=[%s]\n", new_path);			//debug
 		if (execve(new_path, &params[0], envp) < 0)
 		{
-			ft_printf("%s: %s\n", "minishell", strerror(errno));
+			dprintf(STDERR_FILENO, "%s: %s\n", "minishell", strerror(errno));
 			exit(COMMAND_NOT_RUNNABLE);
 		}
 	}
 	else
 	{
-		wait(&stat);
+		waitpid(spoon, &stat, 0);
 	}
 	ft_free_array((void **)envp, ft_lstsize(v->env));
 	free(new_path);

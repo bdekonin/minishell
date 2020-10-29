@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/28 13:52:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/28 19:50:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ int				reset_std(t_vars *v);
 char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
 
+
+void		signal_handler(int sig);
 
 /*
 **				debug functions - remove from .h, .c, and Makefile when finished
