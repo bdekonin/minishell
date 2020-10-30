@@ -19,6 +19,7 @@ t_list *lastpipe(t_list *headptr);
 int piper(t_vars *v, t_list *list);
 int       pipe_stuff(t_vars *v, t_list *list);
 
+
 int pipe_handler(t_vars *v, t_list *temp)
 {
 	int opper_fd[2];
@@ -27,14 +28,26 @@ int pipe_handler(t_vars *v, t_list *temp)
 	if (!forky)
 	{
 		pipe_stuff(v, temp);
+		exit(EXIT_SUCCESS);
 	}
 	else
 		waitpid(forky, NULL, 0);
-	if (forky == 0)
-		exit(EXIT_SUCCESS);
-	reset_std(v);
+	// if (forky == 0)
+		// exit(EXIT_SUCCESS);
 	return (1);
 }
+
+
+
+char* replace_char(char* str, char find, char replace){
+    char *current_pos = strchr(str,find);
+    while (current_pos){
+        *current_pos = replace;
+        current_pos = strchr(current_pos,find);
+    }
+    return str;
+}
+
 
 
 // START

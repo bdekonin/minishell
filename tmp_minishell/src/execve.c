@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 16:46:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 22:02:57 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,33 +51,31 @@ int		ft_execve(t_vars *v, char **params)
 	// Temp
 	int ret = -2;
 	if (!ft_strncmp(params[0], "./", 2) || !ft_strncmp(params[0], "/", 1))
-		ret = get_relative_path(v, &path, params);
+	{
+		ret = handle_relative(v, &path, params[0]);
+		if (ret == FILEPERMISSIONS || ret == FILENOTFOUND)
+			return (ret);
+	}
 	else
-		ret = handleLocations(v, &path, params);
-
+	{
+		ret = handle_static(v, &path, params[0]);
+		// printf("STATIC - [%d]\n", ret);
+		if (ret == FILEPERMISSIONS)
+			return (ret);
+		else if (ret == FILENOTFOUND)
+			return (FILENOTFOUND * 10);
+	}
 	if (ret == FILEERROR)
 		ft_exit_error(v, EXIT_FAILURE);
-	else if (ret == FILENOTFOUND)
-		return (FILENOTFOUND * 10);
 
-
-	ret = validate_file(path);
-	if (ret == FILENOTFOUND || ret == FILEPERMISSIONS)
-	{
-		if (ret == FILEPERMISSIONS)
-			ft_printerror(params[0], EACCES);
-		else if (ret == FILENOTFOUND)
-			ft_printerror(params[0], ENOENT);
-		free(path);
-		return (ret);
-	}
-	
 	envp = env_list_to_array(v);
 	if (!envp)
 	{
 		free(path);
 		ft_exit_error(v, EXIT_FAILURE);
 	}
+	
+
 	
 	// Start
 	signal(SIGQUIT, signal_exec);
@@ -87,13 +85,15 @@ int		ft_execve(t_vars *v, char **params)
 	{
 		if (execve(path, &params[0], envp) < 0)
 		{
-			dprintf(STDERR_FILENO, "%s: %s\n", "minishell", strerror(errno));
+			ft_printf("%s: %s\n", "minishell", strerror(errno));
 			exit(127);
 		}
 	}
 	else
-		wait(&stat);
+		waitpid(forky, &stat, 0);
 	// End
+
+
 
 	ft_free_array((void **)envp, ft_lstsize(v->env));
 	free(path);

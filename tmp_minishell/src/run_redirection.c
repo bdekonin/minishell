@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/29 12:08:03 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/30 19:57:12 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int run_angle_left_single(t_vars *v, char **filename)
 	if (v->fd < 0)
 	{
 		close(v->fd);
-		ft_printf(DIR_NOTFOUND, "minishell", *filename);
+		ft_printerror(*filename, ENOENT);
 		return (0);
 	}
 	v->stdin_copy = dup(STDIN_FILENO);

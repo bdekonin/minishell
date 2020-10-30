@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 16:34:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 23:51:17 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void ft_printerror(char *file, int error)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(MINISHELL, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(file, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	if (error == ENOENT)
 		ft_putendl_fd(MINISHELL_ENOENT, STDERR_FILENO);
 	else if (error == EACCES)
 		ft_putendl_fd(MINISHELL_EACCES, STDERR_FILENO);
+	else if (error == CMDERR)
+		ft_putendl_fd(MINISHELL_CMDERR, STDERR_FILENO);		
 }
 
 int	run_command(t_vars *v, char **params)
@@ -46,8 +49,9 @@ int	run_command(t_vars *v, char **params)
 	}
 	ret = ft_execve(v, params);
 	if (ret == FILENOTFOUND * 10)
-		ft_printf("%s: %s: command not found\n", "minishell", params[0]);
-	// printf("ret = [%d]\n", ret);
+		ft_printerror(params[0], CMDERR);
+	if (ret == FILENOTFOUND * 10)
+		return (ret / 10);
 	return (ret);
 }
 
@@ -61,6 +65,7 @@ void		split_tokens(t_vars *v, char *string)
 		ft_exit_error(v, EXIT_FAILURE);
 	v->cmd_ret = run_command(v, tokens);
 	ft_free_array((void **)tokens, size_tokens);
+	reset_std(v);
 }
 
 int pipe_handler(t_vars *v, t_list *temp);
@@ -86,6 +91,10 @@ int		execute_loop(t_vars *v, t_list *list)
 	signal(SIGINT, signal_execve);
 	while (list)
 	{
+		// if (ft_lstsize(list) >= 3 && is_redirection(lastpipe(list)->content))
+		// {
+		// 	ft_printf("		filename [%s]\n\n", lastpipe(list)->next->content);
+		// }
 		if (list->next && is_pipe(list->next->content))
 		{
 			pipe_handler(v, list); // pipe returnvalues
@@ -95,6 +104,7 @@ int		execute_loop(t_vars *v, t_list *list)
 			split_tokens(v, list->content);
 		list = list->next;
 	}
+	exit(EXIT_SUCCESS);
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);
 	return (1);
@@ -138,7 +148,7 @@ int 		main(int argc, char **argv, char **envp)
 	initialize(&v, envp);
 	while (1)
 	{
-		ft_putstr_fd(PROMPT, STDOUT_FILENO);
+		ft_putstr_fd(PROMPT, STDERR_FILENO);
 		if (get_next_line(STDIN_FILENO, &cli) < 0)
 			ft_exit_error(&v, EXIT_FAILURE);
 		read_command_line_input(&v, cli);

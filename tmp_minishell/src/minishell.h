@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/30 15:19:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 22:49:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// 
+//
+
 
 #include "../libft/libft.h"
 #include <stdlib.h>		//EXIT_FAILURE EXIT_SUCCESS
@@ -28,24 +29,26 @@
 
 
 
-// bash-3.2$ ./kanker
-// ebash: ./kanker: No such file or directory
-// bash-3.2$ echo $?
-// 127
-
 // Execve
 # define FILEERROR -1
 # define FILENOTFOUND 127
 # define FILEFOUND 1
 # define FILEPERMISSIONS 126
 
+# define CMDERR -1
+# define ENOENT 2
+# define EACCES 13
+
 # define MINISHELL_ENOENT "No such file or directory"
 # define MINISHELL_EACCES "Permission denied"
+# define MINISHELL_CMDERR "command not found"
+
 
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n"
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
 # define INVALID_IDENTIFIER "%s: export: `%s': not a valid identifier\n"
 # define PROMPT "minishell-1.0$ "
+# define MINISHELL "minishell"
 
 typedef	struct	s_env
 {
@@ -79,6 +82,7 @@ typedef struct  s_vars{
 
 int				ft_printf(const char *fmt, ...);
 
+
 /*
 **				src/
 */
@@ -89,13 +93,17 @@ void			create_tokens(t_vars *v, const char *cli);
 void			find_semicolons(t_vars *v);
 void			split_tokens(t_vars *v, char *string);
 int				run_command(t_vars *v, char **params);
-int				get_relative_path(t_vars *v, char **new_path, char **tokens);
-int				loop_locations(t_vars *v, char **new_path, char **params);
 int				ft_execve(t_vars *v, char **params);
 void			expansion(t_vars *v, char **arg);
 int	        	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
 
-// int				run_pipe(t_vars *v, char *args, t_list *list);
+
+// Execve
+int				handle_relative(t_vars *v, char **newpath, char *command);
+int				handle_static(t_vars *v, char **newpath, char *command);
+int				validate_file(char *filepath);
+
+
 int				run_redirection(t_vars *v, t_list *first_cmd, t_list *flag);
 
 /*

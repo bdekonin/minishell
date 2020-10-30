@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   loop_locations.c                                   :+:    :+:            */
+/*   handle_static.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 09:54:27 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 20:28:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int searchDir(char *location, char *command)
 	return (FILENOTFOUND);
 }
 
-int	loop_locations(t_vars *v, char **new_path, char **params)
+static int	loop_locations(t_vars *v, char **new_path, char *command)
 {
 	char **locations;
 	size_t splitsize;
@@ -56,13 +56,13 @@ int	loop_locations(t_vars *v, char **new_path, char **params)
 	int ret;
 
 	i = 0;
-	ret = 0;
+	ret = FILENOTFOUND;
 	locations = ft_split_multi(v->default_path->content, ":", &splitsize);
 	if (!locations)
 		return (FILEERROR);
 	while (locations[i])
 	{
-		ret = searchDir(locations[i], params[0]);
+		ret = searchDir(locations[i], command);
 		if (ret == FILEFOUND)
 		{
 			*new_path = ft_strdup(locations[i]);
@@ -76,7 +76,7 @@ int	loop_locations(t_vars *v, char **new_path, char **params)
 	return (ret);
 }
 
-int	handleLocations(t_vars *v, char **newpath, char **params)
+static int	looper(t_vars *v, char **newpath, char *command)
 {
 	char *path;
 	char *totalpath;
@@ -84,17 +84,53 @@ int	handleLocations(t_vars *v, char **newpath, char **params)
 	int ret;
 	size_t length;
 
-	ret = loop_locations(v, &path, params);
+	ret = loop_locations(v, &path, command);
 	if (ret == FILENOTFOUND || ret == FILEERROR)
 		return (ret);
-	length = ft_strlen(path) + 1 + ft_strlen(params[0]) + 1; // pwd + / + command + \0
+	length = ft_strlen(path) + 1 + ft_strlen(command) + 1; // pwd + / + command + \0
 	totalpath = ft_calloc(length , sizeof(char));
 	if (!totalpath)
 		return (FILEERROR); // Malloc		
 	ft_strlcat(totalpath, path, length + 1);
 	ft_strlcat(totalpath, "/", length + 1);
-	ft_strlcat(totalpath, params[0], length + 1);
+	ft_strlcat(totalpath, command, length + 1);
 	*newpath = totalpath;
 	free(path);
 	return (ret);
 }
+
+int	handle_static(t_vars *v, char **newpath, char *command)
+{
+	int ret;
+	
+	ret = looper(v, newpath, command);
+	if (ret == FILEERROR)
+		return (FILEERROR);
+	ret = validate_file(*newpath);
+
+	if (ret == FILEFOUND)
+		return (FILEFOUND);
+
+	// Errors
+	if (ret == FILEPERMISSIONS)
+		ft_printerror(command, EACCES);
+	free(*newpath);
+	return (ret);
+}
+
+
+// minishell-1.0$ ls
+// ret_loopter - [1]
+// ret_validate_file - [1]
+
+// minishell-1.0$ return_8
+// ret_loopter - [1]
+// ret_validate_file - [1]
+
+// minishell-1.0$ askhjdg
+// ret_loopter - [1]
+// ret_validate_file - [127]
+
+// minishell-1.0$ return_8_noperm
+// ret_loopter - [1]
+// ret_validate_file - [126]
