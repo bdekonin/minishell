@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 16:49:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 17:20:08 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	ret_value_last_cmd(t_vars *v, char *dst, char *src, size_t *i, size_t
 	if (!tmp)
 		ft_exit_error(v, EXIT_FAILURE);
 	ft_strlcat(dst + *j, tmp, PATH_MAX + 1);
+	*j += ft_strlen(tmp);
 	ft_free(tmp);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/30 15:18:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 17:02:22 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int					ft_cd(t_vars *v, char **params)
 	//check for multiple arguments = error (see bash)
 	ret_chdir = cd_arguments(v, params, oldpwd_backup);
 	if (ret_chdir == -1 && ft_iserrno(ENOMEM))
-		return (0);
+		return (1);
 	v->current_path = getcwd(v->current_path, PATH_MAX);
 	if (!v->current_path)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }

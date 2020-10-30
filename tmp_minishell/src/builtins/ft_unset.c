@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 11:05:24 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/14 16:31:51 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/30 17:02:07 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,5 @@ int ft_unset(t_vars *v, char **params)
 		env__ft_lstremove_middle(params[i], v->env);
 		i++;
 	}
-//	if (!sethistory(&v->history_head, v->line, "1"))
-//		return (0);
-	(void)(params);
-//	(void)(cmd);
-	return (1);
+	return (0);
 }

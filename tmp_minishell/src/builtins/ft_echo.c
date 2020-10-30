@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 16:48:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 16:59:46 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ int 			ft_echo(t_vars *v, char **params)
 	int		newline_opt;
 	char	*dst;
 
-	printf("ECHOOO\n");
-	ft_print_array(params);
-	printf("\n- DONE\n\n");
+	// printf("ECHOOO\n");
+	// ft_print_array(params);
+	// printf("\n- DONE\n\n");
 
 
 	i = check_newline_option(params, &newline_opt);
@@ -85,5 +85,5 @@ int 			ft_echo(t_vars *v, char **params)
 		ft_exit_error(v, EXIT_FAILURE);
 	if (newline_opt == 0 && write(1, "\n", 1) != 1)
 		ft_exit_error(v, EXIT_FAILURE);
-	return (1);
+	return (0);
 }

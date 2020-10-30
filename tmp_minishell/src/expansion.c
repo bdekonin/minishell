@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/29 12:07:42 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/30 17:20:26 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,12 @@ void		expansion(t_vars *v, char **arg)
 {
 	char *dst;
 
+//	printf("before exp = [%s]\n", *arg);				//debug
 	dst = ft_calloc(PATH_MAX + 1, sizeof(char));
 	if (!dst)
 		ft_exit_error(v, EXIT_FAILURE);
 	parse_cmd(v, dst, *arg);
 	ft_free(*arg);
 	*arg = dst;
+//	printf("after  exp = [%s]\n", *arg);			//debug
 }
