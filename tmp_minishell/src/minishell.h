@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/29 17:13:40 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 15:19:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,22 @@
 
 # include <stdio.h>
 
+
+
+// bash-3.2$ ./kanker
+// ebash: ./kanker: No such file or directory
+// bash-3.2$ echo $?
+// 127
+
 // Execve
 # define FILEERROR -1
 # define FILENOTFOUND 127
 # define FILEFOUND 1
 # define FILEPERMISSIONS 126
 
-# define BUILTINS 7
-# define CMD_NOTFOUND "%s: %s: command not found\n"
-# define DIR_NOTFOUND "\x1B[31m%s: %s: no such file or directory\n\x1B[0m"
+# define MINISHELL_ENOENT "No such file or directory"
+# define MINISHELL_EACCES "Permission denied"
+
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n"
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
 # define INVALID_IDENTIFIER "%s: export: `%s': not a valid identifier\n"
@@ -129,8 +136,13 @@ int				reset_std(t_vars *v);
 char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
 
+/*
+** Signals
+*/
+void			signal_execve(int signal);
+void			signal_default(int signal);
 
-void		signal_handler(int sig);
+void ft_printerror(char *file, int error);
 
 /*
 **				debug functions - remove from .h, .c, and Makefile when finished

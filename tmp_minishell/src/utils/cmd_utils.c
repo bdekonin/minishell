@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 11:39:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 11:39:47 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/30 14:31:18 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char		*cmd_str(int i)
 {
-	char	*cmd_str[BUILTINS + 1];
+	char	*cmd_str[7 + 1];
 
 	cmd_str[0] = "echo";
 	cmd_str[1] = "cd";

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/29 16:41:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 09:54:27 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int	handleLocations(t_vars *v, char **newpath, char **params)
 	ft_strlcat(totalpath, "/", length + 1);
 	ft_strlcat(totalpath, params[0], length + 1);
 	*newpath = totalpath;
+	free(path);
 	return (ret);
 }

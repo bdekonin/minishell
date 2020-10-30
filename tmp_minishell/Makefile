@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/10/29 12:10:05 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/10/30 09:50:23 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC = \
 	/run_redirection.c \
 	/loop_locations.c \
 	/get_relative_path.c \
+	/signal.c \
 	/utils/debug_functions.c \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \

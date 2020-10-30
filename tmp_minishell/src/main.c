@@ -6,15 +6,26 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/29 17:13:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/30 16:34:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void ft_printerror(char *file, int error)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(file, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	if (error == ENOENT)
+		ft_putendl_fd(MINISHELL_ENOENT, STDERR_FILENO);
+	else if (error == EACCES)
+		ft_putendl_fd(MINISHELL_EACCES, STDERR_FILENO);
+}
+
 int	run_command(t_vars *v, char **params)
 {
-	int		(*p[BUILTINS]) (t_vars *v, char **params);
+	int		(*p[7]) (t_vars *v, char **params);
 	size_t	i;
 	int		ret;
 	
@@ -27,17 +38,16 @@ int	run_command(t_vars *v, char **params)
 	p[6] = ft_exit;
 	ft_str_to_lower(*params);
 	i = 0;
-	while (i < BUILTINS)
+	while (i < 7)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 16))
 				return ((*p[i])(v, params + 1));
 		i++;
 	}
-//	ft_print_array(params);						//debug
 	ret = ft_execve(v, params);
-//	printf("ret = [%d]\n", ret);				//debug
-	if (ret == FILENOTFOUND)
-		ft_printf(CMD_NOTFOUND, "minishell", params[0]);
+	if (ret == FILENOTFOUND * 10)
+		ft_printf("%s: %s: command not found\n", "minishell", params[0]);
+	// printf("ret = [%d]\n", ret);
 	return (ret);
 }
 
@@ -70,19 +80,23 @@ t_list *lastpipe(t_list *headptr)
 
 int		execute_loop(t_vars *v, t_list *list)
 {
-	t_list *temp;
+	t_list		*temp;
 
+	signal(SIGQUIT, signal_execve);
+	signal(SIGINT, signal_execve);
 	while (list)
 	{
 		if (list->next && is_pipe(list->next->content))
 		{
-			pipe_handler(v, list);
+			pipe_handler(v, list); // pipe returnvalues
 			list = lastpipe(list);
 		}
 		else
 			split_tokens(v, list->content);
 		list = list->next;
 	}
+	signal(SIGQUIT, signal_default);
+	signal(SIGINT, signal_default);
 	return (1);
 }
 
@@ -116,20 +130,11 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	return (ft_free(v->semicolon_ptrs));
 }
 
-void		signal_handler(int sig)
-{
-	ft_putendl_fd("\b\b  ", 1);
-//	ft_putstr_fd("\b\b", 1);
-	ft_putstr_fd(PROMPT, STDOUT_FILENO);
-}
-
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
 	char *cli;
 
-	signal(SIGQUIT, signal_handler);
-	signal(SIGINT, signal_handler);
 	initialize(&v, envp);
 	while (1)
 	{
