@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 19:57:12 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/31 17:51:57 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,6 @@ static int run_angle_right_double(t_vars *v, char **filename)
 
 static int run_angle_right_single(t_vars *v, char **filename)
 {
-//	printf("filename=[%p][%s]\n", *filename, *filename);
-	expansion(v, filename);
-//	printf("*filename=[%p][%s]\n", *filename, *filename);
 	v->stdout_copy = dup(STDOUT_FILENO);
 	close(STDOUT_FILENO);
 	v->fd = open(*filename, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
@@ -86,23 +83,33 @@ static int run_angle_left_single(t_vars *v, char **filename)
 	return (1);
 }
 
-
-
-int	run_redirection(t_vars *v, t_list *first_cmd, t_list *flag)
+int mainredir(t_vars *v, char *flag, char *filename)
 {
 	int ret;
 
-	if (!ft_strncmp((flag->content), ">>", 3))
-		ret = run_angle_right_double(v, (char **)&(flag->next->content));
-//		ret = run_angle_right_double(v, &arg);
-	else if (!ft_strncmp((flag->content), ">", 2))
-		ret = run_angle_right_single(v, (char **)&(flag->next->content));
-//		ret = run_angle_right_single(v, &arg);
-	else if (!ft_strncmp((flag->content), "<", 2))
-		ret = run_angle_left_single(v, (char **)&(flag->next->content));
+	if (!ft_strncmp(flag, ">>", 3))
+		ret = run_angle_right_double(v, &filename);
+	else if (!ft_strncmp(flag, ">", 2))
+		ret = run_angle_right_single(v, &filename);
+	else if (!ft_strncmp(flag, "<", 2))
+		ret = run_angle_left_single(v, &filename);
 	else
 		ret = 0;
 	if (!ret)
 		return (0);
 	return (ret);
+}
+t_list *lastpipe(t_list *headptr);
+int redirection_handler(t_vars *v, t_list *list)
+{	
+	if (list->next == NULL)
+		exit(EXIT_FAILURE);
+	
+	if (is_redirection(list->next->content))
+		dprintf(2, "next flag = [%s]\n\n", list->content);
+	
+	dprintf(2, "list->content = [%s]\n", list->content);
+	dprintf(2, "list->next->next = [%s]\n", list->next->content);
+	dprintf(2, "lastpipe(list)->content = [%s]\n\n", lastpipe(list)->content);
+	return (1);
 }

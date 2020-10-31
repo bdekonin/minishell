@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/30 22:49:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/31 15:59:40 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int				handle_static(t_vars *v, char **newpath, char *command);
 int				validate_file(char *filepath);
 
 
-int				run_redirection(t_vars *v, t_list *first_cmd, t_list *flag);
+int redirection_handler(t_vars *v, t_list *command);
 
 /*
 **				src/builtins

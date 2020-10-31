@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 23:51:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/31 17:44:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,25 +91,26 @@ int		execute_loop(t_vars *v, t_list *list)
 	signal(SIGINT, signal_execve);
 	while (list)
 	{
-		// if (ft_lstsize(list) >= 3 && is_redirection(lastpipe(list)->content))
+		redirection_handler(v, list);
+		// if (list->next && is_pipe(list->next->content))
 		// {
-		// 	ft_printf("		filename [%s]\n\n", lastpipe(list)->next->content);
+		// 	pipe_handler(v, list); // pipe returnvalues
+		// 	list = lastpipe(list);
 		// }
-		if (list->next && is_pipe(list->next->content))
-		{
-			pipe_handler(v, list); // pipe returnvalues
-			list = lastpipe(list);
-		}
-		else
-			split_tokens(v, list->content);
+		// else
+		// 	split_tokens(v, list->content);
+		// ft_printf("token[%s]\n", list->content);
 		list = list->next;
+		// reset_std(v);
 	}
-	exit(EXIT_SUCCESS);
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);
 	return (1);
 }
 
+
+// pwd > output
+// ls > output.txt src libft | wc
 static int	read_command_line_input(t_vars *v, char *cli)
 {
 	size_t	i;

@@ -51,7 +51,7 @@ char* replace_char(char* str, char find, char replace){
 
 
 // START
-static void fork_child(t_vars *v, t_list *list, int *fd)
+static void fork_parent(t_vars *v, t_list *list, int *fd)
 {
 	close(fd[0]);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
@@ -67,7 +67,7 @@ static void fork_child(t_vars *v, t_list *list, int *fd)
 	exit(EXIT_SUCCESS);
 }
 
-static void fork_parent(t_vars *v, t_list *list, int *fd)
+static void fork_child(t_vars *v, t_list *list, int *fd)
 {
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -91,8 +91,8 @@ int       pipe_stuff(t_vars *v, t_list *list)
 	if (pid < 0)
 		exit(EXIT_FAILURE);
 	if (pid > 0)
-		fork_parent(v, list->next->next, fd);
+		fork_parent(v, list, fd);
 	else
-		fork_child(v, list, fd);
+		fork_child(v, list->next->next, fd);
 	return(1);
 }
