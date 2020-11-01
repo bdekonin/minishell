@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/31 17:44:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/01 11:41:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,7 @@ void		split_tokens(t_vars *v, char *string)
 }
 
 int pipe_handler(t_vars *v, t_list *temp);
-t_list *lastpipe(t_list *headptr)
-{
-	t_list *last;
-
-	last = headptr;
-	while (headptr)
-	{
-		if (is_pipe(headptr->content))
-			last = headptr;
-		headptr = headptr->next;
-	}
-	return (last->next);
-}
-
+// ls > output.txt src libft | wc > tester
 int		execute_loop(t_vars *v, t_list *list)
 {
 	t_list		*temp;
@@ -91,18 +78,19 @@ int		execute_loop(t_vars *v, t_list *list)
 	signal(SIGINT, signal_execve);
 	while (list)
 	{
+		char *test = list->content;
 		redirection_handler(v, list);
-		// if (list->next && is_pipe(list->next->content))
-		// {
-		// 	pipe_handler(v, list); // pipe returnvalues
-		// 	list = lastpipe(list);
-		// }
-		// else
-		// 	split_tokens(v, list->content);
-		// ft_printf("token[%s]\n", list->content);
+		if (list->next && is_pipe(list->next->content))
+		{
+			pipe_handler(v, list); // pipe returnvalues
+			list = lastpipe(list);
+		}
+		else if (!is_now_or_prev(v, list))
+			split_tokens(v, list->content);
 		list = list->next;
-		// reset_std(v);
+		reset_std(v);
 	}
+	// ft_printf("\n\n");
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);
 	return (1);
@@ -110,7 +98,8 @@ int		execute_loop(t_vars *v, t_list *list)
 
 
 // pwd > output
-// ls > output.txt src libft | wc
+// cat | cat -e > output
+// ls > output.txt src libft | wc > tester
 static int	read_command_line_input(t_vars *v, char *cli)
 {
 	size_t	i;

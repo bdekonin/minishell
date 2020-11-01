@@ -12,10 +12,6 @@
 
 #include "minishell.h"
 
-int tester = 0;
-
-
-t_list *lastpipe(t_list *headptr);
 int piper(t_vars *v, t_list *list);
 int       pipe_stuff(t_vars *v, t_list *list);
 
@@ -38,20 +34,8 @@ int pipe_handler(t_vars *v, t_list *temp)
 }
 
 
-
-char* replace_char(char* str, char find, char replace){
-    char *current_pos = strchr(str,find);
-    while (current_pos){
-        *current_pos = replace;
-        current_pos = strchr(current_pos,find);
-    }
-    return str;
-}
-
-
-
 // START
-static void fork_parent(t_vars *v, t_list *list, int *fd)
+static void parent(t_vars *v, t_list *list, int *fd)
 {
 	close(fd[0]);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
@@ -60,14 +44,15 @@ static void fork_parent(t_vars *v, t_list *list, int *fd)
 	}
 	close(fd[1]);
 
-	split_tokens(v, list->content);
+	if (!is_now_or_prev(v, list))
+		split_tokens(v, list->content);
 
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	exit(EXIT_SUCCESS);
 }
 
-static void fork_child(t_vars *v, t_list *list, int *fd)
+static void child(t_vars *v, t_list *list, int *fd)
 {
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -75,7 +60,7 @@ static void fork_child(t_vars *v, t_list *list, int *fd)
 	close(fd[0]);
 	if (list->next && is_pipe(list->next->content))
 		pipe_stuff(v, list);
-	else
+	else if (!is_now_or_prev(v, list))
 		split_tokens(v, list->content);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
@@ -91,8 +76,8 @@ int       pipe_stuff(t_vars *v, t_list *list)
 	if (pid < 0)
 		exit(EXIT_FAILURE);
 	if (pid > 0)
-		fork_parent(v, list, fd);
+		parent(v, list, fd);
 	else
-		fork_child(v, list->next->next, fd);
+		child(v, list->next->next, fd);
 	return(1);
 }

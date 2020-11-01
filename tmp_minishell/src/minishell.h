@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/31 15:59:40 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/01 11:25:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ typedef struct  s_vars{
 int				ft_printf(const char *fmt, ...);
 
 
+
+
+
+int addarguments(t_list *list, int i);
+int argumentremover(t_vars *v, t_list *list);
+
 /*
 **				src/
 */
@@ -138,11 +144,17 @@ char 			*ft_reduce_spaces(const char *str);
 int				is_redirection(char *str);
 int				is_pipe(char *str);
 int				is_semicolon(char *str);
-int 			is_end(char *str);
+int				is_now_or_prev(t_vars *v, t_list *list);
 int				reset_std(t_vars *v);
 
 char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
+
+
+
+t_list *lastpipe(t_list *headptr);
+t_list *firstpipe(t_list *headptr);
+
 
 /*
 ** Signals
