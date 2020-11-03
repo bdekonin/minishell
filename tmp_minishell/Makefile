@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/10/31 12:13:38 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/03 11:40:50 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,9 @@ SRC = \
 	/handle_relative.c \
 	/handle_static.c \
 	/signal.c \
+	/utils/pipeutils.c \
+	/utils/argumentadder.c \
+	/utils/argumentremover.c \
 	/utils/debug_functions.c \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \
