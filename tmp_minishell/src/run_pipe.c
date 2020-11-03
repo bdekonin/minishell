@@ -28,8 +28,6 @@ int pipe_handler(t_vars *v, t_list *temp)
 	}
 	else
 		waitpid(forky, NULL, 0);
-	// if (forky == 0)
-		// exit(EXIT_SUCCESS);
 	return (1);
 }
 
