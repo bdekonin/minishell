@@ -68,7 +68,7 @@ int				pipe_handler(t_vars *v, t_cmd *list)
 {
 	int opper_fd[2];
 	pid_t forky;
-	savefd(v);
+	// savefd(v);
 	forky = fork();
 	if (forky < 0)
 		ft_exit_error(v, EXIT_FAILURE, 1);

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 17:30:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 00:39:40 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int swaparguments(t_cmd *current)
 		star = ft_strchr(current->line, '*');
 		if (current->prev == NULL)
 			return (0);
-		if (current->prev->type == ANGLEBRACKETLEFT)
+		if (current->prev->type == ANGLEBRACKETLEFT || current->prev->type == PIPELINE)
 			return (0);
 		newstring = ft_strjoin(current->prev->line, star);
 		// Malloc Check
@@ -137,6 +137,13 @@ int redirection_handler(t_vars *v, t_cmd *list)
 	{
 		swaparguments(lastredir(list));
 		if (mainredir(v, list->type, list->next->line) == 0)
+			return (0);
+	}
+	if (list->type == PIPELINE && lastpipe(list) && lastpipe(list)->type >= 60 && lastpipe(list)->type != PIPELINE)
+	{
+		// dprintf(2, "kaki\n");
+		// swaparguments(lastredir(lastpipe(list)));
+		if (mainredir(v, lastpipe(list)->type, lastpipe(list)->next->line) == 0)
 			return (0);
 	}
 	return (1);
