@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/01 21:14:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 18:56:02 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,16 +92,24 @@ static void parse_cmd(t_vars *v, char *dst, char *src)
 	}
 }
 
-void		expansion(t_vars *v, char **arg)
+void		expansion(t_vars *v)
 {
-	char *dst;
+	char	*dst;
+	t_cmd	*tmp;
+	char	**src;
 
-//	printf("before exp = [%s]\n", *arg);				//debug
-	dst = ft_calloc(PATH_MAX + 1, sizeof(char));
-	if (!dst)
-		ft_exit_error(v, EXIT_FAILURE, 1);
-	parse_cmd(v, dst, *arg);
-	ft_free(*arg);
-	*arg = dst;
-//	printf("after  exp = [%s]\n", *arg);			//debug
+	tmp = v->cmd;
+	while (tmp)
+	{
+		src = &tmp->line;
+	//	printf("before exp = [%s]\n", *src);			//debug
+		dst = ft_calloc(PATH_MAX + 1, sizeof(char));
+		if (!dst)
+			ft_exit_error(v, EXIT_FAILURE, 1);
+		parse_cmd(v, dst, *src);
+		ft_free(*src);
+		*src = dst;
+	//	printf("after  exp = [%s]\n", *src);			//debug
+		tmp = tmp->next;
+	}
 }

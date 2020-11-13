@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 17:31:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 18:52:46 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,13 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	if (!syntax_error_check(v, cli))
 		return (ft_free(cli));
 	size_t splitsize = 0;
-	args = ft_split_multi(cli, ";", &splitsize);
+	args = ft_split_sep_exep(cli, ";", &splitsize);
 	free(cli);
 	i = 0;
 	while (i < splitsize)
 	{
 		create_tokens(v, args[i]);
-		// expension
+		expansion(v);
 		execute_loop(v, v->cmd);
 
 		cmd__ft_lstclear(&v->cmd, free);

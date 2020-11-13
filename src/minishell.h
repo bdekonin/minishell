@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/12 21:13:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 18:55:51 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void			find_semicolons(t_vars *v);
 void			split_tokens(t_vars *v, char *string);
 int				run_command(t_vars *v, char **params);
 int				ft_execve(t_vars *v, char **params);
-void			expansion(t_vars *v, char **arg);
+void			expansion(t_vars *v);
 int	        	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
 
 
@@ -140,6 +140,7 @@ int				ft_env(t_vars *v, char **params);
 **				src/utils
 */
 
+char			**ft_split_sep_exep(const char *src, char *sep, size_t *size);
 void			create_new_env_var(t_vars *v, char *name, char *content);
 void			create_new_token(t_vars *v, const char *ptr, size_t len);
 t_list			*get_prev_node(t_vars *v, t_list *dst);
