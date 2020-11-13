@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/10 13:54:53 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/13 13:28:52 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/13 22:37:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t		find_identifier_len(char *str)
 	if (ft_isalpha(str[i]) || str[i] == '_')
 		i++;
 	else
-		return (i);
+		return (0);
 	while (ft_isalnum(str[i]) || str[i] == '_')
 		i++;
 	return (i);

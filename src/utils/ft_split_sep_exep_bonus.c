@@ -6,11 +6,19 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/16 08:58:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/14 10:49:44 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/13 18:50:50 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static size_t	skip_quotations(const char *cli, size_t i, char quotation)
+{
+	i++;
+	while (cli[i] && cli[i] != quotation && cli[i - 1] != '\\')
+		i++;
+	return (i);
+}
 
 static size_t	get_start(const char *src, char *sep, size_t i)
 {
@@ -27,19 +35,16 @@ static size_t	get_len(const char *src, char *sep, size_t start)
 	int		d_quot;
 
 	i = start;
-	len = 0;
-	s_quot = 0;
-	d_quot = 0;
-	while (src[i] != '\0' && (s_quot || s_quot || !ft_charsearch(src[i], sep)))
+	len = start;
+	while (src[i] != '\0' && !ft_charsearch(src[i], sep))
 	{
 		if (src[i] == '\'' && (i == 0 || src[i - 1] != '\\'))
-        	s_quot = 1 - s_quot;
+        	i = skip_quotations(src, i, '\'');
         else if (src[i] == '\"' && (i == 0 || src[i - 1] != '\\'))
-        	d_quot = 1 - d_quot;
+        	i = skip_quotations(src, i, '\"');
 		i++;
-		len++;
 	}
-	return (len);
+	return (i - len);
 }
 
 static size_t	count_strings(const char *src, char *sep)
@@ -87,7 +92,7 @@ static int		init_dst(char **dst, const char *src, char *sep, size_t size)
 	return (1);
 }
 
-char			**ft_split_multi_exep(const char *src, char *sep, size_t *size)
+char			**ft_split_sep_exep(const char *src, char *sep, size_t *size)
 {
 	char	**dst;
 	size_t	array_size;

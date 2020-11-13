@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 15:24:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 21:50:59 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ size_t	skip_quotations(const char *cli, char quotation_type)
 
 	i = 1;
 	while (cli[i] && cli[i] != quotation_type && cli[i - 1] != '\\')
-		i++;
-	if (cli[i] == quotation_type)
 		i++;
 	return (i);
 }
@@ -41,8 +39,7 @@ static size_t	get_len(const char *cli, size_t start)
 			i = i + skip_quotations(cli + i, '\'');
 		else if (cli[i] == '\"' && (i == 0 || cli[i - 1] != '\\'))
 			i = i + skip_quotations(cli + i, '\"');
-		else
-			i++;
+		i++;
 	}
 	return (i - start);
 }

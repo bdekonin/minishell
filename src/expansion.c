@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/01 21:14:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 22:27:50 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 static void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
 	*i += 1;
+	if (*i == 1 && src[*i] == '\"' && src[*i + 1] == '\0')
+	{
+		dst[*j] = ' ';
+		*j += 1;
+	}
 	while (src[*i] != '\0' && src[*i] != '\"')
 	{
 		if (src[*i] == '$')
@@ -75,14 +80,6 @@ static void parse_cmd(t_vars *v, char *dst, char *src)
 			copy_double_quote(v, dst, src, &i, &j);
 		else if (src[i] == '$')
 			copy_envvar(v, dst, src, &i, &j);
-		else if (src[i] == ' ')
-		{
-			dst[j] = '*';
-			j++;
-			while (src[i] == ' ')
-				i++;
-			i--;
-		}
 		else
 		{
 			dst[j] = src[i];
@@ -92,16 +89,45 @@ static void parse_cmd(t_vars *v, char *dst, char *src)
 	}
 }
 
-void		expansion(t_vars *v, char **arg)
+static void	combine_strings(t_vars *v, char *dst, char **src, size_t i)
 {
-	char *dst;
+	char sub_dst[PATH_MAX + 1];
+	
+//	printf("src = [%s]\n", src[i]);
+	ft_bzero(sub_dst, PATH_MAX + 1);
+	parse_cmd(v, sub_dst, src[i]);
+//	printf("dst = [%s]\n", sub_dst);
+	if (ft_strlen(dst))
+		ft_strlcat(dst, "*", PATH_MAX + 1);
+	ft_strlcat(dst, sub_dst, PATH_MAX + 1);
+}
 
-//	printf("before exp = [%s]\n", *arg);				//debug
-	dst = ft_calloc(PATH_MAX + 1, sizeof(char));
-	if (!dst)
-		ft_exit_error(v, EXIT_FAILURE, 1);
-	parse_cmd(v, dst, *arg);
-	ft_free(*arg);
-	*arg = dst;
-//	printf("after  exp = [%s]\n", *arg);			//debug
+void		expansion(t_vars *v)
+{
+	char	*dst;
+	t_cmd	*tmp;
+	char	**array;
+	size_t	i;
+	size_t	array_size;
+
+	tmp = v->cmd;
+	while (tmp)
+	{
+//		printf("before exp = [%s]\n", tmp->line);			//debug
+		array_size = 0;
+		array = ft_split_sep_exep(tmp->line, "* ", &array_size);
+		malloc_check(v, array);
+		dst = ft_calloc(PATH_MAX + 1, sizeof(char));
+		malloc_check(v, dst);
+		i = 0;
+		while (i < array_size)
+		{
+			combine_strings(v, dst, array, i);
+			i++;
+		}
+		ft_free(tmp->line);
+		tmp->line = dst;
+//		printf("after  exp = [%s]\n", tmp->line);			//debug
+		tmp = tmp->next;
+	}
 }

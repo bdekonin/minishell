@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/13 17:36:52 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/13 19:14:53 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,8 @@ SRC = \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \
 	/utils/expansion_utils.c \
+	/utils/ft_split_sep_exep_bonus.c \
+	/utils/malloc_check.c \
 	/utils/ft_iserrno_bonus.c \
 	/utils/ft_reduce_spaces.c \
 	/utils/find_env_var.c \
@@ -78,7 +80,7 @@ $(NAME): $(LIBFT) $(PRINTF) $(OBJ)
 	@$(CC) $(UNUSED) -o $(NAME) $(LIBFT) $(PRINTF) $(OBJ)
 
 obj/%.o: src/%.c
-	@mkdir -p obj obj/builtins/ obj/utils
+	@mkdir -p obj obj/builtins/ obj/utils obj/utils/cmd_list
 	$(CC) $(UNUSED) -c $< -o $@
 
 .PHONY: clean fclean re
