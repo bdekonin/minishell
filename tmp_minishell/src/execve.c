@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 22:02:57 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/12 19:12:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ int		ft_execve(t_vars *v, char **params)
 			return (FILENOTFOUND * 10);
 	}
 	if (ret == FILEERROR)
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 
 	envp = env_list_to_array(v);
 	if (!envp)
 	{
 		free(path);
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 	}
 	
 

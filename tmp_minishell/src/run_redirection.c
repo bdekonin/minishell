@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/01 11:33:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 17:30:01 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static int	read_file(t_vars *v, char *name, char **dest)
 {
 	int fd;
 	int ret;
-	
+
 	fd = open(name, O_RDONLY);
 	if (fd > -1)
 	{
 		ret = ft_getline(fd, dest);
 		close(fd);
 		if (ret < 0)
-			ft_exit_error(v, EXIT_FAILURE);
+			ft_exit_error(v, EXIT_FAILURE, 1);
 		return (1);
 	}
 	return (0);
@@ -36,7 +36,7 @@ static int run_angle_right_double(t_vars *v, char *filename)
 	char	*file_contents;
 	ssize_t	ret;
 	int		read_fd;
-	
+
 	file_contents = NULL;
 	ret = read_file(v, filename, &file_contents);
 	v->stdout_copy = dup(STDOUT_FILENO);
@@ -81,50 +81,63 @@ static int run_angle_left_single(t_vars *v, char *filename)
 	return (1);
 }
 
-int mainredir(t_vars *v, char *flag, char *filename)
+static int mainredir(t_vars *v, unsigned char type, char *filename)
 {
 	int ret;
+	size_t size;
+	char **argv;
 
-	if (!ft_strncmp(flag, ">>", 3))
-		ret = run_angle_right_double(v, filename);
-	else if (!ft_strncmp(flag, ">", 2))
-		ret = run_angle_right_single(v, filename);
-	else if (!ft_strncmp(flag, "<", 2))
-		ret = run_angle_left_single(v, filename);
+	argv = ft_split(filename, '*');
+	// malloc check
+	if (type == ANGLEBRACKETDOUBLERIGHT)
+		ret = run_angle_right_double(v, argv[0]);
+	else if (type == ANGLEBRACKETRIGHT)
+		ret = run_angle_right_single(v, argv[0]);
+	else if (type == ANGLEBRACKETLEFT)
+		ret = run_angle_left_single(v, argv[0]);
 	else
 		ret = 0;
+	ft_free_array((void**)argv, ft_array_size((const char**)argv));
 	if (!ret)
 		return (0);
 	return (ret);
 }
 
-int redirection_handler(t_vars *v, t_list *list)
-{	
-	int ret;
+// echo hoi > file1 hallo > file2 welkom
+# define LISTDONE 0
 
-	ret = addarguments(list, 0);
-	if (ret < 0)
-		ft_exit_error(v, EXIT_FAILURE);
+int swaparguments(t_cmd *current)
+{
+	char	*newstring;
+	char	*star;
+	int		ret;
 
-
-	// if (list->next == NULL)
-	// 	exit(4);
-
-	if (list->next && is_redirection(list->next->content))
+	if (current == NULL)
+		return (0);
+	if (ft_wordcount(current->line, '*') > 1 && current->type != ANGLEBRACKETLEFT)
 	{
-		// dprintf(2, "now [%s] - [%s]\n", list->next->content, list->next->next->content);
-		mainredir(v, list->next->content, list->next->next->content);
+		star = ft_strchr(current->line, '*');
+		if (current->prev == NULL)
+			return (0);
+		if (current->prev->type == ANGLEBRACKETLEFT)
+			return (0);
+		newstring = ft_strjoin(current->prev->line, star);
+		// Malloc Check
+		*star = '\0';
+		free(current->prev->line);
+		current->prev->line = newstring;
 	}
-	else if (firstpipe(v->cmd) && firstpipe(v->cmd) == list && \
-	lastpipe(list)->next && is_redirection(lastpipe(list)->next->content)) 
+	ret = swaparguments(current->prev);
+	return (ret);
+}
+
+int redirection_handler(t_vars *v, t_cmd *list)
+{
+	if (list && list->type >= 60 && list->type != PIPELINE)
 	{
-		mainredir(v, lastpipe(list)->next->content, lastpipe(list)->next->next->content);
+		swaparguments(lastredir(list));
+		if (mainredir(v, list->type, list->next->line) == 0)
+			return (0);
 	}
-
-	argumentremover(v, list);
-
-	// dprintf(2, "list->content = [%s]\n", list->content);
-	// dprintf(2, "list->next->content = [%s]\n", list->next->content);
-	// dprintf(2, "lastpipe(list)->content = [%s]\n\n", lastpipe(list)->content);
 	return (1);
 }

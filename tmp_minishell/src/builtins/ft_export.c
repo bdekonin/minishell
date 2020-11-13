@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/14 21:52:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/11 16:50:51 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,16 @@ static int		add_new_env_vars(t_vars *v, char *arg)
 	len_identifier = ft_substrlen(arg, "=");
 	name = ft_substr(arg, 0, len_identifier);
 	if (!name)
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 	ptr = ft_strchr(arg, '=');
 	if (!ptr)
 		content = NULL;
-	else if (ptr && ptr + 1 == '\0')
+	else if (ptr && *ptr + 1 == '\0')
 		content = ft_strdup("\0");
 	else
 		content = ft_strdup(ptr + 1);
 	if (ptr && !content)
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 	if (!find_env_var_name(&v->env, name, content))
 		create_new_env_var(v, name, content);
 	return (1);

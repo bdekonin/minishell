@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/01 11:25:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/12 21:13:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,21 @@
 //
 
 
+
+
 #include "../libft/libft.h"
 #include <stdlib.h>		//EXIT_FAILURE EXIT_SUCCESS
 #include <limits.h>		//PATH_MAX
 #include <unistd.h>		//STDIN_FILENO
 #include <errno.h>		//ERRNO, ENOMEM
 #include <string.h>		//str_error
+# include "utils/cmd_list/cmd.h"
 
 # include <stdio.h>
 
-
-
-// Execve
+/*
+** Execve https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html
+*/
 # define FILEERROR -1
 # define FILENOTFOUND 127
 # define FILEFOUND 1
@@ -39,16 +42,25 @@
 # define ENOENT 2
 # define EACCES 13
 
+# define NUMARG 998
+# define ARGCOUNT 999
+
 # define MINISHELL_ENOENT "No such file or directory"
 # define MINISHELL_EACCES "Permission denied"
 # define MINISHELL_CMDERR "command not found"
-
+# define MINISHELL_NUMARG "numeric argument required"
+# define MINISHELL_ARGCOUNT "too many arguments"
 
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n"
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
 # define INVALID_IDENTIFIER "%s: export: `%s': not a valid identifier\n"
 # define PROMPT "minishell-1.0$ "
 # define MINISHELL "minishell"
+
+# define PIPELINE 124 // |
+# define ANGLEBRACKETLEFT 60 // <
+# define ANGLEBRACKETRIGHT 62 // >
+# define ANGLEBRACKETDOUBLERIGHT 63 // >>
 
 typedef	struct	s_env
 {
@@ -59,7 +71,8 @@ typedef	struct	s_env
 typedef struct  s_vars{
 	int			fd;
 	t_list		*env;
-	t_list		*cmd;				//linked list of all tokens
+	t_list		*tempcmd;
+	t_cmd		*cmd;				//linked list of all tokens
 	t_list		**semicolon_ptrs;	//pointers to the first token after a `;'
 	char		*prefix;
 	char		*current_path;
@@ -73,8 +86,6 @@ typedef struct  s_vars{
 	t_env		*default_homedir;
 	t_env		*default_oldpwd;
 }               t_vars;
-
-
 
 /*
 **				libraries
@@ -110,7 +121,7 @@ int				handle_static(t_vars *v, char **newpath, char *command);
 int				validate_file(char *filepath);
 
 
-int redirection_handler(t_vars *v, t_list *command);
+int redirection_handler(t_vars *v, t_cmd *command);
 
 /*
 **				src/builtins
@@ -120,7 +131,7 @@ int				ft_cd(t_vars *v, char **params);
 int				ft_pwd(t_vars *v, char **params);
 int 			ft_echo(t_vars *v, char **params);
 int				ft_exit(t_vars *v, char **params);
-void    		ft_exit_error(t_vars *v, int status);
+void			ft_exit_error(t_vars *v, int status, int print);
 int 			ft_export(t_vars *v, char **params);
 int 			ft_unset(t_vars *v, char **params);
 int				ft_env(t_vars *v, char **params);
@@ -152,8 +163,9 @@ char			*cmd_str(int i);
 
 
 
-t_list *lastpipe(t_list *headptr);
-t_list *firstpipe(t_list *headptr);
+// t_list *lastpipe(t_list *headptr);
+t_cmd *lastpipe(t_cmd *headptr);
+t_cmd *lastredir(t_cmd *headptr);
 
 
 /*

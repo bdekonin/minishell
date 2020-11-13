@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/10/31 12:13:38 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/12 20:12:52 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC = \
 	/handle_relative.c \
 	/handle_static.c \
 	/signal.c \
+	/utils/pipeutils.c \
 	/utils/debug_functions.c \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \
@@ -42,8 +43,16 @@ SRC = \
 	/builtins/ft_export_utils.c \
 	/builtins/ft_export.c \
 	/builtins/ft_pwd.c \
-	/builtins/ft_unset.c
-
+	/builtins/ft_unset.c \
+	/utils/cmd_list/ft_cmd_print_list.c \
+	/utils/cmd_list/ft_cmdadd_back_bonus.c \
+	/utils/cmd_list/ft_cmdadd_front_bonus.c \
+	/utils/cmd_list/ft_cmdclear_bonus.c \
+	/utils/cmd_list/ft_cmddelone_bonus.c \
+	/utils/cmd_list/ft_cmdlast_bonus.c \
+	/utils/cmd_list/ft_cmdnew_bonus.c \
+	/utils/cmd_list/ft_cmdsize_bonus.c
+	
 OBJ = $(addprefix obj, $(SRC:.c=.o))
 
 CC = gcc -Wall -Wextra -Werror -g

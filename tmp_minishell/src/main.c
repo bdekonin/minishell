@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/01 11:41:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 17:31:21 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,49 +62,52 @@ void		split_tokens(t_vars *v, char *string)
 
 	tokens = ft_split_multi(string, "*", &size_tokens);
 	if (!tokens)
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 	v->cmd_ret = run_command(v, tokens);
 	ft_free_array((void **)tokens, size_tokens);
 	reset_std(v);
 }
 
-int pipe_handler(t_vars *v, t_list *temp);
+int pipe_handler(t_vars *v, t_cmd *temp);
+
 // ls > output.txt src libft | wc > tester
-int		execute_loop(t_vars *v, t_list *list)
+// pwd > output
+// cat | cat -e > output
+// ls > output.txt src libft | wc > tester
+// [> output]
+// [echo hoi > file1 hallo > file2 welkom]
+
+int		execute_loop(t_vars *v, t_cmd *list)
 {
-	t_list		*temp;
+	int ret;
 
 	signal(SIGQUIT, signal_execve);
 	signal(SIGINT, signal_execve);
 	while (list)
 	{
-		char *test = list->content;
-		redirection_handler(v, list);
-		if (list->next && is_pipe(list->next->content))
+		// if (lastpipe(list))
+		// 	ft_printf("---[%s] - [%c]\n", lastpipe(list)->line, lastpipe(list)->type);
+		if (redirection_handler(v, list) == 0)
+			break;
+		if (list->type == PIPELINE)
 		{
-			pipe_handler(v, list); // pipe returnvalues
+			pipe_handler(v, list);
 			list = lastpipe(list);
 		}
-		else if (!is_now_or_prev(v, list))
-			split_tokens(v, list->content);
+		else if (!list->prev || list->prev->type == 0)
+			split_tokens(v, list->line);
 		list = list->next;
-		reset_std(v);
 	}
-	// ft_printf("\n\n");
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);
 	return (1);
 }
 
-
-// pwd > output
-// cat | cat -e > output
-// ls > output.txt src libft | wc > tester
 static int	read_command_line_input(t_vars *v, char *cli)
 {
 	size_t	i;
 	char **args;
-	
+
 	if (!syntax_error_check(v, cli))
 		return (ft_free(cli));
 	size_t splitsize = 0;
@@ -114,20 +117,15 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	while (i < splitsize)
 	{
 		create_tokens(v, args[i]);
-
-		for (t_list *list = v->cmd; list; list = list->next)
-		{
-			if (!is_pipe(list->content) && !is_redirection(list->content))
-				expansion(v, (char**)&list->content);
-		}
+		// expension
 		execute_loop(v, v->cmd);
-		ft_lstclear(&v->cmd, free);
-		free(args[i]);
+
+		cmd__ft_lstclear(&v->cmd, free);
 		i++;
 	}
-	free(args);
-	ft_lstclear(&v->cmd, free);
-	return (ft_free(v->semicolon_ptrs));
+	ft_free_array((void**)args, splitsize);
+	cmd__ft_lstclear(&v->cmd, free);
+	return (1);
 }
 
 int 		main(int argc, char **argv, char **envp)
@@ -140,7 +138,7 @@ int 		main(int argc, char **argv, char **envp)
 	{
 		ft_putstr_fd(PROMPT, STDERR_FILENO);
 		if (get_next_line(STDIN_FILENO, &cli) < 0)
-			ft_exit_error(&v, EXIT_FAILURE);
+			ft_exit_error(&v, EXIT_FAILURE, 0);
 		read_command_line_input(&v, cli);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 #    By: lverdoes <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/11/22 17:32:04 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/09/22 17:00:11 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/11/12 20:08:58 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,8 @@ ADDED =	\
 	/added/ft_strxjoin_bonus.c \
 	/added/ft_str_to_lower_bonus.c \
 	/added/ft_str_to_upper_bonus.c \
-	/added/ft_substrlen_bonus.c
+	/added/ft_substrlen_bonus.c \
+	/added/ft_wordcount.c
 
 OBJ = $(addprefix obj, $(MANDATORY:.c=.o) $(BONUS:.c=.o) $(ADDED:.c=.o))
 

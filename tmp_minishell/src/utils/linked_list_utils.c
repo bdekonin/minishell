@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 20:11:14 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/14 22:07:29 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/11 18:57:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	create_new_env_var(t_vars *v, char *name, char *content)
 	
 	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 	node->name = name;
 	node->content = content;
 	new = ft_lstnew(node);
 	if (!new)
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 	ft_lstadd_back(&v->env, new);
 }
 size_t	skip_quotations(const char *cli, char quotation_type);
@@ -55,20 +55,20 @@ void	create_new_token(t_vars *v, const char *ptr, size_t len)
 	str = ft_substr(ptr, 0, len); 
 	test(str);
 	if (!str)
-		ft_exit_error(v, EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 1);
 	new = ft_lstnew(str);
 	if (!new)
-		ft_exit_error(v, EXIT_FAILURE);
-	ft_lstadd_back(&v->cmd, new);
+		ft_exit_error(v, EXIT_FAILURE, 1);
+	ft_lstadd_back(&v->tempcmd, new);
 }
 
 t_list	*get_prev_node(t_vars *v, t_list *dst)
 {
 	t_list *tmp;
 	
-	if (dst == v->cmd)
+	if (dst == v->tempcmd)
 		return (NULL);
-	tmp = v->cmd;
+	tmp = v->tempcmd;
 	while (tmp)
 	{
 		if (tmp->next == dst)

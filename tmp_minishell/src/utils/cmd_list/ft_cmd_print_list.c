@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_pwd.c                                           :+:    :+:            */
+/*   ft_cmd_print_list.c                                :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/14 15:35:58 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/12 13:11:01 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/11/11 16:40:30 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/12 13:07:29 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "cmd.h"
+#include "../../minishell.h"
 
-int	ft_pwd(t_vars *v, char **params)
+void	cmd__ft_printlist(t_cmd *cmd)
 {
-	v->current_path = getcwd(v->current_path, PATH_MAX);
-	if (!v->current_path)
-		ft_printf("ERROR\n");
-	ft_printf("%s\n", v->current_path);
-	(void)(params);
-	return (0);
+	int i;
+
+	i = 0;
+	while (cmd)
+	{
+		dprintf(2, "[%d] - [%s] - [%c]\n", i, cmd->line, cmd->type);
+		i++;
+		cmd = cmd->next;
+	}
+	return ;
 }

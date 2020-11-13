@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 23:01:11 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/30 22:09:00 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 15:45:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int reset_stdin(t_vars *v)
 {
-	dup2(v->stdin_copy, 0);
+	dup2(v->stdin_copy, STDIN_FILENO);
 	close(v->stdin_copy);
 	v->stdin_copy = 0;
 	return (1);
@@ -22,7 +22,7 @@ static int reset_stdin(t_vars *v)
 
 static int reset_stdout(t_vars *v)
 {
-	dup2(v->stdout_copy, 1);
+	dup2(v->stdout_copy, STDOUT_FILENO);
 	close(v->stdout_copy);
 	v->stdout_copy = 0;
 	return (1);

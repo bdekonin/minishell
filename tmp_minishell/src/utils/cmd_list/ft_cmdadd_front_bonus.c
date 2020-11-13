@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_pwd.c                                           :+:    :+:            */
+/*   ft_cmdadd_front_bonus.c                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/14 15:35:58 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/12 13:11:01 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/18 12:26:08 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/11 16:52:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "cmd.h"
 
-int	ft_pwd(t_vars *v, char **params)
+void	cmd__ft_lstadd_front(t_cmd **alst, t_cmd *new)
 {
-	v->current_path = getcwd(v->current_path, PATH_MAX);
-	if (!v->current_path)
-		ft_printf("ERROR\n");
-	ft_printf("%s\n", v->current_path);
-	(void)(params);
-	return (0);
+	if (!alst || !new)
+		return ;
+	new->next = *alst;
+	*alst = new;
 }
+

@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_pwd.c                                           :+:    :+:            */
+/*   ft_wordcount.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/14 15:35:58 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/12 13:11:01 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/11/12 20:08:16 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/12 20:08:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../libft.h"
 
-int	ft_pwd(t_vars *v, char **params)
+size_t		ft_wordcount(const char *s, char c)
 {
-	v->current_path = getcwd(v->current_path, PATH_MAX);
-	if (!v->current_path)
-		ft_printf("ERROR\n");
-	ft_printf("%s\n", v->current_path);
-	(void)(params);
-	return (0);
+	size_t	i;
+	size_t	w;
+
+	i = 0;
+	w = 0;
+	while (s[i])
+	{
+		if (s[i] != c)
+			w += 1;
+		while (s[i] != c && s[i + 1])
+			i += 1;
+		i += 1;
+	}
+	return (w);
 }
