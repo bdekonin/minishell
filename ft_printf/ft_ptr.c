@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/24 14:55:33 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/21 19:54:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/13 10:50:31 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*ft_ulltohex(unsigned long long n, t_list *flags)
 	int		len;
 
 	len = find_len(n);
-	str = ft_calloc2((len + 1), sizeof(char));
+	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	flags->neg = 0;
@@ -62,7 +62,7 @@ static char	*concat_ptr(char *hex, int len)
 	int		i;
 	int		j;
 
-	str = ft_calloc2((len + 3), sizeof(char));
+	str = malloc((len + 3) * sizeof(char));
 	if (!str)
 		return (0);
 	str[0] = '0';

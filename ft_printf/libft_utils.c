@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 17:57:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/22 13:14:29 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/13 10:51:31 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		ft_printf_strlen(const char *str)
 	return (i);
 }
 
-int		ft_putstr(t_list *flags)
+int		ft_printf_putstr(t_list *flags)
 {
 	if (write(1, flags->fstr, flags->len_fstr) != flags->len_fstr)
 	{
@@ -41,7 +41,7 @@ char	*ft_printf_strdup(const char *s1)
 	if (!s1)
 		s1 = "(null)";
 	len = ft_printf_strlen(s1);
-	dest = ft_calloc2((len + 1), sizeof(char));
+	dest = malloc((len + 1) * sizeof(char));
 	if (!dest)
 		return (0);
 	i = 0;
@@ -54,7 +54,7 @@ char	*ft_printf_strdup(const char *s1)
 	return (dest);
 }
 
-int		ft_atoi2(const char *str)
+int		ft_printf_atoi(const char *str)
 {
 	unsigned long long	result;
 	int					neg;
@@ -77,21 +77,3 @@ int		ft_atoi2(const char *str)
 	result = result * neg;
 	return (result);
 }
-
-void	*ft_calloc2(size_t count, size_t size)
-{
-	size_t	i;
-	char	*str;
-
-	i = 0;
-	str = malloc(sizeof(char) * (count * size));
-	if (!str)
-		return (NULL);
-	while (i < (count))
-	{
-		str[i] = 0;
-		i++;
-	}
-	return (str);
-}
-

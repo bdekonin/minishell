@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/05 14:53:01 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/05/17 14:58:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/10/13 10:53:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	convert_arg(const char *fmt, t_list *flags, int i, va_list argp)
 		return (free_struct(flags));
 	if (ft_csearch(flags->conversion, "pdiuxX") > -1 && !format_int(flags))
 		return (free_struct(flags));
-	if (!ft_putstr(flags))
+	if (!ft_printf_putstr(flags))
 		return (free_struct(flags));
 	free(flags->fstr);
 	return (1);

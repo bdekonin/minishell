@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/10 10:23:47 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/07/21 19:54:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/10/13 10:49:52 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ static int	find_len(int n)
 	return (len);
 }
 
-char		*ft_itoa(int n, t_list *flags)
+char		*ft_printf_itoa(int n, t_list *flags)
 {
 	int		len;
 	char	*str;
 
 	len = find_len(n);
-	str = ft_calloc2((len + 1), sizeof(char));
+	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	if (n < 0)

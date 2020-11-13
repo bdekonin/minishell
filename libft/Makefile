@@ -3,61 +3,124 @@
 #                                                         ::::::::             #
 #    Makefile                                           :+:    :+:             #
 #                                                      +:+                     #
-#    By: bdekonin <bdekonin@student.codam.nl>         +#+                      #
+#    By: lverdoes <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
-#    Created: 2019/10/29 12:24:22 by bdekonin      #+#    #+#                  #
-#    Updated: 2020/07/20 14:02:10 by lverdoes      ########   odam.nl          #
+#    Created: 2019/11/22 17:32:04 by lverdoes      #+#    #+#                  #
+#    Updated: 2020/11/12 20:08:58 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NOCOLOR = \033[0m
-GREEN = \033[92m
+NAME =	libft.a
 
-NAME = libft.a
+MANDATORY =	\
+	/mandatory/ft_memset.c \
+	/mandatory/ft_bzero.c \
+	/mandatory/ft_memcpy.c \
+	/mandatory/ft_memccpy.c \
+	/mandatory/ft_memmove.c \
+	/mandatory/ft_memchr.c \
+	/mandatory/ft_memcmp.c \
+	/mandatory/ft_strlen.c \
+	/mandatory/ft_strlcpy.c \
+	/mandatory/ft_strlcat.c \
+	/mandatory/ft_strchr.c \
+	/mandatory/ft_strrchr.c \
+	/mandatory/ft_strnstr.c \
+	/mandatory/ft_strncmp.c \
+	/mandatory/ft_atoi.c \
+	/mandatory/ft_isalpha.c \
+	/mandatory/ft_isdigit.c \
+	/mandatory/ft_isalnum.c \
+	/mandatory/ft_isascii.c \
+	/mandatory/ft_isprint.c \
+	/mandatory/ft_toupper.c \
+	/mandatory/ft_tolower.c \
+	/mandatory/ft_calloc.c \
+	/mandatory/ft_strdup.c \
+	/mandatory/ft_substr.c \
+	/mandatory/ft_strjoin.c \
+	/mandatory/ft_strtrim.c \
+	/mandatory/ft_split.c \
+	/mandatory/ft_itoa.c \
+	/mandatory/ft_strmapi.c \
+	/mandatory/ft_putchar_fd.c \
+	/mandatory/ft_putstr_fd.c \
+	/mandatory/ft_putendl_fd.c \
+	/mandatory/ft_putnbr_fd.c
 
-EXTRA_SRC = get_next_line.c \
-ft_swap_bonus.c ft_strsearch_bonus.c \
-ft_wordcount_bonus.c ft_counter_bonus.c ft_intlen_bonus.c ft_abs_bonus.c \
-ft_free_array_bonus.c ft_charsearch_bonus.c ft_strcat_bonus.c \
-ft_str_tolower_bonus.c ft_split_sep_bonus.c ft_strcmp_bonus.c \
-ft_getline_bonus.c ft_iserrno_bonus.c ft_strexpand_bonus.c ft_strxjoin_bonus.c \
+BONUS =	\
+	/bonus/ft_lstnew_bonus.c \
+	/bonus/ft_lstadd_front_bonus.c \
+	/bonus/ft_lstsize_bonus.c \
+	/bonus/ft_lstlast_bonus.c \
+	/bonus/ft_lstadd_back_bonus.c \
+	/bonus/ft_lstdelone_bonus.c \
+	/bonus/ft_lstclear_bonus.c \
+	/bonus/ft_lstiter_bonus.c \
+	/bonus/ft_lstmap_bonus.c
 
+ADDED =	\
+	/added/get_next_line_bonus.c \
+	/added/ft_append_bonus.c \
+	/added/ft_array_size_bonus.c \
+	/added/ft_arraydup_bonus.c \
+	/added/ft_atod_bonus.c \
+	/added/ft_charsearch_bonus.c \
+	/added/ft_counter_bonus.c \
+	/added/ft_free_array_bonus.c \
+	/added/ft_getline_bonus.c \
+	/added/ft_iswhitespace_bonus.c \
+	/added/ft_print_array_bonus.c \
+	/added/ft_realloc_bonus.c \
+	/added/ft_split_multi_bonus.c \
+	/added/ft_strcmp_bonus.c \
+	/added/ft_strexpand_bonus.c \
+	/added/ft_strxjoin_bonus.c \
+	/added/ft_str_to_lower_bonus.c \
+	/added/ft_str_to_upper_bonus.c \
+	/added/ft_substrlen_bonus.c \
+	/added/ft_wordcount.c
 
-SRCS = $(EXTRA_SRC) ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
-ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c \
-ft_memccpy.c ft_memchr.c ft_memcmp.c ft_memcpy.c \
-ft_memmove.c ft_memset.c ft_putchar_fd.c \
-ft_putendl_fd.c ft_putnbr_fd.c \
-ft_putstr_fd.c ft_split.c ft_strchr.c \
-ft_strdup.c	ft_strjoin.c ft_strlcat.c ft_strlcpy.c \
-ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnstr.c \
-ft_strrchr.c ft_substr.c ft_tolower.c ft_toupper.c \
-ft_strtrim.c \
-ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c \
-ft_lstlast_bonus.c ft_lstnew_bonus.c ft_lstsize_bonus.c \
-ft_lstdelone_bonus.c ft_lstiter_bonus.c ft_lstclear_bonus.c \
-ft_lstmap_bonus.c
+OBJ = $(addprefix obj, $(MANDATORY:.c=.o) $(BONUS:.c=.o) $(ADDED:.c=.o))
 
-OFILES = $(SRCS:.c=.o)
+CC = gcc -Wall -Wextra -Werror
 
 INCLUDES = libft.h
 
+IGNORE = .gitignore
+
 all: $(NAME)
 
-$(NAME): $(OFILES) $(INCLUDES)
+$(NAME): $(OBJ)
 	@ar rcs $(NAME) $?
-	@echo "$(GREEN)[libft] - Created a Library and Object Files.$(NOCOLOR)"
 
-%.o: %.c
-	$(CC) -Wall -Wextra -Werror -c $<
+obj/%.o: %.c
+	@mkdir -p obj obj/mandatory obj/bonus obj/added
+	$(CC) -c $< -o $@
+
+norm:
+	@norminette $(addprefix ., $(MANDATORY) $(BONUS) $(ADDED)) $(INCLUDES) Makefile
+
+ignore:
+	@echo $(NAME) > $(IGNORE)
+	@echo .DS_Store >> $(IGNORE)
+	@echo *.o >> $(IGNORE)
+	@echo **/obj >> $(IGNORE)
+	@echo a.out  >> $(IGNORE)
+	@echo main.c >> $(IGNORE)
+	@echo *.txt >> $(IGNORE)
+
+.PHONY:	clean fclean re
 
 clean:
-	@/bin/rm -f $(OFILES)
+	@/bin/rm -f $(OBJ)
+	@/bin/rm -f *~
+	@/bin/rm -f *.o
+	@/bin/rm -f .DS_Store
 	@/bin/rm -f a.out
-	@echo "$(GREEN)[libft] - Removed All Object Files.$(NOCOLOR)"
 
-fclean:    clean
+fclean: clean
 	@/bin/rm -f $(NAME)
-	@echo "$(GREEN)[libft] - Removed .a file and all .o files.$(NOCOLOR)"
+	@/bin/rm -f *.a
 
 re: fclean all
