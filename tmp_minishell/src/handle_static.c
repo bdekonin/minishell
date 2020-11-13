@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/12 14:57:26 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 17:36:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-static int searchDir(char *location, char *command)
+static int	searchDir(char *location, char *command)
 {
-	struct dirent *dp;
-	DIR *dir;
+	struct dirent	*dp;
+	DIR				*dir;
 
 	dir = opendir(location);
 	if (!dir)
@@ -50,10 +50,10 @@ static int searchDir(char *location, char *command)
 
 static int	loop_locations(t_vars *v, char **new_path, char *command)
 {
-	char **locations;
-	size_t splitsize;
-	int i;
-	int ret;
+	char	**locations;
+	size_t	splitsize;
+	int		i;
+	int		ret;
 
 	i = 0;
 	ret = FILENOTFOUND;
@@ -99,38 +99,26 @@ static int	looper(t_vars *v, char **newpath, char *command)
 	return (ret);
 }
 
-int	handle_static(t_vars *v, char **newpath, char *command)
+int			handle_static(t_vars *v, char **newpath, char *command)
 {
 	int ret;
-	
-	ret = looper(v, newpath, command);
-	if (ret == FILEERROR)
-		return (FILEERROR);
+	if (ft_strncmp(command, "/", 1))
+	{
+		ret = looper(v, newpath, command);
+		if (ret == FILEERROR)
+			return (FILEERROR);
+	}
+	else
+	{
+		*newpath = ft_strdup(command);
+		if (!*newpath)
+			return (FILEERROR);
+	}
 	ret = validate_file(*newpath);
-
 	if (ret == FILEFOUND)
 		return (FILEFOUND);
-
-	// Errors
 	if (ret == FILEPERMISSIONS)
 		ft_printerror(command, EACCES);
 	free(*newpath);
 	return (ret);
 }
-
-
-// minishell-1.0$ ls
-// ret_loopter - [1]
-// ret_validate_file - [1]
-
-// minishell-1.0$ return_8
-// ret_loopter - [1]
-// ret_validate_file - [1]
-
-// minishell-1.0$ askhjdg
-// ret_loopter - [1]
-// ret_validate_file - [127]
-
-// minishell-1.0$ return_8_noperm
-// ret_loopter - [1]
-// ret_validate_file - [126]

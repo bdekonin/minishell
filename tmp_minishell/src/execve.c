@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/12 19:12:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 17:36:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		ft_execve(t_vars *v, char **params)
 
 	// Temp
 	int ret = -2;
-	if (!ft_strncmp(params[0], "./", 2) || !ft_strncmp(params[0], "/", 1))
+	if (!ft_strncmp(params[0], "./", 2))
 	{
 		ret = handle_relative(v, &path, params[0]);
 		if (ret == FILEPERMISSIONS || ret == FILENOTFOUND)
@@ -59,7 +59,6 @@ int		ft_execve(t_vars *v, char **params)
 	else
 	{
 		ret = handle_static(v, &path, params[0]);
-		// printf("STATIC - [%d]\n", ret);
 		if (ret == FILEPERMISSIONS)
 			return (ret);
 		else if (ret == FILENOTFOUND)
@@ -74,9 +73,6 @@ int		ft_execve(t_vars *v, char **params)
 		free(path);
 		ft_exit_error(v, EXIT_FAILURE, 1);
 	}
-	
-
-	
 	// Start
 	signal(SIGQUIT, signal_exec);
 	signal(SIGINT, signal_exec);
@@ -92,9 +88,6 @@ int		ft_execve(t_vars *v, char **params)
 	else
 		waitpid(forky, &stat, 0);
 	// End
-
-
-
 	ft_free_array((void **)envp, ft_lstsize(v->env));
 	free(path);
 	return (WEXITSTATUS(stat));
