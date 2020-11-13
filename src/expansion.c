@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 18:56:02 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/13 19:21:15 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ void		expansion(t_vars *v)
 		src = &tmp->line;
 	//	printf("before exp = [%s]\n", *src);			//debug
 		dst = ft_calloc(PATH_MAX + 1, sizeof(char));
-		if (!dst)
-			ft_exit_error(v, EXIT_FAILURE, 1);
+		malloc_check(v, dst);
 		parse_cmd(v, dst, *src);
 		ft_free(*src);
 		*src = dst;

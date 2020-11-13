@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/07 11:45:55 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/12 14:54:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 19:25:05 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ static void			env__missing(t_vars *v, char *name, char *content)
 {
 	ft_printf(ENVIRONMENT_VAR_MISSING, name, content);
 	name = ft_strdup(name);
-	if (!name)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, name);
 	content = ft_strdup(content);
-	if (!content)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, content);
 	create_new_env_var(v, name, content);
 }
 
@@ -29,8 +27,7 @@ static void			env__oldpwd(t_vars *v, t_env *env)
 	char *temp;
 
 	temp = ft_calloc(PATH_MAX + 1, sizeof(char));
-	if (!temp)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, temp);
 	ft_strlcpy(temp, env->content, ft_strlen(temp) + 1);
 	free(env->content);
 	env->content = temp;
@@ -72,14 +69,11 @@ static void	create_env_list(t_vars *v, char **envp)
 	while (envp[i] != NULL)
 	{
 		temp = ft_strchr(envp[i], '=');
-		if (!temp)
-			ft_exit_error(v, EXIT_FAILURE, 1);
+		malloc_check(v, temp);
 		name = ft_substr(envp[i], 0, (size_t)(temp - envp[i]));
-		if (!name)
-			ft_exit_error(v, EXIT_FAILURE, 1);
+		malloc_check(v, name);
 		content = ft_substr(temp, 1, ft_strlen(temp + 1));
-		if (!content)
-			ft_exit_error(v, EXIT_FAILURE, 1);
+		malloc_check(v, content);
 		create_new_env_var(v, name, content);
 		i++;
 	}
@@ -89,11 +83,9 @@ void		initialize(t_vars *v, char **envp)
 {
 	ft_bzero(v, sizeof(t_vars));
 	v->prefix = ft_strdup(PROMPT);
-	if (!v->prefix)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, v->prefix);
 	v->current_path = ft_calloc(PATH_MAX + 1, sizeof(char));
-	if (!v->current_path)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, v->current_path);
 	v->current_path = getcwd(v->current_path, PATH_MAX);
 	v->pipefd[0] = -1; // not used
 	v->pipefd[1] = -1; // not used

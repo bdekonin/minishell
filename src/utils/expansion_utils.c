@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/01 21:14:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/13 19:23:02 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ static int	ret_value_last_cmd(t_vars *v, char *dst, char *src, size_t *i, size_t
 	char *tmp;
 
 	tmp = ft_itoa(v->cmd_ret);
-	if (!tmp)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, tmp);
 	ft_strlcat(dst + *j, tmp, PATH_MAX + 1);
 	*j += ft_strlen(tmp);
 	ft_free(tmp);
@@ -47,7 +46,7 @@ int	        copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	char	*split_content;
 	
 	*i += 1;
-	if (src[*i] == '?')			//new func
+	if (src[*i] == '?')
 		return (ret_value_last_cmd(v, dst, src, i, j));
 	env_len = find_identifier_len(src + *i);
 	if (env_len == 0)
@@ -57,8 +56,7 @@ int	        copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	if (!env_content)
 		return (empty_env_content(env_len, i, j));
 	split_content = ft_reduce_spaces(env_content);
-	if (!split_content)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, split_content);
 	ft_strlcat(dst + *j, split_content, PATH_MAX + 1);
 	*j += ft_strlen(split_content);
 	*i += env_len;

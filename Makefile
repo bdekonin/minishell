@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/13 18:57:05 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/11/13 19:14:53 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC = \
 	/utils/env_list_to_array.c \
 	/utils/expansion_utils.c \
 	/utils/ft_split_sep_exep_bonus.c \
+	/utils/malloc_check.c \
 	/utils/ft_iserrno_bonus.c \
 	/utils/ft_reduce_spaces.c \
 	/utils/find_env_var.c \

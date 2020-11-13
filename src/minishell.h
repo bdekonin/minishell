@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/13 18:55:51 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/13 19:14:32 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct  s_vars{
 	t_list		*env;
 	t_list		*tempcmd;
 	t_cmd		*cmd;				//linked list of all tokens
-	t_list		**semicolon_ptrs;	//pointers to the first token after a `;'
+	t_list		**semicolon_ptrs;	//pointers to the first token after a `;' 	//ik denk dat dit weg kan
 	char		*prefix;
 	char		*current_path;
 	int			cmd_ret;
@@ -140,7 +140,6 @@ int				ft_env(t_vars *v, char **params);
 **				src/utils
 */
 
-char			**ft_split_sep_exep(const char *src, char *sep, size_t *size);
 void			create_new_env_var(t_vars *v, char *name, char *content);
 void			create_new_token(t_vars *v, const char *ptr, size_t len);
 t_list			*get_prev_node(t_vars *v, t_list *dst);
@@ -161,6 +160,8 @@ int				reset_std(t_vars *v);
 
 char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
+char			**ft_split_sep_exep(const char *src, char *sep, size_t *size);
+void			malloc_check(t_vars *v, void *ptr);
 
 
 

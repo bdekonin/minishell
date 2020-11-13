@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 18:52:46 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/13 19:20:45 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ void		split_tokens(t_vars *v, char *string)
 	size_t	size_tokens;
 
 	tokens = ft_split_multi(string, "*", &size_tokens);
-	if (!tokens)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, tokens);
 	v->cmd_ret = run_command(v, tokens);
 	ft_free_array((void **)tokens, size_tokens);
 	reset_std(v);
@@ -106,12 +105,14 @@ int		execute_loop(t_vars *v, t_cmd *list)
 static int	read_command_line_input(t_vars *v, char *cli)
 {
 	size_t	i;
-	char **args;
+	char	**args;
+	size_t splitsize;
 
 	if (!syntax_error_check(v, cli))
 		return (ft_free(cli));
-	size_t splitsize = 0;
+	splitsize = 0;
 	args = ft_split_sep_exep(cli, ";", &splitsize);
+	malloc_check(v, args);
 	free(cli);
 	i = 0;
 	while (i < splitsize)
@@ -119,12 +120,11 @@ static int	read_command_line_input(t_vars *v, char *cli)
 		create_tokens(v, args[i]);
 		expansion(v);
 		execute_loop(v, v->cmd);
-
 		cmd__ft_lstclear(&v->cmd, free);
 		i++;
 	}
 	ft_free_array((void**)args, splitsize);
-	cmd__ft_lstclear(&v->cmd, free);
+	cmd__ft_lstclear(&v->cmd, free);	//moet deze wel? 
 	return (1);
 }
 
