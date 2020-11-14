@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/13 19:14:32 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:02:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,10 +152,10 @@ int				export_declare_list(t_vars *v);
 int				ft_iserrno(int error);
 char 			*ft_reduce_spaces(const char *str);
 
+int				is_redirection_new(unsigned char type);
 int				is_redirection(char *str);
-int				is_pipe(char *str);
-int				is_semicolon(char *str);
-int				is_now_or_prev(t_vars *v, t_list *list);
+int				is_pipe(char *str); // old struct
+int				is_semicolon(char *str); // old struct
 int				reset_std(t_vars *v);
 
 char   	 		**env_list_to_array(t_vars *v);
@@ -168,6 +168,9 @@ void			malloc_check(t_vars *v, void *ptr);
 // t_list *lastpipe(t_list *headptr);
 t_cmd *lastpipe(t_cmd *headptr);
 t_cmd *lastredir(t_cmd *headptr);
+
+
+void		changestruct(t_vars *v, t_cmd *list);
 
 
 /*

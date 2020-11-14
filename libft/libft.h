@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/04 16:38:16 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/12 20:09:52 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:51:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,6 @@ char				*ft_strxjoin(const char *src, ...);
 size_t				ft_substrlen(const char *str, const char *set);
 int					get_next_line(int fd, char **line);
 size_t				ft_wordcount(const char *s, char c);
+void				ft_swap(char **xp, char **yp); // var name
 
 #endif

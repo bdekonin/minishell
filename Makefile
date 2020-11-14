@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/13 19:14:53 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/11/14 14:52:34 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC = \
 	/handle_relative.c \
 	/handle_static.c \
 	/signal.c \
+	/changestruct.c \
 	/utils/pipeutils.c \
 	/utils/debug_functions.c \
 	/utils/cmd_utils.c \

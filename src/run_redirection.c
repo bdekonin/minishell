@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 00:39:40 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:45:18 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,36 +106,11 @@ static int mainredir(t_vars *v, unsigned char type, char *filename)
 // echo hoi > file1 hallo > file2 welkom
 # define LISTDONE 0
 
-int swaparguments(t_cmd *current)
-{
-	char	*newstring;
-	char	*star;
-	int		ret;
-
-	if (current == NULL)
-		return (0);
-	if (ft_wordcount(current->line, '*') > 1 && current->type != ANGLEBRACKETLEFT)
-	{
-		star = ft_strchr(current->line, '*');
-		if (current->prev == NULL)
-			return (0);
-		if (current->prev->type == ANGLEBRACKETLEFT || current->prev->type == PIPELINE)
-			return (0);
-		newstring = ft_strjoin(current->prev->line, star);
-		// Malloc Check
-		*star = '\0';
-		free(current->prev->line);
-		current->prev->line = newstring;
-	}
-	ret = swaparguments(current->prev);
-	return (ret);
-}
-
 int redirection_handler(t_vars *v, t_cmd *list)
 {
 	if (list && list->type >= 60 && list->type != PIPELINE)
 	{
-		swaparguments(lastredir(list));
+		// swaparguments(lastredir(list));
 		if (mainredir(v, list->type, list->next->line) == 0)
 			return (0);
 	}

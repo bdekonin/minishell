@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 13:39:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:40:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,32 +108,6 @@ static t_cmd	*betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
 	return (head);
 }
 
-static void		changestruct(t_cmd *list)
-{
-	t_cmd *head = list; // temp
-	char *ptr;
-
-	ptr = NULL;
-	while (list)
-	{
-		if (!ft_strncmp(list->line, ">", 1))
-		{
-			free(list->line);
-			if (list->next && ft_wordcount(list->next->line, '*') > 1)
-			{
-				ptr = ft_strchr(list->next->line, '*');
-				list->line = ft_strdup(ptr);
-				*ptr = '\0';
-			}
-			else
-				list->line = ft_strdup("");
-			list->type = ANGLEBRACKETRIGHT;
-		}
-		list = list->next;
-	}
-	// cmd__ft_printlist(head); // niet nodig
-}
-
 void			create_tokens(t_vars *v, const char *cli)
 {
 	size_t start;
@@ -150,6 +124,5 @@ void			create_tokens(t_vars *v, const char *cli)
 		start = start + len;
 	}
 	v->cmd = betterstruct(v, v->tempcmd, NULL, NULL);
-	changestruct(v->cmd); // (> o pwd) && (> o)
 	ft_lstclear(&v->tempcmd, free);
 }

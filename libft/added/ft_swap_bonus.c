@@ -1,41 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pipeutils.c                                        :+:    :+:            */
+/*   ft_swap_bonus.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/31 23:17:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/14 15:03:24 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/11/14 14:53:46 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/14 15:50:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../libft.h"
 
-t_cmd *lastpipe(t_cmd *headptr)
+void	ft_swap(char **str1, char **str2)
 {
-	t_cmd *last;
+	char *temp;
 	
-	last = headptr;
-	while (headptr)
-	{
-		if (headptr->type == PIPELINE)
-			last = headptr;
-		headptr = headptr->next;
-	}
-	return (last->next);
-}
-
-t_cmd *lastredir(t_cmd *headptr)
-{
-	t_cmd *last;
+	temp = *str1; 
+	*str1 = *str2; 
+	*str2 = temp;
 	
-	last = headptr;
-	while (headptr)
-	{
-		if (is_redirection_new(headptr->type))
-			last = headptr;
-		headptr = headptr->next;
-	}
-	return (last->next);
 }

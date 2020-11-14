@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 13:40:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 14:41:05 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	while (i < splitsize)
 	{
 		create_tokens(v, args[i]);
+		changestruct(v, v->cmd);
 		expansion(v);
 		execute_loop(v, v->cmd);
 		cmd__ft_lstclear(&v->cmd, free);
