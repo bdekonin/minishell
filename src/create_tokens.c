@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 21:50:59 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/14 13:39:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	skip_quotations(const char *cli, char quotation_type)
+size_t			skip_quotations(const char *cli, char quotation_type)
 {
 	size_t i;
 
@@ -45,7 +45,7 @@ static size_t	get_len(const char *cli, size_t start)
 }
 
 
-static char gettype(char *content)
+static char 	gettype(char *content)
 {
 	char ret;
 
@@ -65,7 +65,7 @@ static char gettype(char *content)
 	}
 	return (ret);
 }
-static t_cmd *addnewtoback(t_list *list)
+static t_cmd 	*addnewtoback(t_list *list)
 {
 	t_cmd *temp;
 
@@ -85,7 +85,7 @@ static t_cmd *addnewtoback(t_list *list)
 	return (temp);
 }
 
-t_cmd *betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
+static t_cmd	*betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
 {
 	head = addnewtoback(list);
 	if (head == NULL)
@@ -108,7 +108,33 @@ t_cmd *betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
 	return (head);
 }
 
-void				create_tokens(t_vars *v, const char *cli)
+static void		changestruct(t_cmd *list)
+{
+	t_cmd *head = list; // temp
+	char *ptr;
+
+	ptr = NULL;
+	while (list)
+	{
+		if (!ft_strncmp(list->line, ">", 1))
+		{
+			free(list->line);
+			if (list->next && ft_wordcount(list->next->line, '*') > 1)
+			{
+				ptr = ft_strchr(list->next->line, '*');
+				list->line = ft_strdup(ptr);
+				*ptr = '\0';
+			}
+			else
+				list->line = ft_strdup("");
+			list->type = ANGLEBRACKETRIGHT;
+		}
+		list = list->next;
+	}
+	// cmd__ft_printlist(head); // niet nodig
+}
+
+void			create_tokens(t_vars *v, const char *cli)
 {
 	size_t start;
 	size_t len;
@@ -124,5 +150,6 @@ void				create_tokens(t_vars *v, const char *cli)
 		start = start + len;
 	}
 	v->cmd = betterstruct(v, v->tempcmd, NULL, NULL);
+	changestruct(v->cmd); // (> o pwd) && (> o)
 	ft_lstclear(&v->tempcmd, free);
 }

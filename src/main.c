@@ -6,11 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/11/14 00:39:29 by bdekonin      ########   odam.nl         */
-=======
-/*   Updated: 2020/11/13 19:20:45 by lverdoes      ########   odam.nl         */
->>>>>>> 7e66216a3cc5f3258ab4213578f346e5260ee7ee
+/*   Updated: 2020/11/14 13:40:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +59,13 @@ void		split_tokens(t_vars *v, char *string)
 {
 	char	**tokens;
 	size_t	size_tokens;
+
+	if (string[0] == 0)
+	{
+		v->cmd_ret = 1;
+		reset_std(v);
+		return ;	
+	}
 
 	tokens = ft_split_multi(string, "*", &size_tokens);
 	malloc_check(v, tokens);
