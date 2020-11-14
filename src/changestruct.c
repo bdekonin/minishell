@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/14 15:51:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:53:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ void		changestruct(t_vars *v, t_cmd *list)
 	swaparguments(lastredir(list));
 	nocommand_redir(list); // (> o pwd) && (> o)
 	changefilenames(list); // echo hoi > file1 hallo > file2 welkom > file3 lars > file4 bob
-	cmd__ft_printlist(list);
+	// cmd__ft_printlist(list);
 }
