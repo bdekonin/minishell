@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 14:41:05 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:52:43 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,16 @@ static int	read_command_line_input(t_vars *v, char *cli)
 {
 	size_t	i;
 	char	**args;
-	size_t splitsize;
+	size_t	splitsize;
 
-	if (!syntax_error_check(v, cli))
-		return (ft_free(cli));
+	if (!initial_syntax_error_check(v, cli))
+		return (ft_free_ret_int(cli, 0));
 	splitsize = 0;
 	args = ft_split_sep_exep(cli, ";", &splitsize);
 	malloc_check(v, args);
 	free(cli);
+	if (!syntax_error_check_loop(v, args, splitsize))
+		return (0);
 	i = 0;
 	while (i < splitsize)
 	{

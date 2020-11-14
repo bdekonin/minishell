@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/01 21:14:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 14:53:45 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ int 			ft_echo(t_vars *v, char **params)
 
 	i = check_newline_option(params, &newline_opt);
 	dst = init_dst(params[i], &i);
-	if (!dst)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, dst);
 	append_to_dst(v, params, &dst, i);
 	ret = write(1, dst, ft_strlen(dst));
 	free(dst);
