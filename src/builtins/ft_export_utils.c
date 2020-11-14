@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 08:42:59 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/01 21:14:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 14:51:59 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ static void		create_declare_list(t_vars *v, char **array, size_t len)
 			array[i] = ft_strxjoin("declare -x ", node->name, "=\"", "\"", NULL);
 		else
 			array[i] = ft_strxjoin("declare -x ", node->name, "=\"", node->content, "\"", NULL);
-		if (!array[i])
-			ft_exit_error(v, EXIT_FAILURE, 1);
+		malloc_check(v, array[i]);
 		i++;
 		tmp = tmp->next;
 	}
@@ -100,8 +99,7 @@ int		export_declare_list(t_vars *v)
 	
 	len = ft_lstsize(v->env);
 	array = ft_calloc(len + 1, sizeof(char *));
-	if (!array)
-		ft_exit_error(v, EXIT_FAILURE, 1);
+	malloc_check(v, array);
 	create_declare_list(v, array, len);
 	return (print_declare_list(v, array, len));
 }

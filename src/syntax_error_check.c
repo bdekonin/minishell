@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/15 18:00:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:11:07 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,37 @@ int				syntax_error_check(t_vars *v, const char *cli)
 			if (!check_flag_syntax(v, cli, i))
 				return (0);
 			i = skip_flags(cli, i);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int			initial_syntax_error_check(t_vars *v, const char *cli)
+{
+	size_t i;
+
+	i = 0;
+	if (cli[i] == ';')
+		return (syntax_error_return(v, ";"));
+	while (cli[i] == ' ')
+		i++;
+	if (cli[i] == ';')
+		return (syntax_error_return(v, ";"));
+	return (1);
+}
+
+int			syntax_error_check_loop(t_vars *v, char **args, size_t splitsize)
+{
+	size_t i;
+
+	i = 0;
+	while (i < splitsize)
+	{
+		if (!syntax_error_check(v, args[i]))
+		{
+			ft_free_array((void **)args, splitsize);
+			return (0);
 		}
 		i++;
 	}

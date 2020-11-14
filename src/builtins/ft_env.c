@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/14 16:36:51 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/10/29 15:02:14 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/14 14:53:04 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ int ft_env(t_vars *v, char **params)
         }
     }
     else
-        return (run_command(v, params));
+        return (run_command(v, params)); //ja dit hoeft dus toch niet (zie subject)
     return (0);
 }
