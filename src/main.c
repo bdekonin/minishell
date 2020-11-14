@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 15:52:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/14 15:56:45 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int		execute_loop(t_vars *v, t_cmd *list)
 		else if (!list->prev || list->prev->type == 0)
 			split_tokens(v, list->line);
 		list = list->next;
+		reset_std(v);
 	}
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);

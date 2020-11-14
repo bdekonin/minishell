@@ -6,13 +6,18 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/21 12:21:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/21 12:57:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/07 00:12:30 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include <stdarg.h>
-#include <stdlib.h>
+
+/*
+**		Multiple argument strings will be combined into a single string.
+**		Last parameter of the function call should always be NULL.
+**		E.g.:	str = ft_strxjoin("folder", "/", folder", "/", "file", NULL);
+*/
 
 static size_t	get_len(const char *src, va_list list)
 {

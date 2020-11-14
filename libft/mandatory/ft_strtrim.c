@@ -6,12 +6,11 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/31 11:34:06 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/11 10:27:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/07 22:42:24 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
-#include <stdlib.h>
 
 static size_t	set_check(char c, char const *str)
 {

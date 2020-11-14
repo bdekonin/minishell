@@ -6,21 +6,20 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/13 11:59:09 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/11 10:22:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/05 19:45:37 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
-#include <stdlib.h>
 
 static char		**free_array(char **array, size_t i)
 {
 	while (i > 0)
 	{
 		i--;
-		free(array[i]);
+		ft_free(array[i]);
 	}
-	free(array);
+	ft_free(array);
 	return (NULL);
 }
 
