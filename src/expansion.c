@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 12:44:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:22:11 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 static void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
 	*i += 1;
-	if (*i == 1 && src[*i] == '\"' && src[*i + 1] == '\0')
+	if (ft_counter(src, "\"\'") == ft_strlen(src))
 	{
-		dst[*j] = ' ';
-		*j += 1;
+		v->empty_quotes = 1;
+		*i += 1;
+		return ;
 	}
 	while (src[*i] != '\0' && src[*i] != '\"')
 	{
@@ -36,9 +37,15 @@ static void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t
 	}
 }
 
-static void	copy_single_quote(char *dst, char *src, size_t *i, size_t *j)
+static void	copy_single_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
 	*i += 1;
+	if (ft_counter(src, "\"\'") == ft_strlen(src))
+	{
+		v->empty_quotes = 1;
+		*i += 1;
+		return ;
+	}
 	while (src[*i] != '\0' && src[*i] != '\'')
 	{
 		dst[*j] = src[*i];
@@ -61,6 +68,13 @@ static void copy_backslash(char *dst, char *src, size_t *i, size_t *j)
 	*j += 1;
 }
 
+static void	print_empty_token_space(t_vars *v, char *dst, size_t *j)
+{
+	dst[*j] = ' ';
+	*j += 1;
+	v->empty_quotes = 0;
+}
+
 static void parse_cmd(t_vars *v, char *dst, char *src)
 {
 	size_t i;
@@ -70,16 +84,25 @@ static void parse_cmd(t_vars *v, char *dst, char *src)
 	j = 0;
 	while (src[i] != '\0')
 	{
+		if (v->empty_quotes && (ft_counter(src, "\"\'") != ft_strlen(src)))
+			print_empty_token_space(v, dst, &j);
 		if (src[i] == '\\')
 			copy_backslash(dst, src, &i, &j);
 		else if (src[i] == '#' && i == 0)
 			copy_hashtag(src, &i);
 		else if (src[i] == '\'')
-			copy_single_quote(dst, src, &i, &j);
+			copy_single_quote(v, dst, src, &i, &j);
 		else if (src[i] == '\"')
 			copy_double_quote(v, dst, src, &i, &j);
 		else if (src[i] == '$')
 			copy_envvar(v, dst, src, &i, &j);
+		else if (src[i] == ' ')
+		{
+			dst[j] = '*';
+			j++;
+			while (src[i] == ' ')
+				i++;
+		}
 		else
 		{
 			dst[j] = src[i];
