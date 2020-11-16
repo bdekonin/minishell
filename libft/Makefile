@@ -6,7 +6,7 @@
 #    By: lverdoes <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/11/22 17:32:04 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/14 15:45:56 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/06 23:50:04 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,6 @@ BONUS =	\
 	/bonus/ft_lstmap_bonus.c
 
 ADDED =	\
-	/added/get_next_line_bonus.c \
 	/added/ft_append_bonus.c \
 	/added/ft_array_size_bonus.c \
 	/added/ft_arraydup_bonus.c \
@@ -70,23 +69,25 @@ ADDED =	\
 	/added/ft_free_array_bonus.c \
 	/added/ft_getline_bonus.c \
 	/added/ft_iswhitespace_bonus.c \
+	/added/ft_lstmove_back_bonus.c \
+	/added/ft_lstmove_front_bonus.c \
+	/added/ft_lstremove_one_bonus.c \
 	/added/ft_print_array_bonus.c \
 	/added/ft_realloc_bonus.c \
+	/added/ft_replace_bonus.c \
 	/added/ft_split_multi_bonus.c \
-	/added/ft_strcmp_bonus.c \
-	/added/ft_strexpand_bonus.c \
-	/added/ft_strxjoin_bonus.c \
 	/added/ft_str_to_lower_bonus.c \
 	/added/ft_str_to_upper_bonus.c \
+	/added/ft_strcmp_bonus.c \
+	/added/ft_strxjoin_bonus.c \
 	/added/ft_substrlen_bonus.c \
-	/added/ft_wordcount_bonus.c \
-	/added/ft_swap_bonus.c
+	/added/get_next_line_bonus.c 
 
 OBJ = $(addprefix obj, $(MANDATORY:.c=.o) $(BONUS:.c=.o) $(ADDED:.c=.o))
 
 CC = gcc -Wall -Wextra -Werror
 
-INCLUDES = libft.h
+HEADERS = libft.h
 
 IGNORE = .gitignore
 
@@ -100,7 +101,8 @@ obj/%.o: %.c
 	$(CC) -c $< -o $@
 
 norm:
-	@norminette $(addprefix ., $(MANDATORY) $(BONUS) $(ADDED)) $(INCLUDES) Makefile
+	@norminette $(addprefix ., $(MANDATORY) $(BONUS) $(ADDED)) 
+	@norminette $(HEADERS) Makefile
 
 ignore:
 	@echo $(NAME) > $(IGNORE)

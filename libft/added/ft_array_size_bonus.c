@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/09 20:35:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/08/11 17:00:24 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/05 19:42:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ size_t	ft_array_size(const char **array)
 {
 	size_t i;
 
-	i = 0;
 	if (!array)
 		return (0);
+	i = 0;
 	while (array[i] != NULL)
 		i++;
 	return (i);

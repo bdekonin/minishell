@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 15:11:07 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/14 16:53:43 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int		syntax_error_return(t_vars *v, const char *token)
 {
+	v->cmd_ret = 258;
 	ft_printf(SYNTAX_ERROR, "minishell", token);
 	return (0);
 }

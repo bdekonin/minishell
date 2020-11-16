@@ -6,12 +6,11 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/04 08:22:37 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/11 10:27:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/07 22:39:38 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
-#include <stdlib.h>
 
 static size_t	get_start(char const *str, char c, size_t i)
 {
@@ -77,9 +76,9 @@ static char		**init_dst(char const *s, char c, size_t count, char **dst)
 			while (i > 0)
 			{
 				i--;
-				free(dst[i]);
+				ft_free(dst[i]);
 			}
-			free(dst);
+			ft_free(dst);
 			return (NULL);
 		}
 		i++;
@@ -95,7 +94,6 @@ char			**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	size = count_str(s, c);
-	dst = (char**)malloc((size + 1) * sizeof(char*));
 	dst = ft_calloc(size + 1, sizeof(char *));
 	if (!dst)
 		return (NULL);

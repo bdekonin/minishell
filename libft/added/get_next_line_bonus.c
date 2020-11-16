@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 15:51:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/22 11:58:07 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/06 23:32:34 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <limits.h>
 
-static char		*reset_ptr(char **str, int fd)
+static char	*reset_ptr(char **str, int fd)
 {
 	char	*tmp;
 	char	*dst;
@@ -30,7 +30,7 @@ static char		*reset_ptr(char **str, int fd)
 	return (dst);
 }
 
-static int		read_file(int fd, char **str)
+static int	read_file(int fd, char **str)
 {
 	int		ret;
 	char	buffer[BUFFER_SIZE + 1];
@@ -47,7 +47,7 @@ static int		read_file(int fd, char **str)
 	return (1);
 }
 
-int				get_next_line(int fd, char **line)
+int			get_next_line(int fd, char **line)
 {
 	int			ret;
 	static char	*str[OPEN_MAX];

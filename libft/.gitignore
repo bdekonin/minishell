@@ -1,0 +1,7 @@
+libft.a
+.DS_Store
+*.o
+**/obj
+a.out
+main.c
+*.txt

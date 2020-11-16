@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strexpand_bonus.c                               :+:    :+:            */
+/*   ft_lstmove_front_bonus.c                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/08/02 16:37:09 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/09/21 12:50:41 by lverdoes      ########   odam.nl         */
+/*   Created: 2020/11/06 23:16:49 by lverdoes      #+#    #+#                 */
+/*   Updated: 2020/11/09 08:16:38 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-char	*ft_strexpand(char *src1, const char *src2, char *ptr, size_t ptr_len)
-{
-	size_t	len;
-	char	*dst;
+/*
+**		Moves an element in a list to the front of the same list
+**		and sets the previous element to point to the next element.
+*/
 
-	if (!src1 || ptr < src1 || ptr_len > ft_strlen(src1))
-		return (NULL);
-	len = ft_strlen(src1) - ptr_len + ft_strlen(src2);
-	dst = ft_calloc(len + 1, sizeof(char));
-	if (!dst)
-		return (NULL);
-	ft_strlcpy(dst, src1, ptr - src1 + 1);
-	ft_strlcat(dst, src2, len + 1);
-	ft_strlcat(dst, ptr + ptr_len, len + 1);
-	return (dst);
+void	ft_lstmove_front(t_list **head, t_list *node)
+{
+	t_list *tmp;
+
+	if (!node || !*head || !(*head)->next || node == *head)
+		return ;
+	tmp = *head;
+	while (tmp->next)
+	{
+		if (tmp->next == node)
+		{
+			tmp->next = node->next;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	node->next = *head;
+	*head = node;
 }
