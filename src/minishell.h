@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 14:12:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 18:28:51 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,6 @@ void ft_printerror(char *file, int error);
 **				debug functions - remove from .h, .c, and Makefile when finished
 */
 
-void			print_tokens(t_vars *v, const char *title);
+//void			print_tokens(t_vars *v, const char *title);
 
 #endif

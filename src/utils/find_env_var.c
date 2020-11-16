@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/10 13:54:53 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 22:37:10 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 19:30:42 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char		*find_env_var(t_vars *v, char *identifier, size_t *len)
 	while (lst)
 	{
 		tmp = lst->content;
-		if (!ft_strncmp(tmp->name , identifier, length)) //or length + 1?
+		if (!ft_strncmp(tmp->name , identifier, length + 1)) //or length + 1?
 			return (tmp->content);
 		lst = lst->next;
 	}

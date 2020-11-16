@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:59:49 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 19:31:29 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,17 @@ int	        copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	if (src[*i] == '?')
 		return (ret_value_last_cmd(v, dst, i, j));
 	env_len = find_identifier_len(src + *i);
+//	printf("env_len = [%zu]\n", env_len);
 	if (env_len == 0)
 		return (env_var_with_len_zero(dst, j));
 	env_name = src + *i;
+//	printf("env_name = [%s]\n", env_name);
 	env_content = find_env_var(v, env_name, &env_len);
 	if (!env_content)
 		return (empty_env_content(env_len, i));
+//	printf("env_content = [%s]\n", env_content);
 	split_content = ft_reduce_spaces(env_content);
+//	printf("split_content = [%s]\n", split_content);
 	malloc_check(v, split_content);
 	ft_strlcat(dst + *j, split_content, PATH_MAX + 1);
 	*j += ft_strlen(split_content);

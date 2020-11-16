@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/27 10:34:25 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 14:54:24 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 19:23:23 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,20 @@ char 		*ft_reduce_spaces(const char *str)
 	char	*tmp;
 
 	size = 0;
+	i = 0;
 	arr = ft_split_multi(str, " ", &size);
 	if (!arr)
 		return (NULL);
-	dst = ft_strdup(arr[0]);
+	if (*str == ' ')
+		dst = ft_strjoin("*", arr[i]);
+	else
+		dst = ft_strdup(arr[i]);
 	if (!dst)
         return (free_ptrs(arr, size));
-	i = 1;
+	i++;
 	while (arr[i] != NULL)
 	{
-		tmp = ft_strxjoin(dst, " ", arr[i], NULL);
+		tmp = ft_strxjoin(dst, "*", arr[i], NULL);
 		ft_free(dst);
 		if (!tmp)
 		    return (free_ptrs(arr, size));
