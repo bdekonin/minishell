@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:22:11 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:53:15 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,4 +154,5 @@ void		expansion(t_vars *v)
 //		printf("after  exp = [%s]\n", tmp->line);			//debug
 		tmp = tmp->next;
 	}
+	v->empty_quotes = 0;
 }
