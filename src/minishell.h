@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/15 16:26:26 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 14:12:00 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct  s_vars{
 	t_env		*default_path;
 	t_env		*default_homedir;
 	t_env		*default_oldpwd;
+	int			empty_quotes;
 }               t_vars;
 
 /*
