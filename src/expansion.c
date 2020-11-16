@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 22:27:50 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 12:44:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void		expansion(t_vars *v)
 			combine_strings(v, dst, array, i);
 			i++;
 		}
+		ft_free_array((void **)array, array_size);
 		ft_free(tmp->line);
 		tmp->line = dst;
 //		printf("after  exp = [%s]\n", tmp->line);			//debug
