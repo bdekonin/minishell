@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/04 16:38:16 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/06 23:18:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 12:03:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,7 @@ void				ft_lstremove_one
 					(t_list **head, t_list *node, void (*del)(void *));
 void				ft_lstmove_back(t_list **head, t_list *node);
 void				ft_lstmove_front(t_list **head, t_list *node);
+void				ft_swap(char **a, char **b);
+size_t				ft_wordcount(const char *s, char c);
 
 #endif

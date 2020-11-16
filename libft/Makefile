@@ -6,7 +6,7 @@
 #    By: lverdoes <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/11/22 17:32:04 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/06 23:50:04 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/11/16 12:03:32 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,9 @@ ADDED =	\
 	/added/ft_strcmp_bonus.c \
 	/added/ft_strxjoin_bonus.c \
 	/added/ft_substrlen_bonus.c \
-	/added/get_next_line_bonus.c 
+	/added/get_next_line_bonus.c \
+	/added/ft_swap_bonus.c \
+	/added/ft_wordcount_bonus.c
 
 OBJ = $(addprefix obj, $(MANDATORY:.c=.o) $(BONUS:.c=.o) $(ADDED:.c=.o))
 
