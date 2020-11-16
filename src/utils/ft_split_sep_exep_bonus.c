@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/16 08:58:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 18:50:50 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:51:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static size_t	get_len(const char *src, char *sep, size_t start)
 {
 	size_t	i;
 	size_t	len;
-	int		s_quot;
-	int		d_quot;
 
 	i = start;
 	len = start;

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/15 17:03:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 16:02:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int run_angle_right_double(t_vars *v, char *filename)
 {
 	char	*file_contents;
 	ssize_t	ret;
-	int		read_fd;
 
 	file_contents = NULL;
 	ret = read_file(v, filename, &file_contents);
@@ -84,11 +83,10 @@ static int run_angle_left_single(t_vars *v, char *filename)
 static int mainredir(t_vars *v, unsigned char type, char *filename)
 {
 	int ret;
-	size_t size;
 	char **argv;
 
 	argv = ft_split(filename, '*');
-	// malloc check
+	malloc_check(v, argv);
 	if (type == ANGLEBRACKETDOUBLERIGHT)
 		ret = run_angle_right_double(v, argv[0]);
 	else if (type == ANGLEBRACKETRIGHT)
@@ -108,7 +106,6 @@ static int mainredir(t_vars *v, unsigned char type, char *filename)
 
 int redirection_handler(t_vars *v, t_cmd *list)
 {
-	// cmd__removemiddle(&v->cmd, v->cmd->next);
 	if (list && list->type >= 60 && list->type != PIPELINE)
 	{
 		if (mainredir(v, list->type, list->next->line) == 0)
@@ -116,16 +113,11 @@ int redirection_handler(t_vars *v, t_cmd *list)
 	}
 	if (list && list->type == ANGLEBRACKETLEFT &&
 	list->next && list->next->next) // cat < file2 < file2
-	{
-		cmd__removemiddle(&v->cmd, list->next);
-		return (2);
-	}
+		return (cmd__removemiddle(list->next, 2));
 	if (list->type == PIPELINE && lastpipe(list) && lastpipe(list)->type >= 60 && lastpipe(list)->type != PIPELINE)
 	{
 		if (mainredir(v, lastpipe(list)->type, lastpipe(list)->next->line) == 0)
 			return (0);
 	}
-	// ft_printf("\n");
-	// cmd__ft_printlist(v->cmd);
 	return (1);
 }

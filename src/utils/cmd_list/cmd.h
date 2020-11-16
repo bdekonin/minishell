@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/15 11:02:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 16:28:41 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void		cmd__ft_lstadd_front(t_cmd **alst, t_cmd *new);
 void		cmd__ft_lstadd_back(t_cmd **alst, t_cmd *new);
 int			cmd__ft_lstsize(t_cmd *lst);
 void		cmd__ft_printlist(t_cmd *cmd);
-void		cmd__removemiddle(t_cmd **head, t_cmd *remove);
+int			cmd__removemiddle(t_cmd *remove, int ret);
 
 #endif

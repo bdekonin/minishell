@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 12:04:51 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:52:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ int	ft_exit(t_vars *v, char **params)
 
 void	ft_exit_error(t_vars *v, int status, int print)
 {
-	unsigned char range;
-
 	freeall(v);
 	// free env list
 	ft_bzero(v, sizeof(t_vars)); // this will leak if we dont free everything, so testing purposes

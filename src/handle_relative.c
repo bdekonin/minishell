@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/11 19:08:00 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/30 20:18:41 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:50:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static char *get_relative_path(char *currentpath, char *command)
 {
 	char	*path;
 	size_t	count;
-	int		ret;
 
 	count = ft_strlen(currentpath) + 1;
 	count += ft_strlen(command) + 1;
@@ -49,7 +48,6 @@ int handle_relative(t_vars *v, char **newpath, char *command)
 
 	*newpath = path;
 	ret = validate_file(path);
-
 
 	if (ret == FILEFOUND)
 		return (FILEFOUND);

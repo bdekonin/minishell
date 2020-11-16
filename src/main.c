@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 11:58:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:54:17 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void		split_tokens(t_vars *v, char *string)
 	malloc_check(v, tokens);
 	v->cmd_ret = run_command(v, tokens);
 	ft_free_array((void **)tokens, size_tokens);
-	// reset_std(v);
 }
 
 int pipe_handler(t_vars *v, t_cmd *temp);
@@ -119,15 +118,13 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	size_t	i;
 	char	**args;
 	size_t	splitsize;
-
 	if (!initial_syntax_error_check(v, cli))
 		return (ft_free_ret_int(cli, 0));
 	splitsize = 0;
 	args = ft_split_sep_exep(cli, ";", &splitsize);
 	malloc_check(v, args);
-	free(cli);
 	if (!syntax_error_check_loop(v, args, splitsize))
-		return (0);
+		return (ft_free_array((void**)args, splitsize));
 	i = 0;
 	while (i < splitsize)
 	{
@@ -143,10 +140,20 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	return (1);
 }
 
+static void control_d(t_vars *v, char *cli)
+{
+	if (cli[0])
+		dprintf(2, "\tFull\n");
+	else
+		dprintf(2, "\tempty\n");
+	(void)v;
+}
+
 int 		main(int argc, char **argv, char **envp)
 {
 	t_vars v;
-	char *cli;
+	char	*cli;
+	int		ret;
 
 	initialize(&v, envp);
 	while (1)
@@ -154,9 +161,15 @@ int 		main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, signal_default);
 		signal(SIGINT, signal_default);
 		ft_putstr_fd(PROMPT, STDERR_FILENO);
-		if (get_next_line(STDIN_FILENO, &cli) < 0)
+		ret = get_next_line(STDIN_FILENO, &cli);
+		if (ret < 0)
 			ft_exit_error(&v, EXIT_FAILURE, 0);
+		else if (ret == 0)
+			control_d(&v, cli);
 		read_command_line_input(&v, cli);
+		free(cli);
 	}
 	return (0);
+	(void)argv;
+	(void)argc;
 }

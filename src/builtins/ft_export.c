@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/14 14:51:22 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 16:00:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int		find_env_var_name(t_list **head, char *name, char *content)
 	return (0);
 }
 
-static int		check_valid_identifier(char *arg, char **name)
+static int		check_valid_identifier(char *arg)
 {
 	size_t i;
 
@@ -62,7 +62,7 @@ static int		add_new_env_vars(t_vars *v, char *arg)
 	char	*content;
 	size_t	len_identifier;
 	
-	if (!check_valid_identifier(arg, &name))
+	if (!check_valid_identifier(arg))
 	{
 		ft_printf(INVALID_IDENTIFIER, "minishell", arg);
 		return (0);

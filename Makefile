@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/15 11:02:41 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/16 15:56:15 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ SRC = \
 	/signal.c \
 	/changestruct.c \
 	/utils/pipeutils.c \
-	/utils/debug_functions.c \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \
 	/utils/expansion_utils.c \
@@ -67,8 +66,6 @@ PRINTF = ./ft_printf/libftprintf.a
 
 INCLUDES = ./src/$(NAME).h
 
-UNUSED = -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function
-
 all: $(NAME)
 	@./$(NAME)
 
@@ -79,11 +76,11 @@ all: $(NAME)
 	make -C ./ft_printf
 
 $(NAME): $(LIBFT) $(PRINTF) $(OBJ)
-	@$(CC) $(UNUSED) -o $(NAME) $(LIBFT) $(PRINTF) $(OBJ)
+	@$(CC) -o $(NAME) $(LIBFT) $(PRINTF) $(OBJ)
 
 obj/%.o: src/%.c
 	@mkdir -p obj obj/builtins/ obj/utils obj/utils/cmd_list
-	$(CC) $(UNUSED) -c $< -o $@
+	$(CC) -c $< -o $@
 
 .PHONY: clean fclean re
 

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/10/30 17:02:22 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:52:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static inline int	cd_arguments(t_vars *v, char **argument, char *oldpwd_backup)
 {
-	char		*tmp;
 	int			ret;
 
 	ft_strlcpy(oldpwd_backup, v->current_path, ft_strlen(v->current_path) + 1);

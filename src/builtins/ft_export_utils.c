@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 08:42:59 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 14:51:59 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/16 15:53:14 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ static void		create_declare_list(t_vars *v, char **array, size_t len)
 
 int		export_declare_list(t_vars *v)
 {
-	t_list	*tmp;
-	t_env	*node;
 	size_t	len;
 	char	**array;
 	
