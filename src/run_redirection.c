@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 15:45:18 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/15 17:03:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int run_angle_right_double(t_vars *v, char *filename)
 	if (v->fd < 0)
 		return (ft_free_ret_int(file_contents, 0)); //some error with target file
 	if (ret)
-	{	
+	{
 		ret = write(1, file_contents, ft_strlen(file_contents));
 		if (ret < 0 || (size_t)ret != ft_strlen(file_contents))
 				return (ft_free_ret_int(file_contents, 0)); //write ereror
@@ -108,18 +108,24 @@ static int mainredir(t_vars *v, unsigned char type, char *filename)
 
 int redirection_handler(t_vars *v, t_cmd *list)
 {
+	// cmd__removemiddle(&v->cmd, v->cmd->next);
 	if (list && list->type >= 60 && list->type != PIPELINE)
 	{
-		// swaparguments(lastredir(list));
 		if (mainredir(v, list->type, list->next->line) == 0)
 			return (0);
 	}
+	if (list && list->type == ANGLEBRACKETLEFT &&
+	list->next && list->next->next) // cat < file2 < file2
+	{
+		cmd__removemiddle(&v->cmd, list->next);
+		return (2);
+	}
 	if (list->type == PIPELINE && lastpipe(list) && lastpipe(list)->type >= 60 && lastpipe(list)->type != PIPELINE)
 	{
-		// dprintf(2, "kaki\n");
-		// swaparguments(lastredir(lastpipe(list)));
 		if (mainredir(v, lastpipe(list)->type, lastpipe(list)->next->line) == 0)
 			return (0);
 	}
+	// ft_printf("\n");
+	// cmd__ft_printlist(v->cmd);
 	return (1);
 }

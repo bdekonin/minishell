@@ -79,6 +79,6 @@ int				pipe_handler(t_vars *v, t_cmd *list)
 	}
 	else
 		waitpid(-1, NULL, 0);
-	reset_std(v);
+	// reset_std(v);
 	return (1);
 }

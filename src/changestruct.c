@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/14 15:53:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/15 16:59:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ static void changefilenames(t_cmd *list)
 {
 	while (list)
 	{
-		if (is_redirection_new(list->type))
+		if (is_redirection_new(list->type) && list->type != ANGLEBRACKETLEFT)
 		{
 			if (list->next != lastredir(list))
 			{
-				ft_printf("sdsdsd");
+				// ft_printf("sdsdsd");
 				ft_swap(&list->next->line, &lastredir(list)->line);
 				break;
 			}
@@ -78,11 +78,10 @@ static void changefilenames(t_cmd *list)
 		list = list->next;
 	}
 }
-
+// echo hallo <file1 >file2
 void		changestruct(t_vars *v, t_cmd *list)
 {
 	swaparguments(lastredir(list));
 	nocommand_redir(list); // (> o pwd) && (> o)
 	changefilenames(list); // echo hoi > file1 hallo > file2 welkom > file3 lars > file4 bob
-	// cmd__ft_printlist(list);
 }

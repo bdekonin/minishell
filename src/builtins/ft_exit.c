@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/13 19:13:12 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/14 19:10:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,9 @@ void	ft_exit_error(t_vars *v, int status, int print)
 	freeall(v);
 	// free env list
 	ft_bzero(v, sizeof(t_vars)); // this will leak if we dont free everything, so testing purposes
-	if (errno && status == 1)
-		ft_printf("%s\n", strerror(errno));
-	else if (print)
-		ft_printf("exit\n");
+	// if (errno && status == 1)
+	// 	ft_printf("%s\n", strerror(errno));
+	// else if (print)
+	// 	ft_printf("exit\n");
 	exit(status);
 }

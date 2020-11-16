@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 15:52:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/15 20:03:59 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		split_tokens(t_vars *v, char *string)
 	malloc_check(v, tokens);
 	v->cmd_ret = run_command(v, tokens);
 	ft_free_array((void **)tokens, size_tokens);
-	reset_std(v);
+	// reset_std(v);
 }
 
 int pipe_handler(t_vars *v, t_cmd *temp);
@@ -79,9 +79,8 @@ int pipe_handler(t_vars *v, t_cmd *temp);
 // ls > output.txt src libft | wc > tester
 // pwd > output
 // cat | cat -e > output
-// ls > output.txt src libft | wc > tester
-// [> output]
-// [echo hoi > file1 hallo > file2 welkom]
+// > output
+// echo hoi > file1 hallo > file2 welkom
 
 int		execute_loop(t_vars *v, t_cmd *list)
 {
@@ -91,10 +90,15 @@ int		execute_loop(t_vars *v, t_cmd *list)
 	signal(SIGINT, signal_execve);
 	while (list)
 	{
-		// if (lastpipe(list))
-		// 	ft_printf("---[%s] - [%c]\n", lastpipe(list)->line, lastpipe(list)->type);
-		if (redirection_handler(v, list) == 0)
+		ret = 0;
+		ret = redirection_handler(v, list);
+		if (ret == 0)
 			break;
+		else if (ret == 2)
+		{
+			list = v->cmd;
+			continue;
+		}
 		if (list->type == PIPELINE)
 		{
 			pipe_handler(v, list);
@@ -103,12 +107,13 @@ int		execute_loop(t_vars *v, t_cmd *list)
 		else if (!list->prev || list->prev->type == 0)
 			split_tokens(v, list->line);
 		list = list->next;
+		reset_std(v);
 	}
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);
 	return (1);
 }
-
+// base64 < /dev/random | head -c 1000 | cat
 static int	read_command_line_input(t_vars *v, char *cli)
 {
 	size_t	i;
@@ -146,6 +151,8 @@ int 		main(int argc, char **argv, char **envp)
 	initialize(&v, envp);
 	while (1)
 	{
+		signal(SIGQUIT, signal_default);
+		signal(SIGINT, signal_default);
 		ft_putstr_fd(PROMPT, STDERR_FILENO);
 		if (get_next_line(STDIN_FILENO, &cli) < 0)
 			ft_exit_error(&v, EXIT_FAILURE, 0);

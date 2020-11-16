@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/14 14:52:34 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/15 11:02:41 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,8 @@ SRC = \
 	/utils/cmd_list/ft_cmddelone_bonus.c \
 	/utils/cmd_list/ft_cmdlast_bonus.c \
 	/utils/cmd_list/ft_cmdnew_bonus.c \
-	/utils/cmd_list/ft_cmdsize_bonus.c
+	/utils/cmd_list/ft_cmdsize_bonus.c \
+	/utils/cmd_list/ft_cmd_removemiddle.c
 	
 OBJ = $(addprefix obj, $(SRC:.c=.o))
 
