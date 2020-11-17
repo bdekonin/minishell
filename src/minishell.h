@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 14:12:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/17 14:29:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define MINISHELL_CMDERR "command not found"
 # define MINISHELL_NUMARG "numeric argument required"
 # define MINISHELL_ARGCOUNT "too many arguments"
+# define MINISHELL_ERRNO "%s: %s\nexit\n"
 
 # define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n"
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"

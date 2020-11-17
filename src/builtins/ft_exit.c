@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:52:42 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/17 14:29:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	ft_exit_error(t_vars *v, int status, int print)
 	// free env list
 	ft_bzero(v, sizeof(t_vars)); // this will leak if we dont free everything, so testing purposes
 	if (errno && status == 1)
-		ft_printf("%s\n", strerror(errno));
+		ft_printf(MINISHELL_ERRNO, MINISHELL, strerror(errno));
 	else if (print)
 		ft_printf("exit\n");
 	exit(status);
