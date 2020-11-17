@@ -6,11 +6,23 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:54:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/16 19:24:12 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_tokens(t_vars *v) // tmp debug function
+{
+	t_cmd *tmp;
+
+	tmp = v->cmd;
+	while (tmp)
+	{
+		printf("token = [%s]\n", tmp->line);
+		tmp = tmp->next;
+	}
+}
 
 void ft_printerror(char *file, int error)
 {
@@ -129,6 +141,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	while (i < splitsize)
 	{
 		create_tokens(v, args[i]);
+//		print_tokens(v);
 		changestruct(v, v->cmd);
 		expansion(v);
 		execute_loop(v, v->cmd);
@@ -173,3 +186,4 @@ int 		main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)argc;
 }
+
