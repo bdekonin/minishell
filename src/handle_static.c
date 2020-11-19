@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 17:36:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/19 13:55:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,15 @@ static int	searchDir(char *location, char *command)
 
 	dir = opendir(location);
 	if (!dir)
-		return (FILEERROR);
+	{
+	
+		
+		return (2);
+	}
 	dp = readdir(dir);
 	if (dp < 0)
 	{
+	
 		closedir(dir);
 		return (FILEERROR);
 	}
@@ -33,7 +38,9 @@ static int	searchDir(char *location, char *command)
 		if (!ft_strncmp(dp->d_name, command, ft_strlen(dp->d_name)))
 		{
 			if (closedir(dir) < 0)
+			{
 				return (FILEERROR);
+			}
 			return (FILEFOUND);
 		}
 		dp = readdir(dir);
@@ -44,7 +51,11 @@ static int	searchDir(char *location, char *command)
 		}
 	}
 	if (closedir(dir) < 0)
+	{
+	
 		return (FILEERROR);
+	}
+
 	return (FILENOTFOUND);
 }
 
@@ -59,20 +70,30 @@ static int	loop_locations(t_vars *v, char **new_path, char *command)
 	ret = FILENOTFOUND;
 	locations = ft_split_multi(v->default_path->content, ":", &splitsize);
 	if (!locations)
+	{
+	
 		return (FILEERROR);
+	}
 	while (locations[i])
 	{
 		ret = searchDir(locations[i], command);
+		
 		if (ret == FILEFOUND)
 		{
+		
 			*new_path = ft_strdup(locations[i]);
 			break;
 		}
 		if (ret == FILEERROR)
+		{
+			
+		
 			return (ret);
+		}
 		i++;
 	}
 	ft_free_array((void**)locations, splitsize);
+
 	return (ret);
 }
 
@@ -85,6 +106,7 @@ static int	looper(t_vars *v, char **newpath, char *command)
 	size_t length;
 
 	ret = loop_locations(v, &path, command);
+
 	if (ret == FILENOTFOUND || ret == FILEERROR)
 		return (ret);
 	length = ft_strlen(path) + 1 + ft_strlen(command) + 1; // pwd + / + command + \0
@@ -102,19 +124,24 @@ static int	looper(t_vars *v, char **newpath, char *command)
 int			handle_static(t_vars *v, char **newpath, char *command)
 {
 	int ret;
+
 	if (ft_strncmp(command, "/", 1))
 	{
 		ret = looper(v, newpath, command);
+	
 		if (ret == FILEERROR)
 			return (FILEERROR);
 	}
 	else
 	{
+	
 		*newpath = ft_strdup(command);
 		if (!*newpath)
 			return (FILEERROR);
+	
 	}
 	ret = validate_file(*newpath);
+
 	if (ret == FILEFOUND)
 		return (FILEFOUND);
 	if (ret == FILEPERMISSIONS)

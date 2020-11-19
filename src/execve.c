@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 17:36:25 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/19 11:30:30 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int		ft_execve(t_vars *v, char **params)
 
 	// Temp
 	int ret = -2;
+//	printf("%s\n", params[0]);
 	if (!ft_strncmp(params[0], "./", 2))
 	{
 		ret = handle_relative(v, &path, params[0]);

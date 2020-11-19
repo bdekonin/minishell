@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 19:14:07 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/19 19:09:56 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ size_t			skip_quotations(const char *cli, char quotation_type)
 	size_t i;
 
 	i = 1;
-	while (cli[i] && cli[i] != quotation_type && cli[i - 1] != '\\')
+	while (cli[i] && cli[i] != quotation_type)
+	{
+		if (cli[i] == '\\' && cli[i + 1] == quotation_type)
+			i++;
 		i++;
+	}
 	return (i);
 }
 
