@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_pwd.c                                           :+:    :+:            */
+/*   ft_envadd_front_bonus.c                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/14 15:35:58 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/20 17:04:05 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/18 12:26:08 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/22 17:16:16 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "env.h"
+#include "../../minishell.h"
 
-int	ft_pwd(t_vars *v, char **params)
+void	env__ft_lstadd_front(t_env **alst, t_env *new)
 {
-	v->current_path = getcwd(v->current_path, PATH_MAX);
-	malloc_check(v, v->current_path);
-	ft_printf("%s\n", v->current_path);
-	(void)(params);
-	return (0);
+	if (!alst || !new)
+		return ;
+	new->next = *alst;
+	*alst = new;
 }

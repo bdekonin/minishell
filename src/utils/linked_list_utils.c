@@ -6,24 +6,24 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 20:11:14 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/13 21:52:39 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/23 00:09:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	create_new_env_var(t_vars *v, char *name, char *content)
+void	create_new_env_var(t_vars *v, char *name, char *content, int checkmalloc)
 {
-	t_list	*new;
 	t_env	*node;
-	
-	node = ft_calloc(1, sizeof(t_env));
+
+	if (checkmalloc == 1)
+	{
+		malloc_check(v, name);
+		malloc_check(v, content);
+	}
+	node = env__ft_lstnew(name, content);
 	malloc_check(v, node);
-	node->name = name;
-	node->content = content;
-	new = ft_lstnew(node);
-	malloc_check(v, new);
-	ft_lstadd_back(&v->env, new);
+	env__ft_lstadd_back(&v->env, node);
 }
 size_t	skip_quotations(const char *cli, char quotation_type);
 

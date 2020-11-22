@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/19 19:12:29 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/22 23:57:02 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,8 @@ int 		main(int argc, char **argv, char **envp)
 	char	*cli;
 	int		ret;
 
+
+	ft_putendl_fd("Shell Starting up - version 1.0\n", 2);
 	initialize(&v, envp);
 	while (1)
 	{

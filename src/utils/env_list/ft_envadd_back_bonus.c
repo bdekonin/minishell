@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_unset.c                                         :+:    :+:            */
+/*   ft_envadd_back_bonus.c                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/08/05 11:05:24 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:27:48 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/18 14:43:24 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/22 17:15:40 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "env.h"
+#include "../../minishell.h"
 
-// The return status is zero unless a name does not exist or is readonly.
-
-int ft_unset(t_vars *v, char **params)
+void	env__ft_lstadd_back(t_env **alst, t_env *new)
 {
-	size_t i;
+	t_env *last;
 
-	i = 0;
-	while (params[i])
+	if (!new)
+		return ;
+	if (*alst)
 	{
-		env__ft_lstremove_middle(params[i], v->env);
-		i++;
+		last = env__ft_lstlast(*alst);
+		last->next = new;
 	}
-	return (0);
+	else
+		env__ft_lstadd_front(alst, new);
 }

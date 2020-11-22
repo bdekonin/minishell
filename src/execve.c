@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/19 11:30:30 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/22 17:36:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ int		ft_execve(t_vars *v, char **params)
 
 	path = NULL;
 
-	// Temp
 	int ret = -2;
-//	printf("%s\n", params[0]);
 	if (!ft_strncmp(params[0], "./", 2))
 	{
 		ret = handle_relative(v, &path, params[0]);
@@ -89,7 +87,7 @@ int		ft_execve(t_vars *v, char **params)
 	else
 		waitpid(forky, &stat, 0);
 	// End
-	ft_free_array((void **)envp, ft_lstsize(v->env));
+	ft_free_array((void **)envp, env__ft_lstsize(v->env));
 	free(path);
 	return (WEXITSTATUS(stat));
 }

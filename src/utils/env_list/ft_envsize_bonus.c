@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_unset.c                                         :+:    :+:            */
+/*   ft_envsize_bonus.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/08/05 11:05:24 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:27:48 by bdekonin      ########   odam.nl         */
+/*   Created: 2019/11/18 14:32:07 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/22 17:16:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "env.h"
+#include "../../minishell.h"
 
-// The return status is zero unless a name does not exist or is readonly.
-
-int ft_unset(t_vars *v, char **params)
+int	env__ft_lstsize(t_env *lst)
 {
-	size_t i;
+	int i;
 
 	i = 0;
-	while (params[i])
+	while (lst)
 	{
-		env__ft_lstremove_middle(params[i], v->env);
+		lst = lst->next;
 		i++;
 	}
-	return (0);
+	return (i);
 }

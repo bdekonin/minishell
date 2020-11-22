@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/16 15:56:15 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/23 00:13:05 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ SRC = \
 	/utils/malloc_check.c \
 	/utils/ft_iserrno_bonus.c \
 	/utils/ft_reduce_spaces.c \
-	/utils/find_env_var.c \
+	/utils/find_env.c \
 	/utils/is_functions.c \
 	/utils/linked_list_utils.c \
 	/utils/reset_std.c \
@@ -54,16 +54,21 @@ SRC = \
 	/utils/cmd_list/ft_cmdlast_bonus.c \
 	/utils/cmd_list/ft_cmdnew_bonus.c \
 	/utils/cmd_list/ft_cmdsize_bonus.c \
-	/utils/cmd_list/ft_cmd_removemiddle.c
-	
+	/utils/cmd_list/ft_cmd_removemiddle.c \
+	/utils/env_list/ft_envadd_back_bonus.c \
+	/utils/env_list/ft_envadd_front_bonus.c \
+	/utils/env_list/ft_envclear_bonus.c \
+	/utils/env_list/ft_envdelone_bonus.c \
+	/utils/env_list/ft_envlast_bonus.c \
+	/utils/env_list/ft_envmove_back_bonus.c \
+	/utils/env_list/ft_envnew_bonus.c \
+	/utils/env_list/ft_envremove_middle_bonus.c \
+	/utils/env_list/ft_envsize_bonus.c
+
 OBJ = $(addprefix obj, $(SRC:.c=.o))
-
 CC = gcc -Wall -Wextra -Werror -g
-
 LIBFT = ./libft/libft.a
-
 PRINTF = ./ft_printf/libftprintf.a
-
 INCLUDES = ./src/$(NAME).h
 
 all: $(NAME)
@@ -79,7 +84,7 @@ $(NAME): $(LIBFT) $(PRINTF) $(OBJ)
 	@$(CC) -o $(NAME) $(LIBFT) $(PRINTF) $(OBJ)
 
 obj/%.o: src/%.c
-	@mkdir -p obj obj/builtins/ obj/utils obj/utils/cmd_list
+	@mkdir -p obj obj/builtins/ obj/utils obj/utils/cmd_list obj/utils/env_list
 	$(CC) -c $< -o $@
 
 .PHONY: clean fclean re
@@ -94,6 +99,7 @@ clean:
 
 fclean: clean
 	@/bin/rm -f $(LIBFT) $(NAME)
+	@/bin/rm -rf obj
 	@make fclean -C ./libft
 	@make fclean -C ./ft_printf
 

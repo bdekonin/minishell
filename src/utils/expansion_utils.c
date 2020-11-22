@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/19 14:35:36 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/22 17:35:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,14 @@ int	        copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	if (src[*i] == '?')
 		return (ret_value_last_cmd(v, dst, i, j));
 	env_len = find_identifier_len(src + *i);
-//	printf("env_len = [%zu]\n", env_len);
 	if (env_len == 0)
 		return (env_var_with_len_zero(dst, j));
 	env_name = ft_substr(src, *i, env_len);		//new, pls test and free
-//	printf("env_name = [%s]\n", env_name);
-	env_content = find_env_var(v, env_name, &env_len);
+	env_content = find_env(v, env_name, &env_len)->content;
 	ft_free(env_name);
-//	printf("env_content = [%s]\n", env_content);
 	if (!env_content)
 		return (empty_env_content(env_len, i));
 	split_content = ft_reduce_spaces(env_content);
-//	printf("split_content = [%s]\n", split_content);
 	malloc_check(v, split_content);
 	ft_strlcat(dst + *j, split_content, PATH_MAX + 1);
 	*j += ft_strlen(split_content);

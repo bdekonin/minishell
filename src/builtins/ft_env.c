@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/14 16:36:51 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/14 14:53:04 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/22 17:24:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,20 @@
 
 int ft_env(t_vars *v, char **params)
 {
-    t_list  *tmp;
-    t_env   *node;
-    size_t  size;
+	t_env   *node;
+	size_t  size;
 
-    tmp = v->env;
-    size = ft_array_size((const char **)params);
-    if (size == 0)
-    {
-        while (tmp)
-        {
-            node = tmp->content;
-            ft_printf("%s=%s\n", node->name, node->content);
-            tmp = tmp->next;
-        }
-    }
-    else
-        return (run_command(v, params)); //ja dit hoeft dus toch niet (zie subject)
-    return (0);
+	node = v->env;
+	size = ft_array_size((const char **)params);
+	if (size == 0)
+	{
+		while (node)
+		{
+			ft_printf("%s=%s\n", node->name, node->content);
+			node = node->next;
+		}
+	}
+	else
+		return (run_command(v, params)); //ja dit hoeft dus toch niet (zie subject)
+	return (0);
 }

@@ -6,21 +6,19 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 16:00:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 00:09:47 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int		find_env_var_name(t_list **head, char *name, char *content)
+static int		find_env_name(t_env **head, char *name, char *content)
 {
-	t_list	*tmp;
 	t_env	*node;
 	
-	tmp = *head;
-	while (tmp)
+	node = *head;
+	while (node)
 	{
-		node = tmp->content;
 		if (!ft_strncmp(node->name, name, ft_strlen(name) + 1))
 		{
 			free(name);
@@ -28,7 +26,7 @@ static int		find_env_var_name(t_list **head, char *name, char *content)
 			node->content = content;
 			return (1);
 		}
-		tmp = tmp->next;
+		node = node->next;
 	}
 	return (0);
 }
@@ -79,8 +77,8 @@ static int		add_new_env_vars(t_vars *v, char *arg)
 		content = ft_strdup(ptr + 1);
 	if (ptr && !content)
 		ft_exit_error(v, EXIT_FAILURE, 1);
-	if (!find_env_var_name(&v->env, name, content))
-		create_new_env_var(v, name, content);
+	if (!find_env_name(&v->env, name, content))
+		create_new_env_var(v, name, content, 0);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/19 13:55:10 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/22 17:33:46 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,32 +68,24 @@ static int	loop_locations(t_vars *v, char **new_path, char *command)
 
 	i = 0;
 	ret = FILENOTFOUND;
-	locations = ft_split_multi(v->default_path->content, ":", &splitsize);
+	if (!find_env(v, "PATH", 0))
+		return (FILENOTFOUND);
+	locations = ft_split_multi(find_env(v, "PATH", 0)->content, ":", &splitsize);
 	if (!locations)
-	{
-	
 		return (FILEERROR);
-	}
 	while (locations[i])
 	{
 		ret = searchDir(locations[i], command);
-		
 		if (ret == FILEFOUND)
 		{
-		
 			*new_path = ft_strdup(locations[i]);
 			break;
 		}
 		if (ret == FILEERROR)
-		{
-			
-		
 			return (ret);
-		}
 		i++;
 	}
 	ft_free_array((void**)locations, splitsize);
-
 	return (ret);
 }
 

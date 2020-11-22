@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/17 14:30:46 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 00:09:39 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,18 @@
 
 
 
-#include "../libft/libft.h"
 #include <stdlib.h>		//EXIT_FAILURE EXIT_SUCCESS
 #include <limits.h>		//PATH_MAX
 #include <unistd.h>		//STDIN_FILENO
 #include <errno.h>		//ERRNO, ENOMEM
 #include <string.h>		//str_error
-# include "utils/cmd_list/cmd.h"
-
 # include <stdio.h>
+
+
+# include "../libft/libft.h"
+# include "utils/cmd_list/cmd.h"
+# include "utils/env_list/env.h"
+
 
 /*
 ** Execve https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html
@@ -51,7 +54,6 @@
 # define MINISHELL_ARGCOUNT "too many arguments"
 # define MINISHELL_ERRNO "%s: %s\nexit\n"
 
-# define ENVIRONMENT_VAR_MISSING "'%s' is undefined. default: '%s'\n"
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
 # define INVALID_IDENTIFIER "%s: export: `%s': not a valid identifier\n"
 # define PROMPT "minishell-1.0$ "
@@ -62,29 +64,17 @@
 # define ANGLEBRACKETRIGHT 62 // >
 # define ANGLEBRACKETDOUBLERIGHT 63 // >>
 
-typedef	struct	s_env
-{
-	char		*name;
-	char		*content;
-}				t_env;
-
 typedef struct  s_vars{
 	int			fd;
-	t_list		*env;
+	t_env		*env;
 	t_list		*tempcmd;
 	t_cmd		*cmd;				//linked list of all tokens
 	t_list		**semicolon_ptrs;	//pointers to the first token after a `;' 	//ik denk dat dit weg kan
-	char		*prefix;
 	char		*current_path;
 	int			cmd_ret;
 	int			stdout_copy;
 	int			stdin_copy;
-	int			pipefd[2];
-	pid_t		forky;
-	pid_t		spoon;
-	t_env		*default_path;
 	t_env		*default_homedir;
-	t_env		*default_oldpwd;
 	int			empty_quotes;
 }               t_vars;
 
@@ -94,12 +84,8 @@ typedef struct  s_vars{
 
 int				ft_printf(const char *fmt, ...);
 
-
-
-
-
-int addarguments(t_list *list, int i);
-int argumentremover(t_vars *v, t_list *list);
+int 			addarguments(t_list *list, int i);
+int 			argumentremover(t_vars *v, t_list *list);
 
 /*
 **				src/
@@ -143,13 +129,12 @@ int				ft_env(t_vars *v, char **params);
 **				src/utils
 */
 
-void			create_new_env_var(t_vars *v, char *name, char *content);
+void			create_new_env_var(t_vars *v, char *name, char *content, int checkmalloc);
 void			create_new_token(t_vars *v, const char *ptr, size_t len);
 t_list			*get_prev_node(t_vars *v, t_list *dst);
 void			ft_lst_remove_one(t_list **head, t_list *node);
 size_t			find_identifier_len(char *str);
-char			*find_env_var(t_vars *v, char *identifier, size_t *len);
-void			print_prefix(t_vars *v);
+t_env			*find_env(t_vars *v, char *identifier, size_t *len);
 int				export_declare_list(t_vars *v);
 
 int				ft_iserrno(int error);

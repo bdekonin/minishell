@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 08:42:59 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:53:14 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/22 17:26:50 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,13 @@ static int		print_declare_list(t_vars *v, char **array, size_t len)
 
 static void		create_declare_list(t_vars *v, char **array, size_t len)
 {
-	t_list	*tmp;
 	t_env	*node;
 	size_t	i;
 
 	i = 0;
-	tmp = v->env;
-	while (i < len && tmp)
+	node = v->env;
+	while (i < len && node)
 	{
-		node = tmp->content;
 		if (!node->content)
 			array[i] = ft_strxjoin("declare -x ", node->name, NULL);
 		else if (*(node->content) == '\0')
@@ -86,7 +84,7 @@ static void		create_declare_list(t_vars *v, char **array, size_t len)
 			array[i] = ft_strxjoin("declare -x ", node->name, "=\"", node->content, "\"", NULL);
 		malloc_check(v, array[i]);
 		i++;
-		tmp = tmp->next;
+		node = node->next;
 	}
 }
 
@@ -95,7 +93,7 @@ int		export_declare_list(t_vars *v)
 	size_t	len;
 	char	**array;
 	
-	len = ft_lstsize(v->env);
+	len = env__ft_lstsize(v->env);
 	array = ft_calloc(len + 1, sizeof(char *));
 	malloc_check(v, array);
 	create_declare_list(v, array, len);

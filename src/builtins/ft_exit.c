@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/17 14:29:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/22 14:55:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 static void freeall(t_vars *v)
 {
 	// free linked lists with: ft_lstclear(&head, free);
-	if (v->prefix)
-		free(v->prefix);
 	if (v->current_path)
 		free(v->current_path);
 	if (v->stdout_copy) // if stdout has been copied.
