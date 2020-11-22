@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:25:03 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 00:17:28 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char		*init_dst(char *param, size_t *i)
 static void		append_to_dst(t_vars *v, char **params, char **dst, size_t i)
 {
 	char *tmp;
-	
+
 	while (params[i])
 	{
 		tmp = ft_strxjoin(*dst, " ", params[i], NULL);
@@ -68,11 +68,6 @@ int 			ft_echo(t_vars *v, char **params)
 	size_t	i;
 	int		newline_opt;
 	char	*dst;
-
-	// printf("ECHOOO\n");
-	// ft_print_array(params);
-	// printf("\n- DONE\n\n");
-
 
 	i = check_newline_option(params, &newline_opt);
 	dst = init_dst(params[i], &i);

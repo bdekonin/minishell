@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 00:09:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 00:17:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ static inline int	exist(t_vars *v, char *string)
 		return (chdir(node->content));
 }
 
-static int	run_chdirs(t_vars *v, char **argument)
+static int			run_chdirs(t_vars *v, char **argument)
 {
 	int			ret;
 
 	ret = 0;
-	if (!*argument || !ft_strncmp(*argument, "--", 3) || !ft_strncmp(*argument, "~", 2))
+	if (!*argument || !ft_strncmp(*argument, "--", 3) || \
+			!ft_strncmp(*argument, "~", 2))
 		ret = exist(v, "HOME");
 	else if (!ft_strncmp(*argument, "-", 2))
 		ret = exist(v, "OLDPWD");
@@ -43,13 +44,14 @@ static int	run_chdirs(t_vars *v, char **argument)
 	return (ret);
 }
 
-static void fixoldpwdyo(t_vars *v, int ret)
+static void			fixoldpwdyo(t_vars *v, int ret)
 {
 	t_env	*pointer;
 
 	pointer = find_env(v, "OLDPWD", 0);
 	if (pointer == NULL)
-		create_new_env_var(v, ft_strdup("OLDPWD"), ft_strdup(v->current_path), 1);
+		create_new_env_var(v, ft_strdup("OLDPWD"), \
+			ft_strdup(v->current_path), 1);
 	else if (ret == 0)
 	{
 		free(pointer->content);
@@ -59,7 +61,7 @@ static void fixoldpwdyo(t_vars *v, int ret)
 	return ;
 }
 
-static inline int printerror(char *argument, int ret)
+static inline int	printerror(char *argument, int ret)
 {
 	ft_putstr_fd(MINISHELL, 2);
 	ft_putstr_fd(": cd: ", 2);
@@ -85,5 +87,3 @@ int					ft_cd(t_vars *v, char **params)
 	malloc_check(v, v->current_path);
 	return (0);
 }
-// clear ; cd kaas ; echo $? ; cd . ; echo $?
-// unset $OLDPWD ; cd $OLDPWD

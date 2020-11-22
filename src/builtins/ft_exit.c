@@ -6,18 +6,17 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/22 14:55:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 00:20:58 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void freeall(t_vars *v)
+static void		freeall(t_vars *v)
 {
-	// free linked lists with: ft_lstclear(&head, free);
 	if (v->current_path)
 		free(v->current_path);
-	if (v->stdout_copy) // if stdout has been copied.
+	if (v->stdout_copy)
 	{
 		dup2(v->fd, STDOUT_FILENO);
 		close(v->fd);
@@ -26,7 +25,7 @@ static void freeall(t_vars *v)
 	}
 }
 
-static size_t paramcounter(char **params)
+static size_t	paramcounter(char **params)
 {
 	size_t i;
 
@@ -36,7 +35,7 @@ static size_t paramcounter(char **params)
 	return (i);
 }
 
-static int printexits(int exitnum)
+static int		printexits(int exitnum)
 {
 	ft_putendl_fd("exit", STDERR_FILENO);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -48,10 +47,10 @@ static int printexits(int exitnum)
 	return (1);
 }
 
-int	ft_exit(t_vars *v, char **params)
+int				ft_exit(t_vars *v, char **params)
 {
-	unsigned char range;
-	int i;
+	unsigned char	range;
+	int				i;
 
 	if (paramcounter(params) > 1)
 		return (printexits(ARGCOUNT));
@@ -72,12 +71,13 @@ int	ft_exit(t_vars *v, char **params)
 	return (1);
 }
 
-void	ft_exit_error(t_vars *v, int status, int print)
+void			ft_exit_error(t_vars *v, int status, int print)
 {
 	freeall(v);
-	// free env list
+	env__ft_lstclear(&v->env, free);
 	ft_bzero(v, sizeof(t_vars)); // this will leak if we dont free everything, so testing purposes
-	if (errno && status == 1)
+	system("leaks minishell");
+	if (errno && status == EXIT_FAILURE)
 		ft_printf(MINISHELL_ERRNO, MINISHELL, strerror(errno));
 	else if (print)
 		ft_printf("exit\n");
