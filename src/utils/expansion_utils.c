@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:35:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 12:18:23 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	        copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
 	size_t 	env_len;
 	char 	*env_name;
-	char 	*env_content;
+	t_env 	*env_content;
 	char	*split_content;
 	
 	*i += 1;
@@ -52,11 +52,11 @@ int	        copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	if (env_len == 0)
 		return (env_var_with_len_zero(dst, j));
 	env_name = ft_substr(src, *i, env_len);		//new, pls test and free
-	env_content = find_env(v, env_name, &env_len)->content;
+	env_content = find_env(v, env_name, &env_len);
 	ft_free(env_name);
 	if (!env_content)
 		return (empty_env_content(env_len, i));
-	split_content = ft_reduce_spaces(env_content);
+	split_content = ft_reduce_spaces(env_content->content);
 	malloc_check(v, split_content);
 	ft_strlcat(dst + *j, split_content, PATH_MAX + 1);
 	*j += ft_strlen(split_content);

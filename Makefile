@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/23 00:13:05 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/23 21:39:10 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -96,6 +96,8 @@ norm:
 
 clean:
 	@/bin/rm -f $(OBJ)
+	@make clean -C ./libft
+	@make clean -C ./ft_printf
 
 fclean: clean
 	@/bin/rm -f $(LIBFT) $(NAME)
@@ -104,11 +106,3 @@ fclean: clean
 	@make fclean -C ./ft_printf
 
 re: fclean all
-
-lib:
-	@mkdir -p libft
-	cp -R ~/documents/repositories/libft/Makefile ./libft
-	cp -R ~/documents/repositories/libft/libft.h ./libft
-	cp -R ~/documents/repositories/libft/mandatory ./libft
-	cp -R ~/documents/repositories/libft/bonus ./libft
-	cp -R ~/documents/repositories/libft/added ./libft

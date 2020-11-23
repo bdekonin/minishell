@@ -6,13 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 11:05:24 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 12:58:15 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:29:56 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// The return status is zero unless a name does not exist or is readonly.
 
 static int		check_valid_identifier(char *arg)
 {
@@ -34,7 +32,7 @@ static int		check_valid_identifier(char *arg)
 	return (1);
 }
 
-int ft_unset(t_vars *v, char **params)
+int				ft_unset(t_vars *v, char **params)
 {
 	size_t i;
 

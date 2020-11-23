@@ -6,24 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 00:20:58 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:31:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static void		freeall(t_vars *v)
-{
-	if (v->current_path)
-		free(v->current_path);
-	if (v->stdout_copy)
-	{
-		dup2(v->fd, STDOUT_FILENO);
-		close(v->fd);
-		dup2(v->stdout_copy, 1);
-		close(v->stdout_copy);
-	}
-}
 
 static size_t	paramcounter(char **params)
 {
@@ -73,13 +60,13 @@ int				ft_exit(t_vars *v, char **params)
 
 void			ft_exit_error(t_vars *v, int status, int print)
 {
-	freeall(v);
+	if (v->current_path)
+		free(v->current_path);
 	env__ft_lstclear(&v->env, free);
-	ft_bzero(v, sizeof(t_vars)); // this will leak if we dont free everything, so testing purposes
-	system("leaks minishell");
 	if (errno && status == EXIT_FAILURE)
 		ft_printf(MINISHELL_ERRNO, MINISHELL, strerror(errno));
 	else if (print)
 		ft_printf("exit\n");
+	(void)print;
 	exit(status);
 }

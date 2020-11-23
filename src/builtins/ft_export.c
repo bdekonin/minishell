@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 12:50:18 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:35:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int		find_env_name(t_env **head, char *name, char *content)
 {
 	t_env	*node;
-	
+
 	node = *head;
 	while (node)
 	{
@@ -59,7 +59,7 @@ static int		add_new_env_vars(t_vars *v, char *arg)
 	char	*name;
 	char	*content;
 	size_t	len_identifier;
-	
+
 	if (!check_valid_identifier(arg))
 	{
 		ft_printf(INVALID_IDENTIFIER, "minishell", "export", arg);
@@ -82,13 +82,9 @@ static int		add_new_env_vars(t_vars *v, char *arg)
 	return (1);
 }
 
-int 			ft_export(t_vars *v, char **params)
+int				ft_export(t_vars *v, char **params)
 {
 	size_t	i;
-
-	// ft_printf("param now\n");
-	// ft_print_array(params);
-	// ft_printf("param end\n");
 
 	if (!*params)
 		return (export_declare_list(v));

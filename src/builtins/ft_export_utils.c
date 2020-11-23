@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 08:42:59 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:26:50 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:37:49 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void		swap(char **s1, char **s2)
 {
 	char *tmp;
-	
+
 	tmp = *s1;
 	*s1 = *s2;
 	*s2 = tmp;
@@ -61,7 +61,7 @@ static int		print_declare_list(t_vars *v, char **array, size_t len)
 			ft_exit_error(v, EXIT_FAILURE, 1);
 		if (write(1, "\n", 1) != 1)
 			ft_exit_error(v, EXIT_FAILURE, 1);
-		i++;	
+		i++;
 	}
 	ft_free_array((void **)array, i);
 	return (0);
@@ -79,20 +79,22 @@ static void		create_declare_list(t_vars *v, char **array, size_t len)
 		if (!node->content)
 			array[i] = ft_strxjoin("declare -x ", node->name, NULL);
 		else if (*(node->content) == '\0')
-			array[i] = ft_strxjoin("declare -x ", node->name, "=\"", "\"", NULL);
+			array[i] = ft_strxjoin("declare -x ", \
+					node->name, "=\"", "\"", NULL);
 		else
-			array[i] = ft_strxjoin("declare -x ", node->name, "=\"", node->content, "\"", NULL);
+			array[i] = ft_strxjoin("declare -x ", node->name, \
+					"=\"", node->content, "\"", NULL);
 		malloc_check(v, array[i]);
 		i++;
 		node = node->next;
 	}
 }
 
-int		export_declare_list(t_vars *v)
+int				export_declare_list(t_vars *v)
 {
 	size_t	len;
 	char	**array;
-	
+
 	len = env__ft_lstsize(v->env);
 	array = ft_calloc(len + 1, sizeof(char *));
 	malloc_check(v, array);

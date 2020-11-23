@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 13:33:04 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 00:17:28 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:24:32 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void		append_to_dst(t_vars *v, char **params, char **dst, size_t i)
 	}
 }
 
-int 			ft_echo(t_vars *v, char **params)
+int				ft_echo(t_vars *v, char **params)
 {
 	ssize_t	ret;
 	size_t	i;
