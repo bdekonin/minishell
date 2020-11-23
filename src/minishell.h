@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 00:09:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 12:47:46 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@
 # define MINISHELL_ERRNO "%s: %s\nexit\n"
 
 # define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
-# define INVALID_IDENTIFIER "%s: export: `%s': not a valid identifier\n"
+# define INVALID_IDENTIFIER "%s: %s: `%s': not a valid identifier\n"
 # define PROMPT "minishell-1.0$ "
 # define MINISHELL "minishell"
 

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/29 16:14:06 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 00:09:47 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 12:50:18 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static int		add_new_env_vars(t_vars *v, char *arg)
 	
 	if (!check_valid_identifier(arg))
 	{
-		ft_printf(INVALID_IDENTIFIER, "minishell", arg);
+		ft_printf(INVALID_IDENTIFIER, "minishell", "export", arg);
 		return (0);
 	}
 	len_identifier = ft_substrlen(arg, "=");
