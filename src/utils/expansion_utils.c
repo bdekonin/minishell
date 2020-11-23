@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 12:18:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:55:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,20 @@ static int	empty_env_content(size_t env_len, size_t *i)
 	return (1);
 }
 
-int	        copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+int			copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
-	size_t 	env_len;
-	char 	*env_name;
-	t_env 	*env_content;
-	char	*split_content;
-	
+	size_t		env_len;
+	char		*env_name;
+	t_env		*env_content;
+	char		*split_content;
+
 	*i += 1;
 	if (src[*i] == '?')
 		return (ret_value_last_cmd(v, dst, i, j));
 	env_len = find_identifier_len(src + *i);
 	if (env_len == 0)
 		return (env_var_with_len_zero(dst, j));
-	env_name = ft_substr(src, *i, env_len);		//new, pls test and free
+	env_name = ft_substr(src, *i, env_len);
 	env_content = find_env(v, env_name, &env_len);
 	ft_free(env_name);
 	if (!env_content)
