@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 23:57:02 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 13:21:02 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,13 @@ static int	read_command_line_input(t_vars *v, char *cli)
 
 static void control_d(t_vars *v, char *cli)
 {
-	if (cli[0])
-		dprintf(2, "\tFull\n");
+	if (cli[0] == '\0')
+	{
+		dprintf(2, "  \b\b\n");
+		ft_exit_error(v, EXIT_SUCCESS, 1);
+	}
 	else
-		dprintf(2, "\tempty\n");
+		dprintf(1, "  \b\b\n");
 	(void)v;
 }
 
