@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/25 16:42:06 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/25 16:52:50 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void		add_bogus_token(t_vars *v)
 	char *str;
 	t_list *lstnew;
 	t_list *temp;
-	
+
 	list = v->tempcmd;
 	while (list)
 	{
