@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/24 15:05:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 13:45:10 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		child(t_vars *v, t_cmd *list, int *fd)
 		split_tokens(v, list->line);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
-	exit(EXIT_SUCCESS);
+	exit(v->cmd_ret);
 }
 
 static void		parent(t_vars *v, t_cmd *list, int *fd)
@@ -36,10 +36,7 @@ static void		parent(t_vars *v, t_cmd *list, int *fd)
 	if (list->type == PIPELINE)
 		pipe_stuff(v, list);
 	else if (!list->prev || list->prev->type == 0 || list->prev->type == PIPELINE) // nee
-	{
-		// waitpid(-1, NULL, 0);
 		split_tokens(v, list->line);
-	}
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 }
@@ -55,15 +52,16 @@ int				pipe_stuff(t_vars *v, t_cmd *list)
 	if (pid < 0)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
-		parent(v, list->next, fd);
-	else
 		child(v, list, fd);
+	else
+		parent(v, list->next, fd);
 	return (1);
 }
 
 int				pipe_handler(t_vars *v, t_cmd *list)
 {
 	pid_t forky;
+	int stat;
 
 	forky = fork();
 	if (forky < 0)
@@ -71,9 +69,10 @@ int				pipe_handler(t_vars *v, t_cmd *list)
 	else if (forky == 0)
 	{
 		pipe_stuff(v, list);
-		exit(EXIT_SUCCESS); // set correct
+		exit(v->cmd_ret); // set correct
 	}
 	else
-		waitpid(-1, NULL, 0);
+		waitpid(-1, &stat, 0);
+	v->cmd_ret = WEXITSTATUS(stat);
 	return (1);
 }
