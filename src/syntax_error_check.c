@@ -6,41 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 23:30:45 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 15:35:52 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int		syntax_error_return(t_vars *v, const char *token)
-{
-	v->cmd_ret = 258;
-	ft_printf(SYNTAX_ERROR, "minishell", token);
-	return (0);
-}
-
-static int		check_flag_syntax(t_vars *v, const char *cli, size_t i)
-{
-	if (cli[i] == '>' && cli[i + 1] == '>')
-		i = i + 2;
-	else if (ft_charsearch(cli[i], "<>|;"))	
-		i++;
-	while (cli[i] == ' ')
-		i++;
-	if (cli[i] == '>' && cli[i + 1] == '>')
-		return (syntax_error_return(v, ">>"));
-	if (cli[i] == '>')
-		return (syntax_error_return(v, ">"));
-	if (cli[i] == '<')
-		return (syntax_error_return(v, "<"));
-	if (cli[i] == ';')
-		return (syntax_error_return(v, ";"));
-	if (cli[i] == '|')
-		return (syntax_error_return(v, "|"));
-	if (cli[i] == '\0')
-		return (syntax_error_return(v, "newline"));
-	return (1);
-}	
 
 static size_t	skip_flags(const char *cli, size_t i)
 {

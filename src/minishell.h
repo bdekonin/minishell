@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/25 13:00:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 15:37:53 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void			initialize(t_vars *v, char **envp);
 int				initial_syntax_error_check(t_vars *v, const char *cli);
 int				syntax_error_check_loop(t_vars *v, char **args, size_t splitsize);
 int				syntax_error_check(t_vars *v, const char *cli);
+int				syntax_error_return(t_vars *v, const char *token);
+int				check_flag_syntax(t_vars *v, const char *cli, size_t i);
 void			create_tokens(t_vars *v, const char *cli);
 void			find_semicolons(t_vars *v);
 void			split_tokens(t_vars *v, char *string);

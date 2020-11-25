@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/25 13:02:08 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/25 15:37:04 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC = \
 	/initialize.c \
 	/main.c \
 	/syntax_error_check.c \
+	/syntax_error_return.c \
 	/run_pipe.c \
 	/run_redirection.c \
 	/handle_relative.c \
