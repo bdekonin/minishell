@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 13:21:02 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/24 14:12:21 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,8 @@ void		split_tokens(t_vars *v, char *string)
 	{
 		v->cmd_ret = 1;
 		reset_std(v);
-		return ;	
+		return ;
 	}
-
 	tokens = ft_split_multi(string, "*", &size_tokens);
 	malloc_check(v, tokens);
 	v->cmd_ret = run_command(v, tokens);

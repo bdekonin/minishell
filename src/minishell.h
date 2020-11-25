@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 12:47:46 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/25 13:00:35 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,12 @@ typedef struct  s_vars{
 	t_env		*env;
 	t_list		*tempcmd;
 	t_cmd		*cmd;				//linked list of all tokens
-	t_list		**semicolon_ptrs;	//pointers to the first token after a `;' 	//ik denk dat dit weg kan
 	char		*current_path;
 	int			cmd_ret;
 	int			stdout_copy;
 	int			stdin_copy;
-	t_env		*default_homedir;
 	int			empty_quotes;
-}               t_vars;
+}				t_vars;
 
 /*
 **				libraries

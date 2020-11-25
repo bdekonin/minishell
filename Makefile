@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/23 21:39:10 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/25 13:02:08 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ SRC = \
 	/create_tokens.c \
 	/execve.c \
 	/expansion.c \
-	/find_semicolons.c \
 	/initialize.c \
 	/main.c \
 	/syntax_error_check.c \

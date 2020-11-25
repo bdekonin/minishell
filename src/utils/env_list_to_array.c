@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 16:59:08 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:21:09 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:46:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char    **env_list_to_array(t_vars *v)
+char	**env_list_to_array(t_vars *v)
 {
 	char	**envp;
 	t_env	*node;

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:36:13 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/24 15:08:08 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int		ft_execve(t_vars *v, char **params)
 	signal(SIGQUIT, signal_exec);
 	signal(SIGINT, signal_exec);
 	forky = fork();
+	// dprintf(2, "execve forky [%d]\n", forky);
 	if (!forky)
 	{
 		if (execve(path, &params[0], envp) < 0)

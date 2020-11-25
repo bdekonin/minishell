@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   find_env.c                                     :+:    :+:            */
+/*   find_env.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/10 13:54:53 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:29:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:52:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ size_t		find_identifier_len(char *str)
 
 t_env		*find_env(t_vars *v, char *identifier, size_t *len)
 {
-	t_env   *node;
-	size_t  length;
+	t_env	*node;
+	size_t	length;
 
 	if (!len)
 		length = find_identifier_len(identifier);
@@ -38,7 +38,7 @@ t_env		*find_env(t_vars *v, char *identifier, size_t *len)
 	node = v->env;
 	while (node)
 	{
-		if (!ft_strncmp(node->name , identifier, length + 1)) //or length + 1?
+		if (!ft_strncmp(node->name, identifier, length + 1))
 			return (node);
 		node = node->next;
 	}

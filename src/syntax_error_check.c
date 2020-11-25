@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/19 19:10:49 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/23 23:30:45 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,7 @@ int			syntax_error_check_loop(t_vars *v, char **args, size_t splitsize)
 	while (i < splitsize)
 	{
 		if (!syntax_error_check(v, args[i]))
-		{
-			ft_free_array((void **)args, splitsize);
 			return (0);
-		}
 		i++;
 	}
 	return (1);

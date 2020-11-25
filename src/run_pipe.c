@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:49:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/24 15:05:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ static void		parent(t_vars *v, t_cmd *list, int *fd)
 	if (list->type == PIPELINE)
 		pipe_stuff(v, list);
 	else if (!list->prev || list->prev->type == 0 || list->prev->type == PIPELINE) // nee
+	{
+		// waitpid(-1, NULL, 0);
 		split_tokens(v, list->line);
+	}
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 }
@@ -51,7 +54,7 @@ int				pipe_stuff(t_vars *v, t_cmd *list)
 	pid = fork();
 	if (pid < 0)
 		exit(EXIT_FAILURE);
-	if (pid > 0)
+	if (pid == 0)
 		parent(v, list->next, fd);
 	else
 		child(v, list, fd);
@@ -68,7 +71,7 @@ int				pipe_handler(t_vars *v, t_cmd *list)
 	else if (forky == 0)
 	{
 		pipe_stuff(v, list);
-		exit(v->cmd_ret); // set correct
+		exit(EXIT_SUCCESS); // set correct
 	}
 	else
 		waitpid(-1, NULL, 0);

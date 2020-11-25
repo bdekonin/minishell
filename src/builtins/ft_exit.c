@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/05 21:51:39 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 21:31:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 23:25:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,14 @@ int				ft_exit(t_vars *v, char **params)
 
 void			ft_exit_error(t_vars *v, int status, int print)
 {
-	if (v->current_path)
-		free(v->current_path);
-	env__ft_lstclear(&v->env, free);
+	// if (v->current_path)
+	// 	free(v->current_path);
+	// env__ft_lstclear(&v->env, free);
 	if (errno && status == EXIT_FAILURE)
 		ft_printf(MINISHELL_ERRNO, MINISHELL, strerror(errno));
 	else if (print)
 		ft_printf("exit\n");
 	(void)print;
+	(void)v;
 	exit(status);
 }

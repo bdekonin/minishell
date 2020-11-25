@@ -6,14 +6,14 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/18 14:43:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:16:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:46:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include "../../minishell.h"
 
-void env__ft_lstmove_back(char *name, t_env *new)
+void	env__ft_lstmove_back(char *name, t_env *new)
 {
 	t_env *back;
 	t_env *last;

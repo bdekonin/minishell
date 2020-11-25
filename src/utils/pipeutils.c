@@ -6,16 +6,16 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/31 23:17:33 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/15 16:59:02 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:57:25 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_cmd *lastpipe(t_cmd *headptr)
+t_cmd		*lastpipe(t_cmd *headptr)
 {
 	t_cmd *last;
-	
+
 	last = headptr;
 	while (headptr)
 	{
@@ -26,10 +26,10 @@ t_cmd *lastpipe(t_cmd *headptr)
 	return (last->next);
 }
 
-t_cmd *lastredir(t_cmd *headptr)
+t_cmd		*lastredir(t_cmd *headptr)
 {
 	t_cmd *last;
-	
+
 	last = headptr;
 	while (headptr)
 	{

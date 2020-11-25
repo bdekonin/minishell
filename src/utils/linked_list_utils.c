@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 20:11:14 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 00:09:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/24 14:49:48 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	create_new_token(t_vars *v, const char *ptr, size_t len)
 t_list	*get_prev_node(t_vars *v, t_list *dst)
 {
 	t_list *tmp;
-	
+
 	if (dst == v->tempcmd)
 		return (NULL);
 	tmp = v->tempcmd;

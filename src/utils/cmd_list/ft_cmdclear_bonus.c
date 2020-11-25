@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/27 15:25:54 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/11 19:27:43 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/23 21:41:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	cmd__ft_lstclear(t_cmd **lst, void (*del)(void*))
 {
 	t_cmd		*tmp;
-	
+
 	if (!lst)
 		return ;
 	while (*lst)
