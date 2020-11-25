@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/24 14:41:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 16:42:06 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static size_t	get_len(const char *cli, size_t start)
 	}
 	return (i - start);
 }
-
 
 static char 	gettype(char *content)
 {
@@ -90,8 +89,18 @@ static t_cmd 	*addnewtoback(t_list *list)
 }
 void	cmd__ft_printlist(t_cmd *cmd);
 
+// static void	print_tokens(t_list *tmp) // tmp debug function
+// {
+// 	while (tmp)
+// 	{
+// 		printf("list token = [%s]\n", tmp->content);
+// 		tmp = tmp->next;
+// 	}
+// }
+
 static t_cmd	*betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
 {
+//	print_tokens(list);
 	head = addnewtoback(list);
 	if (head == NULL)
 		ft_exit_error(v, EXIT_FAILURE, 1);
@@ -108,8 +117,34 @@ static t_cmd	*betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
 		cmd__ft_lstadd_back(&head, temp);
 		list = list->next;
 	}
-	// cmd__ft_printlist(head);
+	//print_token(list);
+//	cmd__ft_printlist(head);
 	return (head);
+}
+
+void		add_bogus_token(t_vars *v)
+{
+	t_list *list;
+	char *str;
+	t_list *lstnew;
+	t_list *temp;
+	
+	list = v->tempcmd;
+	while (list)
+	{
+		if (is_pipe(list->content))
+        {
+            if (list->next && is_redirection(list->next->content))
+            {
+                str = ft_strdup("");
+				lstnew = ft_lstnew(str);
+				temp = list->next;
+				list->next = lstnew;
+                list->next->next = temp;
+            }
+        }
+		list = list->next;
+	}
 }
 
 void			create_tokens(t_vars *v, const char *cli)
@@ -127,6 +162,7 @@ void			create_tokens(t_vars *v, const char *cli)
 		create_new_token(v, cli + start, len);
 		start = start + len;
 	}
+	add_bogus_token(v);
 	v->cmd = betterstruct(v, v->tempcmd, NULL, NULL);
 	ft_lstclear(&v->tempcmd, free);
 }

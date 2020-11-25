@@ -6,23 +6,23 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/24 14:12:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 16:00:05 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_tokens(t_vars *v) // tmp debug function
-{
-	t_cmd *tmp;
+// static void	print_tokens(t_vars *v) // tmp debug function
+// {
+// 	t_cmd *tmp;
 
-	tmp = v->cmd;
-	while (tmp)
-	{
-		printf("token = [%s]\n", tmp->line);
-		tmp = tmp->next;
-	}
-}
+// 	tmp = v->cmd;
+// 	while (tmp)
+// 	{
+// 		printf("token = [%s]\n", tmp->line);
+// 		tmp = tmp->next;
+// 	}
+// }
 
 void ft_printerror(char *file, int error)
 {
@@ -129,6 +129,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	size_t	i;
 	char	**args;
 	size_t	splitsize;
+	
 	if (!initial_syntax_error_check(v, cli))
 		return (ft_free_ret_int(cli, 0));
 	splitsize = 0;
@@ -148,7 +149,6 @@ static int	read_command_line_input(t_vars *v, char *cli)
 		i++;
 	}
 	ft_free_array((void**)args, splitsize);
-	cmd__ft_lstclear(&v->cmd, free);	//moet deze wel? 
 	return (1);
 }
 
