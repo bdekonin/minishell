@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:55:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 16:50:54 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void nocommand_redir(t_vars *v, t_cmd *list)
 	ptr = NULL;
 	while (list)
 	{
-		if (!ft_strncmp(list->line, ">", 1))
+		if (!ft_strncmp(list->line, ">", 1) || !ft_strncmp(list->line, ">>", 2))
 		{
 			free(list->line);
 			if (list->next && ft_wordcount(list->next->line, '*') > 1)
@@ -60,6 +60,21 @@ static void nocommand_redir(t_vars *v, t_cmd *list)
 		list = list->next;
 	}
 }
+
+static t_cmd *fix_anglebracketleft(t_cmd *list)
+{
+	t_cmd *temp;
+
+	temp = NULL;
+	if (!ft_strncmp(list->line, "<", 1))
+	{
+		temp = list->next;
+		cmd__ft_lstdelone(list, free);
+		return (temp);
+	}
+	return (list);
+}
+void	cmd__ft_printlist(t_cmd *cmd);
 
 static void changefilenames(t_cmd *list)
 {
@@ -82,4 +97,6 @@ void		changestruct(t_vars *v, t_cmd *list)
 	swaparguments(v, lastredir(list));
 	nocommand_redir(v, list); // (> o pwd) && (> o)
 	changefilenames(list); // echo hoi > file1 hallo > file2 welkom > file3 lars > file4 bob
+	list = fix_anglebracketleft(list);
+	v->cmd = list;
 }

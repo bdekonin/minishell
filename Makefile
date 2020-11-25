@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/25 15:37:04 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/11/25 15:48:50 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,6 @@ SRC = \
 	/utils/cmd_list/ft_cmddelone_bonus.c \
 	/utils/cmd_list/ft_cmdlast_bonus.c \
 	/utils/cmd_list/ft_cmdnew_bonus.c \
-	/utils/cmd_list/ft_cmdsize_bonus.c \
 	/utils/cmd_list/ft_cmd_removemiddle.c \
 	/utils/env_list/ft_envadd_back_bonus.c \
 	/utils/env_list/ft_envadd_front_bonus.c \

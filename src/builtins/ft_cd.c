@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/23 00:17:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 13:16:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ static inline int	exist(t_vars *v, char *string)
 		return (-2);
 	}
 	else
+	{
+		if (!ft_strncmp("OLDPWD", string, 7))
+			ft_putendl_fd(node->content, 2);
 		return (chdir(node->content));
+	}
 }
 
 static int			run_chdirs(t_vars *v, char **argument)
@@ -87,3 +91,13 @@ int					ft_cd(t_vars *v, char **params)
 	malloc_check(v, v->current_path);
 	return (0);
 }
+
+// cd kaas ; echo $?
+// cd src ; echo $?
+// cd ; echo $?
+// cd - ; echo $?
+// cd | cd ; echo $?
+// cd kaas | cd ; echo $?
+// cd | cd kaas ; echo $?
+
+
