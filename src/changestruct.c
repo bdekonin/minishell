@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:55:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/25 16:07:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void nocommand_redir(t_vars *v, t_cmd *list)
 	ptr = NULL;
 	while (list)
 	{
-		if (!ft_strncmp(list->line, ">", 1))
+		if (!ft_strncmp(list->line, ">", 2))
 		{
 			free(list->line);
 			if (list->next && ft_wordcount(list->next->line, '*') > 1)

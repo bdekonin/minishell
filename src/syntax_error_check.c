@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/25 15:35:52 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/25 15:49:07 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int				syntax_error_check(t_vars *v, const char *cli)
 	return (1);
 }
 
-int			initial_syntax_error_check(t_vars *v, const char *cli)
+int				initial_syntax_error_check(t_vars *v, const char *cli)
 {
 	size_t i;
 
