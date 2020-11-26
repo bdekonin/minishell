@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 14:24:52 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 18:55:23 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,18 +159,19 @@ static void control_d(t_vars *v, char **cli, int ret)
 	if (!*cli[0])
 		ft_exit_error(v, EXIT_SUCCESS, 1);
 	tmp = ft_strdup(*cli);
+	free(*cli);
+	malloc_check(v, tmp);
 	while (ret == 0)
 	{
+		*cli = NULL;
 		ret = get_next_line(STDIN_FILENO, cli);
 		if (ret < 0)
 			ft_exit_error(v, EXIT_FAILURE, 0);
+		tmp = ft_append(tmp, (*cli));
+		free(*cli);
+		malloc_check(v, tmp);
 	}
-	tmp = ft_append(tmp, *cli);
-	free(*cli);
 	*cli = tmp;
-//	printf("tmp = [%s]\n", tmp);
-//	printf("*cli = [%s]\n", *cli);
-	read_command_line_input(v, *cli);
 }
 
 int 		main(int argc, char **argv, char **envp)
@@ -179,7 +180,7 @@ int 		main(int argc, char **argv, char **envp)
 	char	*cli;
 	int		ret;
 
-	cli =NULL;
+	cli = NULL;
 	ft_putendl_fd("Shell Starting up - version 1.0\n", 2);
 	initialize(&v, envp);
 	signal(SIGQUIT, signal_default);
@@ -192,8 +193,7 @@ int 		main(int argc, char **argv, char **envp)
 			ft_exit_error(&v, EXIT_FAILURE, 0);
 		if (ret == 0)
 			control_d(&v, &cli, ret);
-		else
-			read_command_line_input(&v, cli);
+		read_command_line_input(&v, cli);
 		free(cli);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 15:51:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 11:53:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 18:50:22 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int			get_next_line(int fd, char **line)
 	if (!str[fd])
 		return (-1);
 	ret = 1;
-	while (ret > 0 && !ft_strchr(str[fd], '\n'))
+	while (ret >= 0 && !ft_strchr(str[fd], '\n'))
 		ret = read_file(fd, str);
 	if (ret < 0)
 		return (-1);
