@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/07 11:45:55 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:28:32 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/26 19:20:38 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ static void	create_env_list(t_vars *v, char **envp)
 	}
 }
 
-void		initialize(t_vars *v, char **envp)
+void		initialize(t_vars *v, char **envp, char **cli)
 {
+	*cli = NULL;
 	ft_bzero(v, sizeof(t_vars));
 	v->current_path = ft_calloc(PATH_MAX + 1, sizeof(char));
 		malloc_check(v, v->current_path);

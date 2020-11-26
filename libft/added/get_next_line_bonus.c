@@ -6,13 +6,15 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 15:51:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 18:50:22 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 19:17:10 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include <unistd.h>
 #include <limits.h>
+
+# include <stdlib.h>
 
 static char	*reset_ptr(char **str, int fd)
 {
@@ -61,7 +63,11 @@ int			get_next_line(int fd, char **line)
 		return (-1);
 	ret = 1;
 	while (ret >= 0 && !ft_strchr(str[fd], '\n'))
+	{
+		if (ret == 0 && str[fd][0] == '\0')
+			return (-2);
 		ret = read_file(fd, str);
+	}
 	if (ret < 0)
 		return (-1);
 	*line = reset_ptr(str, fd);

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 18:55:23 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 19:20:15 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,8 @@ static void control_d(t_vars *v, char **cli, int ret)
 {
 	char *tmp;
 	
-	if (!*cli[0])
-		ft_exit_error(v, EXIT_SUCCESS, 1);
+//	if (!*cli[0])
+//		ft_exit_error(v, EXIT_SUCCESS, 1);
 	tmp = ft_strdup(*cli);
 	free(*cli);
 	malloc_check(v, tmp);
@@ -180,15 +180,16 @@ int 		main(int argc, char **argv, char **envp)
 	char	*cli;
 	int		ret;
 
-	cli = NULL;
 	ft_putendl_fd("Shell Starting up - version 1.0\n", 2);
-	initialize(&v, envp);
+	initialize(&v, envp, &cli);
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);
 	while (1)
 	{
 		ft_putstr_fd(PROMPT, STDERR_FILENO);
 		ret = get_next_line(STDIN_FILENO, &cli);
+		if (ret == -2)
+			ft_exit_error(&v, EXIT_SUCCESS, 1);
 		if (ret < 0)
 			ft_exit_error(&v, EXIT_FAILURE, 0);
 		if (ret == 0)

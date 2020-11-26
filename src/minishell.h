@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/25 15:37:53 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 19:20:54 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int 			argumentremover(t_vars *v, t_list *list);
 **				src/
 */
 
-void			initialize(t_vars *v, char **envp);
+void			initialize(t_vars *v, char **envp, char **cli);
 int				initial_syntax_error_check(t_vars *v, const char *cli);
 int				syntax_error_check_loop(t_vars *v, char **args, size_t splitsize);
 int				syntax_error_check(t_vars *v, const char *cli);
