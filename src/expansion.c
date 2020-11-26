@@ -6,53 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/19 19:00:28 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 09:26:22 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	if (ft_counter(src, "\"\'") == ft_strlen(src))
-	{
-		v->empty_quotes = 1;
-		*i += 1;
-		return ;
-	}
-	while (src[*i] != '\0' && src[*i] != '\"')
-	{
-		if (src[*i] == '$')
-		{
-			copy_envvar(v, dst, src, i, j);
-			*i += 1;
-		}
-		else
-		{
-			dst[*j] = src[*i];
-			*i += 1;
-			*j += 1;
-		}
-	}
-}
-
-static void	copy_single_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
-{
-	*i += 1;
-	if (ft_counter(src, "\"\'") == ft_strlen(src))
-	{
-		v->empty_quotes = 1;
-		*i += 1;
-		return ;
-	}
-	while (src[*i] != '\0' && src[*i] != '\'')
-	{
-		dst[*j] = src[*i];
-		*i += 1;
-		*j += 1;
-	}
-}
 
 static void	copy_hashtag(char *src, size_t *i)
 {
@@ -73,6 +31,47 @@ static void	print_empty_token_space(t_vars *v, char *dst, size_t *j)
 	dst[*j] = ' ';
 	*j += 1;
 	v->empty_quotes = 0;
+}
+
+static void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+{
+	*i += 1;
+	if (ft_counter(src, "\"\'") == ft_strlen(src))
+	{
+		v->empty_quotes = 1;
+		*i += 1;
+		return ;
+	}
+	while (src[*i] != '\0' && src[*i] != '\"')
+	{
+		if (src[*i] == '$')
+			copy_envvar(v, dst, src, i, j);
+		else if (src[*i] == '\\' && (src[(*i) + 1] == '\\' || src[(*i) + 1] == '\"'))
+			copy_backslash(dst, src, i, j);
+		else
+		{
+			dst[*j] = src[*i];
+			*j += 1;
+		}
+		*i += 1;
+	}
+}
+
+static void	copy_single_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+{
+	*i += 1;
+	if (ft_counter(src, "\"\'") == ft_strlen(src))
+	{
+		v->empty_quotes = 1;
+		*i += 1;
+		return ;
+	}
+	while (src[*i] != '\0' && src[*i] != '\'')
+	{
+		dst[*j] = src[*i];
+		*i += 1;
+		*j += 1;
+	}
 }
 
 static void parse_cmd(t_vars *v, char *dst, char *src)
