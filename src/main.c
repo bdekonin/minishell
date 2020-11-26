@@ -6,23 +6,23 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/25 16:00:05 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/25 20:21:29 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void	print_tokens(t_vars *v) // tmp debug function
-// {
-// 	t_cmd *tmp;
+static void	print_tokens(t_vars *v) // tmp debug function
+{
+	t_cmd *tmp;
 
-// 	tmp = v->cmd;
-// 	while (tmp)
-// 	{
-// 		printf("token = [%s]\n", tmp->line);
-// 		tmp = tmp->next;
-// 	}
-// }
+	tmp = v->cmd;
+	while (tmp)
+	{
+		printf("token = [%s]\n", tmp->line);
+		tmp = tmp->next;
+	}
+}
 
 void ft_printerror(char *file, int error)
 {
@@ -131,7 +131,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	size_t	splitsize;
 	
 	if (!initial_syntax_error_check(v, cli))
-		return (ft_free_ret_int(cli, 0));
+		return (0);
 	splitsize = 0;
 	args = ft_split_sep_exep(cli, ";", &splitsize);
 	malloc_check(v, args);
@@ -141,7 +141,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	while (i < splitsize)
 	{
 		create_tokens(v, args[i]);
-//		print_tokens(v);
+		print_tokens(v);
 		changestruct(v, v->cmd);
 		expansion(v);
 		execute_loop(v, v->cmd);

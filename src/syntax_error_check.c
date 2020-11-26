@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/25 15:49:07 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/25 20:35:43 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,55 @@ int				syntax_error_check(t_vars *v, const char *cli)
 	return (1);
 }
 
+// plssssss :(     :'(
+//
+// echo ' hoi '"\'"'\'''''\'''
+// echo ohi "sdjk jhdfg\'\'\'\"\"\"\\'''''' jj 'yoyo"
+
+static int		multiline_check(t_vars *v, const char *cli)
+{
+	size_t i;
+	int count_double;
+	int	count_single;
+
+	count_double = 0;
+	count_single = 0;
+	i = 0;
+	while (cli[i] != '\0')
+	{
+		if (cli[i] == '\'' && (i == 0 || cli[i - 1] != '\\'))
+		{
+			i++;
+			while (cli[i] != '\'')
+			{
+				if (cli[i] == '\0')
+					return (syntax_error_return(v, "\'"));
+				i++;
+			}
+		}
+		else if (cli[i] == '\"' && (i == 0 || cli[i - 1] != '\\'))
+		{
+			i++;
+			while (cli[i] != '\"')
+			{
+				if (cli[i] == '\0')
+					return (syntax_error_return(v, "\""));
+				if (cli[i] == '\\' && cli[i + 1] == '\"')
+					i++;
+				i++;
+			}
+		}
+		i++;
+	}
+	return (1);
+}
+
 int				initial_syntax_error_check(t_vars *v, const char *cli)
 {
 	size_t i;
 
+	if (!multiline_check(v, cli))
+		return (0);
 	i = 0;
 	if (cli[i] == ';')
 		return (syntax_error_return(v, ";"));
