@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/25 15:48:50 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/11/26 20:30:45 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC = \
 	/handle_static.c \
 	/signal.c \
 	/changestruct.c \
+	/read_command_line_input.c \
 	/utils/pipeutils.c \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \
@@ -38,6 +39,7 @@ SRC = \
 	/utils/is_functions.c \
 	/utils/linked_list_utils.c \
 	/utils/reset_std.c \
+	/utils/error_identifier.c \
 	/builtins/ft_cd.c \
 	/builtins/ft_echo.c \
 	/builtins/ft_env.c \

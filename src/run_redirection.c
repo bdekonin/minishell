@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/16 16:02:04 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/26 21:26:55 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,6 @@ static int mainredir(t_vars *v, unsigned char type, char *filename)
 		return (0);
 	return (ret);
 }
-
-// echo hoi > file1 hallo > file2 welkom
-# define LISTDONE 0
 
 int redirection_handler(t_vars *v, t_cmd *list)
 {

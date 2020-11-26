@@ -6,11 +6,12 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/25 16:52:34 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/26 21:27:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 int swaparguments(t_vars *v, t_cmd *current)
 {
@@ -36,6 +37,7 @@ int swaparguments(t_vars *v, t_cmd *current)
 	ret = swaparguments(v, current->prev);
 	return (ret);
 }
+
 static void nocommand_redir(t_vars *v, t_cmd *list)
 {
 	char *ptr;
@@ -91,12 +93,13 @@ static void changefilenames(t_cmd *list)
 		list = list->next;
 	}
 }
-// echo hallo <file1 >file2
+
 void		changestruct(t_vars *v, t_cmd *list)
 {
-	swaparguments(v, lastredir(list));
-	nocommand_redir(v, list); // (> o pwd) && (> o)
-	changefilenames(list); // echo hoi > file1 hallo > file2 welkom > file3 lars > file4 bob
+	swaparguments(v, cmd__ft_lstlast(list));
+	nocommand_redir(v, list);
+	changefilenames(list);
 	list = fix_anglebracketleft(list);
 	v->cmd = list;
+
 }

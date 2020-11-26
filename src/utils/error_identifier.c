@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_cmd_print_list.c                                :+:    :+:            */
+/*   error_identifier.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/11/11 16:40:30 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/26 21:18:55 by bdekonin      ########   odam.nl         */
+/*   Created: 2020/11/26 20:27:07 by bdekonin      #+#    #+#                 */
+/*   Updated: 2020/11/26 20:31:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cmd.h"
-#include "../../minishell.h"
+#include "../minishell.h"
 
-void	cmd__ft_printlist(t_cmd *cmd)
+int error_identifier(char *identifier)
 {
-	int i;
-
-	i = 0;
-	while (cmd)
-	{
-		dprintf(2, "[%d] - [%s] - [%c]\n", i, cmd->line, cmd->type);
-		i++;
-		cmd = cmd->next;
-	}
-	dprintf(2, "\n");
-	return ;
+	ft_putstr_fd(MINISHELL, 2);
+	ft_putstr_fd(": unset: `", 2);
+	ft_putstr_fd(identifier, 2);
+	ft_putendl_fd("': not a valid identifier", 2);
+	return (0);
 }

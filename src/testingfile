@@ -1,0 +1,90 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
+/*   Updated: 2020/11/26 22:03:56 by bdekonin      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+#define COMMAND ""
+
+// export p='pwd' l='ls' c='|cat' ; $p$c ; $l$c
+// gcc |> output.txt hoi
+// ls > output.txt src libft | wc > tester
+// pwd > output.txt
+// cat | cat -e > output.txt
+// > output.txt
+// echo hoi > file1.txt hallo > file2.txt welkom
+// base64 < /dev/random | head -c 1000 | cat
+// cd kaas ; echo $?
+// cd src ; echo $?
+// cd ; echo $?
+// cd - ; echo $?
+// cd | cd ; echo $?
+// cd kaas | cd ; echo $?
+// cd | cd kaas ; echo $?
+// echo ' hoi '"\'"'\'''''\'''
+// echo ohi "sdjk jhdfg\'\'\'\"\"\"\\'''''' jj 'yoyo"
+// echo hoi > file1 hallo > file2 welkom
+// echo hallo < file1.txt > file2.txt
+// > o.txt pwd
+// > o.txt
+// echo hoi > file1.txt hallo > file2.txt welkom > file3.txt lars > file4.txt bob
+
+int 		minishell(char *command, char **envp)
+{
+	t_vars	v;
+	char	*cli;
+
+	initialize(&v, envp, &cli);
+	read_command_line_input(&v, command);
+	return (0);
+}
+
+static char *getoutput(char **envp, int test)
+{
+	char *output;
+	int fd[2];
+
+	output = NULL;
+	pipe(fd);
+	if (fork() == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		if (test == 1)
+			minishell(COMMAND, envp);
+		else
+			system(COMMAND);
+		exit(1);
+	}
+	else
+		waitpid(-1, NULL, 0);
+	close(fd[1]);
+	ft_getline(fd[0], &output);
+	return (output);
+	(void)envp;
+}
+
+int main(int argc, char **argv, char **envp)
+{	
+	char *me;
+	char *og;
+	me = getoutput(envp, 1);
+	og = getoutput(envp, 0);
+	ft_printf("[%s]\n[%s]\n", me, og);
+	if (ft_strncmp(me, og, ft_strlen(me)))
+	{
+		ft_putstr_fd("Not Equal", 2);
+	}
+	else
+		ft_putstr_fd("Equal", 2);
+	return (0);
+	(void)argc;
+	(void)argv;
+}

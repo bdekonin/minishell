@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/25 20:35:43 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 21:26:38 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,6 @@ int				syntax_error_check(t_vars *v, const char *cli)
 	}
 	return (1);
 }
-
-// plssssss :(     :'(
-//
-// echo ' hoi '"\'"'\'''''\'''
-// echo ohi "sdjk jhdfg\'\'\'\"\"\"\\'''''' jj 'yoyo"
 
 static int		multiline_check(t_vars *v, const char *cli)
 {

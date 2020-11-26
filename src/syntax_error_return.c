@@ -6,17 +6,19 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/25 15:35:31 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/25 15:37:42 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 20:30:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 int			syntax_error_return(t_vars *v, const char *token)
 {
 	v->cmd_ret = 258;
-	ft_printf(SYNTAX_ERROR, MINISHELL, token);
+	ft_putstr_fd(MINISHELL, 2);
+	ft_putstr_fd(SYNTAX_ERROR, 2);
+	ft_putstr_fd((char*)token, 2);
+	ft_putendl_fd("'", 2);
 	return (0);
 }
 
@@ -49,7 +51,7 @@ int			check_flag_syntax(t_vars *v, const char *cli, size_t i)
 	else
 		i++;
 	while (cli[i] == ' ')
-		i++;	
+		i++;
 	if (cli[i] == '>' && cli[i + 1] == '>')
 		return (syntax_error_return(v, ">>"));
 	if (cli[i] == '>')

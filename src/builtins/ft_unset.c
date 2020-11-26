@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 11:05:24 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 21:29:56 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/26 20:28:37 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int				ft_unset(t_vars *v, char **params)
 	while (params[i])
 	{
 		if (!check_valid_identifier(params[i]))
-			ft_printf(INVALID_IDENTIFIER, "minishell", "unset", params[i]);
+			error_identifier(params[i]);
 		env__ft_lstremove_middle(params[i], v->env);
 		i++;
 	}

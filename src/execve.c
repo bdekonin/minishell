@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/24 15:08:08 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/26 20:52:27 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int		ft_execve(t_vars *v, char **params)
 		}
 	}
 	else
-		waitpid(forky, &stat, 0);
+		waitpid(-1, &stat, 0);
 	// End
 	ft_free_array((void **)envp, env__ft_lstsize(v->env));
 	free(path);

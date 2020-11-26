@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/26 19:20:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 20:29:44 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@
 # define MINISHELL_ARGCOUNT "too many arguments"
 # define MINISHELL_ERRNO "%s: %s\nexit\n"
 
-# define SYNTAX_ERROR "%s: syntax error near unexpected token `%s'\n"
-# define INVALID_IDENTIFIER "%s: %s: `%s': not a valid identifier\n"
+# define SYNTAX_ERROR ": syntax error near unexpected token `"
+
+
 # define PROMPT "minishell-1.0$ "
 # define MINISHELL "minishell"
 
@@ -102,6 +103,11 @@ int				run_command(t_vars *v, char **params);
 int				ft_execve(t_vars *v, char **params);
 void			expansion(t_vars *v);
 int	        	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
+
+
+int	read_command_line_input(t_vars *v, char *cli);
+void control_d(t_vars *v, char **cli, int ret);
+int error_identifier(char *identifier);
 
 
 // Execve
