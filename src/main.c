@@ -6,23 +6,23 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/25 20:21:29 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 14:24:52 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_tokens(t_vars *v) // tmp debug function
-{
-	t_cmd *tmp;
+// static void	print_tokens(t_vars *v) // tmp debug function
+// {
+// 	t_cmd *tmp;
 
-	tmp = v->cmd;
-	while (tmp)
-	{
-		printf("token = [%s]\n", tmp->line);
-		tmp = tmp->next;
-	}
-}
+// 	tmp = v->cmd;
+// 	while (tmp)
+// 	{
+// 		printf("token = [%s]\n", tmp->line);
+// 		tmp = tmp->next;
+// 	}
+// }
 
 void ft_printerror(char *file, int error)
 {
@@ -141,7 +141,7 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	while (i < splitsize)
 	{
 		create_tokens(v, args[i]);
-		print_tokens(v);
+//		print_tokens(v);
 		changestruct(v, v->cmd);
 		expansion(v);
 		execute_loop(v, v->cmd);
@@ -152,42 +152,51 @@ static int	read_command_line_input(t_vars *v, char *cli)
 	return (1);
 }
 
-static void control_d(t_vars *v, char *cli)
+static void control_d(t_vars *v, char **cli, int ret)
 {
-	if (cli[0] == '\0')
-	{
-		dprintf(2, "  \b\b\n");
+	char *tmp;
+	
+	if (!*cli[0])
 		ft_exit_error(v, EXIT_SUCCESS, 1);
+	tmp = ft_strdup(*cli);
+	while (ret == 0)
+	{
+		ret = get_next_line(STDIN_FILENO, cli);
+		if (ret < 0)
+			ft_exit_error(v, EXIT_FAILURE, 0);
 	}
-	else
-		dprintf(1, "  \b\b\n");
-	(void)v;
+	tmp = ft_append(tmp, *cli);
+	free(*cli);
+	*cli = tmp;
+//	printf("tmp = [%s]\n", tmp);
+//	printf("*cli = [%s]\n", *cli);
+	read_command_line_input(v, *cli);
 }
 
 int 		main(int argc, char **argv, char **envp)
 {
-	t_vars v;
+	t_vars	v;
 	char	*cli;
 	int		ret;
 
-
+	cli =NULL;
 	ft_putendl_fd("Shell Starting up - version 1.0\n", 2);
 	initialize(&v, envp);
+	signal(SIGQUIT, signal_default);
+	signal(SIGINT, signal_default);
 	while (1)
 	{
-		signal(SIGQUIT, signal_default);
-		signal(SIGINT, signal_default);
 		ft_putstr_fd(PROMPT, STDERR_FILENO);
 		ret = get_next_line(STDIN_FILENO, &cli);
 		if (ret < 0)
 			ft_exit_error(&v, EXIT_FAILURE, 0);
-		else if (ret == 0)
-			control_d(&v, cli);
-		read_command_line_input(&v, cli);
+		if (ret == 0)
+			control_d(&v, &cli, ret);
+		else
+			read_command_line_input(&v, cli);
 		free(cli);
 	}
 	return (0);
 	(void)argv;
 	(void)argc;
 }
-

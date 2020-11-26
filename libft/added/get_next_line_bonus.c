@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 15:51:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/06 23:32:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/26 11:53:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int	read_file(int fd, char **str)
 	int		ret;
 	char	buffer[BUFFER_SIZE + 1];
 
+	write(1, "  \b\b", 4);
 	ret = read(fd, buffer, BUFFER_SIZE);
 	if (ret < 0)
 		return (ft_free_ret_int(str[fd], -1));
