@@ -153,6 +153,7 @@ echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; 
 cd kaas ; echo $?
 echo /$"USER"
 echo /$"123$USER" ; echo $?
-echo ; echo \n ' \n this is the; "first line"' ; echo "and right here;;; 'We have the second'" ; echo and" a fe"'w 'here'; with some slash and quotes   .'   '\' ; echo '\\' ; echo "\\" ; echo    "\"" ; echo   \\ ; echo   \' ; echo   \" "\\"    "\""   \\   \'   \" ; echo $?
 echo "hoi$1123"
+\
 echo 00\\\'pp ; echo 00\\\\\'pp ; echo $?
+echo ; echo \n ' \n this is the; "first line"' ; echo "and right here;;; 'We have the second'" ; echo and" a fe"'w 'here'; with some slash and quotes   .'   '\' ; echo '\\' ; echo "\\" ; echo    "\"" ; echo   \\ ; echo   \' ; echo   \" "\\"    "\""   \\   \'   \" ; echo $?

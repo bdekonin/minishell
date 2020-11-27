@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/26 20:29:44 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 17:55:09 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void			expansion(t_vars *v);
 int	        	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
 
 
+void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
 int	read_command_line_input(t_vars *v, char *cli);
 void control_d(t_vars *v, char **cli, int ret);
 int error_identifier(char *identifier);

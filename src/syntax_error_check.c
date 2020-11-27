@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 16:44:43 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/27 20:06:42 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,14 @@ static int		multiline_check(t_vars *v, const char *cli)
 	count_double = 0;
 	count_single = 0;
 	i = 0;
+	if (ft_strlen(cli) == 1 && cli[0] == '\\')
+		return (syntax_error_return(v, "\\"));
 	while (cli[i] != '\0')
 	{
-		if (cli[i] == '\'' && (i == 0 || cli[i - 1] != '\\'))
+		if (cli[i] == '\\')
+			i++;
+//		if (cli[i] == '\'' && (i == 0 || cli[i - 1] != '\\')) //miss zonder \ check
+		else if (cli[i] == '\'') //miss zonder \ check
 		{
 			i++;
 			while (cli[i] != '\'')
@@ -84,14 +89,15 @@ static int		multiline_check(t_vars *v, const char *cli)
 				i++;
 			}
 		}
-		else if (cli[i] == '\"' && (i == 0 || cli[i - 1] != '\\'))
+//		else if (cli[i] == '\"' && (i == 0 || cli[i - 1] != '\\'))
+		else if (cli[i] == '\"')
 		{
 			i++;
 			while (cli[i] != '\"')
 			{
 				if (cli[i] == '\0')
 					return (syntax_error_return(v, "\""));
-				if (cli[i] == '\\' && cli[i + 1] == '\"')
+				if (cli[i] == '\\')
 					i++;
 				i++;
 			}

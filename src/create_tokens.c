@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 17:17:58 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/27 21:00:34 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ size_t			skip_quotations(const char *cli, char quotation_type)
 	i = 1;
 	while (cli[i] && cli[i] != quotation_type)
 	{
-//		if (cli[i] == '\\' && cli[i + 1] == quotation_type)
-		if (cli[i] == '\\' && cli[i + 1] == '\"')
+		if (cli[i] == '\\' && cli[i + 1] == '\\')
+			i++;
+		else if (cli[i] == '\\' && cli[i + 1] == '\"')
 			i++;
 		i++;
 	}
@@ -40,10 +41,12 @@ static size_t	get_len(const char *cli, size_t start)
 	}
 	while (cli[i] != '\0' && !ft_charsearch(cli[i], "<>|;"))
 	{
-//		if (cli[i] == '\'' && (i == 0 || cli[i - 1] != '\\'))
-		if (cli[i] == '\'')
+		if (cli[i] == '\\')
+			i++;
+		else if (cli[i] == '\'')
 			i = i + skip_quotations(cli + i, '\'');
-		else if (cli[i] == '\"' && (i == 0 || (cli[i - 1] != '\\' && cli[i - 2] != '\\'))) //hiero
+//		else if (cli[i] == '\"' && (i == 0 || (cli[i - 1] != '\\'))) //hiero
+		else if (cli[i] == '\"')
 			i = i + skip_quotations(cli + i, '\"');
 		i++;
 	}
@@ -90,14 +93,14 @@ static t_cmd 	*addnewtoback(t_list *list)
 	return (temp);
 }
 
-// static void	print_tokens(t_list *tmp) // tmp debug function
-// {
-// 	while (tmp)
-// 	{
-// 		printf("list token = [%s]\n", tmp->content);
-// 		tmp = tmp->next;
-// 	}
-// }
+static void	print_tokens(t_list *tmp) // tmp debug function
+{
+	while (tmp)
+	{
+//		printf("list token = [%s]\n", tmp->content);
+		tmp = tmp->next;
+	}
+}
 
 static t_cmd	*betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
 {
@@ -165,5 +168,6 @@ void			create_tokens(t_vars *v, const char *cli)
 	}
 	add_bogus_token(v);
 	v->cmd = betterstruct(v, v->tempcmd, NULL, NULL);
+	print_tokens(v->tempcmd);
 	ft_lstclear(&v->tempcmd, free);
 }
