@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 12:10:11 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 17:17:58 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ size_t			skip_quotations(const char *cli, char quotation_type)
 	i = 1;
 	while (cli[i] && cli[i] != quotation_type)
 	{
-		if (cli[i] == '\\' && cli[i + 1] == quotation_type)
+//		if (cli[i] == '\\' && cli[i + 1] == quotation_type)
+		if (cli[i] == '\\' && cli[i + 1] == '\"')
 			i++;
 		i++;
 	}
@@ -39,9 +40,10 @@ static size_t	get_len(const char *cli, size_t start)
 	}
 	while (cli[i] != '\0' && !ft_charsearch(cli[i], "<>|;"))
 	{
-		if (cli[i] == '\'' && (i == 0 || cli[i - 1] != '\\'))
+//		if (cli[i] == '\'' && (i == 0 || cli[i - 1] != '\\'))
+		if (cli[i] == '\'')
 			i = i + skip_quotations(cli + i, '\'');
-		else if (cli[i] == '\"' && (i == 0 || cli[i - 1] != '\\'))
+		else if (cli[i] == '\"' && (i == 0 || (cli[i - 1] != '\\' && cli[i - 2] != '\\'))) //hiero
 			i = i + skip_quotations(cli + i, '\"');
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 15:40:40 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 17:00:01 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,18 @@ static char *getoutput(char *command, char **envp, int test)
 	(void)envp;
 }
 
-static void strreplace(char *str, char replacefrom, char replaceto)
-{
-	int i;
+// static void strreplace(char *str, char replacefrom, char replaceto)
+// {
+// 	int i;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == replacefrom)
-			str[i] = replaceto;
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == replacefrom)
+// 			str[i] = replaceto;
+// 		i++;
+// 	}
+// }
 
 static void printtest(char *command, int ok, char *me, char *og)
 {
@@ -75,8 +75,8 @@ static void printtest(char *command, int ok, char *me, char *og)
 	}
 	else
 	{
-		strreplace(me, '\n', '*');
-		strreplace(og, '\n', '*');
+//		strreplace(me, '\n', '*');
+//		strreplace(og, '\n', '*');
 		printf("\033[1;31m[%s]\n[KO]\n\033[0m", command);
 		printf("me - [%s] - [%d]\n", me, ok);
 		printf("og - [%s] - [%d]\n\n", og, ok);
@@ -107,7 +107,7 @@ int main(int argc, char **argv, char **envp)
 	
 	close(2);
 	char **list;
-	ft_getline(open("/Users/bdekonin/goinfre/minishell/src/testingcommands.txt", O_RDONLY), &command);
+	ft_getline(open("src/testingcommands.txt", O_RDONLY), &command);
 	list = ft_split(command, '\n');
 	for (int i = 0; list[i]; i++)
 	{
