@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 20:45:36 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 12:10:11 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ static t_cmd 	*addnewtoback(t_list *list)
 	}
 	return (temp);
 }
-void	cmd__ft_printlist(t_cmd *cmd);
 
 // static void	print_tokens(t_list *tmp) // tmp debug function
 // {

@@ -1,0 +1,2 @@
+exit 1 | exit 2 | exit 3 | exit 4 ; echo $?
+exit 1 | exit 2 | notacommand | exit 4 ; echo $?

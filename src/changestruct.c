@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/26 21:27:37 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 12:14:05 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static void changefilenames(t_cmd *list)
 		list = list->next;
 	}
 }
-
+void	cmd__ft_printlist(t_cmd *cmd);
 void		changestruct(t_vars *v, t_cmd *list)
 {
 	swaparguments(v, cmd__ft_lstlast(list));
@@ -101,5 +101,5 @@ void		changestruct(t_vars *v, t_cmd *list)
 	changefilenames(list);
 	list = fix_anglebracketleft(list);
 	v->cmd = list;
-
+	// cmd__ft_printlist(list);
 }

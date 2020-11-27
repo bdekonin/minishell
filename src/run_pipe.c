@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 20:54:39 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 12:24:24 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void		child(t_vars *v, t_cmd *list, int *fd)
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
 		exit(EXIT_FAILURE);
 	close(fd[1]);
+	// dprintf(2, "child - [%s]\n", list->line);
 	if (!list->prev || list->prev->type == 0 || list->prev->type == PIPELINE)
 		split_tokens(v, list->line);
 	close(STDIN_FILENO);
@@ -33,6 +34,7 @@ static void		parent(t_vars *v, t_cmd *list, int *fd)
 	if (dup2(fd[0], STDIN_FILENO) == -1)
 		exit(EXIT_FAILURE);
 	close(fd[0]);
+	// dprintf(2, "parent - [%s]\n", list->line);
 	if (list->type == PIPELINE)
 		pipe_stuff(v, list);
 	else if (!list->prev || list->prev->type == 0 || list->prev->type == PIPELINE) // nee
@@ -54,8 +56,10 @@ int				pipe_stuff(t_vars *v, t_cmd *list)
 	if (pid == 0)
 		child(v, list, fd);
 	else
+	{
+		waitpid(-1, NULL, 0);
 		parent(v, list->next, fd);
-	waitpid(-1, NULL, 0);
+	}
 	return (1);
 }
 

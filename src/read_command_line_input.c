@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/26 19:48:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/26 21:30:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 12:12:22 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	run_command(t_vars *v, char **params)
 	p[4] = ft_unset;
 	p[5] = ft_env;
 	p[6] = ft_exit;
-	ft_str_to_lower(*params);
 	i = 0;
 	while (i < 7)
 	{
@@ -97,8 +96,10 @@ int		execute_loop(t_vars *v, t_cmd *list)
 		}
 		else if (!list->prev || list->prev->type == 0)
 			split_tokens(v, list->line);
-		list = list->next;
 		reset_std(v);
+		if (!ft_strncmp("exit", list->line, 4) && v->cmd_ret == 1)
+			return (0);
+		list = list->next;
 	}
 	signal(SIGQUIT, signal_default);
 	signal(SIGINT, signal_default);
@@ -110,7 +111,8 @@ int	read_command_line_input(t_vars *v, char *cli)
 	size_t	i;
 	char	**args;
 	size_t	splitsize;
-	
+	int ret;
+
 	if (!initial_syntax_error_check(v, cli))
 		return (0);
 	splitsize = 0;
@@ -124,8 +126,10 @@ int	read_command_line_input(t_vars *v, char *cli)
 		create_tokens(v, args[i]);
 		changestruct(v, v->cmd);
 		expansion(v);
-		execute_loop(v, v->cmd);
+		ret = execute_loop(v, v->cmd);
 		cmd__ft_lstclear(&v->cmd, free);
+		if (ret == 0)
+			break;
 		i++;
 	}
 	ft_free_array((void**)args, splitsize);
