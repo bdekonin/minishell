@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 21:23:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/27 22:23:05 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,12 @@ void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	}
 	while (src[*i] != '\0' && src[*i] != '\"')
 	{
-		if (src[*i] == '$')
+		if (src[*i] == '$' && src[(*i) + 1] == '\"')
+		{
+			dst[*j] = src[*i];
+			*j += 1;
+		}	
+		else if (src[*i] == '$')
 			copy_envvar(v, dst, src, i, j);
 		else if (src[*i] == '\\' && (src[(*i) + 1] == '\\' || src[(*i) + 1] == '\"'))
 			copy_backslash(dst, src, i, j);
