@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 17:32:59 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/27 21:23:17 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	print_empty_token_space(t_vars *v, char *dst, size_t *j)
 	v->empty_quotes = 0;
 }
 
-static void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
+void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
 	*i += 1;
 	if (ft_counter(src, "\"\'") == ft_strlen(src))

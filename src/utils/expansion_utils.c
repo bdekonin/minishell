@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 17:36:35 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/27 19:30:39 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@ static int	ret_value_last_cmd(t_vars *v, char *dst, size_t *i, size_t *j)
 	return (1);
 }
 
-static int	env_var_with_len_zero(char *dst, char *src, size_t *i, size_t *j)
+static int	env_var_with_len_zero(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 {
-	if (src[*i] == '\"') //dit weet ik nog niet zeker
+	if (src[*i] == '\"')
+	{
+		copy_double_quote(v, dst, src, i, j);
 		return (1);
+	}
 	dst[*j] = '$';
 	*j += 1;
 	return (1);
@@ -50,11 +53,17 @@ int			copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	*i += 1;
 	if (src[*i] == '?')
 		return (ret_value_last_cmd(v, dst, i, j));
-	env_len = find_identifier_len(src + *i);
+	if (ft_isdigit(src[*i]))
+		return (0);
+	else
+		env_len = find_identifier_len(src + *i);
+//	printf("env_len = [%lu]\n", env_len);
 	if (env_len == 0)
-		return (env_var_with_len_zero(dst, src, i, j));
+		return (env_var_with_len_zero(v, dst, src, i, j));
 	env_name = ft_substr(src, *i, env_len);
+//	printf("env_name = [%s]\n", env_name);
 	env_content = find_env(v, env_name, &env_len);
+//	printf("env_content = [%s]\n", env_content->content);
 	ft_free(env_name);
 	if (!env_content)
 		return (empty_env_content(env_len, i));
