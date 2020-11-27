@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/14 16:36:51 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 21:30:21 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/27 16:21:36 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int		ft_env(t_vars *v, char **params)
 	node = v->env;
 	while (node)
 	{
-		ft_printf("%s=%s\n", node->name, node->content);
+		if (node->content)
+			ft_printf("%s=%s\n", node->name, node->content);
 		node = node->next;
 	}
 	return (0);
