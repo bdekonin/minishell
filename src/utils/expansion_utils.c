@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 19:30:39 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/28 13:36:19 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int			copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j)
 	ft_free(env_name);
 	if (!env_content)
 		return (empty_env_content(env_len, i));
-	split_content = ft_reduce_spaces(env_content->content);
+	split_content = ft_reduce_spaces(env_content->content, 0, 0);
 	malloc_check(v, split_content);
 	ft_strlcat(dst + *j, split_content, PATH_MAX + 1);
 	*j += ft_strlen(split_content);

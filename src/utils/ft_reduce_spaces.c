@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/27 10:34:25 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/23 21:53:56 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/28 13:37:13 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,12 @@ static void	*free_ptrs(char **arr, size_t size)
 	return (NULL);
 }
 
-char 		*ft_reduce_spaces(const char *str)
+char		*ft_reduce_spaces(const char *str, size_t size, size_t i)
 {
-	size_t	size;
-	size_t	i;
 	char	**arr;
 	char	*dst;
 	char	*tmp;
 
-	size = 0;
-	i = 0;
 	arr = ft_split_multi(str, " ", &size);
 	if (!arr)
 		return (NULL);

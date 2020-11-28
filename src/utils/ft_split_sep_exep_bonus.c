@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/16 08:58:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 22:08:11 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/28 13:44:07 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static size_t	skip_quotations(const char *cli, size_t i, char quotation)
+static size_t	skip_quotations_i(const char *cli, size_t i, char quotation)
 {
 	i++;
 	while (cli[i] && cli[i] != quotation)
@@ -45,9 +45,9 @@ static size_t	get_len(const char *src, char *sep, size_t start)
 		if (src[i] == '\\')
 			i++;
 		else if (src[i] == '\'')
-        	i = skip_quotations(src, i, '\'');
+        	i = skip_quotations_i(src, i, '\'');
         else if (src[i] == '\"')
-        	i = skip_quotations(src, i, '\"');
+        	i = skip_quotations_i(src, i, '\"');
 		i++;
 	}
 	return (i - len);
