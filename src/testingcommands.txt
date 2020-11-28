@@ -86,8 +86,8 @@ test
 /binn/ls
 hallo ma\"ran siemons
 Multiple line error
-hallo ma\ran siemons						Hij ziet de \ niet als escape, print gewoon \
-ma\							
+hallo ma\ran siemons                        Hij ziet de \ niet als escape, print gewoon \
+ma\                         
 hallo$USER
 hallo\$USER
 \$?
@@ -146,5 +146,8 @@ e'c'"h"o wadup ; echo $?
 echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $? ; echo $?
 cd kaas ; echo $?
 echo /$"USER"
+\
 echo /$"123$USER" ; echo $?
-echo "hoi$1123"
+echo $"$PWD"
+echo $"$PWD$"
+echo $""

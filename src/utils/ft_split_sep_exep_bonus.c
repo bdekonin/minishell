@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/16 08:58:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 21:22:47 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/27 22:08:11 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ static size_t	get_len(const char *src, char *sep, size_t start)
 	len = start;
 	while (src[i] != '\0' && !ft_charsearch(src[i], sep))
 	{
-		if (src[i] == '\'' && (i == 0 || src[i - 1] != '\\'))
+		if (src[i] == '\\')
+			i++;
+		else if (src[i] == '\'')
         	i = skip_quotations(src, i, '\'');
-        else if (src[i] == '\"' && (i == 0 || src[i - 1] != '\\'))
+        else if (src[i] == '\"')
         	i = skip_quotations(src, i, '\"');
 		i++;
 	}
