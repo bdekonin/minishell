@@ -1,6 +1,5 @@
 cd src ; echo $?
 cd ; echo $?
-cd - ; echo $?
 echo ' hoi '"\'"'\'''''\''' ; echo $?
 echo ohi "sdjk jhdfg\'\'\'\"\"\"\\'''''' jj 'yoyo" ; echo $?
 /bin/ls ; echo $?
@@ -11,7 +10,6 @@ ls -la ; echo $?
 pwd ; echo $?
 /bin/chmod ; echo $?
 /bin/ls -la ; echo $?
-echo 00\\\\'pp' ; echo “./hello”. ; echo ./hello ; echo ello ; echo $?
 echo /$"123$USER" ; echo $?
 echo $POEP hallo ; echo $?
 echo "hallo$" ; echo $?
@@ -134,11 +132,7 @@ hallo$abc
 pwd; cd ..
 $TEST$TEST$TEST$TEST
 ./test; echo $?
-
-
-exit 1 | exit 2 | notacommand | exit 4 ; echo $?
 echo hoi | notacommand | cat -e ; echo $?
-exit 1 | exit 2 | exit 3 | exit 4 ; echo $?
 pwd | notacommand | echo hoi
 ls | grep Makefile
 echo | cd .. | pwd ; echo $?
@@ -154,6 +148,3 @@ cd kaas ; echo $?
 echo /$"USER"
 echo /$"123$USER" ; echo $?
 echo "hoi$1123"
-\
-echo 00\\\'pp ; echo 00\\\\\'pp ; echo $?
-echo ; echo \n ' \n this is the; "first line"' ; echo "and right here;;; 'We have the second'" ; echo and" a fe"'w 'here'; with some slash and quotes   .'   '\' ; echo '\\' ; echo "\\" ; echo    "\"" ; echo   \\ ; echo   \' ; echo   \" "\\"    "\""   \\   \'   \" ; echo $?
