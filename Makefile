@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/28 15:39:50 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/11/28 16:24:24 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,5 +107,6 @@ fclean: clean
 	@/bin/rm -rf obj
 	@make fclean -C ./libft
 	@make fclean -C ./ft_printf
+	@rm -rf f1 f2 f3 f4 f5 file hoi ls.txt some_empty_file.txt list.txt lverdoes .DS_Store
 
 re: fclean all

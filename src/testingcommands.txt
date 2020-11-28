@@ -148,51 +148,59 @@ cd kaas ; echo $?
 echo /$"USER"
 \
 echo /$"123$USER" ; echo $?
-echo $"$PWD"
-echo $"$PWD$"
-echo $""
-export b=6 a=5 ; echo $a;echo $b ; export a=$a=5 b=$b=6 ; echo $a;echo $b
-export a="ls|cat" ; $a
-export "ha\'ha"="evil"
-export ===
-export $
-export /
-export 55
-export a ; export b= ; export c="" ; export d='' ; export e=e
-export > list.txt
-export a=3 > some_empty_file.txt ; echo $a
-export a="echo hoi > hoi.txt" ; echo $a ; cat hoi.txt
-export a="ls|cat" ; echo $a > ls.txt ; echo $a ; cat ls.txt
-export b="|" ; ls $b cat
-export l=ls c=cat ; $l|$c
-export p='pwd' l='ls' c='|cat' ; $p$c ; $l$c
-export a="=" ; export b$a'hoi' ; echo $b
-export a='|cat' ; pwd>$a ; cat $a ; rm $a
-export a=' pwd' ; echo $a
-export a=lars b="'bob'" row=sid ; mkdir -p $LOGNAME/shell_cd_test/"'bla'"/'"blaa"'/$a/"$b"/'$row'/$row
-echo "" -n hi
-
-export a="" ; echo $a -n hi
-export 5a=77 ; echo $5a
-export a="" b=' ' ; echo -n ""$a""$b hi0 ; echo -n ""$a ""$b hi1 ; echo -n ""$a "" $b hi2 ; echo -n " "$a "" $b hi3
-export 5a=77 ; echo $5a
-exit doei
-exit pwd
-exit 4
-export a=ls b="|" c=cat ; $a$b$c
-export a=ls b="|" c=cat ; $a $b $c
-pwd “;” pwd
-pwd “;” pwd ; pwd ; pwd pwd “;” pwd ‘pwd’ ‘pwd’ ‘;’ pwd ; ‘pwd ;’
-pwd;export a="  ls  -la  " b=hoi c= ; echo $b ; echo $c ; echo $a ; $a
-ls>f1>f2>f3>f4;pwd>f5;cat<f5
-echo $
-echo $""
-echo $+
-echo $h
-echo $he
-echo $heh
-echo $heho
-echo $1
-echo $12
-echo $123
-echo 123$456
+echo $"$PWD" ; echo $?
+echo $"$PWD$" ; echo $?
+echo $"" ; echo $?
+export b=6 a=5 ; echo $a;echo $b ; export a=$a=5 b=$b=6 ; echo $a;echo $b ; echo $?
+export a="ls|cat" ; $a ; echo $?
+export "ha\'ha"="evil" ; echo $?
+export === ; echo $?
+export $ ; echo $?
+export / ; echo $?
+export 55 ; echo $?
+export a ; export b= ; export c="" ; export d='' ; export e=e ; echo $?
+export > list.txt ; echo $?
+export a=3 > some_empty_file.txt ; echo $a ; echo $?
+export a="echo hoi > hoi.txt" ; echo $a ; cat hoi.txt ; echo $?
+export a="ls|cat" ; echo $a > ls.txt ; echo $a ; cat ls.txt ; echo $?
+export b="|" ; ls $b cat ; echo $?
+export l=ls c=cat ; $l|$c ; echo $?
+export p='pwd' l='ls' c='|cat' ; $p$c ; $l$c ; echo $?
+export a="=" ; export b$a'hoi' ; echo $b ; echo $?
+export a='|cat' ; pwd>$a ; cat $a ; rm $a ; echo $?
+export a=' pwd' ; echo $a ; echo $?
+export a=lars b="'bob'" row=sid ; mkdir -p $LOGNAME/shell_cd_test/"'bla'"/'"blaa"'/$a/"$b"/'$row'/$row ; echo $?
+echo "" -n hi ; echo $?
+; 
+export a="" ; echo $a -n hi ; echo $?
+export 5a=77 ; echo $5a ; echo $?
+export a="" b=' ' ; echo -n ""$a""$b hi0 ; echo -n ""$a ""$b hi1 ; echo -n ""$a "" $b hi2 ; echo -n " "$a "" $b hi3 ; echo $?
+export 5a=77 ; echo $5a ; echo $?
+exit doei ; echo $?
+exit pwd ; echo $?
+exit 4 ; echo $?
+export a=ls b="|" c=cat ; $a$b$c ; echo $?
+export a=ls b="|" c=cat ; $a $b $c ; echo $?
+pwd “;” pwd ; echo $?
+pwd “;” pwd ; pwd ; pwd pwd “;” pwd ‘pwd’ ‘pwd’ ‘;’ pwd ; ‘pwd ;’ ; echo $?
+pwd;export a="  ls  -la  " b=hoi c= ; echo $b ; echo $c ; echo $a ; $a ; echo $?
+ls>f1>f2>f3>f4;pwd>f5;cat<f5 ; echo $?
+echo $ ; echo $? ; echo $?
+echo $"" ; echo $? ; echo $?
+echo $+ ; echo $? ; echo $?
+echo $h ; echo $? ; echo $?
+echo $he ; echo $? ; echo $?
+echo $heh ; echo $? ; echo $?
+echo $heho ; echo $? ; echo $?
+echo $1 ; echo $? ; echo $?
+echo $12 ; echo $? ; echo $?
+echo $123 ; echo $? ; echo $?
+echo 123$456 ; echo $? ; echo $?
+echo >>> hoi ; echo $?
+echo > > > hoi ; echo $?
+echo > > | hoi ; echo $?
+echo |> hoi ; echo $?
+echo ||> hoi ; echo $?
+echo |>| hoi ; echo $?
+echo >| hoi ; echo $?
+echo >|| hoi ; echo $?
