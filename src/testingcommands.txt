@@ -185,3 +185,14 @@ pwd “;” pwd
 pwd “;” pwd ; pwd ; pwd pwd “;” pwd ‘pwd’ ‘pwd’ ‘;’ pwd ; ‘pwd ;’
 pwd;export a="  ls  -la  " b=hoi c= ; echo $b ; echo $c ; echo $a ; $a
 ls>f1>f2>f3>f4;pwd>f5;cat<f5
+echo $
+echo $""
+echo $+
+echo $h
+echo $he
+echo $heh
+echo $heho
+echo $1
+echo $12
+echo $123
+echo 123$456
