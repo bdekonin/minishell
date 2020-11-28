@@ -6,11 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/11/28 14:37:54 by lverdoes      ########   odam.nl         */
-=======
-/*   Updated: 2020/11/28 13:36:19 by bdekonin      ########   odam.nl         */
->>>>>>> abe08183c243c260716453fb2d51e4279bc75c9f
+/*   Updated: 2020/11/28 15:57:48 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +62,7 @@ int			copy_envvar(t_vars *v, t_exp *e)
 	env_content = find_env(v, env_name, &env_len);
 	ft_free(env_name);
 	if (!env_content)
-		return (empty_env_content(env_len, e->i));
+		return (empty_env_content(env_len, &e->i));
 	split_content = ft_reduce_spaces(env_content->content, 0, 0);
 	malloc_check(v, split_content);
 	ft_strlcat(e->sub_dst + e->j, split_content, PATH_MAX + 1);

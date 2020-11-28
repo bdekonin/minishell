@@ -6,22 +6,21 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 20:52:27 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/28 15:59:34 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/stat.h>
 
-int	handleLocations(t_vars *v, char **newpath, char **params);
-
-int	validate_file(char *filepath)
+int			validate_file(char *filepath)
 {
 	struct stat	sb;
 	int			ret;
 	int			returnstat;
+
 	ret = stat(filepath, &sb);
-	if (ret == 0) // Exist
+	if (ret == 0)
 	{
 		returnstat = sb.st_mode & S_IXUSR;
 		if (returnstat == 0)
@@ -33,66 +32,77 @@ int	validate_file(char *filepath)
 		return (FILENOTFOUND);
 }
 
-void	signal_exec(int sig)
+void		signal_exec(int sig)
 {
 	ft_putendl_fd("", 1);
 	signal(sig, signal_exec);
 }
 
-int		ft_execve(t_vars *v, char **params)
+static int	run_execve(t_vars *v, char *path, char **params, char **envp)
 {
-	char *path;
-	char **envp;
-	pid_t forky;
-	int stat;
+	pid_t	forky;
+	int		stat;
 
-	path = NULL;
+	signal(SIGQUIT, signal_exec);
+	signal(SIGINT, signal_exec);
+	forky = fork();
+	if (forky < 0)
+		ft_exit_error(v, EXIT_FAILURE, 1);
+	if (!forky)
+	{
+		if (execve(path, &params[0], envp) < 0)
+		{
+			ft_putstr_fd(MINISHELL, 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			exit(127);
+		}
+	}
+	else
+		waitpid(-1, &stat, 0);
+	free(path);
+	ft_free_array((void **)envp, env__ft_lstsize(v->env));
+	return (WEXITSTATUS(stat));
+}
 
-	int ret = -2;
+static int	findtype_execve(t_vars *v, char **params, char **path)
+{
+	int ret;
+
+	ret = 0;
 	if (!ft_strncmp(params[0], "./", 2))
 	{
-		ret = handle_relative(v, &path, params[0]);
+		ret = handle_relative(v, path, params[0]);
 		if (ret == FILEPERMISSIONS || ret == FILENOTFOUND)
 			return (ret);
 	}
 	else
 	{
-		ret = handle_static(v, &path, params[0]);
+		ret = handle_static(v, path, params[0]);
 		if (ret == FILEPERMISSIONS)
 			return (ret);
 		else if (ret == FILENOTFOUND)
 			return (FILENOTFOUND * 10);
 	}
+	return (FILEFOUND);
+}
+
+int			ft_execve(t_vars *v, char **params)
+{
+	char	*path;
+	char	**envp;
+	int		ret;
+
+	path = NULL;
+	ret = findtype_execve(v, params, &path);
 	if (ret == FILEERROR)
 		ft_exit_error(v, EXIT_FAILURE, 1);
-
 	envp = env_list_to_array(v);
 	if (!envp)
 	{
 		free(path);
 		ft_exit_error(v, EXIT_FAILURE, 1);
 	}
-	// Start
-	signal(SIGQUIT, signal_exec);
-	signal(SIGINT, signal_exec);
-	forky = fork();
-	// dprintf(2, "execve forky [%d]\n", forky);
-	if (!forky)
-	{
-		if (execve(path, &params[0], envp) < 0)
-		{
-			ft_printf("%s: %s\n", "minishell", strerror(errno));
-			exit(127);
-		}
-	}
-	else
-		waitpid(-1, &stat, 0);
-	// End
-	ft_free_array((void **)envp, env__ft_lstsize(v->env));
-	free(path);
-	return (WEXITSTATUS(stat));
+	ret = run_execve(v, path, params, envp);
+	return (ret);
 }
-
-
-// clear ; ./test/testfunctions/return_8_noperm ; ./bestaat
-// clear ; ./test/testfunctions/return_8_noperm ; echo " cmd_ret = [$?]" ; ./bestaat ; echo " cmd_ret = [$?]"
