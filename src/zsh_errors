@@ -2,3 +2,7 @@ exit 1 | exit 2 | exit 3 | exit 4 ; echo $?
 exit 1 | exit 2 | notacommand | exit 4 ; echo $?
 echo 00\\\\'pp' ; echo “./hello”. ; echo ./hello ; echo ello ; echo $?
 cd - ; echo $?
+echo -n hi ; echo -n "" hi ; echo -n " " hi ; echo -n "  " hi ; echo -n "   " hi
+echo -n -n -n -n -n-n
+echo -nnnnnnnn -n -n hi
+echo"" -n hi
