@@ -6,14 +6,14 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/27 22:26:18 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/11/28 15:39:50 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = \
-	/_main.c \
+	/_test.c \
 	/create_tokens.c \
 	/execve.c \
 	/expansion.c \
@@ -31,6 +31,8 @@ SRC = \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \
 	/utils/expansion_utils.c \
+	/utils/expansion_utils_more.c \
+	/utils/expansion_utils_more_more.c \
 	/utils/ft_split_sep_exep_bonus.c \
 	/utils/malloc_check.c \
 	/utils/ft_iserrno_bonus.c \

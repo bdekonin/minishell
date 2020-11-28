@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/27 17:55:09 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/28 15:39:07 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,17 @@
 # define ANGLEBRACKETRIGHT 62 // >
 # define ANGLEBRACKETDOUBLERIGHT 63 // >>
 
+typedef struct	s_exp{
+	char		*dst;
+	t_cmd		*tmp;
+	char		**array;
+	size_t		array_iter;
+	size_t		array_size;
+	char		sub_dst[PATH_MAX + 1];
+	size_t		i;
+	size_t		j;
+}				t_exp;
+
 typedef struct  s_vars{
 	int			fd;
 	t_env		*env;
@@ -102,10 +113,16 @@ void			split_tokens(t_vars *v, char *string);
 int				run_command(t_vars *v, char **params);
 int				ft_execve(t_vars *v, char **params);
 void			expansion(t_vars *v);
-int	        	copy_envvar(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
+int	        	copy_envvar(t_vars *v, t_exp *e);
+void			copy_char(t_exp *e);
+void			copy_space(t_exp *e);
+void			copy_single_quote(t_vars *v, t_exp *e);
+void			print_empty_token_space(t_vars *v, t_exp *e);
+void			copy_backslash(t_exp *e);
+void			copy_hashtag(t_exp *e);
+void			copy_double_quote(t_vars *v,t_exp *e);
 
 
-void	copy_double_quote(t_vars *v, char *dst, char *src, size_t *i, size_t *j);
 int	read_command_line_input(t_vars *v, char *cli);
 void control_d(t_vars *v, char **cli, int ret);
 int error_identifier(char *identifier);
