@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/28 15:39:07 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/28 15:47:51 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ t_env			*find_env(t_vars *v, char *identifier, size_t *len);
 int				export_declare_list(t_vars *v);
 
 int				ft_iserrno(int error);
-char 			*ft_reduce_spaces(const char *str);
+char 			*ft_reduce_spaces(const char *str, size_t size, size_t i);
 
 int				is_redirection_new(unsigned char type);
 int				is_redirection(char *str);
@@ -174,7 +174,7 @@ char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
 char			**ft_split_sep_exep(const char *src, char *sep, size_t *size);
 void			malloc_check(t_vars *v, void *ptr);
-
+size_t			skip_quotations(const char *cli, char quotation_type);
 
 
 // t_list *lastpipe(t_list *headptr);

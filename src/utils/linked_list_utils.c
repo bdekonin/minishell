@@ -6,13 +6,14 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 20:11:14 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/24 14:49:48 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/28 13:45:42 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	create_new_env_var(t_vars *v, char *name, char *content, int checkmalloc)
+void	create_new_env_var(t_vars *v, char *name, char *content, \
+				int checkmalloc)
 {
 	t_env	*node;
 
@@ -25,10 +26,8 @@ void	create_new_env_var(t_vars *v, char *name, char *content, int checkmalloc)
 	malloc_check(v, node);
 	env__ft_lstadd_back(&v->env, node);
 }
-size_t	skip_quotations(const char *cli, char quotation_type);
 
-// echo 
-void test(char *src)
+void	function_src(char *src)
 {
 	size_t i;
 
@@ -52,7 +51,7 @@ void	create_new_token(t_vars *v, const char *ptr, size_t len)
 
 	str = ft_substr(ptr, 0, len);
 	malloc_check(v, str);
-	test(str);
+	function_src(str);
 	new = ft_lstnew(str);
 	malloc_check(v, new);
 	ft_lstadd_back(&v->tempcmd, new);
@@ -78,7 +77,7 @@ void	ft_lst_remove_one(t_list **head, t_list *node)
 {
 	t_list *tmp;
 	t_list *prev;
-	
+
 	if (node == *head)
 	{
 		*head = (*head)->next;
