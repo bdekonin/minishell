@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/26 19:48:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/27 12:12:22 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:23:34 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void		split_tokens(t_vars *v, char *string)
 
 	if (string[0] == 0)
 	{
-		v->cmd_ret = 1;
+		v->cmd_ret = 0;
 		return ;
 	}
-	tokens = ft_split_multi(string, "*", &size_tokens);
+	tokens = ft_split_multi(string, STRING_SPECIAL_CHAR, &size_tokens);
 	malloc_check(v, tokens);
 	v->cmd_ret = run_command(v, tokens);
 	ft_free_array((void **)tokens, size_tokens);

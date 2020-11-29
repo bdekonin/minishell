@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 21:29:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-static int g_passed;
-static int g_tests;
+static int g_passed = 0;
+static int g_tests = 0;
 
 static int 		minishell(char *command, char **envp)
 {
@@ -70,14 +70,14 @@ static void printtest(char *command, int ok, char *me, char *og)
 {
 	if (ok == 0)
 	{
-		printf("\033[1;32m[%s]\n[OK]\n\n\033[0m", command);
+		printf("\033[1;32m[%03d] - [%s]\n[OK]\n\n\033[0m", g_tests, command);
 		g_passed++;
 	}
 	else
 	{
-//		strreplace(me, '\n', '*');
-//		strreplace(og, '\n', '*');
-		printf("\033[1;31m[%s]\n[KO]\n\033[0m", command);
+//		strreplace(me, '\n', CHAR_SPECIAL_CHAR);
+//		strreplace(og, '\n', CHAR_SPECIAL_CHAR);
+		printf("\033[1;31m[%03d] - [%s]\n[KO]\n\033[0m", g_tests, command);
 		printf("me - [%s] - [%d]\n", me, ok);
 		printf("og - [%s] - [%d]\n\n", og, ok);
 	}

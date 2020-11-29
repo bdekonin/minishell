@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 20:11:14 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/28 13:45:42 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	function_src(char *src)
 		else if (src[i] == '\"')
 			i += skip_quotations(src + i, src[i]);
 		if (src[i] == ' ')
-			src[i] = '*';
+			src[i] = CHAR_SPECIAL_CHAR;
 		i++;
 	}
 }

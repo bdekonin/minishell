@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/28 15:39:15 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:25:33 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static void parse_cmd(t_vars *v, t_exp *e)
 			copy_single_quote(v, e);
 		else if (e->array[e->array_iter][e->i] == '\"')
 			copy_double_quote(v, e);
-		else if (e->array[e->array_iter][e->i] == '$')
+		else if (e->array[e->array_iter][e->i] == '$' && \
+			!ft_charsearch(e->array[e->array_iter][e->i + 1], ENV_DELIMS))
 			copy_envvar(v, e);
 		else if (e->array[e->array_iter][e->i] == ' ')
 			copy_space(e);
@@ -48,7 +49,7 @@ static void	combine_strings(t_vars *v, t_exp *e)
 	ft_bzero(e->sub_dst, PATH_MAX + 1);
 	parse_cmd(v, e);
 	if (ft_strlen(e->dst))
-		ft_strlcat(e->dst, "*", PATH_MAX + 1);
+		ft_strlcat(e->dst, STRING_SPECIAL_CHAR, PATH_MAX + 1);
 	ft_strlcat(e->dst, e->sub_dst, PATH_MAX + 1);
 }
 
@@ -61,7 +62,7 @@ void		expansion(t_vars *v)
 	while (e.tmp)
 	{
 		e.array_size = 0;
-		e.array = ft_split_sep_exep(e.tmp->line, "* ", &e.array_size);
+		e.array = ft_split_sep_exep(e.tmp->line, STRING_SPECIAL_CHAR2, &e.array_size);
 		malloc_check(v, e.array);
 		e.dst = ft_calloc(PATH_MAX + 1, sizeof(char));
 		malloc_check(v, e.dst);

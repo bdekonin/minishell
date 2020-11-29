@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 21:26:55 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static int mainredir(t_vars *v, unsigned char type, char *filename)
 	int ret;
 	char **argv;
 
-	argv = ft_split(filename, '*');
+	argv = ft_split(filename, CHAR_SPECIAL_CHAR);
 	malloc_check(v, argv);
 	if (type == ANGLEBRACKETDOUBLERIGHT)
 		ret = run_angle_right_double(v, argv[0]);

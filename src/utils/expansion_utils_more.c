@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/28 15:34:27 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/28 15:36:54 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	copy_single_quote(t_vars *v, t_exp *e)
 
 void	copy_space(t_exp *e)
 {
-	e->sub_dst[e->j] = '*';
+	e->sub_dst[e->j] = CHAR_SPECIAL_CHAR;
 	e->j += 1;
 	while (e->array[e->array_iter][e->i] == ' ')
 		e->i += 1;

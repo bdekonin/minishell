@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 21:00:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:24:41 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static size_t	get_len(const char *cli, size_t start)
 			i++;
 		else if (cli[i] == '\'')
 			i = i + skip_quotations(cli + i, '\'');
-//		else if (cli[i] == '\"' && (i == 0 || (cli[i - 1] != '\\'))) //hiero
 		else if (cli[i] == '\"')
 			i = i + skip_quotations(cli + i, '\"');
 		i++;

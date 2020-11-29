@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/27 12:14:05 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int swaparguments(t_vars *v, t_cmd *current)
 
 	if (current == NULL)
 		return (0);
-	if (ft_wordcount(current->line, '*') > 1 && current->type != ANGLEBRACKETLEFT)
+	if (ft_wordcount(current->line, CHAR_SPECIAL_CHAR) > 1 && current->type != ANGLEBRACKETLEFT)
 	{
-		star = ft_strchr(current->line, '*');
+		star = ft_strchr(current->line, CHAR_SPECIAL_CHAR);
 		if (current->prev == NULL)
 			return (0);
 		if (current->prev->type == ANGLEBRACKETLEFT || current->prev->type == PIPELINE)
@@ -48,9 +48,9 @@ static void nocommand_redir(t_vars *v, t_cmd *list)
 		if (!ft_strncmp(list->line, ">", 1) || !ft_strncmp(list->line, ">>", 2))
 		{
 			free(list->line);
-			if (list->next && ft_wordcount(list->next->line, '*') > 1)
+			if (list->next && ft_wordcount(list->next->line, CHAR_SPECIAL_CHAR) > 1)
 			{
-				ptr = ft_strchr(list->next->line, '*');
+				ptr = ft_strchr(list->next->line, CHAR_SPECIAL_CHAR);
 				list->line = ft_strdup(ptr);
 				*ptr = '\0';
 			}

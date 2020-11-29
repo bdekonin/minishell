@@ -187,7 +187,6 @@ pwd;export a="  ls  -la  " b=hoi c= ; echo $b ; echo $c ; echo $a ; $a ; echo $?
 ls>f1>f2>f3>f4;pwd>f5;cat<f5 ; echo $?
 echo $ ; echo $? ; echo $?
 echo $"" ; echo $? ; echo $?
-echo $+ ; echo $? ; echo $?
 echo $h ; echo $? ; echo $?
 echo $he ; echo $? ; echo $?
 echo $heh ; echo $? ; echo $?
@@ -200,7 +199,25 @@ echo >>> hoi ; echo $?
 echo > > > hoi ; echo $?
 echo > > | hoi ; echo $?
 echo |> hoi ; echo $?
-echo ||> hoi ; echo $?
-echo |>| hoi ; echo $?
 echo >| hoi ; echo $?
 echo >|| hoi ; echo $?
+pwd > test ; echo $?
+echo $+ ; echo $? ; echo $?
+echo $. ; echo $? ; echo $?
+echo $ ; echo $?
+echo $hoi ; echo $?
+echo $hoi$ ; echo $?
+echo ---+--- ; echo $?
+echo $a$a$a+$a$a$a ; echo $?
+echo $> ; echo $?
+echo $< ; echo $?
+echo $/ ; echo $?
+echo $, ; echo $?
+echo $. ; echo $?
+echo $+ ; echo $?
+echo $/ ; echo $?
+echo $% ; echo $?
+echo $^ ; echo $?
+echo $: ; echo $?
+echo $= ; echo $?
+rm -rf yo f1 f2 f3 f4 f5 file hoi test lars list.txt ls.txt some_empty_file.txt ; echo $?

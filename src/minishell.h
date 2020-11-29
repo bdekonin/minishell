@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/28 15:47:51 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/11/29 22:35:09 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@
 
 # define NUMARG 998
 # define ARGCOUNT 999
+
+# define ENV_DELIMS ",.+-/%^:="
+# define STRING_SPECIAL_CHAR "\b"
+# define STRING_SPECIAL_CHAR2 "\b "
+# define CHAR_SPECIAL_CHAR '\b'
 
 # define MINISHELL_ENOENT "No such file or directory"
 # define MINISHELL_EACCES "Permission denied"
@@ -112,6 +117,11 @@ void			find_semicolons(t_vars *v);
 void			split_tokens(t_vars *v, char *string);
 int				run_command(t_vars *v, char **params);
 int				ft_execve(t_vars *v, char **params);
+
+/*
+**				expansions
+*/
+
 void			expansion(t_vars *v);
 int	        	copy_envvar(t_vars *v, t_exp *e);
 void			copy_char(t_exp *e);
