@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/11 19:08:00 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/16 15:50:35 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/02 13:57:34 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char *command)
 	return (ptr);
 }
 
-static char *get_relative_path(char *currentpath, char *command)
+static char			*get_relative_path(char *currentpath, char *command)
 {
 	char	*path;
 	size_t	count;
@@ -37,7 +37,7 @@ static char *get_relative_path(char *currentpath, char *command)
 	return (path);
 }
 
-int handle_relative(t_vars *v, char **newpath, char *command)
+int 				handle_relative(t_vars *v, char **newpath, char *command)
 {
 	char *path;
 	int ret;

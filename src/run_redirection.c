@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/02 13:59:56 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	read_file(t_vars *v, char *name, char **dest)
 	return (0);
 }
 
-static int run_angle_right_double(t_vars *v, char *filename)
+static int	run_angle_right_double(t_vars *v, char *filename)
 {
 	char	*file_contents;
 	ssize_t	ret;
@@ -53,7 +53,7 @@ static int run_angle_right_double(t_vars *v, char *filename)
 	return (1);
 }
 
-static int run_angle_right_single(t_vars *v, char *filename)
+static int	run_angle_right_single(t_vars *v, char *filename)
 {
 	v->stdout_copy = dup(STDOUT_FILENO);
 	close(STDOUT_FILENO);
@@ -64,7 +64,7 @@ static int run_angle_right_single(t_vars *v, char *filename)
 	return (1);
 }
 
-static int run_angle_left_single(t_vars *v, char *filename)
+static int	run_angle_left_single(t_vars *v, char *filename)
 {
 	v->fd = open(filename, O_RDONLY);
 	if (v->fd < 0)
@@ -80,10 +80,10 @@ static int run_angle_left_single(t_vars *v, char *filename)
 	return (1);
 }
 
-static int mainredir(t_vars *v, unsigned char type, char *filename)
+static int	mainredir(t_vars *v, unsigned char type, char *filename)
 {
-	int ret;
-	char **argv;
+	int		ret;
+	char	**argv;
 
 	argv = ft_split(filename, CHAR_SPECIAL_CHAR);
 	malloc_check(v, argv);
@@ -101,7 +101,7 @@ static int mainredir(t_vars *v, unsigned char type, char *filename)
 	return (ret);
 }
 
-int redirection_handler(t_vars *v, t_cmd *list)
+int			redirection_handler(t_vars *v, t_cmd *list)
 {
 	if (list && list->type >= 60 && list->type != PIPELINE)
 	{

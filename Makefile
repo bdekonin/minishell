@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/29 22:33:43 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/12/02 14:07:18 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC = \
 	/initialize.c \
 	/syntax_error_check.c \
 	/syntax_error_return.c \
+	/multiline_check.c  \
 	/run_pipe.c \
 	/run_redirection.c \
 	/handle_relative.c \
@@ -39,6 +40,7 @@ SRC = \
 	/utils/ft_reduce_spaces.c \
 	/utils/find_env.c \
 	/utils/is_functions.c \
+	/utils/create_token_utils.c \
 	/utils/linked_list_utils.c \
 	/utils/reset_std.c \
 	/utils/error_identifier.c \

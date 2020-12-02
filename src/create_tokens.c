@@ -6,51 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/29 22:24:41 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/02 13:53:23 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-size_t			skip_quotations(const char *cli, char quotation_type)
-{
-	size_t i;
-
-	i = 1;
-	while (cli[i] && cli[i] != quotation_type)
-	{
-		if (cli[i] == '\\' && cli[i + 1] == '\\')
-			i++;
-		else if (cli[i] == '\\' && cli[i + 1] == '\"')
-			i++;
-		i++;
-	}
-	return (i);
-}
-
-static size_t	get_len(const char *cli, size_t start)
-{
-	size_t i;
-
-	i = start;
-	if (ft_charsearch(cli[i], "<>|;"))
-	{
-		if (cli[i] == '>' && cli[i + 1] == '>')
-			return (2);
-		return (1);
-	}
-	while (cli[i] != '\0' && !ft_charsearch(cli[i], "<>|;"))
-	{
-		if (cli[i] == '\\')
-			i++;
-		else if (cli[i] == '\'')
-			i = i + skip_quotations(cli + i, '\'');
-		else if (cli[i] == '\"')
-			i = i + skip_quotations(cli + i, '\"');
-		i++;
-	}
-	return (i - start);
-}
 
 static char 	gettype(char *content)
 {
@@ -125,31 +85,6 @@ static t_cmd	*betterstruct(t_vars *v, t_list *list, t_cmd *head, t_cmd *temp)
 	return (head);
 }
 
-void		add_bogus_token(t_vars *v)
-{
-	t_list *list;
-	char *str;
-	t_list *lstnew;
-	t_list *temp;
-
-	list = v->tempcmd;
-	while (list)
-	{
-		if (is_pipe(list->content))
-        {
-            if (list->next && is_redirection(list->next->content))
-            {
-                str = ft_strdup("");
-				lstnew = ft_lstnew(str);
-				temp = list->next;
-				list->next = lstnew;
-                list->next->next = temp;
-            }
-        }
-		list = list->next;
-	}
-}
-
 void			create_tokens(t_vars *v, const char *cli)
 {
 	size_t start;
@@ -161,7 +96,7 @@ void			create_tokens(t_vars *v, const char *cli)
 	{
 		while (cli[start] == ' ')
 			start++;
-		len = get_len(cli, start);
+		len = get_token_len(cli, start);
 		create_new_token(v, cli + start, len);
 		start = start + len;
 	}

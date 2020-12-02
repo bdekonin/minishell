@@ -6,15 +6,15 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/27 12:24:24 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/02 13:59:14 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				pipe_stuff(t_vars *v, t_cmd *list);
+int				pipe_stuff(t_vars *v, t_cmd *list); //declare in .h?
 
-static void		child(t_vars *v, t_cmd *list, int *fd)
+static void	child(t_vars *v, t_cmd *list, int *fd)
 {
 	close(fd[0]);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
@@ -28,7 +28,7 @@ static void		child(t_vars *v, t_cmd *list, int *fd)
 	exit(v->cmd_ret);
 }
 
-static void		parent(t_vars *v, t_cmd *list, int *fd)
+static void	parent(t_vars *v, t_cmd *list, int *fd)
 {
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
@@ -43,7 +43,7 @@ static void		parent(t_vars *v, t_cmd *list, int *fd)
 	close(STDOUT_FILENO);
 }
 
-int				pipe_stuff(t_vars *v, t_cmd *list)
+int			pipe_stuff(t_vars *v, t_cmd *list)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -63,7 +63,7 @@ int				pipe_stuff(t_vars *v, t_cmd *list)
 	return (1);
 }
 
-int				pipe_handler(t_vars *v, t_cmd *list)
+int			pipe_handler(t_vars *v, t_cmd *list)
 {
 	pid_t forky;
 	int stat;

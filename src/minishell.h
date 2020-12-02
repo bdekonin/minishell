@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/29 22:35:09 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/02 14:06:53 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int				initial_syntax_error_check(t_vars *v, const char *cli);
 int				syntax_error_check_loop(t_vars *v, char **args, size_t splitsize);
 int				syntax_error_check(t_vars *v, const char *cli);
 int				syntax_error_return(t_vars *v, const char *token);
+int				multiline_check(t_vars *v, const char *cli);
 int				check_flag_syntax(t_vars *v, const char *cli, size_t i);
 void			create_tokens(t_vars *v, const char *cli);
 void			find_semicolons(t_vars *v);
@@ -165,6 +166,8 @@ int				ft_env(t_vars *v, char **params);
 
 void			create_new_env_var(t_vars *v, char *name, char *content, int checkmalloc);
 void			create_new_token(t_vars *v, const char *ptr, size_t len);
+size_t			get_token_len(const char *cli, size_t start);
+void			add_bogus_token(t_vars *v);
 t_list			*get_prev_node(t_vars *v, t_list *dst);
 void			ft_lst_remove_one(t_list **head, t_list *node);
 size_t			find_identifier_len(char *str);

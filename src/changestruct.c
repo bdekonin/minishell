@@ -6,14 +6,14 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/02 13:56:37 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-int swaparguments(t_vars *v, t_cmd *current)
+int				swaparguments(t_vars *v, t_cmd *current)
 {
 	char	*newstring;
 	char	*star;
@@ -38,7 +38,7 @@ int swaparguments(t_vars *v, t_cmd *current)
 	return (ret);
 }
 
-static void nocommand_redir(t_vars *v, t_cmd *list)
+static void 	nocommand_redir(t_vars *v, t_cmd *list)
 {
 	char *ptr;
 
@@ -63,7 +63,7 @@ static void nocommand_redir(t_vars *v, t_cmd *list)
 	}
 }
 
-static t_cmd *fix_anglebracketleft(t_cmd *list)
+static t_cmd	*fix_anglebracketleft(t_cmd *list)
 {
 	t_cmd *temp;
 
@@ -78,7 +78,7 @@ static t_cmd *fix_anglebracketleft(t_cmd *list)
 }
 void	cmd__ft_printlist(t_cmd *cmd);
 
-static void changefilenames(t_cmd *list)
+static void		changefilenames(t_cmd *list)
 {
 	while (list)
 	{
@@ -93,8 +93,9 @@ static void changefilenames(t_cmd *list)
 		list = list->next;
 	}
 }
-void	cmd__ft_printlist(t_cmd *cmd);
-void		changestruct(t_vars *v, t_cmd *list)
+void	cmd__ft_printlist(t_cmd *cmd); //debug func?
+
+void			changestruct(t_vars *v, t_cmd *list)
 {
 	swaparguments(v, cmd__ft_lstlast(list));
 	nocommand_redir(v, list);
