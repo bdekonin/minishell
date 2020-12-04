@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/02 14:06:53 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 12:40:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-//
-
 
 
 #include <stdlib.h>		//EXIT_FAILURE EXIT_SUCCESS
@@ -57,7 +54,6 @@
 # define MINISHELL_CMDERR "command not found"
 # define MINISHELL_NUMARG "numeric argument required"
 # define MINISHELL_ARGCOUNT "too many arguments"
-# define MINISHELL_ERRNO "%s: %s\nexit\n"
 
 # define SYNTAX_ERROR ": syntax error near unexpected token `"
 
@@ -91,6 +87,7 @@ typedef struct  s_vars{
 	int			stdout_copy;
 	int			stdin_copy;
 	int			empty_quotes;
+	char		*backup_command;
 }				t_vars;
 
 /*
@@ -116,8 +113,8 @@ int				check_flag_syntax(t_vars *v, const char *cli, size_t i);
 void			create_tokens(t_vars *v, const char *cli);
 void			find_semicolons(t_vars *v);
 void			split_tokens(t_vars *v, char *string);
-int				run_command(t_vars *v, char **params);
-int				ft_execve(t_vars *v, char **params);
+int				run_command(t_vars *v, char **params, size_t i);
+int			ft_execve(t_vars *v, char **params, char *path, char *backup_command);
 
 /*
 **				expansions

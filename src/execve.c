@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/28 16:08:54 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 12:39:31 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,22 +72,20 @@ static void	freething(t_vars *v, char **envp, char *path)
 	}
 }
 
-int			ft_execve(t_vars *v, char **params)
+int			ft_execve(t_vars *v, char **params, char *path, char *backup_command)
 {
-	char	*path;
 	char	**envp;
 	int		ret;
 
-	path = NULL;
-	if (!ft_strncmp(params[0], "./", 2))
+	if (!ft_strncmp(backup_command, "./", 2))
 	{
-		ret = handle_relative(v, &path, params[0]);
+		ret = handle_relative(v, &path, backup_command);
 		if (ret == FILEPERMISSIONS || ret == FILENOTFOUND)
 			return (ret);
 	}
 	else
 	{
-		ret = handle_static(v, &path, params[0]);
+		ret = handle_static(v, &path, backup_command);
 		if (ret == FILEPERMISSIONS)
 			return (ret);
 		else if (ret == FILENOTFOUND)

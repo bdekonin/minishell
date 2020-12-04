@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/26 19:48:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/02 13:58:44 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 12:26:33 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,19 @@ void 	ft_printerror(char *file, int error)
 		ft_putendl_fd(MINISHELL_CMDERR, 2);		
 }
 
-int		run_command(t_vars *v, char **params)
+static char *make_backup_command(t_vars *v, char *backup)
+{
+	malloc_check(v, backup);
+	ft_str_to_lower(backup);
+	v->backup_command = backup;
+	return (backup);
+}
+
+int		run_command(t_vars *v, char **params, size_t i)
 {
 	int		(*p[7]) (t_vars *v, char **params);
-	size_t	i;
 	int		ret;
-	
+
 	p[0] = ft_echo;
 	p[1] = ft_cd;
 	p[2] = ft_pwd;
@@ -39,14 +46,14 @@ int		run_command(t_vars *v, char **params)
 	p[4] = ft_unset;
 	p[5] = ft_env;
 	p[6] = ft_exit;
-	i = 0;
 	while (i < 7)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 16))
 				return ((*p[i])(v, params + 1));
 		i++;
 	}
-	ret = ft_execve(v, params);
+	ret = ft_execve(v, params, NULL, make_backup_command(v, ft_strdup(params[0])));
+	free(v->backup_command);
 	if (ret == FILENOTFOUND * 10)
 		ft_printerror(params[0], CMDERR);
 	if (ret == FILENOTFOUND * 10)
@@ -66,7 +73,7 @@ void	split_tokens(t_vars *v, char *string)
 	}
 	tokens = ft_split_multi(string, STRING_SPECIAL_CHAR, &size_tokens);
 	malloc_check(v, tokens);
-	v->cmd_ret = run_command(v, tokens);
+	v->cmd_ret = run_command(v, tokens, 0);
 	ft_free_array((void **)tokens, size_tokens);
 }
 

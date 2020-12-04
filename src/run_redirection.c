@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/02 13:59:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 12:37:20 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	read_file(t_vars *v, char *name, char **dest)
 		ret = ft_getline(fd, dest);
 		close(fd);
 		if (ret < 0)
-			ft_exit_error(v, EXIT_FAILURE, 1);
+			ft_exit_error(v, EXIT_FAILURE, 0);
 		return (1);
 	}
 	return (0);
@@ -39,6 +39,8 @@ static int	run_angle_right_double(t_vars *v, char *filename)
 	file_contents = NULL;
 	ret = read_file(v, filename, &file_contents);
 	v->stdout_copy = dup(STDOUT_FILENO);
+	if (v->stdout_copy < 0)
+		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(STDOUT_FILENO);
 	v->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (v->fd < 0)
@@ -49,18 +51,22 @@ static int	run_angle_right_double(t_vars *v, char *filename)
 		if (ret < 0 || (size_t)ret != ft_strlen(file_contents))
 				return (ft_free_ret_int(file_contents, 0)); //write ereror
 	}
-	dup2(v->fd, STDOUT_FILENO);
+	if (dup2(v->fd, STDOUT_FILENO) < 0)
+		ft_exit_error(v, EXIT_FAILURE, 0);
 	return (1);
 }
 
 static int	run_angle_right_single(t_vars *v, char *filename)
 {
 	v->stdout_copy = dup(STDOUT_FILENO);
+	if (v->stdout_copy < 0)
+		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(STDOUT_FILENO);
 	v->fd = open(filename, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (v->fd < 0)
 		return (0);
-	dup2(v->fd, STDOUT_FILENO);
+	if (dup2(v->fd, STDOUT_FILENO) < 0)
+		ft_exit_error(v, EXIT_FAILURE, 0);
 	return (1);
 }
 
@@ -75,7 +81,8 @@ static int	run_angle_left_single(t_vars *v, char *filename)
 	}
 	v->stdin_copy = dup(STDIN_FILENO);
 	close(STDIN_FILENO);
-	dup2(v->fd, STDIN_FILENO);
+	if (dup2(v->fd, STDIN_FILENO) < 0)
+		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(v->fd);
 	return (1);
 }

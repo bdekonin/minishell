@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/02 13:59:14 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 12:40:18 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ static void	child(t_vars *v, t_cmd *list, int *fd)
 {
 	close(fd[0]);
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		exit(EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(fd[1]);
-	// dprintf(2, "child - [%s]\n", list->line);
 	if (!list->prev || list->prev->type == 0 || list->prev->type == PIPELINE)
 		split_tokens(v, list->line);
 	close(STDIN_FILENO);
@@ -32,9 +31,8 @@ static void	parent(t_vars *v, t_cmd *list, int *fd)
 {
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		exit(EXIT_FAILURE);
+		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(fd[0]);
-	// dprintf(2, "parent - [%s]\n", list->line);
 	if (list->type == PIPELINE)
 		pipe_stuff(v, list);
 	else if (!list->prev || list->prev->type == 0 || list->prev->type == PIPELINE) // nee
@@ -74,7 +72,7 @@ int			pipe_handler(t_vars *v, t_cmd *list)
 	else if (forky == 0)
 	{
 		pipe_stuff(v, list);
-		exit(v->cmd_ret); // set correct
+		exit(v->cmd_ret);
 	}
 	else
 		waitpid(-1, &stat, 0);
