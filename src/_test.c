@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:52:14 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 15:01:58 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,3 +122,26 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 }
+
+/*
+
+
+#include "cmd.h"
+#include "../../minishell.h"
+
+void	cmd__ft_printlist(t_cmd *cmd) //deze moet er nog uit toch?
+{
+	int i;
+
+	i = 0;
+	while (cmd)
+	{
+		//dprintf(2, "[%d] - [%s] - [%c]\n", i, cmd->line, cmd->type);
+		i++;
+		cmd = cmd->next;
+	}
+	//dprintf(2, "\n");
+	return ;
+}
+
+*/

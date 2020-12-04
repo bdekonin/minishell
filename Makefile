@@ -6,14 +6,14 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/12/04 14:42:12 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/12/04 15:20:39 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = \
-	/_test.c \
+	/_main.c \
 	/create_tokens.c \
 	/execve.c \
 	/expansion.c \
@@ -54,7 +54,6 @@ SRC = \
 	/builtins/ft_export.c \
 	/builtins/ft_pwd.c \
 	/builtins/ft_unset.c \
-	/utils/cmd_list/ft_cmd_print_list.c \
 	/utils/cmd_list/ft_cmdadd_back_bonus.c \
 	/utils/cmd_list/ft_cmdadd_front_bonus.c \
 	/utils/cmd_list/ft_cmdclear_bonus.c \

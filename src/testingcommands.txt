@@ -1,3 +1,99 @@
+cd
+cd dir
+cd dir/sub_dir
+cd        dir/sub_dir
+cd ; cd dir/sub_dir
+cd ; cd           dir/sub_dir
+cd          ; cd           dir/sub_dir
+cd          ;              cd           dir/sub_dir
+cd          ;              cd dir/sub_dir
+cd dir/sub_dir ; cd
+cd dir/sub_dir ;           cd
+cd dir/sub_dir           ;           cd
+cd        dir/sub_dir           ;           cd
+cd        dir/sub_dir           ;           cd ;cd
+cd;cd
+cd;cd;cd
+cd;cd; cd
+cd;cd ; cd
+cd;cd    ; cd
+cd;cd;cd    ; cd
+echo
+echo hoi
+echo hoi 2
+echo hoi 3 hoi
+echo hoi ; echo hoi
+echo      hoi;echo hoi
+echo echo
+echo echo echo ; echo echo
+echo         echo echo ; echo echo
+echo         echo           echo ; echo echo
+echo         echo           echo          ; echo echo
+echo         echo           echo          ; echo            echo
+echo         echo           echo          ; echo            echo
+echo -n hoi
+echo            -n hoi
+echo            -n             hoi
+echo            -n             hoi hoi echo hoi
+echo            -n             hoi hoi ;echo hoi
+echo            -n             hoi hoi ; echo hoi
+echo            -n             hoi hoi ; echo          hoi
+echo            -n             hoi hoi ; echo          hoi ;pwd
+echo            -n             hoi hoi ; echo          hoi ; pwd
+echo            -n             hoi hoi ; echo          hoi ; pwd ; pwd
+echo -n -n hoi
+echo -n -n -n hoi hoi
+echo -n -n -n -nnnnnnnnnnnnnnnnnnn hoi
+echo -n -n -n -nnnnnnnnnnnnnnnnnnn hoi hoi
+echo -n
+echo -n -n
+echo -n -n -nnnnnnn
+echo hoi -n -n -nnnnnnn
+echo hoi hoi -n -n -nnnnnnn
+echo        hoi hoi -n -n -nnnnnnn
+echo        hoi        hoi -n -n -nnnnnnn
+echo        hoi        hoi          -n -n -nnnnnnn
+echo        hoi        hoi          -n -n -nnnnnnn ; echo -n hoi
+echo        hoi        hoi          -n -n -nnnnnnn ; echo -n -n hoi
+echo        hoi        hoi          -n -n -nnnnnnn ; echo -n -n -nnnn hoi
+echo        hoi        hoi          -n -n -nnnnnnn ; echo -n -n -nnnn
+echo - n
+echo -      n
+echo -n n     n
+echo -n -n -n n     n
+echo -n -n -n - n     n
+echo -n -n -n -- n     n
+echo -n -n -n ----n n     n
+echo -n -n -n -n---n n     n
+echo -n -n -n -n---n n     n
+echo n--n -n -n -n---n n     n
+echo n-n -n -n -n---n n     n
+echo n-n --n -n -n---n n     n
+echo -n -n --n -n -n---n n     n
+echo "" -n -n
+echo ""-n -n
+echo ""-n hoi
+echo " "-n hoi
+echo " """-n hoi
+echo " "" "-n hoi
+echo " "" "-n"" hoi
+echo " "" "-n" " hoi
+echo " "" "-n" """ hoi
+echo " "" "-n" """""hoi
+echo " "" "-n" """""hoi""
+echo " "" "-n" """""hoi" "
+echo " "" "-n" """""hoi" """
+echo " "" "-n" """""hoi" """" "
+echo " ""  "-n" """""hoi" """" "
+echo "  ""  "-n" """""hoi" """" "
+echo " "     ""  "-n" """""hoi" """" "
+echo " "     ""  "-n" """""hoi" """" " ; echo hoi
+export a=1
+export b=3
+export naam=handig
+export c=3 d=4 e=5 q=1 w=2 e=3 r=4 t=5 y=6 u=7 u=7
+unset politiekapper
+unset c d e
 cd src ; echo $?
 cd ; echo $?
 echo ' hoi '"\'"'\'''''\''' ; echo $?

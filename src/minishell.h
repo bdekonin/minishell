@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:49:44 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 15:10:03 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@
 # define MINISHELL_H
 
 
-#include <stdlib.h>		//EXIT_FAILURE EXIT_SUCCESS
-#include <limits.h>		//PATH_MAX
-#include <unistd.h>		//STDIN_FILENO
-#include <errno.h>		//ERRNO, ENOMEM
-#include <string.h>		//str_error
+#include <stdlib.h>
+#include <limits.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
 #include <dirent.h>
 
 # include "../libft/libft.h"
 # include "utils/cmd_list/cmd.h"
 # include "utils/env_list/env.h"
 
-
 /*
 ** Execve https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html
 */
+
 # define FILEERROR -1
 # define FILENOTFOUND 127
 # define FILEFOUND 1
@@ -60,10 +60,10 @@
 # define PROMPT "minishell-1.0$ "
 # define MINISHELL "minishell"
 
-# define PIPELINE 124 // |
-# define ANGLEBRACKETLEFT 60 // <
-# define ANGLEBRACKETRIGHT 62 // >
-# define ANGLEBRACKETDOUBLERIGHT 63 // >>
+# define PIPELINE 124
+# define ANGLEBRACKETLEFT 60
+# define ANGLEBRACKETRIGHT 62
+# define ANGLEBRACKETDOUBLERIGHT 63
 
 typedef struct	s_exp{
 	char		*dst;
@@ -94,9 +94,6 @@ typedef struct  s_vars{
 */
 
 int				ft_printf(const char *fmt, ...);
-
-int 			addarguments(t_list *list, int i);
-int 			argumentremover(t_vars *v, t_list *list);
 
 /*
 **				src/
@@ -129,23 +126,34 @@ void			copy_backslash(t_exp *e);
 void			copy_hashtag(t_exp *e);
 void			copy_double_quote(t_vars *v, t_exp *e);
 
+/*
+**				input
+*/
 
 int				read_command_line_input(t_vars *v, char *cli);
 void			control_d(t_vars *v, char **cli, int ret);
 int				error_identifier(char *identifier);
 
+/*
+**				pipes
+*/
+
 int				pipe_handler(t_vars *v, t_cmd *temp);
 int				pipe_stuff(t_vars *v, t_cmd *list);
+int 			redirection_handler(t_vars *v, t_cmd *command);
+t_cmd 			*lastpipe(t_cmd *headptr);
+t_cmd 			*lastredir(t_cmd *headptr);
 
-// Execve
+
+/*
+**				Execve
+*/
+
 int				handle_relative(t_vars *v, char **newpath, char *command);
 int				handle_static(t_vars *v, char **newpath, char *command);
 int				validate_file(char *filepath);
 int				loop_searchdir(struct dirent **dp, char *command, DIR *dir);
 int				searchdir(char *location, char *command);
-
-
-int redirection_handler(t_vars *v, t_cmd *command);
 
 /*
 **				src/builtins
@@ -173,16 +181,12 @@ void			ft_lst_remove_one(t_list **head, t_list *node);
 size_t			find_identifier_len(char *str);
 t_env			*find_env(t_vars *v, char *identifier, size_t *len);
 int				export_declare_list(t_vars *v);
-
 int				ft_iserrno(int error);
 char 			*ft_reduce_spaces(const char *str, size_t size, size_t i);
-
 int				is_redirection_new(unsigned char type);
 int				is_redirection(char *str);
-int				is_pipe(char *str); // old struct
-int				is_semicolon(char *str); // old struct
+int				is_pipe(char *str);
 int				reset_std(t_vars *v);
-
 char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
 char			**ft_split_sep_exep(const char *src, char *sep, size_t *size);
@@ -190,27 +194,14 @@ size_t			get_start_split(const char *src, char *sep, size_t i);
 size_t			get_len_split(const char *src, char *sep, size_t start);
 void			malloc_check(t_vars *v, void *ptr);
 size_t			skip_quotations(const char *cli, char quotation_type);
-
-
-t_cmd *lastpipe(t_cmd *headptr);
-t_cmd *lastredir(t_cmd *headptr);
-
-
-void		changestruct(t_vars *v, t_cmd *list);
-
+void			changestruct(t_vars *v, t_cmd *list);
+void 			ft_printerror(char *file, int error);
 
 /*
 ** Signals
 */
+
 void			signal_execve(int signal);
 void			signal_default(int signal);
-
-void ft_printerror(char *file, int error);
-
-/*
-**				debug functions - remove from .h, .c, and Makefile when finished
-*/
-
-//void			print_tokens(t_vars *v, const char *title);
 
 #endif
