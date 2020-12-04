@@ -6,13 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 12:40:18 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:49:58 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int				pipe_stuff(t_vars *v, t_cmd *list); //declare in .h?
 
 static void	child(t_vars *v, t_cmd *list, int *fd)
 {
@@ -63,8 +61,8 @@ int			pipe_stuff(t_vars *v, t_cmd *list)
 
 int			pipe_handler(t_vars *v, t_cmd *list)
 {
-	pid_t forky;
-	int stat;
+	pid_t	forky;
+	int		stat;
 
 	forky = fork();
 	if (forky < 0)

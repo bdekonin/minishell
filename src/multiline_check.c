@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/02 14:04:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/02 14:14:01 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:46:31 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static int	check_single_quote(t_vars *v, const char *cli, size_t *i)
 
 int			multiline_check(t_vars *v, const char *cli)
 {
-	size_t i;
-	int count_double;
-	int	count_single;
+	size_t	i;
+	int		count_double;
+	int		count_single;
 
 	count_double = 0;
 	count_single = 0;

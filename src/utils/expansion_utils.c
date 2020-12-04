@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/29 12:03:38 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/29 21:38:49 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:24:18 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int			copy_envvar(t_vars *v, t_exp *e)
 	char	*split_content;
 
 	e->i += 1;
-	
 	if (e->array[e->array_iter][e->i] == '?')
 		return (ret_value_last_cmd(v, e));
 	if (ft_isdigit(e->array[e->array_iter][e->i]))
@@ -68,7 +67,7 @@ int			copy_envvar(t_vars *v, t_exp *e)
 	malloc_check(v, split_content);
 	ft_strlcat(e->sub_dst + e->j, split_content, PATH_MAX + 1);
 	e->j += ft_strlen(split_content);
-	e->i += env_len - 1; //of -1? 	jeuj! :-)
+	e->i += env_len - 1;
 	ft_free(split_content);
 	return (1);
 }

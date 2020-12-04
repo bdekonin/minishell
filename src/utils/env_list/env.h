@@ -6,16 +6,15 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:19:19 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/22 17:13:17 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:10:13 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
 
-# include <stdio.h>
-# include <stdlib.h>
 # include "../../../libft/libft.h"
+# include <stdlib.h>
 
 typedef	struct		s_env
 {

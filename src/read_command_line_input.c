@@ -6,13 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/26 19:48:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/04 12:26:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:49:15 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 	ft_printerror(char *file, int error)
+void 		ft_printerror(char *file, int error)
 {
 	ft_putstr_fd(MINISHELL, 2);
 	ft_putstr_fd(": ", 2);
@@ -26,7 +26,7 @@ void 	ft_printerror(char *file, int error)
 		ft_putendl_fd(MINISHELL_CMDERR, 2);		
 }
 
-static char *make_backup_command(t_vars *v, char *backup)
+static char	*make_backup_command(t_vars *v, char *backup)
 {
 	malloc_check(v, backup);
 	ft_str_to_lower(backup);
@@ -34,7 +34,7 @@ static char *make_backup_command(t_vars *v, char *backup)
 	return (backup);
 }
 
-int		run_command(t_vars *v, char **params, size_t i)
+int			run_command(t_vars *v, char **params, size_t i)
 {
 	int		(*p[7]) (t_vars *v, char **params);
 	int		ret;
@@ -52,7 +52,8 @@ int		run_command(t_vars *v, char **params, size_t i)
 				return ((*p[i])(v, params + 1));
 		i++;
 	}
-	ret = ft_execve(v, params, NULL, make_backup_command(v, ft_strdup(params[0])));
+	ret = ft_execve(v, params, NULL, make_backup_command \
+									(v, ft_strdup(params[0])));
 	free(v->backup_command);
 	if (ret == FILENOTFOUND * 10)
 		ft_printerror(params[0], CMDERR);
@@ -61,7 +62,7 @@ int		run_command(t_vars *v, char **params, size_t i)
 	return (ret);
 }
 
-void	split_tokens(t_vars *v, char *string)
+void		split_tokens(t_vars *v, char *string)
 {
 	char	**tokens;
 	size_t	size_tokens;
@@ -77,9 +78,7 @@ void	split_tokens(t_vars *v, char *string)
 	ft_free_array((void **)tokens, size_tokens);
 }
 
-int 	pipe_handler(t_vars *v, t_cmd *temp); //declare in .h?
-
-int		execute_loop(t_vars *v, t_cmd *list)
+int			execute_loop(t_vars *v, t_cmd *list)
 {
 	int ret;
 
@@ -118,7 +117,7 @@ int		read_command_line_input(t_vars *v, char *cli)
 	size_t	i;
 	char	**args;
 	size_t	splitsize;
-	int ret;
+	int		ret;
 
 	if (!initial_syntax_error_check(v, cli))
 		return (0);

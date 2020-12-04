@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/11 19:08:00 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/02 13:57:34 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:35:31 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static char			*get_relative_path(char *currentpath, char *command)
 
 int 				handle_relative(t_vars *v, char **newpath, char *command)
 {
-	char *path;
-	int ret;
+	char	*path;
+	int		ret;
 	
 	path = get_relative_path(v->current_path, command);
 	if (!path)

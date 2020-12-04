@@ -6,12 +6,11 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/02 13:56:37 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:34:04 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int				swaparguments(t_vars *v, t_cmd *current)
 {
@@ -21,12 +20,14 @@ int				swaparguments(t_vars *v, t_cmd *current)
 
 	if (current == NULL)
 		return (0);
-	if (ft_wordcount(current->line, CHAR_SPECIAL_CHAR) > 1 && current->type != ANGLEBRACKETLEFT)
+	if (ft_wordcount(current->line, CHAR_SPECIAL_CHAR) > 1 && \
+		current->type != ANGLEBRACKETLEFT)
 	{
 		star = ft_strchr(current->line, CHAR_SPECIAL_CHAR);
 		if (current->prev == NULL)
 			return (0);
-		if (current->prev->type == ANGLEBRACKETLEFT || current->prev->type == PIPELINE)
+		if (current->prev->type == ANGLEBRACKETLEFT || \
+			current->prev->type == PIPELINE)
 			return (0);
 		newstring = ft_strjoin(current->prev->line, star);
 		malloc_check(v, newstring);
@@ -48,7 +49,8 @@ static void 	nocommand_redir(t_vars *v, t_cmd *list)
 		if (!ft_strncmp(list->line, ">", 1) || !ft_strncmp(list->line, ">>", 2))
 		{
 			free(list->line);
-			if (list->next && ft_wordcount(list->next->line, CHAR_SPECIAL_CHAR) > 1)
+			if (list->next && \
+				ft_wordcount(list->next->line, CHAR_SPECIAL_CHAR) > 1)
 			{
 				ptr = ft_strchr(list->next->line, CHAR_SPECIAL_CHAR);
 				list->line = ft_strdup(ptr);
@@ -76,7 +78,6 @@ static t_cmd	*fix_anglebracketleft(t_cmd *list)
 	}
 	return (list);
 }
-void	cmd__ft_printlist(t_cmd *cmd);
 
 static void		changefilenames(t_cmd *list)
 {
@@ -93,7 +94,6 @@ static void		changefilenames(t_cmd *list)
 		list = list->next;
 	}
 }
-void	cmd__ft_printlist(t_cmd *cmd); //debug func?
 
 void			changestruct(t_vars *v, t_cmd *list)
 {
@@ -102,5 +102,4 @@ void			changestruct(t_vars *v, t_cmd *list)
 	changefilenames(list);
 	list = fix_anglebracketleft(list);
 	v->cmd = list;
-	// cmd__ft_printlist(list);
 }

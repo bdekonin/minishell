@@ -6,52 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/16 08:58:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/28 13:44:07 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:43:41 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static size_t	skip_quotations_i(const char *cli, size_t i, char quotation)
-{
-	i++;
-	while (cli[i] && cli[i] != quotation)
-	{
-		if (cli[i] == '\\' && cli[i + 1] == '\\')
-			i++;
-		else if (cli[i] == '\\' && cli[i + 1] == '\"')
-			i++;
-		i++;
-	}
-	return (i);
-}
-
-static size_t	get_start(const char *src, char *sep, size_t i)
-{
-	while (src[i] != '\0' && ft_charsearch(src[i], sep))
-		i++;
-	return (i);
-}
-
-static size_t	get_len(const char *src, char *sep, size_t start)
-{
-	size_t	i;
-	size_t	len;
-
-	i = start;
-	len = start;
-	while (src[i] != '\0' && !ft_charsearch(src[i], sep))
-	{
-		if (src[i] == '\\')
-			i++;
-		else if (src[i] == '\'')
-        	i = skip_quotations_i(src, i, '\'');
-        else if (src[i] == '\"')
-        	i = skip_quotations_i(src, i, '\"');
-		i++;
-	}
-	return (i - len);
-}
 
 static size_t	count_strings(const char *src, char *sep)
 {
@@ -67,9 +26,9 @@ static size_t	count_strings(const char *src, char *sep)
 		if (!ft_charsearch(src[i], sep))
 		{
 			count++;
-			i += get_len(src, sep, i);
+			i += get_len_split(src, sep, i);
 		}
-		i = get_start(src, sep, i);
+		i = get_start_split(src, sep, i);
 	}
 	return (count);
 }
@@ -85,8 +44,8 @@ static int		init_dst(char **dst, const char *src, char *sep, size_t size)
 	len = 0;
 	while (i < size)
 	{
-		start = get_start(src, sep, start + len);
-		len = get_len(src, sep, start);
+		start = get_start_split(src, sep, start + len);
+		len = get_len_split(src, sep, start);
 		dst[i] = ft_substr(src, start, len);
 		if (!dst[i])
 		{

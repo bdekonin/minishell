@@ -6,56 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/12 15:29:45 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/28 15:54:01 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:45:30 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <dirent.h>
-#include <sys/stat.h>
-
-static int	loop_searchdir(struct dirent	**dp, char *command, DIR *dir)
-{
-	if (!ft_strncmp(dp[0]->d_name, command, ft_strlen(dp[0]->d_name)))
-	{
-		if (closedir(dir) < 0)
-			return (FILEERROR);
-		return (FILEFOUND);
-	}
-	dp[0] = readdir(dir);
-	if (dp[0] < 0)
-	{
-		closedir(dir);
-		return (FILEERROR);
-	}
-	return (0);
-}
-
-static int	searchdir(char *location, char *command)
-{
-	struct dirent	*dp;
-	DIR				*dir;
-	int				ret;
-
-	dir = opendir(location);
-	if (!dir)
-		return (2);
-	dp = readdir(dir);
-	if (dp < 0)
-	{
-		closedir(dir);
-		return (FILEERROR);
-	}
-	while (dp)
-	{
-		ret = loop_searchdir(&dp, command, dir);
-		if (ret == FILEFOUND)
-			return (ret);
-	}
-	if (closedir(dir) < 0)
-		return (FILEERROR);
-	return (FILENOTFOUND);
-}
 
 static char	**invalid_path(t_vars *v, size_t *splitsize)
 {

@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/04 12:40:33 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:49:44 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
 #include <unistd.h>		//STDIN_FILENO
 #include <errno.h>		//ERRNO, ENOMEM
 #include <string.h>		//str_error
-# include <stdio.h>
-
+#include <dirent.h>
 
 # include "../libft/libft.h"
 # include "utils/cmd_list/cmd.h"
@@ -81,7 +80,7 @@ typedef struct  s_vars{
 	int			fd;
 	t_env		*env;
 	t_list		*tempcmd;
-	t_cmd		*cmd;				//linked list of all tokens
+	t_cmd		*cmd;
 	char		*current_path;
 	int			cmd_ret;
 	int			stdout_copy;
@@ -114,7 +113,7 @@ void			create_tokens(t_vars *v, const char *cli);
 void			find_semicolons(t_vars *v);
 void			split_tokens(t_vars *v, char *string);
 int				run_command(t_vars *v, char **params, size_t i);
-int			ft_execve(t_vars *v, char **params, char *path, char *backup_command);
+int				ft_execve(t_vars *v, char **params, char *path, char *backup_command);
 
 /*
 **				expansions
@@ -128,18 +127,22 @@ void			copy_single_quote(t_vars *v, t_exp *e);
 void			print_empty_token_space(t_vars *v, t_exp *e);
 void			copy_backslash(t_exp *e);
 void			copy_hashtag(t_exp *e);
-void			copy_double_quote(t_vars *v,t_exp *e);
+void			copy_double_quote(t_vars *v, t_exp *e);
 
 
-int	read_command_line_input(t_vars *v, char *cli);
-void control_d(t_vars *v, char **cli, int ret);
-int error_identifier(char *identifier);
+int				read_command_line_input(t_vars *v, char *cli);
+void			control_d(t_vars *v, char **cli, int ret);
+int				error_identifier(char *identifier);
 
+int				pipe_handler(t_vars *v, t_cmd *temp);
+int				pipe_stuff(t_vars *v, t_cmd *list);
 
 // Execve
 int				handle_relative(t_vars *v, char **newpath, char *command);
 int				handle_static(t_vars *v, char **newpath, char *command);
 int				validate_file(char *filepath);
+int				loop_searchdir(struct dirent **dp, char *command, DIR *dir);
+int				searchdir(char *location, char *command);
 
 
 int redirection_handler(t_vars *v, t_cmd *command);
@@ -183,11 +186,12 @@ int				reset_std(t_vars *v);
 char   	 		**env_list_to_array(t_vars *v);
 char			*cmd_str(int i);
 char			**ft_split_sep_exep(const char *src, char *sep, size_t *size);
+size_t			get_start_split(const char *src, char *sep, size_t i);
+size_t			get_len_split(const char *src, char *sep, size_t start);
 void			malloc_check(t_vars *v, void *ptr);
 size_t			skip_quotations(const char *cli, char quotation_type);
 
 
-// t_list *lastpipe(t_list *headptr);
 t_cmd *lastpipe(t_cmd *headptr);
 t_cmd *lastredir(t_cmd *headptr);
 

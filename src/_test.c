@@ -6,11 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:51:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/29 22:27:21 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:52:14 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
+
 static int g_passed = 0;
 static int g_tests = 0;
 

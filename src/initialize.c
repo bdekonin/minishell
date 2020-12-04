@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/07 11:45:55 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 21:59:56 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:45:51 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void		initialize(t_vars *v, char **envp, char **cli)
 	if (node)
 	{
 		free(node->content);
-		// node->content = ft_strxjoin(v->current_path, "/", MINISHELL, NULL);
 		node->content = ft_strdup(MINISHELL);
 		malloc_check(v, node->content);
 	}

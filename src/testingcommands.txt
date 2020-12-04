@@ -221,3 +221,4 @@ echo $^ ; echo $?
 echo $: ; echo $?
 echo $= ; echo $?
 rm -rf yo f1 f2 f3 f4 f5 file hoi test lars list.txt ls.txt some_empty_file.txt ; echo $?
+rm -rf larsshell_cd_test ; echo $?

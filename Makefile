@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/12/02 14:07:18 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/12/04 14:42:12 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC = \
 	/run_redirection.c \
 	/handle_relative.c \
 	/handle_static.c \
+	/handle_static_more.c \
 	/signal.c \
 	/changestruct.c \
 	/read_command_line_input.c \
@@ -35,6 +36,7 @@ SRC = \
 	/utils/expansion_utils_more.c \
 	/utils/expansion_utils_more_more.c \
 	/utils/ft_split_sep_exep_bonus.c \
+	/utils/ft_split_sep_exep_utils.c \
 	/utils/malloc_check.c \
 	/utils/ft_iserrno_bonus.c \
 	/utils/ft_reduce_spaces.c \
@@ -77,7 +79,6 @@ PRINTF = ./ft_printf/libftprintf.a
 INCLUDES = ./src/$(NAME).h
 
 all: $(NAME)
-	@./$(NAME)
 
 ./libft/libft.a:
 	make -C ./libft
@@ -109,6 +110,5 @@ fclean: clean
 	@/bin/rm -rf obj
 	@make fclean -C ./libft
 	@make fclean -C ./ft_printf
-	@rm -rf f1 f2 f3 f4 f5 file hoi ls.txt some_empty_file.txt list.txt lverdoes .DS_Store
 
 re: fclean all

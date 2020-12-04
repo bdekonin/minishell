@@ -6,12 +6,11 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/02 13:51:54 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/02 13:53:17 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:11:31 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 size_t			skip_quotations(const char *cli, char quotation_type)
 {
@@ -29,7 +28,7 @@ size_t			skip_quotations(const char *cli, char quotation_type)
 	return (i);
 }
 
-size_t	get_token_len(const char *cli, size_t start)
+size_t			get_token_len(const char *cli, size_t start)
 {
 	size_t i;
 
@@ -53,12 +52,12 @@ size_t	get_token_len(const char *cli, size_t start)
 	return (i - start);
 }
 
-void		add_bogus_token(t_vars *v)
+void			add_bogus_token(t_vars *v)
 {
-	t_list *list;
-	char *str;
-	t_list *lstnew;
-	t_list *temp;
+	t_list	*list;
+	char	*str;
+	t_list	*lstnew;
+	t_list	*temp;
 
 	list = v->tempcmd;
 	while (list)

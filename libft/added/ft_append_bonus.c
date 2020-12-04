@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/09 20:45:32 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/07 00:14:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:02:06 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_append(char *s1, const char *s2)
 	len = ft_strlen(s1) + ft_strlen(s2);
 	dst = ft_calloc(len + 1, sizeof(char));
 	if (!dst)
-		ft_free_ret_ptr(s1, NULL);
+		return (ft_free_ret_ptr(s1, NULL));
 	ft_strlcat(dst, s1, len + 1);
 	ft_strlcat(dst, s2, len + 1);
 	ft_free(s1);

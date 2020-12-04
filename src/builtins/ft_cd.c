@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/03 22:54:51 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/11/26 21:26:27 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:05:43 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static inline int	exist(t_vars *v, char *string)
 
 static int			run_chdirs(t_vars *v, char **argument)
 {
-	int			ret;
+	int	ret;
 
 	ret = 0;
 	if (!*argument || !ft_strncmp(*argument, "--", 3) || \
@@ -77,7 +77,7 @@ static inline int	printerror(char *argument, int ret)
 
 int					ft_cd(t_vars *v, char **params)
 {
-	int			ret_chdir;
+	int	ret_chdir;
 
 	ret_chdir = run_chdirs(v, params);
 	if (ret_chdir == -1 && ft_iserrno(ENOMEM))

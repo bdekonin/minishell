@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 12:37:20 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:50:57 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,15 @@ static int	run_angle_right_double(t_vars *v, char *filename)
 	if (v->stdout_copy < 0)
 		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(STDOUT_FILENO);
-	v->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	v->fd = open(filename, \
+		O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (v->fd < 0)
-		return (ft_free_ret_int(file_contents, 0)); //some error with target file
+		return (ft_free_ret_int(file_contents, 0));
 	if (ret)
 	{
 		ret = write(1, file_contents, ft_strlen(file_contents));
 		if (ret < 0 || (size_t)ret != ft_strlen(file_contents))
-				return (ft_free_ret_int(file_contents, 0)); //write ereror
+				return (ft_free_ret_int(file_contents, 0));
 	}
 	if (dup2(v->fd, STDOUT_FILENO) < 0)
 		ft_exit_error(v, EXIT_FAILURE, 0);
@@ -62,7 +63,8 @@ static int	run_angle_right_single(t_vars *v, char *filename)
 	if (v->stdout_copy < 0)
 		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(STDOUT_FILENO);
-	v->fd = open(filename, O_WRONLY | O_CREAT  | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	v->fd = open(filename, \
+		O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (v->fd < 0)
 		return (0);
 	if (dup2(v->fd, STDOUT_FILENO) < 0)
@@ -116,7 +118,7 @@ int			redirection_handler(t_vars *v, t_cmd *list)
 			return (0);
 	}
 	if (list && list->type == ANGLEBRACKETLEFT &&
-	list->next && list->next->next) // cat < file2 < file2
+	list->next && list->next->next)
 		return (cmd__removemiddle(list->next, 2));
 	if (list->type == PIPELINE && lastpipe(list) && lastpipe(list)->type >= 60 && lastpipe(list)->type != PIPELINE)
 	{

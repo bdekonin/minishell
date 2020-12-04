@@ -6,7 +6,7 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/30 14:17:12 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/06 23:31:56 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/04 14:02:20 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ char		**ft_realloc(char **src, const char *line, size_t *size)
 	if (!dst[array_size])
 		return (free_array(dst, array_size));
 	if (size)
-		*size = array_size;
+		*size = array_size + 1;
 	return (dst);
 }
