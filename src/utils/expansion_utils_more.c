@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/28 15:34:27 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:17:47 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 09:22:50 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	copy_double_quote_empty(t_vars *v, t_exp *e)
 	if (ft_counter(e->array[e->array_iter], "\"\'") == \
 		ft_strlen(e->array[e->array_iter]))
 		v->empty_quotes = 1;
-		e->i += 1;
+	e->i += 1;
 }
 
 void		copy_double_quote(t_vars *v, t_exp *e)

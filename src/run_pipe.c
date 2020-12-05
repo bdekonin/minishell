@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:49:58 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 09:26:37 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static void	parent(t_vars *v, t_cmd *list, int *fd)
 	close(fd[0]);
 	if (list->type == PIPELINE)
 		pipe_stuff(v, list);
-	else if (!list->prev || list->prev->type == 0 || list->prev->type == PIPELINE) // nee
+	else if (!list->prev || list->prev->type == 0 || \
+	list->prev->type == PIPELINE)
 		split_tokens(v, list->line);
 	close(STDIN_FILENO);
 	close(STDOUT_FILENO);

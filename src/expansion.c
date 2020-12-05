@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/03 22:55:42 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/29 22:25:33 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:21:13 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ static void	init_to_zero(size_t *i, size_t *j)
 	*j = 0;
 }
 
-static void parse_cmd(t_vars *v, t_exp *e)
+static void	parse_cmd(t_vars *v, t_exp *e)
 {
 	init_to_zero(&e->i, &e->j);
 	while (e->array[e->array_iter][e->i] != '\0')
 	{
-		if (v->empty_quotes && (ft_counter(e->array[e->array_iter], "\"\'") != ft_strlen(e->array[e->array_iter])))
+		if (v->empty_quotes && (ft_counter(e->array[e->array_iter], "\"\'") != \
+		ft_strlen(e->array[e->array_iter])))
 			print_empty_token_space(v, e);
 		if (e->array[e->array_iter][e->i] == '\\')
 			copy_backslash(e);
@@ -62,7 +63,8 @@ void		expansion(t_vars *v)
 	while (e.tmp)
 	{
 		e.array_size = 0;
-		e.array = ft_split_sep_exep(e.tmp->line, STRING_SPECIAL_CHAR2, &e.array_size);
+		e.array = \
+		ft_split_sep_exep(e.tmp->line, STRING_SPECIAL_CHAR2, &e.array_size);
 		malloc_check(v, e.array);
 		e.dst = ft_calloc(PATH_MAX + 1, sizeof(char));
 		malloc_check(v, e.dst);

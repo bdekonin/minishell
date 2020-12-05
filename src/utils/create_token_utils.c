@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/02 13:51:54 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:11:31 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 09:21:55 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,16 @@ void			add_bogus_token(t_vars *v)
 	while (list)
 	{
 		if (is_pipe(list->content))
-        {
-            if (list->next && is_redirection(list->next->content))
-            {
-                str = ft_strdup("");
+		{
+			if (list->next && is_redirection(list->next->content))
+			{
+				str = ft_strdup("");
 				lstnew = ft_lstnew(str);
 				temp = list->next;
 				list->next = lstnew;
-                list->next->next = temp;
-            }
-        }
+				list->next->next = temp;
+			}
+		}
 		list = list->next;
 	}
 }

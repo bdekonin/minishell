@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 15:24:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/02 14:04:40 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:10:45 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static size_t	skip_flags(const char *cli, size_t i)
 	while (cli[i] == ' ')
 		i++;
 	while (ft_charsearch(cli[i], "<>|;"))
-		i++;	
+		i++;
 	return (i);
 }
 

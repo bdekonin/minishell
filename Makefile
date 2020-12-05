@@ -6,14 +6,14 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/12/04 15:20:39 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/12/05 16:27:59 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = \
-	/_main.c \
+	/_test.c \
 	/create_tokens.c \
 	/execve.c \
 	/expansion.c \
@@ -22,6 +22,7 @@ SRC = \
 	/syntax_error_return.c \
 	/multiline_check.c  \
 	/run_pipe.c \
+	/redirection_handler.c \
 	/run_redirection.c \
 	/handle_relative.c \
 	/handle_static.c \
@@ -29,6 +30,7 @@ SRC = \
 	/signal.c \
 	/changestruct.c \
 	/read_command_line_input.c \
+	/read_command_line_input_more.c \
 	/utils/pipeutils.c \
 	/utils/cmd_utils.c \
 	/utils/env_list_to_array.c \

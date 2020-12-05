@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 23:01:11 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 12:32:23 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/05 09:23:02 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static int	reset_stdin(t_vars *v)
 
 static int	reset_stdout(t_vars *v)
 {
-	
 	if (dup2(v->stdout_copy, STDOUT_FILENO) < 0)
 		ft_exit_error(v, EXIT_FAILURE, 0);
 	close(v->stdout_copy);

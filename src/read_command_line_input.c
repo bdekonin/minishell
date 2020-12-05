@@ -6,35 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/26 19:48:24 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:49:15 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:28:59 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 		ft_printerror(char *file, int error)
-{
-	ft_putstr_fd(MINISHELL, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(file, 2);
-	ft_putstr_fd(": ", 2);
-	if (error == ENOENT)
-		ft_putendl_fd(MINISHELL_ENOENT, 2);
-	else if (error == EACCES)
-		ft_putendl_fd(MINISHELL_EACCES, 2);
-	else if (error == CMDERR)
-		ft_putendl_fd(MINISHELL_CMDERR, 2);		
-}
-
-static char	*make_backup_command(t_vars *v, char *backup)
-{
-	malloc_check(v, backup);
-	ft_str_to_lower(backup);
-	v->backup_command = backup;
-	return (backup);
-}
-
-int			run_command(t_vars *v, char **params, size_t i)
+int				run_command(t_vars *v, char **params, size_t i)
 {
 	int		(*p[7]) (t_vars *v, char **params);
 	int		ret;
@@ -49,11 +27,11 @@ int			run_command(t_vars *v, char **params, size_t i)
 	while (i < 7)
 	{
 		if (!ft_strncmp(cmd_str(i), params[0], 16))
-				return ((*p[i])(v, params + 1));
+			return ((*p[i])(v, params + 1));
 		i++;
 	}
-	ret = ft_execve(v, params, NULL, make_backup_command \
-									(v, ft_strdup(params[0])));
+	ret = \
+	ft_execve(v, params, NULL, make_backup_command(v, ft_strdup(params[0])));
 	free(v->backup_command);
 	if (ret == FILENOTFOUND * 10)
 		ft_printerror(params[0], CMDERR);
@@ -62,34 +40,14 @@ int			run_command(t_vars *v, char **params, size_t i)
 	return (ret);
 }
 
-void		split_tokens(t_vars *v, char *string)
+static int		execute_loop(t_vars *v, t_cmd *list, int ret)
 {
-	char	**tokens;
-	size_t	size_tokens;
-
-	if (string[0] == 0)
-	{
-		v->cmd_ret = 0;
-		return ;
-	}
-	tokens = ft_split_multi(string, STRING_SPECIAL_CHAR, &size_tokens);
-	malloc_check(v, tokens);
-	v->cmd_ret = run_command(v, tokens, 0);
-	ft_free_array((void **)tokens, size_tokens);
-}
-
-int			execute_loop(t_vars *v, t_cmd *list)
-{
-	int ret;
-
-	signal(SIGQUIT, signal_execve);
-	signal(SIGINT, signal_execve);
 	while (list)
 	{
 		ret = 0;
 		ret = redirection_handler(v, list);
 		if (ret == 0)
-			break;
+			break ;
 		else if (ret == 2)
 		{
 			list = v->cmd;
@@ -107,12 +65,22 @@ int			execute_loop(t_vars *v, t_cmd *list)
 			return (0);
 		list = list->next;
 	}
-	signal(SIGQUIT, signal_default);
-	signal(SIGINT, signal_default);
 	return (1);
 }
 
-int		read_command_line_input(t_vars *v, char *cli)
+static int		that_loop_tho(t_vars *v)
+{
+	int ret;
+
+	signal(SIGQUIT, signal_execve);
+	signal(SIGINT, signal_execve);
+	ret = execute_loop(v, v->cmd, 0);
+	signal(SIGQUIT, signal_default);
+	signal(SIGINT, signal_default);
+	return (ret);
+}
+
+int				read_command_line_input(t_vars *v, char *cli)
 {
 	size_t	i;
 	char	**args;
@@ -132,34 +100,11 @@ int		read_command_line_input(t_vars *v, char *cli)
 		create_tokens(v, args[i]);
 		changestruct(v, v->cmd);
 		expansion(v);
-		ret = execute_loop(v, v->cmd);
+		ret = that_loop_tho(v);
 		cmd__ft_lstclear(&v->cmd, free);
 		if (ret == 0)
-			break;
+			break ;
 		i++;
 	}
-	ft_free_array((void**)args, splitsize);
-	return (1);
-}
-
-void 	control_d(t_vars *v, char **cli, int ret)
-{
-	char *tmp;
-
-	if (!*cli[0])
-		ft_exit_error(v, EXIT_SUCCESS, 1);
-	tmp = ft_strdup(*cli);
-	free(*cli);
-	malloc_check(v, tmp);
-	while (ret == 0)
-	{
-		*cli = NULL;
-		ret = get_next_line(STDIN_FILENO, cli);
-		if (ret < 0)
-			ft_exit_error(v, EXIT_FAILURE, 0);
-		tmp = ft_append(tmp, (*cli));
-		free(*cli);
-		malloc_check(v, tmp);
-	}
-	*cli = tmp;
+	return (free_input_args((void**)args, splitsize));
 }

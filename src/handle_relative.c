@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/11 19:08:00 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:35:31 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:23:55 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,22 @@ static char			*get_relative_path(char *currentpath, char *command)
 	return (path);
 }
 
-int 				handle_relative(t_vars *v, char **newpath, char *command)
+int					handle_relative(t_vars *v, char **newpath, char *command)
 {
 	char	*path;
 	int		ret;
-	
+
 	path = get_relative_path(v->current_path, command);
 	if (!path)
 		return (FILEERROR);
-
 	*newpath = path;
 	ret = validate_file(path);
-
 	if (ret == FILEFOUND)
 		return (FILEFOUND);
-
-	// Errors
 	if (ret == FILEPERMISSIONS)
-		ft_printerror(command, EACCES); 
+		ft_printerror(command, EACCES);
 	else if (ret == FILENOTFOUND)
-		ft_printerror(command, ENOENT); 
+		ft_printerror(command, ENOENT);
 	free(*newpath);
 	return (ret);
 }

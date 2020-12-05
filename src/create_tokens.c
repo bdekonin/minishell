@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/22 22:12:44 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:41:00 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:27:02 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char 	gettype(char *content)
+static char		gettype(char *content)
 {
 	char ret;
 
@@ -33,12 +33,11 @@ static char 	gettype(char *content)
 	return (ret);
 }
 
-static t_cmd 	*addnewtoback(t_list *list)
+static t_cmd	*addnewtoback(t_list *list)
 {
-	t_cmd *temp;
-
-	char *linedup;
-	char type;
+	t_cmd	*temp;
+	char	*linedup;
+	char	type;
 
 	linedup = ft_strdup(list->content);
 	if (linedup == NULL)

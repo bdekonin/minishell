@@ -6,15 +6,13 @@
 /*   By: lverdoes <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 15:51:49 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/11/26 19:17:10 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 09:18:01 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 #include <unistd.h>
 #include <limits.h>
-
-# include <stdlib.h>
 
 static char	*reset_ptr(char **str, int fd)
 {

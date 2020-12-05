@@ -6,7 +6,7 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/11/14 14:41:11 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:34:04 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:25:11 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int				swaparguments(t_vars *v, t_cmd *current)
 	return (ret);
 }
 
-static void 	nocommand_redir(t_vars *v, t_cmd *list)
+static void		nocommand_redir(t_vars *v, t_cmd *list)
 {
 	char *ptr;
 
@@ -88,7 +88,7 @@ static void		changefilenames(t_cmd *list)
 			if (list->next != lastredir(list))
 			{
 				ft_swap(&list->next->line, &lastredir(list)->line);
-				break;
+				break ;
 			}
 		}
 		list = list->next;

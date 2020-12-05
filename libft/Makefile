@@ -6,7 +6,7 @@
 #    By: lverdoes <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/11/22 17:32:04 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/11/16 12:03:32 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/12/05 09:17:31 by lverdoes      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,7 +103,7 @@ obj/%.o: %.c
 	$(CC) -c $< -o $@
 
 norm:
-	@norminette $(addprefix ., $(MANDATORY) $(BONUS) $(ADDED)) 
+	@norminette $(addprefix ., $(MANDATORY) $(BONUS) $(ADDED))
 	@norminette $(HEADERS) Makefile
 
 ignore:

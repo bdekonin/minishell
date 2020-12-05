@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 12:39:31 by bdekonin      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:26:21 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ static void	freething(t_vars *v, char **envp, char *path)
 	}
 }
 
-int			ft_execve(t_vars *v, char **params, char *path, char *backup_command)
+int			ft_execve(t_vars *v, \
+	char **params, char *path, char *backup_command)
 {
 	char	**envp;
 	int		ret;

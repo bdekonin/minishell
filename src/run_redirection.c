@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:44:41 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:50:57 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:18:02 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	run_angle_right_double(t_vars *v, char *filename)
 	{
 		ret = write(1, file_contents, ft_strlen(file_contents));
 		if (ret < 0 || (size_t)ret != ft_strlen(file_contents))
-				return (ft_free_ret_int(file_contents, 0));
+			return (ft_free_ret_int(file_contents, 0));
 	}
 	if (dup2(v->fd, STDOUT_FILENO) < 0)
 		ft_exit_error(v, EXIT_FAILURE, 0);
@@ -89,7 +89,7 @@ static int	run_angle_left_single(t_vars *v, char *filename)
 	return (1);
 }
 
-static int	mainredir(t_vars *v, unsigned char type, char *filename)
+int			mainredir(t_vars *v, unsigned char type, char *filename)
 {
 	int		ret;
 	char	**argv;
@@ -108,22 +108,4 @@ static int	mainredir(t_vars *v, unsigned char type, char *filename)
 	if (!ret)
 		return (0);
 	return (ret);
-}
-
-int			redirection_handler(t_vars *v, t_cmd *list)
-{
-	if (list && list->type >= 60 && list->type != PIPELINE)
-	{
-		if (mainredir(v, list->type, list->next->line) == 0)
-			return (0);
-	}
-	if (list && list->type == ANGLEBRACKETLEFT &&
-	list->next && list->next->next)
-		return (cmd__removemiddle(list->next, 2));
-	if (list->type == PIPELINE && lastpipe(list) && lastpipe(list)->type >= 60 && lastpipe(list)->type != PIPELINE)
-	{
-		if (mainredir(v, lastpipe(list)->type, lastpipe(list)->next->line) == 0)
-			return (0);
-	}
-	return (1);
 }

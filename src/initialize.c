@@ -6,13 +6,13 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/07 11:45:55 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:45:51 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/05 16:22:37 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void addenv(t_vars *v, char *name, char *content)
+static void	addenv(t_vars *v, char *name, char *content)
 {
 	t_env *node;
 
@@ -49,7 +49,7 @@ void		initialize(t_vars *v, char **envp, char **cli)
 	*cli = NULL;
 	ft_bzero(v, sizeof(t_vars));
 	v->current_path = ft_calloc(PATH_MAX + 1, sizeof(char));
-		malloc_check(v, v->current_path);
+	malloc_check(v, v->current_path);
 	v->current_path = getcwd(v->current_path, PATH_MAX);
 	create_env_list(v, envp);
 	node = find_env(v, "TESTING", 0);
