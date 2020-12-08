@@ -6,14 +6,14 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/12/05 17:32:36 by lverdoes      ########   odam.nl          #
+#    Updated: 2020/12/08 13:19:08 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = \
-	/_main.c \
+	/main.c \
 	/create_tokens.c \
 	/execve.c \
 	/expansion.c \
