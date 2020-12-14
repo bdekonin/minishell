@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/02 14:04:18 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/04 14:46:31 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/14 09:50:39 by lverdoes      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 static int	check_double_quote(t_vars *v, const char *cli, size_t *i)
 {
-	i += 1;
+	*i += 1;
 	while (cli[*i] != '\"')
 	{
 		if (cli[*i] == '\0')
 			return (syntax_error_return(v, "\""));
 		if (cli[*i] == '\\')
-			i += 1;
-		i += 1;
+			*i += 1;
+		*i += 1;
 	}
 	return (1);
 }
 
 static int	check_single_quote(t_vars *v, const char *cli, size_t *i)
 {
-	i += 1;
+	*i += 1;
 	while (cli[*i] != '\'')
 	{
 		if (cli[*i] == '\0')
 			return (syntax_error_return(v, "\'"));
-		i += 1;
+		*i += 1;
 	}
 	return (1);
 }

@@ -6,14 +6,13 @@
 /*   By: bdekonin <bdekonin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/09 18:52:10 by bdekonin      #+#    #+#                 */
-/*   Updated: 2020/12/05 16:13:27 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/08 18:46:04 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdlib.h>
 # include <limits.h>
 # include <unistd.h>
 # include <errno.h>
@@ -83,12 +82,6 @@ typedef struct	s_vars{
 	int			empty_quotes;
 	char		*backup_command;
 }				t_vars;
-
-/*
-**				libraries
-*/
-
-int				ft_printf(const char *fmt, ...);
 
 /*
 **				src/

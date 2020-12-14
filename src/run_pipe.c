@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/12 11:38:28 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/05 09:26:37 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/08 14:24:00 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ int			pipe_stuff(t_vars *v, t_cmd *list)
 	if (pid == 0)
 		child(v, list, fd);
 	else
-	{
-		waitpid(-1, NULL, 0);
 		parent(v, list->next, fd);
-	}
 	return (1);
 }
 

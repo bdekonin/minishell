@@ -6,7 +6,7 @@
 /*   By: lverdoes <lverdoes@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/13 19:05:00 by lverdoes      #+#    #+#                 */
-/*   Updated: 2020/12/05 16:26:21 by lverdoes      ########   odam.nl         */
+/*   Updated: 2020/12/08 14:25:03 by bdekonin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	run_execve(t_vars *v, char *path, char **params, char **envp)
 		}
 	}
 	else
-		waitpid(-1, &stat, 0);
+		waitpid(forky, &stat, 0);
 	return (WEXITSTATUS(stat));
 }
 

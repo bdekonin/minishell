@@ -6,7 +6,7 @@
 #    By: lverdoes <lverdoes@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/10/09 18:45:34 by lverdoes      #+#    #+#                  #
-#    Updated: 2020/12/08 13:19:08 by bdekonin      ########   odam.nl          #
+#    Updated: 2020/12/08 18:44:05 by bdekonin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,9 +74,8 @@ SRC = \
 	/utils/env_list/ft_envsize_bonus.c
 
 OBJ = $(addprefix obj, $(SRC:.c=.o))
-CC = gcc -Wall -Wextra -Werror -g
+CC = gcc -Wall -Wextra -Werror
 LIBFT = ./libft/libft.a
-PRINTF = ./ft_printf/libftprintf.a
 INCLUDES = ./src/$(NAME).h
 
 all: $(NAME)
@@ -84,11 +83,8 @@ all: $(NAME)
 ./libft/libft.a:
 	make -C ./libft
 
-./ft_printf/libftprintf.a:
-	make -C ./ft_printf
-
-$(NAME): $(LIBFT) $(PRINTF) $(OBJ)
-	@$(CC) -o $(NAME) $(LIBFT) $(PRINTF) $(OBJ)
+$(NAME): $(LIBFT) $(OBJ)
+	@$(CC) -o $(NAME) $(LIBFT) $(OBJ)
 
 obj/%.o: src/%.c
 	@mkdir -p obj obj/builtins/ obj/utils obj/utils/cmd_list obj/utils/env_list
@@ -96,20 +92,13 @@ obj/%.o: src/%.c
 
 .PHONY: clean fclean re
 
-norm:
-	@norminette $(SRC) $(INCLUDES) Makefile
-	@make norm -C ./libft
-	@make norm -C ./ft_printf
-
 clean:
 	@/bin/rm -f $(OBJ)
 	@make clean -C ./libft
-	@make clean -C ./ft_printf
 
 fclean: clean
 	@/bin/rm -f $(LIBFT) $(NAME)
 	@/bin/rm -rf obj
 	@make fclean -C ./libft
-	@make fclean -C ./ft_printf
 
 re: fclean all
