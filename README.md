@@ -1,4 +1,5 @@
 # minishell
+[![CodeFactor](https://www.codefactor.io/repository/github/bdekonin/minishell/badge)](https://www.codefactor.io/repository/github/bdekonin/minishell)
 
 This project is a re-write of a basic shell (BASH reference) with limited feature discovery in the process. It was done in collaboration with user @lverdoes.
 
@@ -21,5 +22,3 @@ Clone the repository and run `make` to compile the program. After that, you can 
 
 ## Contributors
 - [@lverdoes](https://github.com/lverdoes)
-
-[![CodeFactor](https://www.codefactor.io/repository/github/bdekonin/minishell/badge)](https://www.codefactor.io/repository/github/bdekonin/minishell)
